@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina — Development Handoff Package</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+      
+      --code-bg: #1a1a2e;
+      --code-text: #eaeaea;
+      --code-comment: #6a9955;
+      --code-string: #ce9178;
+      --code-keyword: #569cd6;
+      --code-property: #9cdcfe;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: #FAFAFA;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+    }
+
+    /* ======================= */
+    /* COVER */
+    /* ======================= */
+
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 2rem;
+      background: var(--patina-charcoal);
+      text-align: center;
+      position: relative;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .cover-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-wordmark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-off-white);
+      margin-bottom: 1rem;
+    }
+
+    .strata-large {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .strata-large span:nth-child(1) { 
+      width: 200px; height: 5px;
+      background: var(--patina-clay-beige); 
+      border-radius: 2.5px;
+    }
+    .strata-large span:nth-child(2) { 
+      width: 160px; height: 4.25px;
+      background: var(--patina-clay-beige); 
+      opacity: 0.7;
+      border-radius: 2.125px;
+    }
+    .strata-large span:nth-child(3) { 
+      width: 120px; height: 3.5px;
+      background: var(--patina-clay-beige); 
+      opacity: 0.4;
+      border-radius: 1.75px;
+    }
+
+    .cover h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover > p {
+      font-size: 1.0625rem;
+      color: rgba(237, 233, 228, 0.7);
+      max-width: 520px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-meta {
+      position: absolute;
+      bottom: 3rem;
+      display: flex;
+      gap: 3rem;
+      z-index: 1;
+    }
+
+    .cover-meta-item {
+      text-align: center;
+    }
+
+    .cover-meta-label {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.25rem;
+    }
+
+    .cover-meta-value {
+      font-size: 0.875rem;
+      color: var(--patina-off-white);
+    }
+
+    /* ======================= */
+    /* LAYOUT */
+    /* ======================= */
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* TOC */
+    .toc {
+      padding: 4rem 0;
+      background: var(--patina-off-white);
+    }
+
+    .toc h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .toc-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .toc-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(101, 91, 82, 0.1);
+      border-color: var(--patina-clay-beige);
+    }
+
+    .toc-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    .toc-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .toc-desc {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+    }
+
+    /* Section */
+    .section {
+      padding: 5rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--patina-mocha-brown);
+      max-width: 600px;
+    }
+
+    h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.375rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    h3:first-of-type {
+      margin-top: 0;
+    }
+
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    /* ======================= */
+    /* CODE BLOCKS */
+    /* ======================= */
+
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0 1.5rem;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      color: var(--code-text);
+      margin: 0;
+    }
+
+    .code-block .comment { color: var(--code-comment); }
+    .code-block .string { color: var(--code-string); }
+    .code-block .keyword { color: var(--code-keyword); }
+    .code-block .property { color: var(--code-property); }
+
+    .code-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ======================= */
+    /* TABLES */
+    /* ======================= */
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .spec-table th {
+      text-align: left;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      background: var(--patina-soft-cream);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .spec-table td {
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.08);
+      vertical-align: top;
+    }
+
+    .spec-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .spec-table code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      background: var(--patina-soft-cream);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+      color: var(--patina-mocha-brown);
+    }
+
+    /* ======================= */
+    /* COLOR SWATCHES */
+    /* ======================= */
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1rem 0 2rem;
+    }
+
+    .color-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .color-swatch {
+      height: 80px;
+    }
+
+    .color-info {
+      padding: 1rem 1.25rem;
+    }
+
+    .color-name {
+      font-weight: 600;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .color-values {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.6;
+    }
+
+    /* ======================= */
+    /* TYPOGRAPHY PREVIEW */
+    /* ======================= */
+
+    .type-specimen {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 1rem 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .type-sample-display {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .type-sample-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.7;
+    }
+
+    .type-meta {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .type-meta-item {
+      font-size: 0.75rem;
+    }
+
+    .type-meta-label {
+      color: var(--patina-clay-beige);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .type-meta-value {
+      color: var(--patina-charcoal);
+    }
+
+    /* ======================= */
+    /* COMPONENT CARDS */
+    /* ======================= */
+
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .component-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .component-preview {
+      padding: 2rem;
+      background: var(--patina-soft-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
+
+    .component-info {
+      padding: 1.25rem;
+    }
+
+    .component-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .component-desc {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+    }
+
+    /* Button Previews */
+    .btn-primary {
+      background: var(--patina-clay-beige);
+      color: var(--patina-off-white);
+      padding: 0.875rem 1.75rem;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--patina-mocha-brown);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--patina-charcoal);
+      padding: 0.875rem 1.75rem;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      border: 2px solid var(--patina-clay-beige);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--patina-soft-cream);
+    }
+
+    .btn-dark {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 0.875rem 1.75rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-dark:hover {
+      background: var(--patina-mocha-brown);
+    }
+
+    /* ======================= */
+    /* STRATA PREVIEW */
+    /* ======================= */
+
+    .strata-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      padding: 2.5rem;
+      background: white;
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+
+    .strata-preview-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .strata-preview-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+    }
+
+    .strata-compact {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+
+    .strata-compact span:nth-child(1) { 
+      width: 40px; height: 2px;
+      background: var(--patina-mocha-brown); 
+      border-radius: 1px;
+    }
+    .strata-compact span:nth-child(2) { 
+      width: 32px; height: 1.7px;
+      background: var(--patina-clay-beige); 
+      border-radius: 0.85px;
+    }
+    .strata-compact span:nth-child(3) { 
+      width: 24px; height: 1.4px;
+      background: var(--patina-clay-beige); 
+      opacity: 0.5;
+      border-radius: 0.7px;
+    }
+
+    .strata-medium {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .strata-medium span:nth-child(1) { 
+      width: 140px; height: 4px;
+      background: var(--patina-mocha-brown); 
+      border-radius: 2px;
+    }
+    .strata-medium span:nth-child(2) { 
+      width: 112px; height: 3.4px;
+      background: var(--patina-clay-beige); 
+      border-radius: 1.7px;
+    }
+    .strata-medium span:nth-child(3) { 
+      width: 84px; height: 2.8px;
+      background: var(--patina-clay-beige); 
+      opacity: 0.5;
+      border-radius: 1.4px;
+    }
+
+    /* ======================= */
+    /* ANIMATION DEMOS */
+    /* ======================= */
+
+    .animation-demo {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .animation-visual {
+      flex: 0 0 120px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .animation-box {
+      width: 60px;
+      height: 60px;
+      background: var(--patina-clay-beige);
+      border-radius: 12px;
+    }
+
+    .animation-box.hover-lift {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    }
+
+    .animation-box.hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(163, 146, 124, 0.25);
+    }
+
+    .animation-box.hover-scale {
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .animation-box.hover-scale:hover {
+      transform: scale(0.97);
+    }
+
+    .animation-info {
+      flex: 1;
+    }
+
+    .animation-name {
+      font-weight: 600;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .animation-timing {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    .animation-desc {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+    }
+
+    /* ======================= */
+    /* SPACING VISUAL */
+    /* ======================= */
+
+    .spacing-visual {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      margin: 1rem 0;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+    }
+
+    .spacing-block {
+      background: var(--patina-clay-beige);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 0.5rem;
+    }
+
+    .spacing-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      color: white;
+      text-align: center;
+    }
+
+    /* ======================= */
+    /* INFO BOXES */
+    /* ======================= */
+
+    .info-box {
+      background: var(--patina-soft-cream);
+      border-left: 3px solid var(--patina-clay-beige);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box p {
+      font-size: 0.875rem;
+      color: var(--patina-mocha-brown);
+      margin: 0;
+    }
+
+    .info-box strong {
+      color: var(--patina-charcoal);
+    }
+
+    /* ======================= */
+    /* CHECKLIST */
+    /* ======================= */
+
+    .checklist {
+      list-style: none;
+      margin: 1rem 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+      font-size: 0.9375rem;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist li::before {
+      content: '☐';
+      color: var(--patina-clay-beige);
+      font-size: 1.125rem;
+    }
+
+    /* ======================= */
+    /* FOOTER */
+    /* ======================= */
+
+    .doc-footer {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .doc-footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .doc-footer-logo .wordmark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-off-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-footer-strata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .doc-footer-strata span:nth-child(1) { 
+      width: 120px; height: 3.5px;
+      background: var(--patina-clay-beige); 
+      border-radius: 1.75px;
+    }
+    .doc-footer-strata span:nth-child(2) { 
+      width: 96px; height: 3px;
+      background: var(--patina-clay-beige); 
+      opacity: 0.7;
+      border-radius: 1.5px;
+    }
+    .doc-footer-strata span:nth-child(3) { 
+      width: 72px; height: 2.45px;
+      background: var(--patina-clay-beige); 
+      opacity: 0.4;
+      border-radius: 1.225px;
+    }
+
+    .doc-footer-text {
+      font-size: 0.875rem;
+      color: rgba(237, 233, 228, 0.6);
+    }
+
+    /* ======================= */
+    /* RESPONSIVE */
+    /* ======================= */
+
+    @media (max-width: 900px) {
+      .toc-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .color-grid,
+      .component-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .toc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .strata-preview-row {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .animation-demo {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cover-meta {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================= -->
+  <!-- COVER -->
+  <!-- ======================= -->
+
+  <section class="cover">
+    <div class="cover-logo">
+      <div class="cover-wordmark">PATINA</div>
+      <div class="strata-large">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <h1>Development Handoff Package</h1>
+    <p>Complete specifications, design tokens, component documentation, and implementation guidelines for the Patina web platform.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Version</div>
+        <div class="cover-meta-value">1.0</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Date</div>
+        <div class="cover-meta-value">December 2024</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Stack</div>
+        <div class="cover-meta-value">Next.js 15 + Tailwind</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- TABLE OF CONTENTS -->
+  <!-- ======================= -->
+
+  <section class="toc">
+    <div class="container">
+      <h2>Contents</h2>
+      <div class="toc-grid">
+        <a href="#tokens" class="toc-item">
+          <div class="toc-number">01</div>
+          <div class="toc-title">Design Tokens</div>
+          <div class="toc-desc">Colors, typography, spacing, shadows</div>
+        </a>
+        <a href="#strata" class="toc-item">
+          <div class="toc-number">02</div>
+          <div class="toc-title">Strata Mark System</div>
+          <div class="toc-desc">Logo component specifications</div>
+        </a>
+        <a href="#components" class="toc-item">
+          <div class="toc-number">03</div>
+          <div class="toc-title">Components</div>
+          <div class="toc-desc">Buttons, cards, navigation, footer</div>
+        </a>
+        <a href="#responsive" class="toc-item">
+          <div class="toc-number">04</div>
+          <div class="toc-title">Responsive Layout</div>
+          <div class="toc-desc">Breakpoints and grid system</div>
+        </a>
+        <a href="#animation" class="toc-item">
+          <div class="toc-number">05</div>
+          <div class="toc-title">Animation & Motion</div>
+          <div class="toc-desc">Transitions and micro-interactions</div>
+        </a>
+        <a href="#accessibility" class="toc-item">
+          <div class="toc-number">06</div>
+          <div class="toc-title">Accessibility</div>
+          <div class="toc-desc">WCAG compliance guidelines</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- 01: DESIGN TOKENS -->
+  <!-- ======================= -->
+
+  <section id="tokens" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">01</div>
+        <h2 class="section-title">Design Tokens</h2>
+        <p class="section-desc">Foundational values for consistent implementation. Export as CSS custom properties or Tailwind config.</p>
+      </div>
+
+      <h3>Color Palette</h3>
+
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #EDE9E4;"></div>
+          <div class="color-info">
+            <div class="color-name">Off-White</div>
+            <div class="color-values">
+              HEX: #EDE9E4<br>
+              RGB: 237, 233, 228<br>
+              Usage: Primary backgrounds
+            </div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #A3927C;"></div>
+          <div class="color-info">
+            <div class="color-name">Clay Beige</div>
+            <div class="color-values">
+              HEX: #A3927C<br>
+              RGB: 163, 146, 124<br>
+              Usage: Interactive, accents
+            </div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #655B52;"></div>
+          <div class="color-info">
+            <div class="color-name">Mocha Brown</div>
+            <div class="color-values">
+              HEX: #655B52<br>
+              RGB: 101, 91, 82<br>
+              Usage: Headlines, emphasis
+            </div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #3F3B37;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal</div>
+            <div class="color-values">
+              HEX: #3F3B37<br>
+              RGB: 63, 59, 55<br>
+              Usage: Primary text, dark BG
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Extended Palette</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Name</th><th>Hex</th><th>Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Soft Cream</td><td><code>#F5F2ED</code></td><td>Card backgrounds, subtle surfaces</td></tr>
+          <tr><td>Warm White</td><td><code>#FAF7F2</code></td><td>Hero sections, special backgrounds</td></tr>
+        </tbody>
+      </table>
+
+      <h4>CSS Custom Properties</h4>
+      <div class="code-label">tokens.css</div>
+      <div class="code-block">
+<pre><span class="keyword">:root</span> {
+  <span class="comment">/* Core Colors */</span>
+  <span class="property">--patina-off-white</span>: <span class="string">#EDE9E4</span>;
+  <span class="property">--patina-clay-beige</span>: <span class="string">#A3927C</span>;
+  <span class="property">--patina-mocha-brown</span>: <span class="string">#655B52</span>;
+  <span class="property">--patina-charcoal</span>: <span class="string">#3F3B37</span>;
+  <span class="property">--patina-soft-cream</span>: <span class="string">#F5F2ED</span>;
+  <span class="property">--patina-warm-white</span>: <span class="string">#FAF7F2</span>;
+  
+  <span class="comment">/* Semantic: Backgrounds */</span>
+  <span class="property">--bg-primary</span>: <span class="keyword">var</span>(--patina-off-white);
+  <span class="property">--bg-secondary</span>: <span class="keyword">var</span>(--patina-soft-cream);
+  <span class="property">--bg-dark</span>: <span class="keyword">var</span>(--patina-charcoal);
+  
+  <span class="comment">/* Semantic: Text */</span>
+  <span class="property">--text-primary</span>: <span class="keyword">var</span>(--patina-charcoal);
+  <span class="property">--text-secondary</span>: <span class="keyword">var</span>(--patina-mocha-brown);
+  <span class="property">--text-muted</span>: <span class="keyword">var</span>(--patina-clay-beige);
+  <span class="property">--text-inverse</span>: <span class="keyword">var</span>(--patina-off-white);
+  
+  <span class="comment">/* Semantic: Interactive */</span>
+  <span class="property">--interactive-default</span>: <span class="keyword">var</span>(--patina-clay-beige);
+  <span class="property">--interactive-hover</span>: <span class="keyword">var</span>(--patina-mocha-brown);
+  <span class="property">--interactive-active</span>: <span class="keyword">var</span>(--patina-charcoal);
+}</pre>
+      </div>
+
+      <h3>Typography</h3>
+
+      <div class="type-specimen">
+        <div class="type-sample-display">Playfair Display</div>
+        <div class="type-sample-body">The quick brown fox jumps over the lazy dog. ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</div>
+        <div class="type-meta">
+          <div class="type-meta-item">
+            <div class="type-meta-label">Source</div>
+            <div class="type-meta-value">Google Fonts</div>
+          </div>
+          <div class="type-meta-item">
+            <div class="type-meta-label">Weights</div>
+            <div class="type-meta-value">400, 500, 600, 700</div>
+          </div>
+          <div class="type-meta-item">
+            <div class="type-meta-label">Usage</div>
+            <div class="type-meta-value">Headlines, display</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-sample-body" style="font-size: 1.25rem; margin-bottom: 1rem; font-weight: 500;">Inter — Body & UI</div>
+        <div class="type-sample-body">The quick brown fox jumps over the lazy dog. ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</div>
+        <div class="type-meta">
+          <div class="type-meta-item">
+            <div class="type-meta-label">Source</div>
+            <div class="type-meta-value">Google Fonts</div>
+          </div>
+          <div class="type-meta-item">
+            <div class="type-meta-label">Weights</div>
+            <div class="type-meta-value">300, 400, 500, 600</div>
+          </div>
+          <div class="type-meta-item">
+            <div class="type-meta-label">Usage</div>
+            <div class="type-meta-value">Body, UI elements</div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Type Scale</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Name</th><th>Size</th><th>Font</th><th>Weight</th><th>Line Height</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Display 1</td><td><code>3.5rem</code> / 56px</td><td>Playfair</td><td>500</td><td>1.2</td></tr>
+          <tr><td>Display 2</td><td><code>2.5rem</code> / 40px</td><td>Playfair</td><td>500</td><td>1.2</td></tr>
+          <tr><td>Heading 1</td><td><code>2rem</code> / 32px</td><td>Playfair</td><td>500</td><td>1.3</td></tr>
+          <tr><td>Heading 2</td><td><code>1.5rem</code> / 24px</td><td>Playfair</td><td>500</td><td>1.3</td></tr>
+          <tr><td>Heading 3</td><td><code>1.25rem</code> / 20px</td><td>Playfair</td><td>500</td><td>1.4</td></tr>
+          <tr><td>Body</td><td><code>1rem</code> / 16px</td><td>Inter</td><td>400</td><td>1.6</td></tr>
+          <tr><td>Body Small</td><td><code>0.875rem</code> / 14px</td><td>Inter</td><td>400</td><td>1.5</td></tr>
+          <tr><td>Caption</td><td><code>0.75rem</code> / 12px</td><td>Inter</td><td>500</td><td>1.4</td></tr>
+          <tr><td>Label</td><td><code>0.6875rem</code> / 11px</td><td>Inter</td><td>600</td><td>1.4</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Spacing Scale</h3>
+      <div class="spacing-visual">
+        <div class="spacing-block" style="width: 16px; height: 16px;"><span class="spacing-label">4</span></div>
+        <div class="spacing-block" style="width: 24px; height: 24px;"><span class="spacing-label">8</span></div>
+        <div class="spacing-block" style="width: 32px; height: 32px;"><span class="spacing-label">16</span></div>
+        <div class="spacing-block" style="width: 40px; height: 40px;"><span class="spacing-label">24</span></div>
+        <div class="spacing-block" style="width: 48px; height: 48px;"><span class="spacing-label">32</span></div>
+        <div class="spacing-block" style="width: 60px; height: 60px;"><span class="spacing-label">48</span></div>
+        <div class="spacing-block" style="width: 76px; height: 76px;"><span class="spacing-label">64</span></div>
+        <div class="spacing-block" style="width: 96px; height: 96px;"><span class="spacing-label">96</span></div>
+      </div>
+
+      <div class="code-label">Spacing Tokens</div>
+      <div class="code-block">
+<pre><span class="property">--space-xs</span>: <span class="string">4px</span>;    <span class="comment">/* 0.25rem */</span>
+<span class="property">--space-sm</span>: <span class="string">8px</span>;    <span class="comment">/* 0.5rem */</span>
+<span class="property">--space-md</span>: <span class="string">16px</span>;   <span class="comment">/* 1rem */</span>
+<span class="property">--space-lg</span>: <span class="string">24px</span>;   <span class="comment">/* 1.5rem */</span>
+<span class="property">--space-xl</span>: <span class="string">32px</span>;   <span class="comment">/* 2rem */</span>
+<span class="property">--space-2xl</span>: <span class="string">48px</span>;  <span class="comment">/* 3rem */</span>
+<span class="property">--space-3xl</span>: <span class="string">64px</span>;  <span class="comment">/* 4rem */</span>
+<span class="property">--space-4xl</span>: <span class="string">96px</span>;  <span class="comment">/* 6rem */</span></pre>
+      </div>
+
+      <h3>Shadows & Radius</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Shadow</th><th>Value</th><th>Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Shadow SM</td><td><code>0 2px 8px rgba(101, 91, 82, 0.06)</code></td><td>Cards, subtle elevation</td></tr>
+          <tr><td>Shadow MD</td><td><code>0 4px 16px rgba(101, 91, 82, 0.08)</code></td><td>Dropdowns, modals</td></tr>
+          <tr><td>Shadow LG</td><td><code>0 12px 32px rgba(101, 91, 82, 0.12)</code></td><td>Hover states, floating</td></tr>
+          <tr><td>Shadow XL</td><td><code>0 24px 64px rgba(101, 91, 82, 0.16)</code></td><td>Hero images, features</td></tr>
+        </tbody>
+      </table>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Radius</th><th>Value</th><th>Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Radius SM</td><td><code>4px</code></td><td>Badges, tags</td></tr>
+          <tr><td>Radius MD</td><td><code>8px</code></td><td>Buttons, inputs</td></tr>
+          <tr><td>Radius LG</td><td><code>12px</code></td><td>Cards, containers</td></tr>
+          <tr><td>Radius XL</td><td><code>16px</code></td><td>Large cards, images</td></tr>
+          <tr><td>Radius 2XL</td><td><code>24px</code></td><td>Hero images</td></tr>
+          <tr><td>Radius Full</td><td><code>9999px</code></td><td>Pills, avatars</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- 02: STRATA MARK SYSTEM -->
+  <!-- ======================= -->
+
+  <section id="strata" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">02</div>
+        <h2 class="section-title">Strata Mark System</h2>
+        <p class="section-desc">The three horizontal lines that form our distinctive visual identity. Implement as a reusable component.</p>
+      </div>
+
+      <h3>Size Variants</h3>
+      <div class="strata-preview-row">
+        <div class="strata-preview-item">
+          <div class="strata-compact">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="strata-preview-label">Compact (40px)</div>
+        </div>
+        <div class="strata-preview-item">
+          <div class="strata-medium">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="strata-preview-label">Medium (140px)</div>
+        </div>
+        <div class="strata-preview-item">
+          <div class="strata-large">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="strata-preview-label">Large (200px)</div>
+        </div>
+      </div>
+
+      <h4>Specifications Table</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Size</th><th>Base Width</th><th>Line 1</th><th>Line 2</th><th>Line 3</th><th>Gap</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Large</strong></td>
+            <td>200px</td>
+            <td>200×5px</td>
+            <td>160×4.25px</td>
+            <td>120×3.5px @ 50%</td>
+            <td>8px</td>
+          </tr>
+          <tr>
+            <td><strong>Medium</strong></td>
+            <td>140px</td>
+            <td>140×4px</td>
+            <td>112×3.4px</td>
+            <td>84×2.8px @ 50%</td>
+            <td>6px</td>
+          </tr>
+          <tr>
+            <td><strong>Compact</strong></td>
+            <td>40px</td>
+            <td>40×2px</td>
+            <td>32×1.7px</td>
+            <td>24×1.4px @ 50%</td>
+            <td>3px</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <p><strong>Ratio Formula:</strong> Width = 100% / 80% / 60%. Height = 100% / 85% / 70%. Line 3 opacity = 50%. Border radius = height / 2.</p>
+      </div>
+
+      <h4>React Component</h4>
+      <div class="code-label">StrataMark.tsx</div>
+      <div class="code-block">
+<pre><span class="keyword">interface</span> StrataMarkProps {
+  size: <span class="string">'compact'</span> | <span class="string">'medium'</span> | <span class="string">'large'</span>;
+  variant?: <span class="string">'default'</span> | <span class="string">'reversed'</span>;
+  align?: <span class="string">'left'</span> | <span class="string">'center'</span>;
+}
+
+<span class="keyword">const</span> sizes = {
+  large: { base: 200, height: 5, gap: 8 },
+  medium: { base: 140, height: 4, gap: 6 },
+  compact: { base: 40, height: 2, gap: 3 },
+};
+
+<span class="keyword">export function</span> <span class="property">StrataMark</span>({ size, variant = <span class="string">'default'</span>, align = <span class="string">'center'</span> }: StrataMarkProps) {
+  <span class="keyword">const</span> { base, height, gap } = sizes[size];
+  
+  <span class="keyword">const</span> lines = [
+    { width: base, height: height, opacity: 1 },
+    { width: base * 0.8, height: height * 0.85, opacity: variant === <span class="string">'reversed'</span> ? 0.7 : 1 },
+    { width: base * 0.6, height: height * 0.7, opacity: variant === <span class="string">'reversed'</span> ? 0.4 : 0.5 },
+  ];
+  
+  <span class="keyword">return</span> (
+    &lt;div className={`flex flex-col items-${align}`} style={{ gap }}&gt;
+      {lines.map((line, i) =&gt; (
+        &lt;span
+          key={i}
+          style={{
+            width: line.width,
+            height: line.height,
+            backgroundColor: variant === <span class="string">'reversed'</span> 
+              ? <span class="string">'var(--patina-clay-beige)'</span>
+              : i === 0 ? <span class="string">'var(--patina-mocha-brown)'</span> : <span class="string">'var(--patina-clay-beige)'</span>,
+            opacity: line.opacity,
+            borderRadius: line.height / 2,
+          }}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</pre>
+      </div>
+
+      <h4>Usage Contexts</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Context</th><th>Size</th><th>Alignment</th><th>Variant</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Navigation</td><td>Compact</td><td>Left</td><td>Default (Reversed on dark)</td></tr>
+          <tr><td>Footer</td><td>Medium</td><td>Left or Center</td><td>Reversed</td></tr>
+          <tr><td>Hero / Cover</td><td>Large</td><td>Center</td><td>Default or Reversed</td></tr>
+          <tr><td>Section Divider</td><td>Medium</td><td>Center</td><td>Context-dependent</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- 03: COMPONENTS -->
+  <!-- ======================= -->
+
+  <section id="components" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">03</div>
+        <h2 class="section-title">Components</h2>
+        <p class="section-desc">Reusable UI components with all state specifications.</p>
+      </div>
+
+      <h3>Buttons</h3>
+      <div class="component-grid">
+        <div class="component-card">
+          <div class="component-preview">
+            <button class="btn-primary">Primary Button</button>
+          </div>
+          <div class="component-info">
+            <div class="component-name">Primary Button</div>
+            <div class="component-desc">Main CTAs, form submissions</div>
+          </div>
+        </div>
+        <div class="component-card">
+          <div class="component-preview">
+            <button class="btn-secondary">Secondary Button</button>
+          </div>
+          <div class="component-info">
+            <div class="component-name">Secondary Button</div>
+            <div class="component-desc">Alternative actions</div>
+          </div>
+        </div>
+        <div class="component-card">
+          <div class="component-preview" style="background: var(--patina-charcoal);">
+            <button class="btn-primary" style="background: var(--patina-clay-beige); color: var(--patina-charcoal);">Dark Context</button>
+          </div>
+          <div class="component-info">
+            <div class="component-name">Dark Context Button</div>
+            <div class="component-desc">CTAs on dark backgrounds</div>
+          </div>
+        </div>
+        <div class="component-card">
+          <div class="component-preview">
+            <button class="btn-dark">Dark Button</button>
+          </div>
+          <div class="component-info">
+            <div class="component-name">Dark Button</div>
+            <div class="component-desc">Navigation CTAs</div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Button Specifications</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Property</th><th>Primary</th><th>Secondary</th><th>Dark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Background</td><td><code>--patina-clay-beige</code></td><td><code>transparent</code></td><td><code>--patina-charcoal</code></td></tr>
+          <tr><td>Text Color</td><td><code>--patina-off-white</code></td><td><code>--patina-charcoal</code></td><td><code>--patina-off-white</code></td></tr>
+          <tr><td>Border</td><td>none</td><td><code>2px solid --clay-beige</code></td><td>none</td></tr>
+          <tr><td>Padding</td><td colspan="3"><code>0.875rem 1.75rem</code></td></tr>
+          <tr><td>Border Radius</td><td><code>10px</code></td><td><code>10px</code></td><td><code>8px</code></td></tr>
+          <tr><td>Font Size</td><td><code>0.9375rem</code></td><td><code>0.9375rem</code></td><td><code>0.875rem</code></td></tr>
+          <tr><td>Font Weight</td><td colspan="3"><code>500</code></td></tr>
+          <tr><td>Hover BG</td><td><code>--mocha-brown</code></td><td><code>--soft-cream</code></td><td><code>--mocha-brown</code></td></tr>
+          <tr><td>Transition</td><td colspan="3"><code>background 200ms ease</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Product Card</h3>
+      <div class="info-box">
+        <p><strong>Key Features:</strong> 1:1 aspect ratio image, maker badge (top-left), AR button (bottom-right), provenance text below title, hover lift animation.</p>
+      </div>
+
+      <div class="code-label">ProductCard Structure</div>
+      <div class="code-block">
+<pre><span class="keyword">&lt;article</span> class=<span class="string">"product-card"</span><span class="keyword">&gt;</span>
+  <span class="keyword">&lt;div</span> class=<span class="string">"product-image"</span><span class="keyword">&gt;</span>
+    <span class="keyword">&lt;img</span> src=<span class="string">"..."</span> alt=<span class="string">"..."</span> <span class="keyword">/&gt;</span>
+    <span class="keyword">&lt;span</span> class=<span class="string">"product-badge"</span><span class="keyword">&gt;</span>Vermont Workshop<span class="keyword">&lt;/span&gt;</span>
+    <span class="keyword">&lt;button</span> class=<span class="string">"product-ar-btn"</span> aria-label=<span class="string">"View in AR"</span><span class="keyword">&gt;</span>
+      <span class="comment">&lt;!-- AR Icon SVG --&gt;</span>
+    <span class="keyword">&lt;/button&gt;</span>
+  <span class="keyword">&lt;/div&gt;</span>
+  <span class="keyword">&lt;div</span> class=<span class="string">"product-content"</span><span class="keyword">&gt;</span>
+    <span class="keyword">&lt;h3</span> class=<span class="string">"product-title"</span><span class="keyword">&gt;</span>Hadley Armchair<span class="keyword">&lt;/h3&gt;</span>
+    <span class="keyword">&lt;p</span> class=<span class="string">"product-maker"</span><span class="keyword">&gt;</span>Hand-turned since 1892<span class="keyword">&lt;/p&gt;</span>
+    <span class="keyword">&lt;div</span> class=<span class="string">"product-footer"</span><span class="keyword">&gt;</span>
+      <span class="keyword">&lt;span</span> class=<span class="string">"product-price"</span><span class="keyword">&gt;</span>$1,295<span class="keyword">&lt;/span&gt;</span>
+      <span class="keyword">&lt;button</span> class=<span class="string">"product-save"</span> aria-label=<span class="string">"Save to wishlist"</span><span class="keyword">&gt;</span>
+        <span class="comment">&lt;!-- Heart Icon SVG --&gt;</span>
+      <span class="keyword">&lt;/button&gt;</span>
+    <span class="keyword">&lt;/div&gt;</span>
+  <span class="keyword">&lt;/div&gt;</span>
+<span class="keyword">&lt;/article&gt;</span></pre>
+      </div>
+
+      <h4>Product Card Specifications</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Specification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Card Background</td><td><code>white</code>, radius <code>14px</code>, shadow-sm</td></tr>
+          <tr><td>Image Container</td><td><code>aspect-ratio: 1</code>, position relative, overflow hidden</td></tr>
+          <tr><td>Badge</td><td>Top-left <code>0.75rem</code>, bg rgba(255,255,255,0.92), blur 4px, text 11px weight 600</td></tr>
+          <tr><td>AR Button</td><td>Bottom-right <code>0.75rem</code>, 36×36px, radius 8px, same blur bg</td></tr>
+          <tr><td>Content Padding</td><td><code>1.25rem</code></td></tr>
+          <tr><td>Title</td><td>Playfair Display, 16px, weight 500, Charcoal</td></tr>
+          <tr><td>Maker Text</td><td>13px, italic, Clay Beige color</td></tr>
+          <tr><td>Price</td><td>15px, weight 600, Mocha Brown</td></tr>
+          <tr><td>Hover State</td><td><code>translateY(-4px)</code>, shadow-lg, transition 300ms</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Navigation</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Light Theme</th><th>Dark Theme</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Background</td><td><code>--patina-warm-white</code></td><td><code>transparent</code></td></tr>
+          <tr><td>Padding</td><td colspan="2"><code>1.25rem 3rem</code></td></tr>
+          <tr><td>Logo</td><td colspan="2">Wordmark (Playfair 18px, 0.2em tracking) + Strata Compact</td></tr>
+          <tr><td>Link Color</td><td><code>--mocha-brown</code></td><td><code>rgba(237, 233, 228, 0.7)</code></td></tr>
+          <tr><td>Link Hover</td><td><code>--charcoal</code></td><td><code>--off-white</code></td></tr>
+          <tr><td>Link Font</td><td colspan="2">Inter, 14px, weight 400</td></tr>
+          <tr><td>Link Gap</td><td colspan="2"><code>2.5rem</code></td></tr>
+          <tr><td>CTA Button</td><td>Dark Button style</td><td>Clay Beige bg, Charcoal text</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Footer</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Property</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Background</td><td><code>--patina-charcoal</code></td></tr>
+          <tr><td>Padding</td><td><code>4rem 3rem 2rem</code></td></tr>
+          <tr><td>Grid</td><td><code>1.5fr 1fr 1fr 1fr</code> (4 columns), gap <code>3rem</code></td></tr>
+          <tr><td>Logo Strata</td><td>Medium size, Reversed variant, Left-aligned</td></tr>
+          <tr><td>Tagline</td><td>15px, italic, Clay Beige</td></tr>
+          <tr><td>Column Heading</td><td>Playfair Display, 16px, Off-White</td></tr>
+          <tr><td>Link Color</td><td><code>rgba(237, 233, 228, 0.65)</code></td></tr>
+          <tr><td>Link Hover</td><td><code>--patina-off-white</code></td></tr>
+          <tr><td>Bottom Border</td><td><code>1px solid rgba(163, 146, 124, 0.15)</code></td></tr>
+          <tr><td>Copyright Text</td><td>13px, <code>rgba(237, 233, 228, 0.5)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- 04: RESPONSIVE LAYOUT -->
+  <!-- ======================= -->
+
+  <section id="responsive" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">04</div>
+        <h2 class="section-title">Responsive Layout</h2>
+        <p class="section-desc">Breakpoints, container widths, and grid adaptations. Mobile-first approach.</p>
+      </div>
+
+      <h3>Breakpoints</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Name</th><th>Min Width</th><th>Container Max</th><th>Tailwind Class</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mobile</td><td><code>0px</code></td><td><code>100%</code></td><td>Default</td></tr>
+          <tr><td>Tablet</td><td><code>640px</code></td><td><code>640px</code></td><td><code>sm:</code></td></tr>
+          <tr><td>Desktop</td><td><code>1024px</code></td><td><code>1100px</code></td><td><code>lg:</code></td></tr>
+          <tr><td>Wide</td><td><code>1280px</code></td><td><code>1200px</code></td><td><code>xl:</code></td></tr>
+          <tr><td>Ultra Wide</td><td><code>1536px</code></td><td><code>1400px</code></td><td><code>2xl:</code></td></tr>
+        </tbody>
+      </table>
+
+      <h4>CSS Media Queries</h4>
+      <div class="code-block">
+<pre><span class="comment">/* Mobile First Approach */</span>
+
+<span class="comment">/* Tablet and up */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">640px</span>) { }
+
+<span class="comment">/* Desktop and up */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">1024px</span>) { }
+
+<span class="comment">/* Wide screens */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">1280px</span>) { }
+
+<span class="comment">/* Ultra wide */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">1536px</span>) { }</pre>
+      </div>
+
+      <h3>Grid Adaptations</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Component</th><th>Mobile</th><th>Tablet</th><th>Desktop</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Product Grid</td><td>1 column</td><td>2 columns</td><td>3 columns</td></tr>
+          <tr><td>Hero Grid</td><td>Stacked</td><td>Stacked</td><td>2 columns (1fr 1.1fr)</td></tr>
+          <tr><td>Footer Grid</td><td>1 column</td><td>2 columns</td><td>4 columns</td></tr>
+          <tr><td>Service Packages</td><td>1 column</td><td>2 columns</td><td>3 columns</td></tr>
+          <tr><td>Process Steps</td><td>1 column</td><td>2 columns</td><td>4 columns</td></tr>
+          <tr><td>PDP Layout</td><td>Stacked</td><td>Stacked</td><td>2 columns (1.2fr 1fr)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Mobile Navigation</h3>
+      <div class="info-box">
+        <p><strong>Pattern:</strong> Hamburger menu (top-right), full-screen overlay with stacked links, close button (X) in same position. Slide-in from right, 300ms ease-out.</p>
+      </div>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Specification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Hamburger Touch Target</td><td>44×44px minimum, 24px icon</td></tr>
+          <tr><td>Overlay Background</td><td><code>--patina-charcoal</code></td></tr>
+          <tr><td>Link Size</td><td>Playfair Display, 24px, centered</td></tr>
+          <tr><td>Link Spacing</td><td>24px vertical gap</td></tr>
+          <tr><td>Animation</td><td>300ms ease-out, translateX from 100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- 05: ANIMATION & MOTION -->
+  <!-- ======================= -->
+
+  <section id="animation" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">05</div>
+        <h2 class="section-title">Animation & Motion</h2>
+        <p class="section-desc">Transitions, hover states, and micro-interactions for warmth and responsiveness.</p>
+      </div>
+
+      <h3>Timing Functions</h3>
+      <div class="code-block">
+<pre><span class="comment">/* Standard easing curves */</span>
+<span class="property">--ease-default</span>: <span class="string">cubic-bezier(0.4, 0, 0.2, 1)</span>;
+<span class="property">--ease-in</span>: <span class="string">cubic-bezier(0.4, 0, 1, 1)</span>;
+<span class="property">--ease-out</span>: <span class="string">cubic-bezier(0, 0, 0.2, 1)</span>;
+<span class="property">--ease-spring</span>: <span class="string">cubic-bezier(0.175, 0.885, 0.32, 1.275)</span>;
+
+<span class="comment">/* Duration scale */</span>
+<span class="property">--duration-fast</span>: <span class="string">150ms</span>;
+<span class="property">--duration-normal</span>: <span class="string">300ms</span>;
+<span class="property">--duration-slow</span>: <span class="string">500ms</span>;</pre>
+      </div>
+
+      <h3>Interaction States</h3>
+
+      <div class="animation-demo">
+        <div class="animation-visual">
+          <div class="animation-box hover-lift"></div>
+        </div>
+        <div class="animation-info">
+          <div class="animation-name">Card Hover Lift</div>
+          <div class="animation-timing">transform 300ms ease-default, box-shadow 300ms ease</div>
+          <div class="animation-desc">Product cards, feature cards. Lifts 4px with enhanced shadow. Hover to preview.</div>
+        </div>
+      </div>
+
+      <div class="animation-demo">
+        <div class="animation-visual">
+          <div class="animation-box hover-scale"></div>
+        </div>
+        <div class="animation-info">
+          <div class="animation-name">Button Press</div>
+          <div class="animation-timing">transform 150ms ease-default</div>
+          <div class="animation-desc">Buttons, interactive elements. Scales to 0.97 on active/press. Hover to preview.</div>
+        </div>
+      </div>
+
+      <h4>State Transitions</h4>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Property</th><th>Duration</th><th>Easing</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Button</td><td>background-color, transform</td><td>200ms</td><td>ease-default</td></tr>
+          <tr><td>Link</td><td>color</td><td>200ms</td><td>ease</td></tr>
+          <tr><td>Card</td><td>transform, box-shadow</td><td>300ms</td><td>ease-default</td></tr>
+          <tr><td>Input Focus</td><td>border-color, box-shadow</td><td>200ms</td><td>ease</td></tr>
+          <tr><td>Modal</td><td>opacity, transform</td><td>300ms</td><td>ease-out</td></tr>
+          <tr><td>Mobile Menu</td><td>transform</td><td>300ms</td><td>ease-out</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Loading States</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Component</th><th>Loading Pattern</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Product Grid</td><td>Skeleton cards with shimmer animation</td></tr>
+          <tr><td>Images</td><td>Blur-up placeholder → full image fade</td></tr>
+          <tr><td>Buttons (submitting)</td><td>Spinner icon, maintain button width</td></tr>
+          <tr><td>Full Page</td><td>Centered Strata Mark with pulse animation</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Skeleton Shimmer</h4>
+      <div class="code-block">
+<pre><span class="keyword">@keyframes</span> shimmer {
+  <span class="property">0%</span> { background-position: <span class="string">-200% 0</span>; }
+  <span class="property">100%</span> { background-position: <span class="string">200% 0</span>; }
+}
+
+<span class="keyword">.skeleton</span> {
+  background: <span class="string">linear-gradient(
+    90deg,
+    var(--patina-soft-cream) 25%,
+    var(--patina-off-white) 50%,
+    var(--patina-soft-cream) 75%
+  )</span>;
+  background-size: <span class="string">200% 100%</span>;
+  animation: <span class="string">shimmer 1.5s infinite</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- 06: ACCESSIBILITY -->
+  <!-- ======================= -->
+
+  <section id="accessibility" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">06</div>
+        <h2 class="section-title">Accessibility</h2>
+        <p class="section-desc">WCAG 2.1 AA compliance requirements and implementation guidelines.</p>
+      </div>
+
+      <h3>Color Contrast</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Combination</th><th>Ratio</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Charcoal on Off-White</td><td>8.5:1</td><td>✓ AAA</td></tr>
+          <tr><td>Mocha Brown on Off-White</td><td>4.8:1</td><td>✓ AA</td></tr>
+          <tr><td>Clay Beige on Off-White</td><td>3.2:1</td><td>✓ Large text only</td></tr>
+          <tr><td>Off-White on Charcoal</td><td>8.5:1</td><td>✓ AAA</td></tr>
+          <tr><td>Clay Beige on Charcoal</td><td>4.1:1</td><td>✓ AA</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <p><strong>Note:</strong> Clay Beige should only be used for large text (18px+), icons, or decorative elements—never for small body text.</p>
+      </div>
+
+      <h3>Focus States</h3>
+      <div class="code-block">
+<pre><span class="comment">/* Focus ring for all interactive elements */</span>
+<span class="keyword">:focus-visible</span> {
+  outline: <span class="string">2px solid var(--patina-clay-beige)</span>;
+  outline-offset: <span class="string">2px</span>;
+}
+
+<span class="comment">/* Remove default outline when using mouse */</span>
+<span class="keyword">:focus:not(:focus-visible)</span> {
+  outline: <span class="string">none</span>;
+}</pre>
+      </div>
+
+      <h3>Keyboard Navigation</h3>
+      <ul class="checklist">
+        <li>All interactive elements reachable via Tab key</li>
+        <li>Logical focus order matches visual layout</li>
+        <li>Skip-to-content link as first focusable element</li>
+        <li>Escape key closes modals and dropdowns</li>
+        <li>Arrow keys navigate within menus and carousels</li>
+        <li>Enter/Space activate buttons and links</li>
+      </ul>
+
+      <h3>ARIA Requirements</h3>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Component</th><th>Required ARIA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Navigation</td><td><code>role="navigation"</code>, <code>aria-label="Main"</code></td></tr>
+          <tr><td>Mobile Menu</td><td><code>aria-expanded</code>, <code>aria-controls</code></td></tr>
+          <tr><td>Product Cards</td><td><code>role="article"</code>, descriptive <code>aria-label</code></td></tr>
+          <tr><td>Image Gallery</td><td><code>role="tablist"</code> for thumbnails</td></tr>
+          <tr><td>Form Inputs</td><td><code>aria-describedby</code> for error messages</td></tr>
+          <tr><td>Loading States</td><td><code>aria-busy="true"</code>, <code>aria-live="polite"</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Reduced Motion</h3>
+      <div class="code-block">
+<pre><span class="comment">/* Respect user preference for reduced motion */</span>
+<span class="keyword">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="keyword">*</span>,
+  <span class="keyword">*::before</span>,
+  <span class="keyword">*::after</span> {
+    animation-duration: <span class="string">0.01ms !important</span>;
+    animation-iteration-count: <span class="string">1 !important</span>;
+    transition-duration: <span class="string">0.01ms !important</span>;
+    scroll-behavior: <span class="string">auto !important</span>;
+  }
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- IMPLEMENTATION CHECKLIST -->
+  <!-- ======================= -->
+
+  <section class="section" style="background: var(--patina-soft-cream);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">✓</div>
+        <h2 class="section-title">Implementation Checklist</h2>
+        <p class="section-desc">Key items to verify before launch.</p>
+      </div>
+
+      <h3>Design System</h3>
+      <ul class="checklist">
+        <li>Design tokens exported as CSS custom properties</li>
+        <li>Tailwind config extended with Patina palette</li>
+        <li>Strata Mark component with all size variants</li>
+        <li>Button components with all states (hover, active, disabled, loading)</li>
+        <li>Product card component with hover animation</li>
+        <li>Navigation responsive with mobile hamburger menu</li>
+        <li>Footer responsive grid implemented</li>
+      </ul>
+
+      <h3>Pages</h3>
+      <ul class="checklist">
+        <li>Homepage with hero, product grid, CTAs</li>
+        <li>Furniture catalog with filters and sorting</li>
+        <li>Product detail page with gallery and maker story</li>
+        <li>Designer portal landing page</li>
+        <li>Design services with package cards</li>
+        <li>404 and error pages styled</li>
+      </ul>
+
+      <h3>Performance</h3>
+      <ul class="checklist">
+        <li>Images optimized and lazy loaded (next/image)</li>
+        <li>Fonts subset and preloaded</li>
+        <li>Core Web Vitals passing (LCP &lt; 2.5s, FID &lt; 100ms, CLS &lt; 0.1)</li>
+        <li>Lighthouse score &gt; 90 for all categories</li>
+      </ul>
+
+      <h3>Accessibility</h3>
+      <ul class="checklist">
+        <li>Keyboard navigation tested</li>
+        <li>Screen reader testing completed (VoiceOver, NVDA)</li>
+        <li>Color contrast verified</li>
+        <li>Focus states visible on all interactive elements</li>
+        <li>Reduced motion preference respected</li>
+        <li>Skip-to-content link implemented</li>
+      </ul>
+
+      <h3>Browser Testing</h3>
+      <ul class="checklist">
+        <li>Chrome (latest)</li>
+        <li>Firefox (latest)</li>
+        <li>Safari (latest)</li>
+        <li>Edge (latest)</li>
+        <li>iOS Safari</li>
+        <li>Android Chrome</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- FOOTER -->
+  <!-- ======================= -->
+
+  <footer class="doc-footer">
+    <div class="doc-footer-logo">
+      <div class="wordmark">PATINA</div>
+      <div class="doc-footer-strata">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <p class="doc-footer-text">Development Handoff Package v1.0 — December 2024</p>
+    <p class="doc-footer-text" style="margin-top: 0.5rem; opacity: 0.6;">Where Time Adds Value</p>
+  </footer>
+
+</body>
+</html>

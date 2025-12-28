@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina — Page Development Handoffs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+      
+      --code-bg: #1a1a2e;
+      --code-text: #eaeaea;
+      --code-comment: #6a9955;
+      --code-string: #ce9178;
+      --code-keyword: #569cd6;
+      --code-property: #9cdcfe;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: #FAFAFA;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+    }
+
+    /* Cover */
+    .cover {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 2rem;
+      background: var(--patina-charcoal);
+      text-align: center;
+      position: relative;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .cover-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-wordmark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-off-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .strata-medium {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .strata-medium span:nth-child(1) { width: 140px; height: 4px; background: var(--patina-clay-beige); border-radius: 2px; }
+    .strata-medium span:nth-child(2) { width: 112px; height: 3.4px; background: var(--patina-clay-beige); opacity: 0.7; border-radius: 1.7px; }
+    .strata-medium span:nth-child(3) { width: 84px; height: 2.8px; background: var(--patina-clay-beige); opacity: 0.4; border-radius: 1.4px; }
+
+    .cover h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover > p {
+      font-size: 1rem;
+      color: rgba(237, 233, 228, 0.7);
+      max-width: 480px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Page Nav */
+    .page-nav {
+      background: white;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .page-nav-inner {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .page-nav a {
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .page-nav a:hover {
+      background: var(--patina-soft-cream);
+      color: var(--patina-charcoal);
+    }
+
+    .page-nav a.active {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+    }
+
+    /* Page Section */
+    .page-section {
+      padding: 4rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.15);
+    }
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .page-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--patina-clay-beige);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-route {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-desc {
+      font-size: 0.9375rem;
+      color: var(--patina-mocha-brown);
+      max-width: 500px;
+    }
+
+    /* Section Block */
+    .section-block {
+      background: white;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .section-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      background: var(--patina-soft-cream);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .section-block-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+    }
+
+    .section-block-tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      background: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+    }
+
+    .section-block-body {
+      padding: 1.5rem;
+    }
+
+    /* Spec Grid */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .spec-item {
+      padding: 1rem;
+      background: var(--patina-soft-cream);
+      border-radius: 10px;
+    }
+
+    .spec-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.375rem;
+    }
+
+    .spec-value {
+      font-size: 0.875rem;
+      color: var(--patina-charcoal);
+    }
+
+    .spec-value code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      background: white;
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+    }
+
+    /* Layout Diagram */
+    .layout-diagram {
+      background: var(--patina-soft-cream);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .layout-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .layout-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .layout-box {
+      background: white;
+      border: 2px dashed var(--patina-clay-beige);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--patina-mocha-brown);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .layout-box.full { flex: 1; }
+    .layout-box.half { flex: 1; }
+    .layout-box.third { flex: 1; }
+    .layout-box.two-thirds { flex: 2; }
+
+    .layout-box.nav { min-height: 50px; background: var(--patina-warm-white); }
+    .layout-box.hero { min-height: 120px; background: rgba(163, 146, 124, 0.1); }
+    .layout-box.section { min-height: 80px; }
+    .layout-box.footer { min-height: 60px; background: var(--patina-charcoal); color: var(--patina-off-white); border-color: var(--patina-charcoal); }
+
+    /* Component List */
+    .component-list {
+      list-style: none;
+    }
+
+    .component-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.08);
+      font-size: 0.875rem;
+    }
+
+    .component-list li:last-child {
+      border-bottom: none;
+    }
+
+    .component-list li::before {
+      content: '→';
+      color: var(--patina-clay-beige);
+      font-weight: 600;
+    }
+
+    .component-list code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: var(--patina-soft-cream);
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      color: var(--patina-mocha-brown);
+    }
+
+    /* Code Block */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--code-text);
+      margin: 0;
+    }
+
+    .code-block .comment { color: var(--code-comment); }
+    .code-block .string { color: var(--code-string); }
+    .code-block .keyword { color: var(--code-keyword); }
+    .code-block .property { color: var(--code-property); }
+
+    .code-label {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Table */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.8125rem;
+    }
+
+    .spec-table th {
+      text-align: left;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      background: var(--patina-soft-cream);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .spec-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.08);
+      vertical-align: top;
+    }
+
+    .spec-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .spec-table code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: var(--patina-soft-cream);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--patina-soft-cream);
+      border-left: 3px solid var(--patina-clay-beige);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box p {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+      margin: 0;
+    }
+
+    .info-box strong {
+      color: var(--patina-charcoal);
+    }
+
+    /* Subsection */
+    h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin: 2rem 0 1rem;
+    }
+
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    p {
+      margin-bottom: 0.75rem;
+      font-size: 0.9375rem;
+    }
+
+    /* Interaction Badge */
+    .interaction-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.625rem;
+      border-radius: 100px;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .interaction-badge.hover {
+      background: #E8F4FD;
+      color: #1976D2;
+    }
+
+    .interaction-badge.click {
+      background: #E8F5E9;
+      color: #388E3C;
+    }
+
+    .interaction-badge.animation {
+      background: #FFF3E0;
+      color: #F57C00;
+    }
+
+    .interaction-badge.transition {
+      background: #F3E5F5;
+      color: #7B1FA2;
+    }
+
+    /* Footer */
+    .doc-footer {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .doc-footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .doc-footer-logo .wordmark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-off-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-footer-strata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .doc-footer-strata span:nth-child(1) { width: 100px; height: 3px; background: var(--patina-clay-beige); border-radius: 1.5px; }
+    .doc-footer-strata span:nth-child(2) { width: 80px; height: 2.55px; background: var(--patina-clay-beige); opacity: 0.7; border-radius: 1.275px; }
+    .doc-footer-strata span:nth-child(3) { width: 60px; height: 2.1px; background: var(--patina-clay-beige); opacity: 0.4; border-radius: 1.05px; }
+
+    .doc-footer-text {
+      font-size: 0.8125rem;
+      color: rgba(237, 233, 228, 0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .spec-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .layout-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <section class="cover">
+    <div class="cover-logo">
+      <div class="cover-wordmark">PATINA</div>
+      <div class="strata-medium">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <h1>Page Development Handoffs</h1>
+    <p>Detailed specifications for each page including layout, components, content, and interactions.</p>
+  </section>
+
+  <!-- Page Navigation -->
+  <nav class="page-nav">
+    <div class="container">
+      <div class="page-nav-inner">
+        <a href="#homepage" class="active">Homepage</a>
+        <a href="#catalog">Furniture Catalog</a>
+        <a href="#pdp">Product Detail</a>
+        <a href="#designer-portal">Designer Portal</a>
+        <a href="#design-services">Design Services</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======================= -->
+  <!-- HOMEPAGE -->
+  <!-- ======================= -->
+
+  <section id="homepage" class="page-section">
+    <div class="container">
+      <div class="page-header">
+        <div class="page-icon">🏠</div>
+        <div>
+          <h2 class="page-title">Homepage</h2>
+          <div class="page-route">Route: <code>/</code></div>
+          <p class="page-desc">Primary landing page showcasing Patina's value proposition, featured furniture, and pathways to AR experience.</p>
+        </div>
+      </div>
+
+      <!-- Layout Overview -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Page Layout</div>
+          <div class="section-block-tag">Structure</div>
+        </div>
+        <div class="section-block-body">
+          <div class="layout-diagram">
+            <div class="layout-row">
+              <div class="layout-box full nav">Navigation</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full hero">Hero Section (2-column grid)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Material Tags Strip</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Featured Products Grid (3-col)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Value Proposition / CTA</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full footer">Footer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Hero Section</div>
+          <div class="section-block-tag">Above Fold</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: 1fr 1.1fr</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-warm-white</code> with paper grain texture</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>6rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Min Height</div>
+              <div class="spec-value"><code>min-height: 85vh</code></div>
+            </div>
+          </div>
+
+          <h4>Left Column - Content</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Section Label</td><td>Inter 11px, weight 600, <code>letter-spacing: 0.15em</code>, uppercase, Clay Beige</td></tr>
+              <tr><td>Headline</td><td>Playfair Display 56px (3.5rem), weight 500, <code>line-height: 1.15</code>, Charcoal</td></tr>
+              <tr><td>Headline Italic</td><td>Wrap emphasis words in <code>&lt;em&gt;</code> with <code>font-style: italic</code></td></tr>
+              <tr><td>Subhead</td><td>Inter 18px, weight 400, <code>line-height: 1.7</code>, Mocha Brown, max-width 420px</td></tr>
+              <tr><td>CTA Group</td><td>Flex row, <code>gap: 1rem</code>, margin-top 2.5rem</td></tr>
+              <tr><td>Primary CTA</td><td>"Scan Your Room" — Primary Button style</td></tr>
+              <tr><td>Secondary CTA</td><td>"Browse Furniture" — Secondary Button style</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Right Column - Image</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Container</td><td><code>aspect-ratio: 4/5</code>, <code>border-radius: 24px</code>, overflow hidden</td></tr>
+              <tr><td>Image</td><td><code>object-fit: cover</code>, <code>width: 100%</code>, <code>height: 100%</code></td></tr>
+              <tr><td>Shadow</td><td><code>box-shadow: 0 32px 80px rgba(101, 91, 82, 0.15)</code></td></tr>
+              <tr><td>Content</td><td>Hero lifestyle image of furnished room with morning light</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Interactions</h4>
+          <p>
+            <span class="interaction-badge hover">Hover</span>
+            <span class="interaction-badge click">Click</span>
+          </p>
+          <ul class="component-list">
+            <li>Primary CTA: Hover background darkens to <code>--mocha-brown</code>, 200ms transition</li>
+            <li>Secondary CTA: Hover background fills with <code>--soft-cream</code></li>
+            <li>Hero image: Subtle scale on hover <code>scale(1.02)</code>, 600ms transition</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Material Tags -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Material Tags Strip</div>
+          <div class="section-block-tag">Interactive</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value">Horizontal scroll on mobile, centered flex on desktop</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-off-white</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>2rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>0.75rem</code></div>
+            </div>
+          </div>
+
+          <h4>Tag Pill Component</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Default</th><th>Hover</th><th>Active</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Background</td><td><code>transparent</code></td><td><code>--soft-cream</code></td><td><code>--charcoal</code></td></tr>
+              <tr><td>Border</td><td><code>1px solid rgba(163,146,124,0.3)</code></td><td><code>--clay-beige</code></td><td><code>--charcoal</code></td></tr>
+              <tr><td>Text Color</td><td><code>--mocha-brown</code></td><td><code>--charcoal</code></td><td><code>--off-white</code></td></tr>
+              <tr><td>Padding</td><td colspan="3"><code>0.5rem 1.25rem</code></td></tr>
+              <tr><td>Border Radius</td><td colspan="3"><code>100px</code></td></tr>
+              <tr><td>Font</td><td colspan="3">Inter 13px, weight 500</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Tag Content</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> materialTags = [
+  <span class="string">'Solid Oak'</span>,
+  <span class="string">'Reclaimed Wood'</span>,
+  <span class="string">'Natural Linen'</span>,
+  <span class="string">'Aged Leather'</span>,
+  <span class="string">'Vermont Made'</span>,
+  <span class="string">'Heritage Brands'</span>,
+];</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Products -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Featured Products Grid</div>
+          <div class="section-block-tag">Dynamic</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: repeat(3, 1fr)</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>2rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>5rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-warm-white</code></div>
+            </div>
+          </div>
+
+          <h4>Section Header</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Title</td><td>Playfair Display 32px, weight 500, centered</td></tr>
+              <tr><td>Subtitle</td><td>Inter 16px, Mocha Brown, centered, max-width 500px</td></tr>
+              <tr><td>Spacing</td><td><code>margin-bottom: 3rem</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>Data Requirements</h4>
+          <div class="code-block">
+<pre><span class="keyword">interface</span> FeaturedProduct {
+  id: <span class="keyword">string</span>;
+  name: <span class="keyword">string</span>;
+  maker: <span class="keyword">string</span>;
+  makerTagline: <span class="keyword">string</span>; <span class="comment">// e.g., "Hand-turned since 1892"</span>
+  price: <span class="keyword">number</span>;
+  imageUrl: <span class="keyword">string</span>;
+  arModelUrl?: <span class="keyword">string</span>;
+  badge?: <span class="keyword">string</span>; <span class="comment">// e.g., "Vermont Workshop"</span>
+}</pre>
+          </div>
+
+          <h4>Components Used</h4>
+          <ul class="component-list">
+            <li><code>&lt;ProductCard /&gt;</code> — See Component Library for full specs</li>
+            <li><code>&lt;Button variant="secondary" /&gt;</code> — "View All Furniture" link below grid</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Value Prop CTA -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Value Proposition CTA</div>
+          <div class="section-block-tag">Conversion</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-charcoal</code> with paper grain</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>5rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Text Align</div>
+              <div class="spec-value"><code>center</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Max Width</div>
+              <div class="spec-value"><code>600px</code> centered</div>
+            </div>
+          </div>
+
+          <h4>Content</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Headline</td><td>Playfair Display 40px, weight 500, Off-White</td></tr>
+              <tr><td>Body</td><td>Inter 17px, <code>rgba(237,233,228,0.75)</code>, line-height 1.7</td></tr>
+              <tr><td>CTA Button</td><td>Clay Beige background, Charcoal text (dark context variant)</td></tr>
+              <tr><td>CTA Text</td><td>"Get the App" or "Start Your Journey"</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Responsive -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Responsive Behavior</div>
+          <div class="section-block-tag">Breakpoints</div>
+        </div>
+        <div class="section-block-body">
+          <table class="spec-table">
+            <thead>
+              <tr><th>Breakpoint</th><th>Hero</th><th>Products</th><th>Tags</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Mobile</strong> (&lt;640px)</td>
+                <td>Single column, image above text</td>
+                <td>1 column grid</td>
+                <td>Horizontal scroll</td>
+              </tr>
+              <tr>
+                <td><strong>Tablet</strong> (640-1023px)</td>
+                <td>Single column, image above text</td>
+                <td>2 column grid</td>
+                <td>Centered, wrap</td>
+              </tr>
+              <tr>
+                <td><strong>Desktop</strong> (1024px+)</td>
+                <td>2 column grid</td>
+                <td>3 column grid</td>
+                <td>Centered row</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- FURNITURE CATALOG -->
+  <!-- ======================= -->
+
+  <section id="catalog" class="page-section">
+    <div class="container">
+      <div class="page-header">
+        <div class="page-icon">🪑</div>
+        <div>
+          <h2 class="page-title">Furniture Catalog</h2>
+          <div class="page-route">Route: <code>/furniture</code> and <code>/furniture/[category]</code></div>
+          <p class="page-desc">Browsable furniture collection with filtering, sorting, and maker-focused presentation.</p>
+        </div>
+      </div>
+
+      <!-- Layout Overview -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Page Layout</div>
+          <div class="section-block-tag">Structure</div>
+        </div>
+        <div class="section-block-body">
+          <div class="layout-diagram">
+            <div class="layout-row">
+              <div class="layout-box full nav">Navigation</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Page Header + Sort Controls</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Filter Chips (horizontal)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Product Grid (3-column)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Pagination / Load More</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full footer">Footer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Header -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Page Header</div>
+          <div class="section-block-tag">Top</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-warm-white</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>3rem 3rem 2rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value">Flex, space-between, align-end</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Border Bottom</div>
+              <div class="spec-value"><code>1px solid rgba(163,146,124,0.1)</code></div>
+            </div>
+          </div>
+
+          <h4>Elements</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Page Title</td><td>Playfair Display 40px, weight 500, Charcoal</td></tr>
+              <tr><td>Result Count</td><td>Inter 14px, Mocha Brown, below title</td></tr>
+              <tr><td>Sort Dropdown</td><td>Inter 14px, Clay Beige border, right-aligned</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Sort Options</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> sortOptions = [
+  { value: <span class="string">'featured'</span>, label: <span class="string">'Featured'</span> },
+  { value: <span class="string">'newest'</span>, label: <span class="string">'Newest'</span> },
+  { value: <span class="string">'price-low'</span>, label: <span class="string">'Price: Low to High'</span> },
+  { value: <span class="string">'price-high'</span>, label: <span class="string">'Price: High to Low'</span> },
+  { value: <span class="string">'maker'</span>, label: <span class="string">'By Maker'</span> },
+];</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Filter Chips</div>
+          <div class="section-block-tag">Interactive</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value">Flex row, <code>gap: 0.5rem</code>, wrap on mobile</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>1.5rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-off-white</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Sticky</div>
+              <div class="spec-value"><code>position: sticky; top: 60px</code></div>
+            </div>
+          </div>
+
+          <h4>Filter Categories</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> filterChips = [
+  { id: <span class="string">'all'</span>, label: <span class="string">'All Pieces'</span>, count: 124 },
+  { id: <span class="string">'living'</span>, label: <span class="string">'Living Room'</span>, count: 45 },
+  { id: <span class="string">'bedroom'</span>, label: <span class="string">'Bedroom'</span>, count: 32 },
+  { id: <span class="string">'dining'</span>, label: <span class="string">'Dining'</span>, count: 28 },
+  { id: <span class="string">'office'</span>, label: <span class="string">'Office'</span>, count: 19 },
+  { id: <span class="string">'vermont'</span>, label: <span class="string">'Vermont Makers'</span>, featured: <span class="keyword">true</span> },
+  { id: <span class="string">'reclaimed'</span>, label: <span class="string">'Reclaimed Wood'</span>, featured: <span class="keyword">true</span> },
+];</pre>
+          </div>
+
+          <h4>Chip States</h4>
+          <p>Same styling as Material Tags on Homepage. Active state has Charcoal background, Off-White text.</p>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Product Grid</div>
+          <div class="section-block-tag">Main Content</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: repeat(3, 1fr)</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>2rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>2rem 3rem 4rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-warm-white</code></div>
+            </div>
+          </div>
+
+          <h4>Product Card Requirements</h4>
+          <ul class="component-list">
+            <li>Image: 1:1 aspect ratio, <code>object-fit: cover</code></li>
+            <li>Badge: Maker location badge (top-left), <code>&lt;MakerBadge /&gt;</code></li>
+            <li>AR Button: Bottom-right overlay, links to AR view</li>
+            <li>Title: Playfair Display 16px, Charcoal</li>
+            <li>Maker tagline: 13px italic, Clay Beige</li>
+            <li>Price: 15px weight 600, Mocha Brown</li>
+            <li>Save button: Heart icon, toggle state</li>
+          </ul>
+
+          <h4>Loading State</h4>
+          <p>Show 6 skeleton cards with shimmer animation while data loads.</p>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Pagination</div>
+          <div class="section-block-tag">Navigation</div>
+        </div>
+        <div class="section-block-body">
+          <div class="info-box">
+            <p><strong>Recommendation:</strong> Use "Load More" button for mobile, traditional pagination for desktop. Implement infinite scroll as optional enhancement.</p>
+          </div>
+
+          <h4>Load More Button</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Style</td><td>Secondary Button variant</td></tr>
+              <tr><td>Text</td><td>"Load More Furniture"</td></tr>
+              <tr><td>Loading Text</td><td>"Loading..." with spinner</td></tr>
+              <tr><td>Position</td><td>Centered, <code>margin: 2rem auto</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- PRODUCT DETAIL -->
+  <!-- ======================= -->
+
+  <section id="pdp" class="page-section">
+    <div class="container">
+      <div class="page-header">
+        <div class="page-icon">📦</div>
+        <div>
+          <h2 class="page-title">Product Detail Page</h2>
+          <div class="page-route">Route: <code>/furniture/[slug]</code></div>
+          <p class="page-desc">Comprehensive product view with gallery, specifications, maker story, and AR preview integration.</p>
+        </div>
+      </div>
+
+      <!-- Layout Overview -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Page Layout</div>
+          <div class="section-block-tag">Structure</div>
+        </div>
+        <div class="section-block-body">
+          <div class="layout-diagram">
+            <div class="layout-row">
+              <div class="layout-box full nav">Navigation</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box half hero">Image Gallery</div>
+              <div class="layout-box half hero">Product Info</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Maker Story Section</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Related Products</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full footer">Footer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Main Content Grid</div>
+          <div class="section-block-tag">2-Column</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: 1.2fr 1fr</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>4rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-warm-white</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Gallery -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Image Gallery (Left Column)</div>
+          <div class="section-block-tag">Media</div>
+        </div>
+        <div class="section-block-body">
+          <h4>Main Image</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Aspect Ratio</td><td><code>1:1</code></td></tr>
+              <tr><td>Border Radius</td><td><code>16px</code></td></tr>
+              <tr><td>Background</td><td><code>--soft-cream</code> (placeholder)</td></tr>
+              <tr><td>Shadow</td><td><code>0 8px 32px rgba(101,91,82,0.08)</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>AR Preview Button</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Position</td><td>Absolute, bottom-right, <code>1.5rem</code> offset</td></tr>
+              <tr><td>Background</td><td><code>rgba(255,255,255,0.95)</code> with <code>backdrop-filter: blur(8px)</code></td></tr>
+              <tr><td>Padding</td><td><code>0.75rem 1.25rem</code></td></tr>
+              <tr><td>Border Radius</td><td><code>10px</code></td></tr>
+              <tr><td>Content</td><td>AR icon + "View in Your Room"</td></tr>
+              <tr><td>Font</td><td>Inter 14px, weight 500</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Thumbnail Strip</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Layout</td><td>Flex row, <code>gap: 0.75rem</code>, margin-top 1rem</td></tr>
+              <tr><td>Thumbnail Size</td><td><code>80px × 80px</code></td></tr>
+              <tr><td>Border Radius</td><td><code>8px</code></td></tr>
+              <tr><td>Default Border</td><td><code>2px solid transparent</code></td></tr>
+              <tr><td>Active Border</td><td><code>2px solid --clay-beige</code></td></tr>
+              <tr><td>Hover</td><td><code>opacity: 0.8</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>Interactions</h4>
+          <p>
+            <span class="interaction-badge click">Click</span>
+            <span class="interaction-badge transition">Transition</span>
+          </p>
+          <ul class="component-list">
+            <li>Click thumbnail → main image fades to new image (300ms)</li>
+            <li>Click AR button → Opens AR modal or redirects to app</li>
+            <li>Click main image → Opens lightbox gallery</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Product Info (Right Column)</div>
+          <div class="section-block-tag">Content</div>
+        </div>
+        <div class="section-block-body">
+          <h4>Content Hierarchy</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Breadcrumb</td><td>Inter 13px, Clay Beige, <code>Home / Furniture / Living Room</code></td></tr>
+              <tr><td>Product Title</td><td>Playfair Display 32px (2rem), weight 500, Charcoal</td></tr>
+              <tr><td>Maker Link</td><td>Inter 15px, italic, Clay Beige, underline on hover</td></tr>
+              <tr><td>Price</td><td>Inter 28px (1.75rem), weight 600, Mocha Brown</td></tr>
+              <tr><td>Description</td><td>Inter 15px, line-height 1.7, Mocha Brown, max-width 480px</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Specifications Card</h4>
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-soft-cream</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Border Radius</div>
+              <div class="spec-value"><code>12px</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>1.5rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: repeat(2, 1fr)</code></div>
+            </div>
+          </div>
+
+          <h4>Spec Fields</h4>
+          <div class="code-block">
+<pre><span class="keyword">interface</span> ProductSpecs {
+  dimensions: <span class="keyword">string</span>;  <span class="comment">// "32"W × 34"D × 30"H"</span>
+  material: <span class="keyword">string</span>;    <span class="comment">// "Solid White Oak"</span>
+  weight: <span class="keyword">string</span>;      <span class="comment">// "45 lbs"</span>
+  finish: <span class="keyword">string</span>;      <span class="comment">// "Natural Oil"</span>
+}</pre>
+          </div>
+
+          <h4>Action Buttons</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Button</th><th>Style</th><th>Behavior</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Add to Cart</td><td>Primary Button, full width</td><td>Adds to cart, shows confirmation toast</td></tr>
+              <tr><td>Save</td><td>Icon button (heart), 48×48px</td><td>Toggles wishlist state</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Maker Story -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Maker Story Section</div>
+          <div class="section-block-tag">Provenance</div>
+        </div>
+        <div class="section-block-body">
+          <div class="info-box">
+            <p><strong>Purpose:</strong> This section differentiates Patina by showcasing the provenance and craftsmanship behind each piece. Always include maker story when available.</p>
+          </div>
+
+          <h4>Layout</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Position</td><td>Within right column, after action buttons</td></tr>
+              <tr><td>Border Top</td><td><code>1px solid rgba(163,146,124,0.15)</code></td></tr>
+              <tr><td>Padding Top</td><td><code>1.5rem</code></td></tr>
+              <tr><td>Margin Top</td><td><code>1.5rem</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>Content Structure</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Avatar</td><td>48×48px, border-radius 50%, maker photo</td></tr>
+              <tr><td>Maker Name</td><td>Inter 15px, weight 600, Charcoal</td></tr>
+              <tr><td>Location</td><td>Inter 13px, Clay Beige</td></tr>
+              <tr><td>Quote</td><td>Inter 14px, italic, Mocha Brown, <code>line-height: 1.6</code></td></tr>
+              <tr><td>Link</td><td>"Learn more about [Maker]" — Clay Beige, underline on hover</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Data Model</h4>
+          <div class="code-block">
+<pre><span class="keyword">interface</span> Maker {
+  id: <span class="keyword">string</span>;
+  name: <span class="keyword">string</span>;
+  location: <span class="keyword">string</span>;
+  avatarUrl: <span class="keyword">string</span>;
+  quote: <span class="keyword">string</span>;
+  slug: <span class="keyword">string</span>;
+}
+
+<span class="comment">// Example</span>
+<span class="keyword">const</span> maker = {
+  name: <span class="string">"Thomas Craftworks"</span>,
+  location: <span class="string">"Burlington, Vermont"</span>,
+  quote: <span class="string">"Every piece of wood tells a story. Our job is to let it speak."</span>,
+};</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Related Products</div>
+          <div class="section-block-tag">Cross-sell</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value">Full-width section, 4-column grid</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>4rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-off-white</code></td>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Title</div>
+              <div class="spec-value">"Pairs Well With" or "From the Same Maker"</div>
+            </div>
+          </div>
+
+          <h4>Product Selection Logic</h4>
+          <ul class="component-list">
+            <li>Priority 1: Products from the same maker</li>
+            <li>Priority 2: Products in same category with similar style</li>
+            <li>Priority 3: Products commonly purchased together</li>
+            <li>Limit: 4 products</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- DESIGNER PORTAL -->
+  <!-- ======================= -->
+
+  <section id="designer-portal" class="page-section">
+    <div class="container">
+      <div class="page-header">
+        <div class="page-icon">✨</div>
+        <div>
+          <h2 class="page-title">Designer Portal</h2>
+          <div class="page-route">Route: <code>/designers</code></div>
+          <p class="page-desc">Landing page for professional designers to learn about partnership benefits and apply to join.</p>
+        </div>
+      </div>
+
+      <!-- Layout Overview -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Page Layout</div>
+          <div class="section-block-tag">Structure</div>
+        </div>
+        <div class="section-block-body">
+          <div class="layout-diagram">
+            <div class="layout-row">
+              <div class="layout-box full nav" style="background: var(--patina-charcoal); color: var(--patina-off-white);">Navigation (Dark)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full hero" style="background: var(--patina-charcoal); color: var(--patina-off-white);">Hero (Dark, 2-column)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Benefits Grid</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Testimonials</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Application CTA</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full footer">Footer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Hero Section</div>
+          <div class="section-block-tag">Dark Theme</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value">Gradient: <code>#3F3B37 → #4A4540</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Texture</div>
+              <div class="spec-value">Paper grain SVG at 4% opacity</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: 1fr 1fr</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>6rem 3rem</code></div>
+            </div>
+          </div>
+
+          <h4>Left Column Content</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Section Label</td><td>"FOR DESIGN PROFESSIONALS" — 11px, uppercase, Clay Beige</td></tr>
+              <tr><td>Headline</td><td>Playfair Display 48px, Off-White, italic on "quality that lasts"</td></tr>
+              <tr><td>Body</td><td>Inter 17px, <code>rgba(237,233,228,0.75)</code>, max-width 450px</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Benefit Items (3 items)</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Layout</td><td>Vertical stack, <code>gap: 1.25rem</code></td></tr>
+              <tr><td>Icon</td><td>24×24px, Clay Beige color</td></tr>
+              <tr><td>Title</td><td>Inter 16px, weight 600, Off-White</td></tr>
+              <tr><td>Description</td><td>Inter 14px, <code>rgba(237,233,228,0.65)</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>CTA Group</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Button</th><th>Style</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>"Apply to Join"</td><td>Clay Beige background, Charcoal text</td></tr>
+              <tr><td>"Learn More"</td><td>Outlined, Off-White border, Off-White text</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Right Column - Image</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Aspect Ratio</td><td><code>4:3</code></td></tr>
+              <tr><td>Border Radius</td><td><code>20px</code></td></tr>
+              <tr><td>Shadow</td><td><code>0 32px 80px rgba(0,0,0,0.3)</code></td></tr>
+              <tr><td>Content</td><td>Designer working with client / portfolio image</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Floating Stat Cards</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Position</td><td>Absolute, overlapping bottom-right of image</td></tr>
+              <tr><td>Background</td><td>White</td></tr>
+              <tr><td>Border Radius</td><td><code>12px</code></td></tr>
+              <tr><td>Shadow</td><td><code>0 8px 32px rgba(0,0,0,0.15)</code></td></tr>
+              <tr><td>Stat Value</td><td>Playfair Display 24px, weight 600, Charcoal</td></tr>
+              <tr><td>Stat Label</td><td>Inter 12px, Mocha Brown</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Stats Content</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> stats = [
+  { value: <span class="string">'500+'</span>, label: <span class="string">'Active Designers'</span> },
+  { value: <span class="string">'$8.2K'</span>, label: <span class="string">'Avg Project Value'</span> },
+];</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benefits Grid -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Benefits Grid</div>
+          <div class="section-block-tag">Features</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: repeat(3, 1fr)</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>2rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>5rem 3rem</code></td>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-off-white</code></div>
+            </div>
+          </div>
+
+          <h4>Benefit Card</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Background</td><td>White</td></tr>
+              <tr><td>Padding</td><td><code>2rem</code></td></tr>
+              <tr><td>Border Radius</td><td><code>16px</code></td></tr>
+              <tr><td>Shadow</td><td><code>0 2px 8px rgba(101,91,82,0.06)</code></td></tr>
+              <tr><td>Icon</td><td>48×48px container, Clay Beige/Soft Cream bg, 24px icon</td></tr>
+              <tr><td>Title</td><td>Playfair Display 20px, weight 500</td></tr>
+              <tr><td>Description</td><td>Inter 14px, Mocha Brown, line-height 1.6</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Benefit Items</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> benefits = [
+  {
+    icon: <span class="string">'users'</span>,
+    title: <span class="string">'Pre-Qualified Leads'</span>,
+    description: <span class="string">'Receive clients with room scans, style preferences, and budgets already defined.'</span>,
+  },
+  {
+    icon: <span class="string">'percent'</span>,
+    title: <span class="string">'Trade Pricing'</span>,
+    description: <span class="string">'Access exclusive wholesale pricing and commissions on every purchase.'</span>,
+  },
+  {
+    icon: <span class="string">'cube'</span>,
+    title: <span class="string">'AR Visualization'</span>,
+    description: <span class="string">'Show clients furniture in their actual space before they commit.'</span>,
+  },
+  <span class="comment">// ... more benefits</span>
+];</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- DESIGN SERVICES -->
+  <!-- ======================= -->
+
+  <section id="design-services" class="page-section">
+    <div class="container">
+      <div class="page-header">
+        <div class="page-icon">🎨</div>
+        <div>
+          <h2 class="page-title">Design Services</h2>
+          <div class="page-route">Route: <code>/services</code></div>
+          <p class="page-desc">Middle West Studio consultation packages and design services for consumers.</p>
+        </div>
+      </div>
+
+      <!-- Layout Overview -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Page Layout</div>
+          <div class="section-block-tag">Structure</div>
+        </div>
+        <div class="section-block-body">
+          <div class="layout-diagram">
+            <div class="layout-row">
+              <div class="layout-box full nav">Navigation</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full hero">Hero (Centered)</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box third section">Package 1</div>
+              <div class="layout-box third section" style="border: 2px solid var(--patina-clay-beige);">Package 2 (Featured)</div>
+              <div class="layout-box third section">Package 3</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full section">Process Steps</div>
+            </div>
+            <div class="layout-row">
+              <div class="layout-box full footer">Footer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Hero Section</div>
+          <div class="section-block-tag">Intro</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value">Gradient: <code>--warm-white → --off-white</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Text Align</div>
+              <div class="spec-value"><code>center</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>5rem 3rem 4rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Max Width</div>
+              <div class="spec-value"><code>600px</code> centered</div>
+            </div>
+          </div>
+
+          <h4>Content</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Headline</td><td>"Work with <em>a designer</em>" — Playfair 48px, italic on "a designer"</td></tr>
+              <tr><td>Subhead</td><td>Inter 18px, Mocha Brown, line-height 1.7</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Package Cards -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Package Cards</div>
+          <div class="section-block-tag">Pricing</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: repeat(3, 1fr)</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>2rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>0 3rem 5rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-soft-cream</code></div>
+            </div>
+          </div>
+
+          <h4>Standard Package Card</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Background</td><td>White</td></tr>
+              <tr><td>Border Radius</td><td><code>16px</code></td></tr>
+              <tr><td>Padding</td><td><code>2.5rem 2rem</code></td></tr>
+              <tr><td>Shadow</td><td><code>0 2px 8px rgba(101,91,82,0.06)</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>Featured Package Card (Middle)</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Border</td><td><code>2px solid --clay-beige</code></td></tr>
+              <tr><td>Shadow</td><td><code>0 12px 32px rgba(101,91,82,0.12)</code></td></tr>
+              <tr><td>Transform</td><td><code>scale(1.02)</code> — slightly larger</td></tr>
+              <tr><td>Ribbon</td><td>"Most Popular" — rotated 45°, top-right corner</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Ribbon Specs</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Background</td><td><code>--clay-beige</code></td></tr>
+              <tr><td>Text</td><td>Inter 10px, weight 600, uppercase, Off-White</td></tr>
+              <tr><td>Position</td><td>Absolute, <code>top: 1.5rem; right: -2rem</code></td></tr>
+              <tr><td>Transform</td><td><code>rotate(45deg)</code></td></tr>
+              <tr><td>Padding</td><td><code>0.375rem 3rem</code></td></tr>
+            </tbody>
+          </table>
+
+          <h4>Card Content Structure</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Package Name</td><td>Playfair Display 24px, weight 500, Charcoal</td></tr>
+              <tr><td>Price</td><td>Inter 32px, weight 600, Mocha Brown</td></tr>
+              <tr><td>Price Note</td><td>Inter 13px, Clay Beige (e.g., "/90 min" or "/room")</td></tr>
+              <tr><td>Features List</td><td>Inter 14px, <code>line-height: 2</code>, check icon prefix</td></tr>
+              <tr><td>CTA Button</td><td>Full width, Primary style for featured, Secondary for others</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Packages Data</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> packages = [
+  {
+    name: <span class="string">'Virtual Consultation'</span>,
+    price: <span class="string">'$195'</span>,
+    priceNote: <span class="string">'/90 min'</span>,
+    features: [
+      <span class="string">'90-minute video consultation'</span>,
+      <span class="string">'Room scan review'</span>,
+      <span class="string">'Style direction'</span>,
+      <span class="string">'Curated product list'</span>,
+    ],
+    cta: <span class="string">'Book Now'</span>,
+    featured: <span class="keyword">false</span>,
+  },
+  {
+    name: <span class="string">'Room Design'</span>,
+    price: <span class="string">'$1,500'</span>,
+    priceNote: <span class="string">'/room'</span>,
+    features: [
+      <span class="string">'Everything in Virtual'</span>,
+      <span class="string">'Custom floor plan'</span>,
+      <span class="string">'3D renderings'</span>,
+      <span class="string">'Shopping list with trade pricing'</span>,
+      <span class="string">'2 revision rounds'</span>,
+    ],
+    cta: <span class="string">'Get Started'</span>,
+    featured: <span class="keyword">true</span>,
+    ribbon: <span class="string">'Most Popular'</span>,
+  },
+  {
+    name: <span class="string">'Full Service'</span>,
+    price: <span class="string">'Custom'</span>,
+    priceNote: <span class="string">'pricing'</span>,
+    features: [
+      <span class="string">'Everything in Room Design'</span>,
+      <span class="string">'Multi-room coordination'</span>,
+      <span class="string">'Procurement assistance'</span>,
+      <span class="string">'Installation oversight'</span>,
+      <span class="string">'Dedicated project manager'</span>,
+    ],
+    cta: <span class="string">'Contact Us'</span>,
+    featured: <span class="keyword">false</span>,
+  },
+];</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Process Steps -->
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">Process Steps</div>
+          <div class="section-block-tag">Timeline</div>
+        </div>
+        <div class="section-block-body">
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-label">Layout</div>
+              <div class="spec-value"><code>grid-template-columns: repeat(4, 1fr)</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Gap</div>
+              <div class="spec-value"><code>2rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Padding</div>
+              <div class="spec-value"><code>5rem 3rem</code></div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Background</div>
+              <div class="spec-value"><code>--patina-warm-white</code></div>
+            </div>
+          </div>
+
+          <h4>Step Item</h4>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Specification</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Number Circle</td><td>48×48px, Charcoal bg, Off-White text, Inter 18px weight 600</td></tr>
+              <tr><td>Connector Line</td><td>Gradient <code>--clay-beige → transparent</code>, 2px height</td></tr>
+              <tr><td>Step Title</td><td>Playfair Display 18px, weight 500, Charcoal</td></tr>
+              <tr><td>Step Desc</td><td>Inter 14px, Mocha Brown</td></tr>
+            </tbody>
+          </table>
+
+          <h4>Steps Content</h4>
+          <div class="code-block">
+<pre><span class="keyword">const</span> steps = [
+  { number: 1, title: <span class="string">'Scan Your Room'</span>, desc: <span class="string">'Use our app to capture your space in 3D'</span> },
+  { number: 2, title: <span class="string">'Share Your Style'</span>, desc: <span class="string">'Complete the style quiz and set your budget'</span> },
+  { number: 3, title: <span class="string">'Meet Your Designer'</span>, desc: <span class="string">'Connect with a matched professional'</span> },
+  { number: 4, title: <span class="string">'Bring It Home'</span>, desc: <span class="string">'Receive your personalized design plan'</span> },
+];</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="doc-footer">
+    <div class="doc-footer-logo">
+      <div class="wordmark">PATINA</div>
+      <div class="doc-footer-strata">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <p class="doc-footer-text">Page Development Handoffs v1.0 — December 2024</p>
+  </footer>
+
+</body>
+</html>

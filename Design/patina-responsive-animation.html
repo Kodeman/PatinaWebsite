@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina — Responsive & Animation Specifications</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+      
+      --code-bg: #1a1a2e;
+      --code-text: #eaeaea;
+      --code-comment: #6a9955;
+      --code-string: #ce9178;
+      --code-keyword: #569cd6;
+      --code-property: #9cdcfe;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: #FAFAFA;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+    }
+
+    /* Cover */
+    .cover {
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, var(--patina-charcoal) 0%, #4a4540 100%);
+      text-align: center;
+      position: relative;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .cover-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-wordmark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-off-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .strata-compact {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .strata-compact span:nth-child(1) { width: 60px; height: 2.5px; background: var(--patina-clay-beige); border-radius: 1.25px; }
+    .strata-compact span:nth-child(2) { width: 48px; height: 2.1px; background: var(--patina-clay-beige); opacity: 0.7; border-radius: 1.05px; }
+    .strata-compact span:nth-child(3) { width: 36px; height: 1.75px; background: var(--patina-clay-beige); opacity: 0.4; border-radius: 0.875px; }
+
+    .cover h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover > p {
+      font-size: 0.9375rem;
+      color: rgba(237, 233, 228, 0.7);
+      max-width: 450px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Section */
+    .section {
+      padding: 4rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.15);
+    }
+
+    .section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.875rem;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.375rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.9375rem;
+      color: var(--patina-mocha-brown);
+      max-width: 550px;
+    }
+
+    h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    h3:first-of-type {
+      margin-top: 0;
+    }
+
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      margin-bottom: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 0.75rem;
+      font-size: 0.9375rem;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--code-text);
+      margin: 0;
+    }
+
+    .code-block .comment { color: var(--code-comment); }
+    .code-block .string { color: var(--code-string); }
+    .code-block .keyword { color: var(--code-keyword); }
+    .code-block .property { color: var(--code-property); }
+
+    .code-label {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Table */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.8125rem;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .spec-table th {
+      text-align: left;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      background: var(--patina-soft-cream);
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .spec-table td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.08);
+      vertical-align: top;
+    }
+
+    .spec-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .spec-table code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: var(--patina-soft-cream);
+      padding: 0.125rem 0.375rem;
+      border-radius: 4px;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--patina-soft-cream);
+      border-left: 3px solid var(--patina-clay-beige);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box p {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+      margin: 0;
+    }
+
+    .info-box strong {
+      color: var(--patina-charcoal);
+    }
+
+    /* Breakpoint Visual */
+    .breakpoint-visual {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+    }
+
+    .bp-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .bp-bar-visual {
+      background: var(--patina-clay-beige);
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 0.5rem;
+    }
+
+    .bp-bar-label {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+    }
+
+    .bp-bar-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      color: var(--patina-charcoal);
+    }
+
+    /* Device Frame */
+    .device-frames {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      align-items: flex-end;
+      margin: 2rem 0;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+    }
+
+    .device-frame {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .device-screen {
+      background: var(--patina-soft-cream);
+      border: 2px solid var(--patina-clay-beige);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .device-screen-nav {
+      height: 20px;
+      background: var(--patina-warm-white);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.2);
+    }
+
+    .device-screen-content {
+      flex: 1;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .device-screen-block {
+      background: var(--patina-clay-beige);
+      border-radius: 2px;
+      opacity: 0.4;
+    }
+
+    .device-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--patina-mocha-brown);
+      text-align: center;
+    }
+
+    .device-size {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      color: var(--patina-clay-beige);
+    }
+
+    /* Animation Demo */
+    .animation-demos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .animation-demo {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .animation-demo-preview {
+      padding: 2rem;
+      background: var(--patina-soft-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
+
+    .animation-demo-info {
+      padding: 1.25rem;
+    }
+
+    .animation-demo-name {
+      font-weight: 600;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .animation-demo-timing {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+
+    .animation-demo-desc {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+    }
+
+    /* Demo Box */
+    .demo-box {
+      width: 60px;
+      height: 60px;
+      background: var(--patina-clay-beige);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .demo-box.hover-lift {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    }
+
+    .demo-box.hover-lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(163, 146, 124, 0.3);
+    }
+
+    .demo-box.hover-scale {
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .demo-box.hover-scale:active {
+      transform: scale(0.95);
+    }
+
+    .demo-box.hover-glow {
+      transition: box-shadow 0.3s ease;
+    }
+
+    .demo-box.hover-glow:hover {
+      box-shadow: 0 0 0 4px rgba(163, 146, 124, 0.3);
+    }
+
+    .demo-box.shimmer {
+      background: linear-gradient(90deg, var(--patina-soft-cream) 25%, var(--patina-off-white) 50%, var(--patina-soft-cream) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .demo-box.pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.98); }
+    }
+
+    .demo-box.fade-in {
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .demo-box.slide-up {
+      animation: slideUp 0.5s ease-out forwards;
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Easing Curve Visual */
+    .easing-curves {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .easing-curve {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .easing-curve-visual {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem;
+      position: relative;
+    }
+
+    .easing-curve-visual svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .easing-curve-name {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .easing-curve-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      color: var(--patina-clay-beige);
+    }
+
+    /* Timing Visual */
+    .timing-visual {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+    }
+
+    .timing-bar {
+      height: 8px;
+      background: var(--patina-clay-beige);
+      border-radius: 4px;
+    }
+
+    .timing-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--patina-mocha-brown);
+      white-space: nowrap;
+    }
+
+    .timing-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      color: var(--patina-clay-beige);
+    }
+
+    /* Grid Visual */
+    .grid-visual {
+      margin: 1.5rem 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .grid-visual-header {
+      padding: 1rem 1.25rem;
+      background: var(--patina-soft-cream);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--patina-mocha-brown);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .grid-visual-body {
+      padding: 1.5rem;
+    }
+
+    .grid-preview {
+      display: grid;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--patina-soft-cream);
+      border-radius: 8px;
+    }
+
+    .grid-preview-item {
+      background: var(--patina-clay-beige);
+      border-radius: 4px;
+      height: 60px;
+      opacity: 0.6;
+    }
+
+    /* Footer */
+    .doc-footer {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .doc-footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .doc-footer-logo .wordmark {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-off-white);
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-footer-strata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .doc-footer-strata span:nth-child(1) { width: 80px; height: 2.5px; background: var(--patina-clay-beige); border-radius: 1.25px; }
+    .doc-footer-strata span:nth-child(2) { width: 64px; height: 2.1px; background: var(--patina-clay-beige); opacity: 0.7; border-radius: 1.05px; }
+    .doc-footer-strata span:nth-child(3) { width: 48px; height: 1.75px; background: var(--patina-clay-beige); opacity: 0.4; border-radius: 0.875px; }
+
+    .doc-footer-text {
+      font-size: 0.8125rem;
+      color: rgba(237, 233, 228, 0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .animation-demos,
+      .easing-curves {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .animation-demos,
+      .easing-curves {
+        grid-template-columns: 1fr;
+      }
+
+      .device-frames {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <section class="cover">
+    <div class="cover-logo">
+      <div class="cover-wordmark">PATINA</div>
+      <div class="strata-compact">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <h1>Responsive & Animation Specs</h1>
+    <p>Breakpoints, grid adaptations, motion design, and interaction specifications for all devices.</p>
+  </section>
+
+  <!-- ======================= -->
+  <!-- RESPONSIVE DESIGN -->
+  <!-- ======================= -->
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">01</div>
+        <h2 class="section-title">Responsive Breakpoints</h2>
+        <p class="section-desc">Mobile-first approach with five strategic breakpoints covering all device sizes.</p>
+      </div>
+
+      <h3>Breakpoint Scale</h3>
+
+      <div class="breakpoint-visual">
+        <div class="bp-bar">
+          <div class="bp-bar-visual" style="width: 40px; height: 80px;"></div>
+          <div class="bp-bar-label">Mobile</div>
+          <div class="bp-bar-value">0px</div>
+        </div>
+        <div class="bp-bar">
+          <div class="bp-bar-visual" style="width: 60px; height: 100px;"></div>
+          <div class="bp-bar-label">Tablet</div>
+          <div class="bp-bar-value">640px</div>
+        </div>
+        <div class="bp-bar">
+          <div class="bp-bar-visual" style="width: 90px; height: 120px;"></div>
+          <div class="bp-bar-label">Desktop</div>
+          <div class="bp-bar-value">1024px</div>
+        </div>
+        <div class="bp-bar">
+          <div class="bp-bar-visual" style="width: 110px; height: 130px;"></div>
+          <div class="bp-bar-label">Wide</div>
+          <div class="bp-bar-value">1280px</div>
+        </div>
+        <div class="bp-bar">
+          <div class="bp-bar-visual" style="width: 130px; height: 140px;"></div>
+          <div class="bp-bar-label">Ultra</div>
+          <div class="bp-bar-value">1536px</div>
+        </div>
+      </div>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Breakpoint</th><th>Min Width</th><th>Container</th><th>Tailwind</th><th>Columns</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mobile</strong></td>
+            <td><code>0px</code></td>
+            <td><code>100%</code> (padding: 1rem)</td>
+            <td>Default</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td><strong>Tablet</strong></td>
+            <td><code>640px</code></td>
+            <td><code>640px</code> max</td>
+            <td><code>sm:</code></td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td><strong>Desktop</strong></td>
+            <td><code>1024px</code></td>
+            <td><code>1100px</code> max</td>
+            <td><code>lg:</code></td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td><strong>Wide</strong></td>
+            <td><code>1280px</code></td>
+            <td><code>1200px</code> max</td>
+            <td><code>xl:</code></td>
+            <td>3-4</td>
+          </tr>
+          <tr>
+            <td><strong>Ultra Wide</strong></td>
+            <td><code>1536px</code></td>
+            <td><code>1400px</code> max</td>
+            <td><code>2xl:</code></td>
+            <td>4</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>CSS Media Queries</h4>
+      <div class="code-block">
+<pre><span class="comment">/* Mobile First - Base styles apply to 0px+ */</span>
+
+<span class="comment">/* Tablet and up */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">640px</span>) {
+  <span class="comment">/* sm: styles */</span>
+}
+
+<span class="comment">/* Desktop and up */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">1024px</span>) {
+  <span class="comment">/* lg: styles */</span>
+}
+
+<span class="comment">/* Wide screens */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">1280px</span>) {
+  <span class="comment">/* xl: styles */</span>
+}
+
+<span class="comment">/* Ultra wide */</span>
+<span class="keyword">@media</span> (min-width: <span class="string">1536px</span>) {
+  <span class="comment">/* 2xl: styles */</span>
+}</pre>
+      </div>
+
+      <h3>Device Frame Reference</h3>
+
+      <div class="device-frames">
+        <div class="device-frame">
+          <div class="device-screen" style="width: 50px; height: 90px;">
+            <div class="device-screen-nav"></div>
+            <div class="device-screen-content">
+              <div class="device-screen-block" style="height: 20px;"></div>
+              <div class="device-screen-block" style="height: 40px;"></div>
+            </div>
+          </div>
+          <div class="device-label">Mobile</div>
+          <div class="device-size">375×812</div>
+        </div>
+        <div class="device-frame">
+          <div class="device-screen" style="width: 80px; height: 110px;">
+            <div class="device-screen-nav"></div>
+            <div class="device-screen-content">
+              <div class="device-screen-block" style="height: 25px;"></div>
+              <div style="display: flex; gap: 4px;">
+                <div class="device-screen-block" style="height: 35px; flex: 1;"></div>
+                <div class="device-screen-block" style="height: 35px; flex: 1;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="device-label">Tablet</div>
+          <div class="device-size">768×1024</div>
+        </div>
+        <div class="device-frame">
+          <div class="device-screen" style="width: 140px; height: 90px;">
+            <div class="device-screen-nav"></div>
+            <div class="device-screen-content">
+              <div style="display: flex; gap: 4px;">
+                <div class="device-screen-block" style="height: 50px; flex: 1;"></div>
+                <div class="device-screen-block" style="height: 50px; flex: 1;"></div>
+                <div class="device-screen-block" style="height: 50px; flex: 1;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="device-label">Desktop</div>
+          <div class="device-size">1440×900</div>
+        </div>
+      </div>
+
+      <h3>Grid Adaptations by Component</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Component</th><th>Mobile</th><th>Tablet (640px+)</th><th>Desktop (1024px+)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Product Grid</strong></td>
+            <td>1 column</td>
+            <td>2 columns, <code>gap: 1.5rem</code></td>
+            <td>3 columns, <code>gap: 2rem</code></td>
+          </tr>
+          <tr>
+            <td><strong>Hero Section</strong></td>
+            <td>Stacked, image first</td>
+            <td>Stacked, image first</td>
+            <td>2-col grid <code>1fr 1.1fr</code></td>
+          </tr>
+          <tr>
+            <td><strong>Footer</strong></td>
+            <td>1 column, logo centered</td>
+            <td>2 columns</td>
+            <td>4 columns <code>1.5fr 1fr 1fr 1fr</code></td>
+          </tr>
+          <tr>
+            <td><strong>Service Packages</strong></td>
+            <td>1 column</td>
+            <td>2 columns</td>
+            <td>3 columns</td>
+          </tr>
+          <tr>
+            <td><strong>Process Steps</strong></td>
+            <td>1 column, vertical</td>
+            <td>2 columns</td>
+            <td>4 columns with connectors</td>
+          </tr>
+          <tr>
+            <td><strong>Benefits Grid</strong></td>
+            <td>1 column</td>
+            <td>2 columns</td>
+            <td>3 columns</td>
+          </tr>
+          <tr>
+            <td><strong>PDP Main Grid</strong></td>
+            <td>Stacked (gallery, then info)</td>
+            <td>Stacked</td>
+            <td>2-col grid <code>1.2fr 1fr</code></td>
+          </tr>
+          <tr>
+            <td><strong>Related Products</strong></td>
+            <td>Horizontal scroll</td>
+            <td>2 columns</td>
+            <td>4 columns</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Product Grid Visualization</h3>
+
+      <div class="grid-visual">
+        <div class="grid-visual-header">Mobile: 1 Column</div>
+        <div class="grid-visual-body">
+          <div class="grid-preview" style="grid-template-columns: 1fr; max-width: 200px;">
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-visual">
+        <div class="grid-visual-header">Tablet (640px+): 2 Columns</div>
+        <div class="grid-visual-body">
+          <div class="grid-preview" style="grid-template-columns: repeat(2, 1fr); max-width: 350px;">
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-visual">
+        <div class="grid-visual-header">Desktop (1024px+): 3 Columns</div>
+        <div class="grid-visual-body">
+          <div class="grid-preview" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+            <div class="grid-preview-item"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Navigation Responsive Behavior</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Mobile</th><th>Desktop</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Layout</strong></td>
+            <td>Logo left, hamburger right</td>
+            <td>Logo left, links center, CTA right</td>
+          </tr>
+          <tr>
+            <td><strong>Links</strong></td>
+            <td>Hidden, shown in overlay</td>
+            <td>Horizontal, <code>gap: 2.5rem</code></td>
+          </tr>
+          <tr>
+            <td><strong>Hamburger</strong></td>
+            <td>Visible, 44×44px touch target</td>
+            <td>Hidden</td>
+          </tr>
+          <tr>
+            <td><strong>CTA Button</strong></td>
+            <td>In mobile menu</td>
+            <td>Always visible</td>
+          </tr>
+          <tr>
+            <td><strong>Height</strong></td>
+            <td><code>60px</code></td>
+            <td><code>80px</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Mobile Menu Overlay</h4>
+      <div class="code-block">
+<pre><span class="keyword">.mobile-menu</span> {
+  <span class="property">position</span>: <span class="string">fixed</span>;
+  <span class="property">inset</span>: <span class="string">0</span>;
+  <span class="property">background</span>: <span class="string">var(--patina-charcoal)</span>;
+  <span class="property">z-index</span>: <span class="string">1000</span>;
+  <span class="property">display</span>: <span class="string">flex</span>;
+  <span class="property">flex-direction</span>: <span class="string">column</span>;
+  <span class="property">align-items</span>: <span class="string">center</span>;
+  <span class="property">justify-content</span>: <span class="string">center</span>;
+  <span class="property">gap</span>: <span class="string">1.5rem</span>;
+  
+  <span class="comment">/* Animation */</span>
+  <span class="property">transform</span>: <span class="string">translateX(100%)</span>;
+  <span class="property">transition</span>: <span class="string">transform 300ms ease-out</span>;
+}
+
+<span class="keyword">.mobile-menu.open</span> {
+  <span class="property">transform</span>: <span class="string">translateX(0)</span>;
+}
+
+<span class="keyword">.mobile-menu a</span> {
+  <span class="property">font-family</span>: <span class="string">'Playfair Display', Georgia, serif</span>;
+  <span class="property">font-size</span>: <span class="string">1.5rem</span>;
+  <span class="property">color</span>: <span class="string">var(--patina-off-white)</span>;
+  <span class="property">text-decoration</span>: <span class="string">none</span>;
+}</pre>
+      </div>
+
+      <h3>Typography Scaling</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Mobile</th><th>Desktop</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Display 1</strong></td>
+            <td><code>2.5rem</code> (40px)</td>
+            <td><code>3.5rem</code> (56px)</td>
+          </tr>
+          <tr>
+            <td><strong>Display 2</strong></td>
+            <td><code>2rem</code> (32px)</td>
+            <td><code>2.5rem</code> (40px)</td>
+          </tr>
+          <tr>
+            <td><strong>Heading 1</strong></td>
+            <td><code>1.75rem</code> (28px)</td>
+            <td><code>2rem</code> (32px)</td>
+          </tr>
+          <tr>
+            <td><strong>Body</strong></td>
+            <td><code>1rem</code> (16px)</td>
+            <td><code>1rem</code> (16px)</td>
+          </tr>
+          <tr>
+            <td><strong>Container Padding</strong></td>
+            <td><code>1rem</code></td>
+            <td><code>2rem</code> → <code>3rem</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Fluid Typography (Optional)</h4>
+      <div class="code-block">
+<pre><span class="comment">/* Fluid display size between 640px and 1280px viewports */</span>
+<span class="keyword">.display-1</span> {
+  <span class="property">font-size</span>: <span class="string">clamp(2.5rem, 5vw + 1rem, 3.5rem)</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- ANIMATION & MOTION -->
+  <!-- ======================= -->
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">02</div>
+        <h2 class="section-title">Animation & Motion</h2>
+        <p class="section-desc">Timing functions, durations, and interaction patterns that create warmth and responsiveness.</p>
+      </div>
+
+      <h3>Easing Curves</h3>
+
+      <div class="easing-curves">
+        <div class="easing-curve">
+          <div class="easing-curve-visual">
+            <svg viewBox="0 0 100 100">
+              <path d="M 0 100 C 40 100, 20 0, 100 0" stroke="#A3927C" stroke-width="3" fill="none"/>
+              <line x1="0" y1="100" x2="100" y2="0" stroke="#EDE9E4" stroke-width="1" stroke-dasharray="4"/>
+            </svg>
+          </div>
+          <div class="easing-curve-name">Ease Default</div>
+          <div class="easing-curve-value">(0.4, 0, 0.2, 1)</div>
+        </div>
+        <div class="easing-curve">
+          <div class="easing-curve-visual">
+            <svg viewBox="0 0 100 100">
+              <path d="M 0 100 C 40 100, 100 100, 100 0" stroke="#A3927C" stroke-width="3" fill="none"/>
+              <line x1="0" y1="100" x2="100" y2="0" stroke="#EDE9E4" stroke-width="1" stroke-dasharray="4"/>
+            </svg>
+          </div>
+          <div class="easing-curve-name">Ease In</div>
+          <div class="easing-curve-value">(0.4, 0, 1, 1)</div>
+        </div>
+        <div class="easing-curve">
+          <div class="easing-curve-visual">
+            <svg viewBox="0 0 100 100">
+              <path d="M 0 100 C 0 100, 20 0, 100 0" stroke="#A3927C" stroke-width="3" fill="none"/>
+              <line x1="0" y1="100" x2="100" y2="0" stroke="#EDE9E4" stroke-width="1" stroke-dasharray="4"/>
+            </svg>
+          </div>
+          <div class="easing-curve-name">Ease Out</div>
+          <div class="easing-curve-value">(0, 0, 0.2, 1)</div>
+        </div>
+        <div class="easing-curve">
+          <div class="easing-curve-visual">
+            <svg viewBox="0 0 100 100">
+              <path d="M 0 100 C 17.5 11.5, 32 -27.5, 100 0" stroke="#A3927C" stroke-width="3" fill="none"/>
+              <line x1="0" y1="100" x2="100" y2="0" stroke="#EDE9E4" stroke-width="1" stroke-dasharray="4"/>
+            </svg>
+          </div>
+          <div class="easing-curve-name">Spring</div>
+          <div class="easing-curve-value">(0.175, 0.885, 0.32, 1.275)</div>
+        </div>
+      </div>
+
+      <h4>CSS Custom Properties</h4>
+      <div class="code-block">
+<pre><span class="keyword">:root</span> {
+  <span class="comment">/* Easing Curves */</span>
+  <span class="property">--ease-default</span>: <span class="string">cubic-bezier(0.4, 0, 0.2, 1)</span>;
+  <span class="property">--ease-in</span>: <span class="string">cubic-bezier(0.4, 0, 1, 1)</span>;
+  <span class="property">--ease-out</span>: <span class="string">cubic-bezier(0, 0, 0.2, 1)</span>;
+  <span class="property">--ease-spring</span>: <span class="string">cubic-bezier(0.175, 0.885, 0.32, 1.275)</span>;
+  
+  <span class="comment">/* Durations */</span>
+  <span class="property">--duration-fast</span>: <span class="string">150ms</span>;
+  <span class="property">--duration-normal</span>: <span class="string">300ms</span>;
+  <span class="property">--duration-slow</span>: <span class="string">500ms</span>;
+}</pre>
+      </div>
+
+      <h3>Duration Scale</h3>
+
+      <div class="timing-visual">
+        <div class="timing-label">Fast</div>
+        <div class="timing-bar" style="width: 50px;"></div>
+        <div class="timing-value">150ms</div>
+        <div style="flex: 1; font-size: 0.75rem; color: var(--patina-mocha-brown);">Button press, toggles, micro-interactions</div>
+      </div>
+
+      <div class="timing-visual">
+        <div class="timing-label">Normal</div>
+        <div class="timing-bar" style="width: 100px;"></div>
+        <div class="timing-value">300ms</div>
+        <div style="flex: 1; font-size: 0.75rem; color: var(--patina-mocha-brown);">Hover states, card animations, transitions</div>
+      </div>
+
+      <div class="timing-visual">
+        <div class="timing-label">Slow</div>
+        <div class="timing-bar" style="width: 166px;"></div>
+        <div class="timing-value">500ms</div>
+        <div style="flex: 1; font-size: 0.75rem; color: var(--patina-mocha-brown);">Page transitions, modals, elaborate animations</div>
+      </div>
+
+      <h3>Interaction Animations</h3>
+      <p>Hover over each demo to preview the animation:</p>
+
+      <div class="animation-demos">
+        <div class="animation-demo">
+          <div class="animation-demo-preview">
+            <div class="demo-box hover-lift"></div>
+          </div>
+          <div class="animation-demo-info">
+            <div class="animation-demo-name">Card Hover Lift</div>
+            <div class="animation-demo-timing">transform 300ms ease-default, box-shadow 300ms ease</div>
+            <div class="animation-demo-desc">Product cards, feature cards. Lifts 6px with enhanced shadow.</div>
+          </div>
+        </div>
+
+        <div class="animation-demo">
+          <div class="animation-demo-preview">
+            <div class="demo-box hover-scale"></div>
+          </div>
+          <div class="animation-demo-info">
+            <div class="animation-demo-name">Button Press</div>
+            <div class="animation-demo-timing">transform 150ms ease-default</div>
+            <div class="animation-demo-desc">Click/tap to preview. Scales to 95% on press.</div>
+          </div>
+        </div>
+
+        <div class="animation-demo">
+          <div class="animation-demo-preview">
+            <div class="demo-box hover-glow"></div>
+          </div>
+          <div class="animation-demo-info">
+            <div class="animation-demo-name">Focus Glow</div>
+            <div class="animation-demo-timing">box-shadow 300ms ease</div>
+            <div class="animation-demo-desc">Focus states for interactive elements. 4px ring.</div>
+          </div>
+        </div>
+
+        <div class="animation-demo">
+          <div class="animation-demo-preview">
+            <div class="demo-box shimmer"></div>
+          </div>
+          <div class="animation-demo-info">
+            <div class="animation-demo-name">Skeleton Shimmer</div>
+            <div class="animation-demo-timing">background-position 1.5s infinite</div>
+            <div class="animation-demo-desc">Loading placeholder animation.</div>
+          </div>
+        </div>
+
+        <div class="animation-demo">
+          <div class="animation-demo-preview">
+            <div class="demo-box pulse"></div>
+          </div>
+          <div class="animation-demo-info">
+            <div class="animation-demo-name">Pulse</div>
+            <div class="animation-demo-timing">opacity, scale 2s ease-in-out infinite</div>
+            <div class="animation-demo-desc">Loading indicators, pending states.</div>
+          </div>
+        </div>
+
+        <div class="animation-demo">
+          <div class="animation-demo-preview">
+            <div class="demo-box fade-in" style="animation-delay: 0.5s; animation-iteration-count: infinite;"></div>
+          </div>
+          <div class="animation-demo-info">
+            <div class="animation-demo-name">Fade In Up</div>
+            <div class="animation-demo-timing">opacity, translateY 1s ease-out</div>
+            <div class="animation-demo-desc">Page content reveal, scroll animations.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Component-Specific Animations</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Component</th><th>Property</th><th>Duration</th><th>Easing</th><th>Trigger</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Button</strong></td>
+            <td>background-color, transform</td>
+            <td>200ms</td>
+            <td>ease-default</td>
+            <td>Hover, Active</td>
+          </tr>
+          <tr>
+            <td><strong>Link</strong></td>
+            <td>color</td>
+            <td>200ms</td>
+            <td>ease</td>
+            <td>Hover</td>
+          </tr>
+          <tr>
+            <td><strong>Product Card</strong></td>
+            <td>transform, box-shadow</td>
+            <td>300ms</td>
+            <td>ease-default</td>
+            <td>Hover</td>
+          </tr>
+          <tr>
+            <td><strong>Image Thumbnail</strong></td>
+            <td>border-color, opacity</td>
+            <td>200ms</td>
+            <td>ease</td>
+            <td>Click, Hover</td>
+          </tr>
+          <tr>
+            <td><strong>Modal</strong></td>
+            <td>opacity, transform (scale)</td>
+            <td>300ms</td>
+            <td>ease-out</td>
+            <td>Open/Close</td>
+          </tr>
+          <tr>
+            <td><strong>Mobile Menu</strong></td>
+            <td>transform (translateX)</td>
+            <td>300ms</td>
+            <td>ease-out</td>
+            <td>Toggle</td>
+          </tr>
+          <tr>
+            <td><strong>Toast</strong></td>
+            <td>opacity, translateY</td>
+            <td>300ms in, 200ms out</td>
+            <td>spring</td>
+            <td>Show/Hide</td>
+          </tr>
+          <tr>
+            <td><strong>Dropdown</strong></td>
+            <td>opacity, max-height</td>
+            <td>200ms</td>
+            <td>ease-out</td>
+            <td>Toggle</td>
+          </tr>
+          <tr>
+            <td><strong>Filter Chip</strong></td>
+            <td>background, border-color</td>
+            <td>200ms</td>
+            <td>ease</td>
+            <td>Click, Hover</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Page Transitions</h3>
+
+      <div class="info-box">
+        <p><strong>Recommendation:</strong> Use Framer Motion or Next.js page transitions for smooth navigation. Implement with care to not impact performance.</p>
+      </div>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Phase</th><th>Duration</th><th>Animation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Exit</strong></td>
+            <td>200ms</td>
+            <td>Fade out, slight scale down (0.98)</td>
+          </tr>
+          <tr>
+            <td><strong>Enter</strong></td>
+            <td>300ms</td>
+            <td>Fade in, slide up (10px)</td>
+          </tr>
+          <tr>
+            <td><strong>Stagger</strong></td>
+            <td>50ms delay per element</td>
+            <td>Content appears top-to-bottom</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Framer Motion Example</h4>
+      <div class="code-block">
+<pre><span class="keyword">const</span> pageVariants = {
+  initial: { opacity: <span class="string">0</span>, y: <span class="string">10</span> },
+  enter: { 
+    opacity: <span class="string">1</span>, 
+    y: <span class="string">0</span>,
+    transition: { duration: <span class="string">0.3</span>, ease: [<span class="string">0.4, 0, 0.2, 1</span>] }
+  },
+  exit: { 
+    opacity: <span class="string">0</span>, 
+    scale: <span class="string">0.98</span>,
+    transition: { duration: <span class="string">0.2</span> }
+  }
+};
+
+<span class="keyword">const</span> staggerContainer = {
+  enter: {
+    transition: { staggerChildren: <span class="string">0.05</span>, delayChildren: <span class="string">0.1</span> }
+  }
+};</pre>
+      </div>
+
+      <h3>Scroll Animations</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Animation</th><th>Trigger Point</th><th>Duration</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Section Header</strong></td>
+            <td>Fade in + slide up (20px)</td>
+            <td>20% in viewport</td>
+            <td>500ms</td>
+          </tr>
+          <tr>
+            <td><strong>Product Cards</strong></td>
+            <td>Fade in + slide up (30px), staggered</td>
+            <td>10% in viewport</td>
+            <td>400ms, 100ms stagger</td>
+          </tr>
+          <tr>
+            <td><strong>Images</strong></td>
+            <td>Scale from 0.95 to 1 + fade</td>
+            <td>20% in viewport</td>
+            <td>600ms</td>
+          </tr>
+          <tr>
+            <td><strong>Stats/Numbers</strong></td>
+            <td>Count up animation</td>
+            <td>50% in viewport</td>
+            <td>1000ms</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Intersection Observer Pattern</h4>
+      <div class="code-block">
+<pre><span class="keyword">const</span> observerOptions = {
+  threshold: <span class="string">0.2</span>,
+  rootMargin: <span class="string">'0px 0px -10% 0px'</span>
+};
+
+<span class="keyword">const</span> observer = <span class="keyword">new</span> IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    <span class="keyword">if</span> (entry.isIntersecting) {
+      entry.target.classList.add(<span class="string">'animate-in'</span>);
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);</pre>
+      </div>
+
+      <h3>Loading States</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Component</th><th>Loading Pattern</th><th>Animation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Product Grid</strong></td>
+            <td>Skeleton cards (6 items)</td>
+            <td>Shimmer effect, 1.5s infinite</td>
+          </tr>
+          <tr>
+            <td><strong>Single Image</strong></td>
+            <td>Blur-up placeholder</td>
+            <td>Blur 20px → 0, 500ms</td>
+          </tr>
+          <tr>
+            <td><strong>Button (Submitting)</strong></td>
+            <td>Spinner icon + disabled</td>
+            <td>Rotate 360deg, 1s infinite linear</td>
+          </tr>
+          <tr>
+            <td><strong>Full Page</strong></td>
+            <td>Centered Strata Mark</td>
+            <td>Pulse animation, 2s infinite</td>
+          </tr>
+          <tr>
+            <td><strong>Infinite Scroll</strong></td>
+            <td>3 skeleton cards at bottom</td>
+            <td>Shimmer effect</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Skeleton Shimmer CSS</h4>
+      <div class="code-block">
+<pre><span class="keyword">@keyframes</span> shimmer {
+  <span class="property">0%</span> { background-position: <span class="string">-200% 0</span>; }
+  <span class="property">100%</span> { background-position: <span class="string">200% 0</span>; }
+}
+
+<span class="keyword">.skeleton</span> {
+  <span class="property">background</span>: <span class="string">linear-gradient(
+    90deg,
+    var(--patina-soft-cream) 25%,
+    var(--patina-off-white) 50%,
+    var(--patina-soft-cream) 75%
+  )</span>;
+  <span class="property">background-size</span>: <span class="string">200% 100%</span>;
+  <span class="property">animation</span>: <span class="string">shimmer 1.5s infinite</span>;
+  <span class="property">border-radius</span>: <span class="string">8px</span>;
+}</pre>
+      </div>
+
+      <h3>Reduced Motion</h3>
+
+      <div class="info-box">
+        <p><strong>Critical:</strong> Always respect <code>prefers-reduced-motion</code> for accessibility. Disable all non-essential animations.</p>
+      </div>
+
+      <div class="code-block">
+<pre><span class="keyword">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="keyword">*</span>,
+  <span class="keyword">*::before</span>,
+  <span class="keyword">*::after</span> {
+    <span class="property">animation-duration</span>: <span class="string">0.01ms !important</span>;
+    <span class="property">animation-iteration-count</span>: <span class="string">1 !important</span>;
+    <span class="property">transition-duration</span>: <span class="string">0.01ms !important</span>;
+    <span class="property">scroll-behavior</span>: <span class="string">auto !important</span>;
+  }
+}
+
+<span class="comment">/* React/JS check */</span>
+<span class="keyword">const</span> prefersReducedMotion = 
+  <span class="keyword">window</span>.matchMedia(<span class="string">'(prefers-reduced-motion: reduce)'</span>).matches;</pre>
+      </div>
+
+      <h3>Performance Guidelines</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Rule</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Only animate <code>transform</code> and <code>opacity</code></td>
+            <td>GPU-accelerated, no layout recalculation</td>
+          </tr>
+          <tr>
+            <td>Use <code>will-change</code> sparingly</td>
+            <td>Apply only to elements about to animate</td>
+          </tr>
+          <tr>
+            <td>Avoid animating during scroll</td>
+            <td>Can cause jank on mobile</td>
+          </tr>
+          <tr>
+            <td>Keep animations under 300ms for interactions</td>
+            <td>Feels responsive without delay</td>
+          </tr>
+          <tr>
+            <td>Stagger list animations</td>
+            <td>More natural, less overwhelming</td>
+          </tr>
+          <tr>
+            <td>Test on low-end devices</td>
+            <td>Animations can be choppy on older hardware</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- TOUCH & GESTURE -->
+  <!-- ======================= -->
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number">03</div>
+        <h2 class="section-title">Touch & Gesture Support</h2>
+        <p class="section-desc">Mobile-specific interaction patterns and touch target requirements.</p>
+      </div>
+
+      <h3>Touch Target Sizing</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Element</th><th>Minimum Size</th><th>Recommended Size</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Buttons</strong></td>
+            <td>44×44px</td>
+            <td>48×48px</td>
+          </tr>
+          <tr>
+            <td><strong>Icon Buttons</strong></td>
+            <td>44×44px touch area</td>
+            <td>24px icon, 44px touch area</td>
+          </tr>
+          <tr>
+            <td><strong>Links (inline)</strong></td>
+            <td>44px height</td>
+            <td>Add vertical padding</td>
+          </tr>
+          <tr>
+            <td><strong>Navigation Links</strong></td>
+            <td>44×44px</td>
+            <td>Full row height</td>
+          </tr>
+          <tr>
+            <td><strong>Hamburger Menu</strong></td>
+            <td>44×44px</td>
+            <td>48×48px</td>
+          </tr>
+          <tr>
+            <td><strong>Filter Chips</strong></td>
+            <td>32px height</td>
+            <td>36px height with padding</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Gesture Patterns</h3>
+
+      <table class="spec-table">
+        <thead>
+          <tr><th>Gesture</th><th>Component</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Swipe Left/Right</strong></td>
+            <td>Image Gallery</td>
+            <td>Navigate between images</td>
+          </tr>
+          <tr>
+            <td><strong>Swipe Left/Right</strong></td>
+            <td>Product Card (mobile)</td>
+            <td>Quick save/dismiss (optional)</td>
+          </tr>
+          <tr>
+            <td><strong>Pinch to Zoom</strong></td>
+            <td>Product Images</td>
+            <td>Zoom in on details</td>
+          </tr>
+          <tr>
+            <td><strong>Pull to Refresh</strong></td>
+            <td>Product List</td>
+            <td>Refresh content</td>
+          </tr>
+          <tr>
+            <td><strong>Long Press</strong></td>
+            <td>Product Card</td>
+            <td>Quick preview (optional)</td>
+          </tr>
+          <tr>
+            <td><strong>Scroll</strong></td>
+            <td>Horizontal Tags</td>
+            <td>Browse filter options</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Touch Feedback</h3>
+
+      <div class="code-block">
+<pre><span class="comment">/* Active state for touch feedback */</span>
+<span class="keyword">.touchable:active</span> {
+  <span class="property">transform</span>: <span class="string">scale(0.98)</span>;
+  <span class="property">opacity</span>: <span class="string">0.9</span>;
+}
+
+<span class="comment">/* Prevent 300ms delay on iOS */</span>
+<span class="keyword">*</span> {
+  <span class="property">touch-action</span>: <span class="string">manipulation</span>;
+}
+
+<span class="comment">/* Disable text selection on interactive elements */</span>
+<span class="keyword">.button, .chip, .card</span> {
+  <span class="property">-webkit-user-select</span>: <span class="string">none</span>;
+  <span class="property">user-select</span>: <span class="string">none</span>;
+}
+
+<span class="comment">/* Safe area insets for notched devices */</span>
+<span class="keyword">.nav, .footer</span> {
+  <span class="property">padding-left</span>: <span class="string">env(safe-area-inset-left)</span>;
+  <span class="property">padding-right</span>: <span class="string">env(safe-area-inset-right)</span>;
+}
+
+<span class="keyword">.footer</span> {
+  <span class="property">padding-bottom</span>: <span class="string">env(safe-area-inset-bottom)</span>;
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="doc-footer">
+    <div class="doc-footer-logo">
+      <div class="wordmark">PATINA</div>
+      <div class="doc-footer-strata">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <p class="doc-footer-text">Responsive & Animation Specs v1.0 — December 2024</p>
+  </footer>
+
+</body>
+</html>

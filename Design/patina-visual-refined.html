@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina Web — Visual Development (Refined)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: var(--patina-off-white);
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+    }
+
+    /* Cover */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, var(--patina-warm-white) 0%, var(--patina-off-white) 40%, var(--patina-soft-cream) 100%);
+      text-align: center;
+      position: relative;
+    }
+
+    .cover-strata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .cover-strata span {
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    .cover-strata span:nth-child(1) { width: 60px; background: var(--patina-mocha-brown); }
+    .cover-strata span:nth-child(2) { width: 48px; background: var(--patina-clay-beige); }
+    .cover-strata span:nth-child(3) { width: 36px; background: var(--patina-clay-beige); opacity: 0.5; }
+
+    .cover-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .cover h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .cover h1 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+
+    .cover p {
+      font-size: 1.0625rem;
+      color: var(--patina-mocha-brown);
+      max-width: 500px;
+    }
+
+    .cover-badge {
+      position: absolute;
+      bottom: 3rem;
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 0.5rem 1.25rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .revision-note {
+      background: #FFF9E6;
+      border-left: 4px solid #E6C84A;
+      padding: 0.75rem 1rem;
+      font-size: 0.8125rem;
+      color: #8B7000;
+      display: inline-block;
+      border-radius: 0 8px 8px 0;
+      margin-top: 1.5rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .container-narrow {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Section */
+    .section {
+      padding: 6rem 0;
+    }
+
+    .section-dark {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+    }
+
+    .section-cream {
+      background: var(--patina-soft-cream);
+    }
+
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+
+    h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    .lead {
+      font-size: 1.0625rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.8;
+    }
+
+    .section-dark .lead {
+      color: rgba(237, 233, 228, 0.85);
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 4rem 0;
+    }
+
+    .divider span {
+      height: 2px;
+      border-radius: 1px;
+    }
+
+    .divider span:nth-child(1) { width: 32px; background: var(--patina-mocha-brown); }
+    .divider span:nth-child(2) { width: 24px; background: var(--patina-clay-beige); }
+    .divider span:nth-child(3) { width: 16px; background: var(--patina-clay-beige); opacity: 0.5; }
+
+    /* ======================= */
+    /* MAKER ELEMENTS SHOWCASE */
+    /* ======================= */
+
+    .maker-elements-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .maker-element-card {
+      background: var(--patina-warm-white);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .maker-element-card h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.75rem;
+    }
+
+    .maker-element-card p {
+      font-size: 0.875rem;
+      color: var(--patina-mocha-brown);
+      margin-bottom: 1rem;
+    }
+
+    .element-demo {
+      background: var(--patina-off-white);
+      border-radius: 10px;
+      padding: 1.5rem;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Texture Demo */
+    .texture-demo {
+      position: relative;
+    }
+
+    .texture-demo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      border-radius: 10px;
+      pointer-events: none;
+    }
+
+    /* Organic Shape Demo */
+    .organic-demo {
+      position: relative;
+    }
+
+    .organic-shape {
+      width: 120px;
+      height: 80px;
+      background: var(--patina-clay-beige);
+      border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+      opacity: 0.15;
+      position: absolute;
+    }
+
+    .organic-shape:nth-child(1) { top: 10%; left: 5%; }
+    .organic-shape:nth-child(2) { bottom: 10%; right: 10%; transform: rotate(45deg); width: 80px; height: 60px; }
+
+    /* ======================= */
+    /* REFINED HOMEPAGE */
+    /* ======================= */
+
+    .browser-frame {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 25px 80px rgba(63, 59, 55, 0.15), 0 10px 30px rgba(63, 59, 55, 0.1);
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+
+    .browser-bar {
+      background: #F8F7F5;
+      padding: 0.875rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid #E8E6E2;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .browser-dot:nth-child(1) { background: #FF6058; }
+    .browser-dot:nth-child(2) { background: #FFBD2E; }
+    .browser-dot:nth-child(3) { background: #27CA40; }
+
+    .browser-url {
+      flex: 1;
+      background: #fff;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+      border: 1px solid #E8E6E2;
+    }
+
+    .browser-content {
+      background: var(--patina-warm-white);
+    }
+
+    /* Homepage Nav */
+    .hp-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: var(--patina-warm-white);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+
+    .hp-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.375rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--patina-charcoal);
+    }
+
+    .hp-nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .hp-nav-link {
+      font-size: 0.875rem;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+    }
+
+    .hp-nav-cta {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* REFINED HERO - Maker Feel */
+    .hp-hero-refined {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      padding: 5rem 3rem 6rem;
+      align-items: center;
+      background: linear-gradient(135deg, var(--patina-warm-white) 0%, var(--patina-off-white) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle paper/linen texture overlay */
+    .hp-hero-refined::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+    }
+
+    /* Organic background shapes */
+    .hp-hero-refined::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 50%;
+      height: 80%;
+      background: radial-gradient(ellipse at center, rgba(163, 146, 124, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .organic-accent {
+      position: absolute;
+      background: var(--patina-clay-beige);
+      opacity: 0.04;
+      border-radius: 60% 40% 50% 50% / 50% 50% 40% 60%;
+      pointer-events: none;
+    }
+
+    .organic-accent-1 {
+      width: 300px;
+      height: 200px;
+      bottom: -50px;
+      left: -80px;
+      transform: rotate(-15deg);
+    }
+
+    .organic-accent-2 {
+      width: 150px;
+      height: 100px;
+      top: 15%;
+      right: 35%;
+      transform: rotate(30deg);
+    }
+
+    .hp-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hp-hero-content h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 3.25rem;
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--patina-charcoal);
+      margin-bottom: 1.5rem;
+    }
+
+    .hp-hero-content h1 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+
+    .hp-hero-content > p {
+      font-size: 1.125rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      max-width: 440px;
+    }
+
+    /* Provenance line - subtle maker touch */
+    .provenance-line {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding: 0.875rem 0;
+      border-top: 1px solid rgba(163, 146, 124, 0.15);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.15);
+    }
+
+    .provenance-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .provenance-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--patina-clay-beige);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .provenance-text {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+      font-style: italic;
+    }
+
+    .hp-hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .hp-btn-primary {
+      background: var(--patina-clay-beige);
+      color: var(--patina-off-white);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(163, 146, 124, 0.25);
+    }
+
+    .hp-btn-secondary {
+      background: transparent;
+      color: var(--patina-charcoal);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 2px solid var(--patina-clay-beige);
+    }
+
+    /* Hero Image with organic frame */
+    .hp-hero-image-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hp-hero-image {
+      background: linear-gradient(135deg, #D8D2C8 0%, #C4BDB0 100%);
+      border-radius: 20px;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(101, 91, 82, 0.15);
+    }
+
+    /* Organic frame accent */
+    .image-frame-accent {
+      position: absolute;
+      inset: -3px;
+      border: 3px solid transparent;
+      border-radius: 23px;
+      background: linear-gradient(135deg, rgba(163, 146, 124, 0.2), transparent 50%, rgba(163, 146, 124, 0.1)) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .hp-hero-image span {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-mocha-brown);
+      background: rgba(255,255,255,0.8);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+
+    /* Material tag on image */
+    .material-tag {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 0.625rem 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .material-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8B7355 0%, #6B5344 100%);
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+
+    .material-info {
+      font-size: 0.6875rem;
+      line-height: 1.3;
+    }
+
+    .material-name {
+      font-weight: 600;
+      color: var(--patina-charcoal);
+    }
+
+    .material-origin {
+      color: var(--patina-clay-beige);
+    }
+
+    /* ======================= */
+    /* REFINED APP SECTION */
+    /* ======================= */
+
+    .hp-app-section-refined {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4rem;
+      padding: 6rem 3rem;
+      align-items: center;
+      background: var(--patina-soft-cream);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hp-app-section-refined::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.02;
+      pointer-events: none;
+    }
+
+    .hp-app-visual {
+      background: var(--patina-warm-white);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 8px 40px rgba(101, 91, 82, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Subtle corner craft detail */
+    .craft-corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      opacity: 0.15;
+    }
+
+    .craft-corner svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--patina-mocha-brown);
+      fill: none;
+      stroke-width: 1;
+    }
+
+    .craft-corner-tl { top: 1rem; left: 1rem; }
+    .craft-corner-br { bottom: 1rem; right: 1rem; transform: rotate(180deg); }
+
+    .hp-app-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hp-app-content h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.5rem;
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--patina-charcoal);
+      margin-bottom: 1.25rem;
+    }
+
+    .hp-app-content > p {
+      font-size: 1.0625rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      max-width: 400px;
+    }
+
+    /* Process hint - subtle maker touch */
+    .process-hint {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1rem 0;
+    }
+
+    .process-step {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+    }
+
+    .process-step svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--patina-clay-beige);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .process-divider {
+      width: 24px;
+      height: 1px;
+      background: var(--patina-clay-beige);
+      opacity: 0.4;
+    }
+
+    .app-store-badge {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      padding: 0.875rem 1.75rem;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+
+    .app-store-badge span {
+      display: block;
+      font-size: 0.6875rem;
+      opacity: 0.7;
+    }
+
+    /* ======================= */
+    /* COMPARISON */
+    /* ======================= */
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .comparison-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(101, 91, 82, 0.1);
+    }
+
+    .comparison-header {
+      padding: 1rem 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .comparison-before .comparison-header {
+      background: #E8E6E2;
+      color: var(--patina-mocha-brown);
+    }
+
+    .comparison-after .comparison-header {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+    }
+
+    .comparison-content {
+      background: var(--patina-warm-white);
+      padding: 2rem;
+      min-height: 200px;
+    }
+
+    .comparison-before .comparison-content {
+      background: #FAFAFA;
+    }
+
+    .comparison-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .comparison-list li {
+      padding: 0.5rem 0;
+      font-size: 0.875rem;
+      color: var(--patina-mocha-brown);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .comparison-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--patina-clay-beige);
+      border-radius: 50%;
+      margin-top: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* ======================= */
+    /* ELEMENT DETAILS */
+    /* ======================= */
+
+    .element-detail {
+      background: var(--patina-warm-white);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+    }
+
+    .element-detail-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.15);
+    }
+
+    .element-detail h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+    }
+
+    .element-detail-tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      background: var(--patina-soft-cream);
+      padding: 0.375rem 0.75rem;
+      border-radius: 4px;
+    }
+
+    .texture-samples {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .texture-sample {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .texture-sample::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .texture-sample-1 { background: var(--patina-warm-white); }
+    .texture-sample-1::before { opacity: 0.02; }
+
+    .texture-sample-2 { background: var(--patina-soft-cream); }
+    .texture-sample-2::before { opacity: 0.025; }
+
+    .texture-sample-3 { background: var(--patina-off-white); }
+    .texture-sample-3::before { opacity: 0.03; }
+
+    .texture-sample-4 { background: var(--patina-charcoal); }
+    .texture-sample-4::before { opacity: 0.04; }
+
+    .texture-label {
+      text-align: center;
+      font-size: 0.6875rem;
+      color: var(--patina-clay-beige);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Provenance Examples */
+    .provenance-examples {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .provenance-example {
+      background: var(--patina-off-white);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .provenance-example-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .provenance-example-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--patina-clay-beige);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .provenance-example-text {
+      font-size: 0.8125rem;
+      color: var(--patina-mocha-brown);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* ======================= */
+    /* SUMMARY */
+    /* ======================= */
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .summary-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(163, 146, 124, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .summary-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .summary-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--patina-clay-beige);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .summary-card h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .summary-card p {
+      font-size: 0.875rem;
+      color: rgba(237, 233, 228, 0.75);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .footer-strata {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-strata span {
+      height: 2px;
+      border-radius: 1px;
+      background: var(--patina-clay-beige);
+    }
+
+    .footer-strata span:nth-child(1) { width: 40px; }
+    .footer-strata span:nth-child(2) { width: 32px; opacity: 0.7; }
+    .footer-strata span:nth-child(3) { width: 24px; opacity: 0.4; }
+
+    .footer-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.9375rem;
+      font-style: italic;
+      color: var(--patina-clay-beige);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hp-hero-refined {
+        grid-template-columns: 1fr;
+        padding: 3rem 2rem;
+      }
+
+      .hp-app-section-refined {
+        grid-template-columns: 1fr;
+        padding: 4rem 2rem;
+      }
+
+      .maker-elements-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .texture-samples {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .provenance-examples {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <section class="cover">
+    <div class="cover-strata">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="cover-logo">PATINA</div>
+    <h1>Visual Development <em>Refined</em></h1>
+    <p>Incorporating subtle maker elements to create a distinctive, craft-forward web presence.</p>
+    <div class="revision-note">Addressing feedback: Enhance "Maker Story" feel in hero sections</div>
+    <div class="cover-badge">Revision 1.1</div>
+  </section>
+
+  <!-- The Approach -->
+  <section class="section">
+    <div class="container-narrow">
+      <p class="section-label">The Refinement</p>
+      <h2>Subtle Craft, Not Obvious Decoration</h2>
+      <p class="lead">The goal isn't to add craft "imagery" — it's to make the entire experience feel handmade. These elements work subconsciously, creating a sense that real people made this, without ever being distracting.</p>
+
+      <div class="maker-elements-grid">
+        <div class="maker-element-card">
+          <h4>Paper Grain Texture</h4>
+          <p>A barely-visible noise overlay on hero sections suggests natural materials — like viewing content on fine cotton paper rather than a sterile screen.</p>
+          <div class="element-demo texture-demo">
+            <span style="font-size: 0.75rem; color: var(--patina-clay-beige);">2-3% opacity noise</span>
+          </div>
+        </div>
+        <div class="maker-element-card">
+          <h4>Organic Background Shapes</h4>
+          <p>Soft, asymmetric forms in the background replace rigid geometric patterns. Shapes feel hand-drawn — imperfect, warm, alive.</p>
+          <div class="element-demo organic-demo">
+            <div class="organic-shape"></div>
+            <div class="organic-shape"></div>
+          </div>
+        </div>
+        <div class="maker-element-card">
+          <h4>Provenance Lines</h4>
+          <p>Brief maker attributions appear in hero sections — a quiet reminder that real hands shaped these pieces. Always present, never shouting.</p>
+          <div class="element-demo">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A3927C" stroke-width="1.5">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <span style="font-size: 0.75rem; font-style: italic; color: var(--patina-mocha-brown);">Crafted in Vermont since 1904</span>
+            </div>
+          </div>
+        </div>
+        <div class="maker-element-card">
+          <h4>Material Touch Points</h4>
+          <p>Small material swatches and origin badges appear on imagery — connecting digital visuals to physical reality.</p>
+          <div class="element-demo">
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: white; padding: 0.5rem 0.75rem; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+              <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #8B7355, #6B5344);"></div>
+              <div style="font-size: 0.625rem; line-height: 1.2;">
+                <div style="font-weight: 600; color: var(--patina-charcoal);">White Oak</div>
+                <div style="color: var(--patina-clay-beige);">Ohio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before/After -->
+  <section class="section section-cream">
+    <div class="container-narrow">
+      <p class="section-label">The Difference</p>
+      <h2>Subtle, But Significant</h2>
+      <p class="lead">Side by side, the changes are small. In experience, they transform the feeling from "another furniture site" to "a place where craft matters."</p>
+
+      <div class="comparison-grid">
+        <div class="comparison-card comparison-before">
+          <div class="comparison-header">Previous Direction</div>
+          <div class="comparison-content">
+            <ul class="comparison-list">
+              <li>Clean, flat backgrounds</li>
+              <li>Geometric precision throughout</li>
+              <li>Typography carries all warmth</li>
+              <li>Product-focused messaging</li>
+              <li>Standard e-commerce feel</li>
+            </ul>
+          </div>
+        </div>
+        <div class="comparison-card comparison-after">
+          <div class="comparison-header">Refined Direction</div>
+          <div class="comparison-content">
+            <ul class="comparison-list">
+              <li>Subtle paper grain texture on heroes</li>
+              <li>Organic, hand-shaped background forms</li>
+              <li>Typography + environmental warmth</li>
+              <li>Provenance lines in every hero</li>
+              <li>Material touch points on imagery</li>
+              <li>Craft corner details in key frames</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Refined Homepage -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Homepage Refined</p>
+      <h2>The Welcome, With Soul</h2>
+      <p class="lead">The same layout, now infused with subtle maker elements that create immediate distinction.</p>
+
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+          </div>
+          <div class="browser-url">patina.design</div>
+        </div>
+        <div class="browser-content">
+          <!-- Nav -->
+          <nav class="hp-nav">
+            <div class="hp-logo">PATINA</div>
+            <div class="hp-nav-links">
+              <a href="#" class="hp-nav-link">Discover</a>
+              <a href="#" class="hp-nav-link">Furniture</a>
+              <a href="#" class="hp-nav-link">Designers</a>
+              <a href="#" class="hp-nav-link">Our Story</a>
+            </div>
+            <a href="#" class="hp-nav-cta">Get the App</a>
+          </nav>
+
+          <!-- Refined Hero -->
+          <section class="hp-hero-refined">
+            <!-- Organic accents -->
+            <div class="organic-accent organic-accent-1"></div>
+            <div class="organic-accent organic-accent-2"></div>
+
+            <div class="hp-hero-content">
+              <h1>Furniture that grows <em>with your space</em></h1>
+              <p>Discover pieces with stories worth telling. See them in your room before you decide. Find quality that lasts.</p>
+              
+              <!-- Provenance line -->
+              <div class="provenance-line">
+                <div class="provenance-icon">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                </div>
+                <div class="provenance-text">Featuring makers with 50+ years of craft tradition</div>
+              </div>
+
+              <div class="hp-hero-buttons">
+                <a href="#" class="hp-btn-primary">Get the App</a>
+                <a href="#" class="hp-btn-secondary">Work with a Designer</a>
+              </div>
+            </div>
+
+            <div class="hp-hero-image-container">
+              <div class="hp-hero-image">
+                <div class="image-frame-accent"></div>
+                <span>Hero Photography</span>
+                <!-- Material tag -->
+                <div class="material-tag">
+                  <div class="material-swatch"></div>
+                  <div class="material-info">
+                    <div class="material-name">White Oak</div>
+                    <div class="material-origin">Vermont</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Refined App Section -->
+          <section class="hp-app-section-refined">
+            <div class="hp-app-visual">
+              <!-- Craft corners -->
+              <div class="craft-corner craft-corner-tl">
+                <svg viewBox="0 0 40 40">
+                  <path d="M0 40 L0 10 Q0 0 10 0 L40 0"/>
+                </svg>
+              </div>
+              <div class="craft-corner craft-corner-br">
+                <svg viewBox="0 0 40 40">
+                  <path d="M0 40 L0 10 Q0 0 10 0 L40 0"/>
+                </svg>
+              </div>
+
+              <svg viewBox="0 0 200 200" fill="none" stroke="#655B52" stroke-width="2" style="width: 70%; height: auto;">
+                <!-- Room outline -->
+                <rect x="30" y="50" width="140" height="100" rx="3" stroke-width="1.5"/>
+                <line x1="30" y1="150" x2="10" y2="180" stroke-width="1"/>
+                <line x1="170" y1="150" x2="190" y2="180" stroke-width="1"/>
+                
+                <!-- Sofa -->
+                <path d="M50 110 L50 130 L110 130 L110 110" stroke="#A3927C" stroke-width="2.5"/>
+                <path d="M53 110 L53 100 L107 100 L107 110" stroke="#A3927C" stroke-width="1.5"/>
+                <ellipse cx="60" cy="105" rx="5" ry="8" stroke="#A3927C" stroke-width="1.5"/>
+                <ellipse cx="100" cy="105" rx="5" ry="8" stroke="#A3927C" stroke-width="1.5"/>
+                
+                <!-- Side table -->
+                <rect x="120" y="110" width="25" height="20" rx="2" stroke="#A3927C"/>
+                
+                <!-- Plant -->
+                <ellipse cx="132" cy="100" rx="8" ry="12" stroke="#A3927C"/>
+                <line x1="132" y1="112" x2="132" y2="110" stroke="#A3927C"/>
+                
+                <!-- Sparkles -->
+                <g stroke="#A3927C" stroke-width="1" opacity="0.6">
+                  <path d="M150 70 L152 68 M153 71 L156 71 M152 74 L154 76"/>
+                  <path d="M45 80 L47 78 M48 81 L51 81 M47 84 L49 86"/>
+                </g>
+              </svg>
+            </div>
+
+            <div class="hp-app-content">
+              <h2>See it in your space before you decide</h2>
+              <p>Point your phone, walk your room, and watch furniture appear exactly where it belongs. No guessing. No measuring. Just clarity.</p>
+              
+              <!-- Process hint -->
+              <div class="process-hint">
+                <div class="process-step">
+                  <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+                  <span>Scan</span>
+                </div>
+                <div class="process-divider"></div>
+                <div class="process-step">
+                  <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                  <span>Place</span>
+                </div>
+                <div class="process-divider"></div>
+                <div class="process-step">
+                  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <span>Love</span>
+                </div>
+              </div>
+
+              <a href="#" class="app-store-badge">
+                <span>Download on the</span>
+                App Store
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Element Details -->
+  <section class="section section-cream">
+    <div class="container-narrow">
+      <p class="section-label">Element Specifications</p>
+      <h2>The Details That Matter</h2>
+      <p class="lead">Specifications for implementing subtle maker elements consistently across all hero sections.</p>
+
+      <!-- Texture Spec -->
+      <div class="element-detail">
+        <div class="element-detail-header">
+          <h4>Paper Grain Texture</h4>
+          <span class="element-detail-tag">Background Treatment</span>
+        </div>
+        <p style="font-size: 0.9375rem; color: var(--patina-mocha-brown);">SVG noise filter applied as pseudo-element overlay. Opacity varies by background color to maintain subtlety.</p>
+        <div class="texture-samples">
+          <div>
+            <div class="texture-sample texture-sample-1"></div>
+            <div class="texture-label">Warm White: 2%</div>
+          </div>
+          <div>
+            <div class="texture-sample texture-sample-2"></div>
+            <div class="texture-label">Soft Cream: 2.5%</div>
+          </div>
+          <div>
+            <div class="texture-sample texture-sample-3"></div>
+            <div class="texture-label">Off-White: 3%</div>
+          </div>
+          <div>
+            <div class="texture-sample texture-sample-4"></div>
+            <div class="texture-label">Charcoal: 4%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Provenance Spec -->
+      <div class="element-detail">
+        <div class="element-detail-header">
+          <h4>Provenance Lines</h4>
+          <span class="element-detail-tag">Content Pattern</span>
+        </div>
+        <p style="font-size: 0.9375rem; color: var(--patina-mocha-brown);">Brief, evocative statements that anchor the hero to real craft. Always paired with a simple icon. Italic styling creates distinction from body copy.</p>
+        <div class="provenance-examples">
+          <div class="provenance-example">
+            <div class="provenance-example-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="provenance-example-text">Featuring makers with 50+ years of craft tradition</div>
+          </div>
+          <div class="provenance-example">
+            <div class="provenance-example-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="provenance-example-text">Hand-finished in small-batch workshops</div>
+          </div>
+          <div class="provenance-example">
+            <div class="provenance-example-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="provenance-example-text">Sourced from certified sustainable forests</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Summary -->
+  <section class="section section-dark">
+    <div class="container-narrow">
+      <p class="section-label">Summary</p>
+      <h2>Maker Elements at a Glance</h2>
+      <p class="lead">Four subtle additions that transform the experience without changing the structure.</p>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h4>Paper Texture</h4>
+          <p>2-4% noise overlay on all hero backgrounds. Barely visible, deeply felt.</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <h4>Organic Shapes</h4>
+          <p>Asymmetric background forms at 4-6% opacity. Hand-drawn feel.</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h4>Provenance Lines</h4>
+          <p>Italic maker statements in every hero. Icon + text pattern.</p>
+        </div>
+      </div>
+
+      <div class="divider">
+        <span style="background: var(--patina-clay-beige);"></span>
+        <span style="background: var(--patina-clay-beige); opacity: 0.7;"></span>
+        <span style="background: var(--patina-clay-beige); opacity: 0.4;"></span>
+      </div>
+
+      <div style="text-align: center;">
+        <h3>Ready for Review</h3>
+        <p style="color: rgba(237, 233, 228, 0.75); max-width: 500px; margin: 0 auto;">These refinements maintain the clean, spatial layout while adding the craft dimension that makes Patina distinctive. Let us know if this captures the maker feel you're looking for.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-strata">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="footer-logo">PATINA</div>
+    <div class="footer-tagline">Where Time Adds Value</div>
+  </footer>
+
+</body>
+</html>

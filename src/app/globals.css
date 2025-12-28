@@ -1,0 +1,299 @@
+@import "tailwindcss";
+
+/* ============================================
+   PATINA DESIGN SYSTEM - CSS Custom Properties
+   ============================================ */
+
+:root {
+  /* Color Palette */
+  --patina-off-white: #EDE9E4;
+  --patina-clay-beige: #A3927C;
+  --patina-mocha-brown: #655B52;
+  --patina-charcoal: #3F3B37;
+  --patina-soft-cream: #F5F2ED;
+  --patina-warm-white: #FAF7F2;
+
+  /* Semantic Colors */
+  --background: var(--patina-off-white);
+  --foreground: var(--patina-charcoal);
+  --text-primary: var(--patina-charcoal);
+  --text-secondary: var(--patina-mocha-brown);
+  --text-muted: var(--patina-clay-beige);
+  --interactive-default: var(--patina-clay-beige);
+  --interactive-hover: var(--patina-mocha-brown);
+  --interactive-active: var(--patina-charcoal);
+}
+
+/* ============================================
+   TAILWIND v4 THEME CONFIGURATION
+   ============================================ */
+
+@theme inline {
+  /* Colors */
+  --color-patina-off-white: #EDE9E4;
+  --color-patina-clay-beige: #A3927C;
+  --color-patina-mocha-brown: #655B52;
+  --color-patina-charcoal: #3F3B37;
+  --color-patina-soft-cream: #F5F2ED;
+  --color-patina-warm-white: #FAF7F2;
+
+  /* Background & Foreground */
+  --color-background: var(--patina-off-white);
+  --color-foreground: var(--patina-charcoal);
+
+  /* Typography - Font Families */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Font Sizes */
+  --font-size-display-1: 3.5rem;
+  --font-size-display-2: 2.5rem;
+  --font-size-heading-1: 2rem;
+  --font-size-heading-2: 1.5rem;
+  --font-size-heading-3: 1.25rem;
+  --font-size-body: 1rem;
+  --font-size-body-sm: 0.875rem;
+  --font-size-caption: 0.75rem;
+  --font-size-label: 0.6875rem;
+
+  /* Spacing Scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(101, 91, 82, 0.06);
+  --shadow-md: 0 4px 16px rgba(101, 91, 82, 0.08);
+  --shadow-lg: 0 12px 32px rgba(101, 91, 82, 0.12);
+  --shadow-xl: 0 24px 64px rgba(101, 91, 82, 0.16);
+  --shadow-card-hover: 0 12px 32px rgba(101, 91, 82, 0.1);
+
+  /* Transition Timing Functions */
+  --ease-patina: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-patina-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-patina-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-patina-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Transition Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* Container Widths */
+  --width-container-sm: 640px;
+  --width-container-lg: 1100px;
+  --width-container-xl: 1200px;
+  --width-container-2xl: 1400px;
+
+  /* Max-width scale for Tailwind v4 utilities */
+  --max-width-xs: 20rem;      /* 320px */
+  --max-width-sm: 24rem;      /* 384px */
+  --max-width-md: 28rem;      /* 448px */
+  --max-width-lg: 32rem;      /* 512px */
+  --max-width-xl: 36rem;      /* 576px */
+  --max-width-2xl: 42rem;     /* 672px */
+  --max-width-3xl: 48rem;     /* 768px */
+  --max-width-4xl: 56rem;     /* 896px */
+  --max-width-5xl: 64rem;     /* 1024px */
+  --max-width-6xl: 72rem;     /* 1152px */
+  --max-width-7xl: 80rem;     /* 1280px */
+  --max-width-prose: 65ch;
+
+  /* Animation Keyframes */
+  --animate-shimmer: shimmer 1.5s infinite;
+  --animate-fade-in-up: fadeInUp 0.5s ease-out forwards;
+  --animate-slide-in-right: slideInRight 0.3s ease-out forwards;
+  --animate-pulse-slow: pulseSlow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Paper grain texture overlay */
+.paper-texture {
+  position: relative;
+}
+
+.paper-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Skeleton loading shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--patina-soft-cream) 25%,
+    var(--patina-off-white) 50%,
+    var(--patina-soft-cream) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+/* Focus states for accessibility */
+:focus-visible {
+  outline: 2px solid var(--patina-clay-beige);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Display sizes */
+.text-display-1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-display-1);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.text-display-2 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-display-2);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.text-heading-1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-heading-1);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.text-heading-2 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-heading-2);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.text-heading-3 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-heading-3);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.text-label {
+  font-size: var(--font-size-label);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+@media (max-width: 640px) {
+  .text-display-1 {
+    font-size: 2.5rem;
+  }
+
+  .text-display-2 {
+    font-size: 2rem;
+  }
+
+  .text-heading-1 {
+    font-size: 1.75rem;
+  }
+}
