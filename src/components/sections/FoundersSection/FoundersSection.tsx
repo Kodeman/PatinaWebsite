@@ -5,9 +5,53 @@ import { FadeIn, ScaleIn, StaggerChildren, StaggerItem } from '@/components/moti
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { FounderCard } from '@/components/ui/FounderCard';
 import { StrataMark } from '@/components/ui/StrataMark';
-import { founders, foundersTogetherImage } from '@/data/aboutContent';
+import { founders as defaultFounders, foundersTogetherImage } from '@/data/aboutContent';
+import type { Founder } from '@/types/about';
 
-export function FoundersSection() {
+interface FoundersSectionProps {
+  founders?: Array<{
+    _id: string;
+    name: string;
+    role: string;
+    title?: string;
+    bio?: string;
+    credentials?: string[];
+    imageUrl?: string;
+  }>;
+}
+
+export function FoundersSection({ founders: foundersProp }: FoundersSectionProps) {
+  // Convert CMS data to match local Founder type, or use defaults
+  const displayFounders: Founder[] = foundersProp?.length
+    ? foundersProp.map((f) => ({
+        id: f._id,
+        name: f.name,
+        role: f.role,
+        title: f.title || f.role,
+        focus: f.title || f.role,
+        bio: f.bio || '',
+        credentials: f.credentials || [],
+        location: 'Madison, Wisconsin',
+        imagePlaceholder: f.imageUrl
+          ? {
+              id: f._id,
+              label: f.name,
+              description: `Portrait of ${f.name}`,
+              priority: 'critical' as const,
+              aspectRatio: '3:4',
+              suggestedSources: ['Professional shoot'],
+              imageUrl: f.imageUrl,
+            }
+          : {
+              id: f._id,
+              label: f.name,
+              description: `Portrait of ${f.name}`,
+              priority: 'critical' as const,
+              aspectRatio: '3:4',
+              suggestedSources: ['Professional shoot'],
+            },
+      }))
+    : defaultFounders;
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
       <Container>
@@ -32,7 +76,7 @@ export function FoundersSection() {
         {/* Individual founder cards */}
         <StaggerChildren staggerDelay={0.15} className="max-w-[800px] mx-auto">
           <div className="grid md:grid-cols-2 gap-8">
-            {founders.map((founder) => (
+            {displayFounders.map((founder) => (
               <StaggerItem key={founder.id}>
                 <FounderCard founder={founder} />
               </StaggerItem>

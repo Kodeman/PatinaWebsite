@@ -6,14 +6,20 @@ import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { AgedPaperCard } from '@/components/ui/AgedPaperCard';
 import { problemContent } from '@/data/aboutContent';
 
-export function ProblemSection() {
+interface ProblemSectionProps {
+  heading?: string;
+  description?: string;
+  statistic?: { value: string; label: string };
+}
+
+export function ProblemSection({ heading, description, statistic }: ProblemSectionProps) {
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
       <Container>
         {/* Section header */}
         <FadeIn className="mb-12">
           <span className="text-label text-[var(--patina-clay-beige)] mb-4 block">
-            {problemContent.heading}
+            {heading || problemContent.heading}
           </span>
         </FadeIn>
 
@@ -43,7 +49,7 @@ export function ProblemSection() {
         {/* Description */}
         <FadeIn className="max-w-[700px] mx-auto text-center mb-12">
           <p className="text-xl text-[var(--patina-charcoal)] leading-relaxed">
-            {problemContent.description}
+            {description || problemContent.description}
           </p>
         </FadeIn>
 
@@ -51,10 +57,10 @@ export function ProblemSection() {
         <FadeIn delay={0.2} className="max-w-[500px] mx-auto">
           <AgedPaperCard className="p-8 text-center">
             <p className="text-display-2 text-[var(--patina-clay-beige)] mb-2">
-              {problemContent.statistic.value}
+              {statistic?.value || problemContent.statistic.value}
             </p>
             <p className="text-body text-[var(--patina-mocha-brown)]">
-              {problemContent.statistic.description}
+              {statistic?.label || problemContent.statistic.description}
             </p>
           </AgedPaperCard>
         </FadeIn>

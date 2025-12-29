@@ -6,10 +6,27 @@ import { Container } from '@/components/layout/Container';
 import { FadeIn, StaggerChildren, StaggerItem } from '@/components/motion';
 import { handoffContent, handoffItems } from '@/data/appContent';
 
+interface AppDesignerHandoffProps {
+  header?: string;
+  description?: string;
+  benefit?: string;
+  items?: string[];
+  cta?: string | { label: string; href?: string; variant?: string };
+}
+
 /**
  * AppDesignerHandoff - Section explaining the seamless handoff to professional designers
  */
-export function AppDesignerHandoff() {
+export function AppDesignerHandoff({
+  header,
+  description,
+  benefit,
+  items,
+  cta,
+}: AppDesignerHandoffProps) {
+  const displayItems = items?.length
+    ? items.map((text, i) => ({ id: `item-${i}`, text }))
+    : handoffItems;
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
       <Container>
@@ -30,10 +47,10 @@ export function AppDesignerHandoff() {
           {/* Description */}
           <FadeIn delay={0.1}>
             <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-4">
-              {handoffContent.description}
+              {description || handoffContent.description}
             </p>
             <p className="text-base text-[var(--patina-mocha-brown)]/80 leading-relaxed mb-10">
-              {handoffContent.benefit}
+              {benefit || handoffContent.benefit}
             </p>
           </FadeIn>
 
@@ -44,7 +61,7 @@ export function AppDesignerHandoff() {
 
           <StaggerChildren staggerDelay={0.08} initialDelay={0.25}>
             <ul className="space-y-3 mb-10 text-left max-w-[400px] mx-auto">
-              {handoffItems.map((item) => (
+              {displayItems.map((item) => (
                 <StaggerItem key={item.id}>
                   <li className="flex items-start gap-3">
                     <svg
@@ -76,7 +93,7 @@ export function AppDesignerHandoff() {
                 'hover:bg-black shadow-lg'
               )}
             >
-              {handoffContent.cta.label}
+              {typeof cta === 'string' ? cta : cta?.label || handoffContent.cta.label}
               <svg
                 className="w-4 h-4"
                 fill="none"

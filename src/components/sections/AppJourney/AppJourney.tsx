@@ -6,11 +6,34 @@ import { JourneyStep } from './JourneyStep';
 import { JourneyConnector } from './JourneyConnector';
 import { journeyContent, journeySteps } from '@/data/appContent';
 
+interface AppJourneyProps {
+  header?: string;
+  steps?: Array<{
+    stepNumber: number;
+    title: string;
+    description: string;
+    tagline: string;
+    icon: string;
+  }>;
+}
+
 /**
  * AppJourney - "How It Works" section with 4-step vertical journey
  * Replaces the old 2x2 features grid with a narrative flow
  */
-export function AppJourney() {
+export function AppJourney({ header, steps }: AppJourneyProps) {
+  // Convert CMS steps to local format with placeholder images
+  const displaySteps = steps?.length
+    ? steps.map((s) => ({
+        id: `step-${s.stepNumber}`,
+        stepNumber: s.stepNumber,
+        title: s.title,
+        description: s.description,
+        tagline: s.tagline,
+        icon: s.icon,
+        imagePlaceholder: journeySteps.find((js) => js.stepNumber === s.stepNumber)?.imagePlaceholder,
+      }))
+    : journeySteps;
   return (
     <section
       id="how-it-works"
@@ -38,9 +61,9 @@ export function AppJourney() {
           {/* Steps */}
           <StaggerChildren staggerDelay={0.15} initialDelay={0.2}>
             <ol className="relative space-y-0">
-              {journeySteps.map((step, index) => (
+              {displaySteps.map((step, index) => (
                 <StaggerItem key={step.id}>
-                  <JourneyStep step={step} isLast={index === journeySteps.length - 1} />
+                  <JourneyStep step={step as typeof journeySteps[0]} isLast={index === displaySteps.length - 1} />
                 </StaggerItem>
               ))}
             </ol>

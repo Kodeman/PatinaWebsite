@@ -7,7 +7,15 @@ import { AgedPaperCard } from '@/components/ui/AgedPaperCard';
 import { useReducedMotion } from '@/hooks';
 import { nameDefinitionContent } from '@/data/aboutContent';
 
-export function NameDefinition() {
+interface NameDefinitionProps {
+  word?: string;
+  pronunciation?: string;
+  partOfSpeech?: string;
+  definition?: string;
+  quote?: string;
+}
+
+export function NameDefinition({ word, pronunciation, partOfSpeech, definition, quote }: NameDefinitionProps) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
@@ -37,16 +45,16 @@ export function NameDefinition() {
           >
             <AgedPaperCard className="p-8 lg:p-12 text-center">
               <h2 className="text-display-2 text-[var(--patina-charcoal)] mb-2 font-serif">
-                {nameDefinitionContent.word}
+                {word || nameDefinitionContent.word}
               </h2>
               <p className="text-body text-[var(--patina-mocha-brown)] mb-4 font-mono">
-                {nameDefinitionContent.pronunciation}
+                {pronunciation || nameDefinitionContent.pronunciation}
               </p>
               <p className="text-label text-[var(--patina-clay-beige)] mb-6">
-                {nameDefinitionContent.partOfSpeech}
+                {partOfSpeech || nameDefinitionContent.partOfSpeech}
               </p>
               <p className="text-lg text-[var(--patina-charcoal)] leading-relaxed">
-                {nameDefinitionContent.definition}
+                {definition || nameDefinitionContent.definition}
               </p>
             </AgedPaperCard>
           </motion.div>
@@ -64,7 +72,7 @@ export function NameDefinition() {
             }}
           >
             <p className="text-xl text-[var(--patina-off-white)] italic leading-relaxed">
-              {nameDefinitionContent.quote}
+              {quote || nameDefinitionContent.quote}
             </p>
           </motion.blockquote>
         </div>

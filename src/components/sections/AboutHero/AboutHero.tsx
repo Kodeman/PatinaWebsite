@@ -8,7 +8,12 @@ import { ScrollIndicator } from '@/components/ui/ScrollIndicator';
 import { useReducedMotion } from '@/hooks';
 import { heroContent } from '@/data/aboutContent';
 
-export function AboutHero() {
+interface AboutHeroProps {
+  headline?: string;
+  subheadline?: string;
+}
+
+export function AboutHero({ headline, subheadline }: AboutHeroProps) {
   const prefersReducedMotion = useReducedMotion();
 
   const fadeUpVariants = {
@@ -77,7 +82,7 @@ export function AboutHero() {
           animate="visible"
           variants={fadeUpVariants}
         >
-          {heroContent.headline}
+          {headline || heroContent.headline}
         </motion.h1>
 
         {/* Subheadline */}
@@ -88,7 +93,7 @@ export function AboutHero() {
           animate="visible"
           variants={fadeUpVariants}
         >
-          {heroContent.subheadline}
+          {subheadline || heroContent.subheadline}
         </motion.p>
 
         {/* Scroll indicator */}

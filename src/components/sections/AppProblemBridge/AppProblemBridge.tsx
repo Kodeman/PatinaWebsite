@@ -6,11 +6,34 @@ import { FadeIn } from '@/components/motion';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
 import { problemBridgeContent } from '@/data/appContent';
 
+interface AppProblemBridgeProps {
+  header?: string;
+  paragraphs?: string[];
+  comparisonLeft?: {
+    label: string;
+    description: string;
+    itemCount: number;
+  };
+  comparisonRight?: {
+    label: string;
+    description: string;
+    itemCount: number;
+  };
+}
+
 /**
  * AppProblemBridge - Problem/Solution section
  * "Other apps show you what's popular. Patina shows you what's right."
  */
-export function AppProblemBridge() {
+export function AppProblemBridge({
+  header,
+  paragraphs,
+  comparisonLeft,
+  comparisonRight,
+}: AppProblemBridgeProps) {
+  const displayParagraphs = paragraphs?.length ? paragraphs : problemBridgeContent.paragraphs;
+  const leftComparison = comparisonLeft || problemBridgeContent.comparison.left;
+  const rightComparison = comparisonRight || problemBridgeContent.comparison.right;
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
       <Container>
@@ -31,12 +54,12 @@ export function AppProblemBridge() {
         {/* Body Paragraphs */}
         <FadeIn delay={0.1} className="max-w-[700px] mx-auto text-center mb-16">
           <div className="space-y-4">
-            {problemBridgeContent.paragraphs.map((paragraph, index) => (
+            {displayParagraphs.map((paragraph, index) => (
               <p
                 key={index}
                 className={cn(
                   'text-lg leading-relaxed',
-                  index === problemBridgeContent.paragraphs.length - 1
+                  index === displayParagraphs.length - 1
                     ? 'text-[var(--patina-charcoal)] font-medium'
                     : 'text-[var(--patina-mocha-brown)]'
                 )}
@@ -53,7 +76,7 @@ export function AppProblemBridge() {
           <FadeIn direction="left" delay={0.2}>
             <div className="relative">
               <span className="text-label text-[var(--patina-mocha-brown)]/60 mb-3 block text-center">
-                {problemBridgeContent.comparison.left.label}
+                {leftComparison.label}
               </span>
               <div className="aspect-[4/3] rounded-[var(--radius-xl)] overflow-hidden border border-[var(--patina-clay-beige)]/20 shadow-sm">
                 {problemBridgeContent.comparison.left.imagePlaceholder && (
@@ -63,9 +86,9 @@ export function AppProblemBridge() {
                   />
                 )}
               </div>
-              {problemBridgeContent.comparison.left.itemCount && (
+              {leftComparison.itemCount && (
                 <p className="mt-3 text-center text-sm text-[var(--patina-mocha-brown)]/60">
-                  {problemBridgeContent.comparison.left.itemCount}+ items to sort through
+                  {leftComparison.itemCount}+ items to sort through
                 </p>
               )}
             </div>
@@ -75,7 +98,7 @@ export function AppProblemBridge() {
           <FadeIn direction="right" delay={0.3}>
             <div className="relative">
               <span className="text-label text-[var(--patina-clay-beige)] mb-3 block text-center">
-                {problemBridgeContent.comparison.right.label}
+                {rightComparison.label}
               </span>
               <div className="aspect-[4/3] rounded-[var(--radius-xl)] overflow-hidden border-2 border-[var(--patina-clay-beige)]/40 shadow-md ring-4 ring-[var(--patina-clay-beige)]/10">
                 {problemBridgeContent.comparison.right.imagePlaceholder && (
@@ -85,9 +108,9 @@ export function AppProblemBridge() {
                   />
                 )}
               </div>
-              {problemBridgeContent.comparison.right.itemCount && (
+              {rightComparison.itemCount && (
                 <p className="mt-3 text-center text-sm text-[var(--patina-charcoal)] font-medium">
-                  {problemBridgeContent.comparison.right.itemCount} pieces that belong
+                  {rightComparison.itemCount} pieces that belong
                 </p>
               )}
             </div>

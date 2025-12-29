@@ -430,8 +430,16 @@ export const appPageQuery = groq`
     heroHeadlineEmphasis,
     heroSubheadline,
     heroSecondaryLine,
-    heroPrimaryCta,
-    heroSecondaryCta,
+    heroPrimaryCta {
+      label,
+      href,
+      variant
+    },
+    heroSecondaryCta {
+      label,
+      href,
+      variant
+    },
     heroAndroidNote,
     heroMockup {
       asset-> { url, metadata { lqip } },
@@ -485,7 +493,11 @@ export const appPageQuery = groq`
     handoffDescription,
     handoffBenefit,
     handoffItems,
-    handoffCta,
+    handoffCta {
+      label,
+      href,
+      variant
+    },
     trustEyebrow,
     trustIndicators[] {
       title,
@@ -496,9 +508,17 @@ export const appPageQuery = groq`
     ctaHeadlineEmphasis,
     ctaSubheadline,
     ctaTertiaryLine,
-    ctaPrimary,
+    ctaPrimary {
+      label,
+      href,
+      variant
+    },
     ctaSecondaryText,
-    ctaSecondaryLink
+    ctaSecondaryLink {
+      label,
+      href,
+      variant
+    }
   }
 `;
 
@@ -666,5 +686,15 @@ export const featuredMakersQuery = groq`
     badges,
     quote,
     "imageUrl": image.asset->url
+  }
+`;
+
+// Trust badges for homepage
+export const trustBadgesQuery = groq`
+  *[_type == "trustBadge"] | order(sortOrder asc) {
+    _id,
+    value,
+    label,
+    icon
   }
 `;

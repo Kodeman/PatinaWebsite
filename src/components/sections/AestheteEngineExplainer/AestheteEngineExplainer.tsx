@@ -5,11 +5,32 @@ import { FadeIn, StaggerChildren, StaggerItem } from '@/components/motion';
 import { EnginePillar } from './EnginePillar';
 import { aestheteEngineContent, enginePillars } from '@/data/appContent';
 
+interface AestheteEngineExplainerProps {
+  header?: string;
+  pillars?: Array<{
+    title: string;
+    description: string;
+    icon?: string;
+    examples?: string[];
+    highlight?: string;
+  }>;
+}
+
 /**
  * AestheteEngineExplainer - Dedicated section for The Aesthete Engine
  * Dark background with 3-pillar layout explaining the AI system
  */
-export function AestheteEngineExplainer() {
+export function AestheteEngineExplainer({ header, pillars }: AestheteEngineExplainerProps) {
+  // Convert CMS pillars to local format
+  const displayPillars = pillars?.length
+    ? pillars.map((p, i) => ({
+        id: `pillar-${i}`,
+        title: p.title,
+        description: p.description,
+        examples: p.examples || [],
+        highlight: p.highlight,
+      }))
+    : enginePillars;
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-charcoal)] relative overflow-hidden">
       {/* Subtle paper texture overlay */}
@@ -38,9 +59,9 @@ export function AestheteEngineExplainer() {
         {/* Pillars Grid */}
         <StaggerChildren staggerDelay={0.1}>
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-            {enginePillars.map((pillar) => (
+            {displayPillars.map((pillar) => (
               <StaggerItem key={pillar.id}>
-                <EnginePillar pillar={pillar} />
+                <EnginePillar pillar={pillar as typeof enginePillars[0]} />
               </StaggerItem>
             ))}
           </div>

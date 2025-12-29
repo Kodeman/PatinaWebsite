@@ -3,8 +3,12 @@
 import { Container } from '@/components/layout/Container';
 import { FadeIn } from '@/components/motion';
 import { StrataMark } from '@/components/ui/StrataMark';
-import { timeline } from '@/data/aboutContent';
+import { timeline as defaultTimeline } from '@/data/aboutContent';
 import type { TimelineIcon } from '@/types/about';
+
+interface JourneyTimelineProps {
+  timeline?: Array<{ year: string; title: string; description: string; icon?: string }>;
+}
 
 const iconComponents: Record<TimelineIcon, React.ReactNode> = {
   spark: (
@@ -49,7 +53,14 @@ const iconComponents: Record<TimelineIcon, React.ReactNode> = {
   ),
 };
 
-export function JourneyTimeline() {
+export function JourneyTimeline({ timeline: timelineProp }: JourneyTimelineProps) {
+  const displayTimeline = timelineProp?.length
+    ? timelineProp.map((m) => ({
+        ...m,
+        icon: (m.icon || 'spark') as TimelineIcon,
+      }))
+    : defaultTimeline;
+
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
       <Container>
@@ -73,7 +84,7 @@ export function JourneyTimeline() {
 
           {/* Timeline entries */}
           <ol className="relative space-y-12 lg:space-y-16">
-            {timeline.map((milestone, index) => (
+            {displayTimeline.map((milestone, index) => (
               <li key={`${milestone.year}-${milestone.title}`} className="relative">
                 <FadeIn
                   direction={index % 2 === 0 ? 'left' : 'right'}

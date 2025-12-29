@@ -4,8 +4,16 @@ import { Container } from '@/components/layout/Container';
 import { FadeIn, StaggerChildren, StaggerItem } from '@/components/motion';
 import { ValueCard } from '@/components/ui/ValueCard';
 import { brandValues } from '@/data/aboutContent';
+import type { MaterialTexture } from '@/types/about';
 
-export function ValuesSection() {
+interface ValuesSectionProps {
+  values?: Array<{ title: string; description: string; materialTexture?: string }>;
+}
+
+const defaultTextures: MaterialTexture[] = ['wood', 'linen', 'stone', 'leather', 'clay'];
+
+export function ValuesSection({ values }: ValuesSectionProps) {
+  const displayValues = values?.length ? values : brandValues;
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
       <Container>
@@ -25,12 +33,12 @@ export function ValuesSection() {
           <div className="grid gap-6 lg:gap-8 max-w-[1100px] mx-auto">
             {/* First row - 3 cards */}
             <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-              {brandValues.slice(0, 3).map((value) => (
-                <StaggerItem key={value.id}>
+              {displayValues.slice(0, 3).map((value, index) => (
+                <StaggerItem key={value.title || index}>
                   <ValueCard
                     title={value.title}
                     description={value.description}
-                    materialTexture={value.materialTexture}
+                    materialTexture={(value.materialTexture as MaterialTexture) || defaultTextures[index % defaultTextures.length]}
                   />
                 </StaggerItem>
               ))}
@@ -38,12 +46,12 @@ export function ValuesSection() {
 
             {/* Second row - 2 cards centered */}
             <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-[740px] mx-auto">
-              {brandValues.slice(3).map((value) => (
-                <StaggerItem key={value.id}>
+              {displayValues.slice(3).map((value, index) => (
+                <StaggerItem key={value.title || `row2-${index}`}>
                   <ValueCard
                     title={value.title}
                     description={value.description}
-                    materialTexture={value.materialTexture}
+                    materialTexture={(value.materialTexture as MaterialTexture) || defaultTextures[(index + 3) % defaultTextures.length]}
                   />
                 </StaggerItem>
               ))}

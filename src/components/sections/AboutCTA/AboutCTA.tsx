@@ -5,7 +5,13 @@ import { StrataMark } from '@/components/ui/StrataMark';
 import { Button } from '@/components/ui/Button';
 import { ctaContent } from '@/data/aboutContent';
 
-export function AboutCTA() {
+interface AboutCTAProps {
+  headline?: string;
+  actions?: Array<{ label: string; href: string; variant?: string }>;
+}
+
+export function AboutCTA({ headline, actions }: AboutCTAProps) {
+  const displayActions = actions?.length ? actions : ctaContent.actions;
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-charcoal)] relative overflow-hidden">
       {/* Paper texture overlay */}
@@ -27,14 +33,14 @@ export function AboutCTA() {
           {/* Headline */}
           <FadeIn delay={0.1}>
             <h2 className="text-heading-1 text-[var(--patina-off-white)] mb-12">
-              {ctaContent.headline}
+              {headline || ctaContent.headline}
             </h2>
           </FadeIn>
 
           {/* Action buttons */}
           <StaggerChildren staggerDelay={0.1} initialDelay={0.2}>
             <div className="grid sm:grid-cols-2 gap-4">
-              {ctaContent.actions.map((action) => (
+              {displayActions.map((action) => (
                 <StaggerItem key={action.href}>
                   <Button
                     asChild

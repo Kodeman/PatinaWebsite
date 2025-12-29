@@ -3,7 +3,14 @@ import { Container } from '@/components/layout/Container';
 import { FadeIn } from '@/components/motion';
 import { studioConnectionContent } from '@/data/aboutContent';
 
-export function StudioConnection() {
+interface StudioConnectionProps {
+  heading?: string;
+  description?: string;
+  linkText?: string;
+  linkUrl?: string;
+}
+
+export function StudioConnection({ heading, description, linkText, linkUrl }: StudioConnectionProps) {
   return (
     <section className="py-16 lg:py-20 bg-[var(--patina-charcoal)] relative overflow-hidden">
       {/* Subtle texture overlay */}
@@ -41,22 +48,22 @@ export function StudioConnection() {
 
             {/* Heading */}
             <h2 className="text-heading-2 text-[var(--patina-off-white)] mb-4">
-              {studioConnectionContent.heading}
+              {heading || studioConnectionContent.heading}
             </h2>
 
             {/* Description */}
             <p className="text-body text-[var(--patina-off-white)]/70 leading-relaxed mb-6">
-              {studioConnectionContent.description}
+              {description || studioConnectionContent.description}
             </p>
 
             {/* External link */}
             <a
-              href={studioConnectionContent.linkUrl}
+              href={linkUrl || studioConnectionContent.linkUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[var(--patina-clay-beige)] hover:text-[var(--patina-off-white)] transition-colors font-medium"
             >
-              {studioConnectionContent.linkText}
+              {linkText || studioConnectionContent.linkText}
               <svg
                 className="w-4 h-4"
                 fill="none"
