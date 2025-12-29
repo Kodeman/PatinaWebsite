@@ -1,22 +1,42 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { cn, formatPrice } from "@/lib/utils";
 import { MaterialTag } from "@/components/ui/MaterialTag";
+import { SustainabilityBadge } from "@/components/ui/SustainabilityBadge";
+import { useProductViewTracking } from "@/hooks";
 import type { ProductCard as ProductCardType } from "@/types/sanity";
 
 export interface ProductCardProps {
   product: ProductCardType;
   priority?: boolean;
+  position?: number;
+  source?: "catalog" | "related" | "search" | "homepage";
   className?: string;
 }
 
 export function ProductCard({
   product,
   priority = false,
+  position = 0,
+  source = "catalog",
   className,
 }: ProductCardProps) {
+  // Track when product card comes into view
+  const trackingRef = useProductViewTracking<HTMLAnchorElement>({
+    product_id: product._id,
+    product_name: product.name,
+    price: product.price,
+    category: product.category,
+    maker: product.maker?.name,
+    position,
+    source,
+  });
+
   return (
     <Link
+      ref={trackingRef}
       href={`/furniture/${product.slug}`}
       className={cn(
         "group block rounded-[var(--radius-xl)] overflow-hidden",
@@ -46,14 +66,26 @@ export function ProductCard({
           </div>
         )}
 
-        {/* Maker Badge */}
-        {product.maker?.badge && (
-          <div className="absolute top-4 left-4 bg-white/[0.88] backdrop-blur-sm px-3 py-1.5 rounded-full">
-            <span className="text-xs font-medium text-[var(--patina-charcoal)]">
-              {product.maker.badge}
-            </span>
-          </div>
-        )}
+        {/* Badges Container */}
+        <div className="absolute top-4 left-4 right-4 flex items-start justify-between">
+          {/* Maker Badge */}
+          {product.maker?.badge && (
+            <div className="bg-white/[0.88] backdrop-blur-sm px-3 py-1.5 rounded-full">
+              <span className="text-xs font-medium text-[var(--patina-charcoal)]">
+                {product.maker.badge}
+              </span>
+            </div>
+          )}
+
+          {/* Sustainability Badges */}
+          {product.sustainabilityBadges && product.sustainabilityBadges.length > 0 && (
+            <div className="flex gap-1">
+              {product.sustainabilityBadges.slice(0, 2).map((badge) => (
+                <SustainabilityBadge key={badge} badge={badge} size="sm" />
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Out of Stock Overlay */}
         {product.inStock === false && (
@@ -71,6 +103,7 @@ export function ProductCard({
               name={product.material.name}
               origin={product.material.origin}
               colorHex={product.material.colorHex}
+              description={product.material.description}
               size="sm"
             />
           </div>

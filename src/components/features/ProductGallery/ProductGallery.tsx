@@ -52,7 +52,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
         {/* Image Counter */}
         {images.length > 1 && (
-          <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full">
+          <div
+            className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <span className="sr-only">Viewing image </span>
             {activeIndex + 1} / {images.length}
           </div>
         )}
@@ -73,7 +78,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                   prev === 0 ? images.length - 1 : prev - 1
                 )
               }
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors focus-visible:ring-2 focus-visible:ring-[var(--patina-clay-beige)] focus-visible:ring-offset-2"
               aria-label="Previous image"
             >
               <svg
@@ -96,7 +101,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                   prev === images.length - 1 ? 0 : prev + 1
                 )
               }
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors focus-visible:ring-2 focus-visible:ring-[var(--patina-clay-beige)] focus-visible:ring-offset-2"
               aria-label="Next image"
             >
               <svg
@@ -128,10 +133,13 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 "relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden",
                 "transition-all duration-200",
                 "ring-2 ring-offset-2",
+                "focus-visible:ring-[var(--patina-clay-beige)]",
                 index === activeIndex
                   ? "ring-[var(--patina-clay-beige)]"
                   : "ring-transparent hover:ring-[var(--patina-clay-beige)]/50"
               )}
+              aria-label={`View image ${index + 1} of ${images.length}`}
+              aria-current={index === activeIndex ? "true" : undefined}
             >
               {image.url ? (
                 <Image

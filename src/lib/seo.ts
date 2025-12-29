@@ -147,3 +147,51 @@ export function generateBreadcrumbJsonLd(items: { name: string; url: string }[])
     })),
   };
 }
+
+export function generateAboutPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "Our Story | Patina",
+    description:
+      "Meet Kody and Leah Kochaver, the husband and wife team behind Patina. Born from real interior design work in Madison, Wisconsin.",
+    url: `${siteUrl}/about`,
+    mainEntity: {
+      "@type": "Organization",
+      name: "Patina",
+      description: siteDescription,
+      url: siteUrl,
+      founders: [
+        {
+          "@type": "Person",
+          name: "Leah Kochaver",
+          jobTitle: "Co-Founder, Design & Experience",
+          worksFor: {
+            "@type": "Organization",
+            name: "Patina",
+          },
+        },
+        {
+          "@type": "Person",
+          name: "Kody Kochaver",
+          jobTitle: "Co-Founder, Technology & Product",
+          worksFor: {
+            "@type": "Organization",
+            name: "Patina",
+          },
+        },
+      ],
+      foundingDate: "2023",
+      foundingLocation: {
+        "@type": "Place",
+        name: "Madison, Wisconsin",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Madison",
+          addressRegion: "WI",
+          addressCountry: "US",
+        },
+      },
+    },
+  };
+}

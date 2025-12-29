@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { ProductGallery } from "@/components/features/ProductGallery";
@@ -8,159 +9,9 @@ import { ARPreviewButton } from "@/components/features/ARPreviewButton";
 import { ProductCard } from "@/components/features/ProductCard";
 import { MaterialTag } from "@/components/ui/MaterialTag";
 import { formatPrice } from "@/lib/utils";
+import { sanityFetch } from "../../../../sanity/lib/client";
+import { productBySlugQuery, relatedProductsQuery } from "../../../../sanity/lib/queries";
 import type { Product, ProductCard as ProductCardType } from "@/types/sanity";
-
-// Sample product data for development
-const sampleProducts: Record<string, Product> = {
-  "noma-dining-chair": {
-    _id: "1",
-    name: "Noma Dining Chair",
-    slug: "noma-dining-chair",
-    price: 895,
-    description:
-      "Hand-shaped white oak with woven paper cord seat. A tribute to Danish craft traditions.",
-    longDescription: [],
-    imageUrl: "https://images.unsplash.com/photo-1503602642458-232111445657?w=800&h=1000&fit=crop&q=80",
-    category: "dining",
-    productType: "chair",
-    featured: true,
-    inStock: true,
-    leadTime: "6-8 weeks",
-    dimensions: {
-      width: '19"',
-      depth: '21"',
-      height: '32"',
-      seatHeight: '18"',
-    },
-    mainImage: {
-      asset: { _id: "1", url: "https://images.unsplash.com/photo-1503602642458-232111445657?w=1200&h=1200&fit=crop&q=80" },
-    },
-    gallery: [
-      { asset: { _id: "1", url: "https://images.unsplash.com/photo-1503602642458-232111445657?w=1200&h=1200&fit=crop&q=80" }, alt: "Front view" },
-      { asset: { _id: "2", url: "https://images.unsplash.com/photo-1549497538-303791f60c6e?w=1200&h=1200&fit=crop&q=80" }, alt: "Side view" },
-      { asset: { _id: "3", url: "https://images.unsplash.com/photo-1551298370-9d3d53bc4f23?w=1200&h=1200&fit=crop&q=80" }, alt: "Detail of joinery" },
-    ],
-    maker: {
-      _id: "m1",
-      name: "Nakashima Workshop",
-      slug: "nakashima-workshop",
-      location: "New Hope, PA",
-      foundedYear: 1946,
-      yearsOfCraft: 78,
-      badges: ["3rd Generation", "Master Craftsman"],
-      quote:
-        "Each piece of wood has a story. Our job is to honor that story while creating something new.",
-    },
-    material: {
-      _id: "mat1",
-      name: "White Oak",
-      origin: "Vermont",
-      colorHex: "#C4A574",
-      description:
-        "Sustainably harvested white oak with natural grain patterns. Ages to a warm honey tone.",
-    },
-    careInstructions: [
-      "Dust regularly with a soft, dry cloth",
-      "Clean spills immediately with a damp cloth",
-      "Apply furniture wax every 6-12 months",
-      "Avoid direct sunlight and heat sources",
-      "Re-tighten joints annually if needed",
-    ],
-    shipping: {
-      method: "White Glove Delivery",
-      estimate: "2-3 weeks after production",
-      includes: ["Room of choice placement", "Full assembly", "Packaging removal"],
-    },
-  },
-  "atelier-coffee-table": {
-    _id: "2",
-    name: "Atelier Coffee Table",
-    slug: "atelier-coffee-table",
-    price: 2450,
-    description:
-      "Live edge walnut slab with hand-forged iron base. Each piece uniquely shaped by nature.",
-    longDescription: [],
-    imageUrl: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=800&h=1000&fit=crop&q=80",
-    category: "living-room",
-    productType: "table",
-    featured: true,
-    inStock: true,
-    leadTime: "8-10 weeks",
-    dimensions: {
-      width: '48"',
-      depth: '28"',
-      height: '16"',
-    },
-    mainImage: {
-      asset: { _id: "2", url: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=1200&h=1200&fit=crop&q=80" },
-    },
-    gallery: [
-      { asset: { _id: "1", url: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=1200&h=1200&fit=crop&q=80" }, alt: "Overview" },
-      { asset: { _id: "2", url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=1200&fit=crop&q=80" }, alt: "Live edge detail" },
-    ],
-    maker: {
-      _id: "m2",
-      name: "Vermont Woodworks",
-      slug: "vermont-woodworks",
-      location: "Burlington, VT",
-      foundedYear: 1972,
-      yearsOfCraft: 52,
-      badges: ["50+ Years", "B Corp Certified"],
-      quote: "We believe furniture should outlast the people who make it.",
-    },
-    material: {
-      _id: "mat2",
-      name: "Black Walnut",
-      origin: "Pennsylvania",
-      colorHex: "#5C4033",
-      description:
-        "Rich, dark walnut with distinctive grain. Develops a deeper patina over time.",
-    },
-    careInstructions: [
-      "Dust with a soft, lint-free cloth",
-      "Use coasters to prevent water rings",
-      "Oil the live edge annually with food-safe mineral oil",
-      "Wipe the iron base with a dry cloth only",
-      "Avoid placing in direct sunlight",
-    ],
-    shipping: {
-      method: "White Glove Delivery",
-      estimate: "3-4 weeks after production",
-      includes: ["Room of choice placement", "Full assembly", "Packaging removal"],
-    },
-  },
-};
-
-// Related products for display
-const relatedProducts: ProductCardType[] = [
-  {
-    _id: "3",
-    name: "Kyoto Platform Bed",
-    slug: "kyoto-platform-bed",
-    price: 3850,
-    imageUrl: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&h=1000&fit=crop&q=80",
-    category: "bedroom",
-    maker: { name: "Sashimono Studio", badge: "Master Craftsman" },
-  },
-  {
-    _id: "4",
-    name: "Archipelago Bookshelf",
-    slug: "archipelago-bookshelf",
-    price: 1895,
-    imageUrl: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=800&h=1000&fit=crop&q=80",
-    category: "office",
-    maker: { name: "Studio Piet", badge: "Carbon Neutral" },
-  },
-  {
-    _id: "5",
-    name: "Haven Lounge Chair",
-    slug: "haven-lounge-chair",
-    price: 2195,
-    imageUrl: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&h=1000&fit=crop&q=80",
-    category: "living-room",
-    maker: { name: "Woodward & Sons", badge: "4th Generation" },
-  },
-];
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -168,7 +19,13 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = sampleProducts[slug];
+  const { isEnabled: isDraft } = await draftMode();
+
+  const product = await sanityFetch<Product | null>({
+    query: productBySlugQuery,
+    params: { slug },
+    isDraftMode: isDraft,
+  });
 
   if (!product) {
     return {
@@ -184,9 +41,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params;
-  // In production, fetch from Sanity:
-  // const product = await client.fetch(productBySlugQuery, { slug });
-  const product = sampleProducts[slug];
+  const { isEnabled: isDraft } = await draftMode();
+
+  const product = await sanityFetch<Product | null>({
+    query: productBySlugQuery,
+    params: { slug },
+    isDraftMode: isDraft,
+  });
+
+  // Fetch related products
+  const relatedProducts = product
+    ? await sanityFetch<ProductCardType[]>({
+        query: relatedProductsQuery,
+        params: { category: product.category, currentSlug: slug },
+        isDraftMode: isDraft,
+      })
+    : [];
 
   if (!product) {
     notFound();
@@ -592,7 +462,11 @@ export default async function ProductPage({ params }: PageProps) {
   );
 }
 
-// Generate static params for sample products
-export function generateStaticParams() {
-  return Object.keys(sampleProducts).map((slug) => ({ slug }));
+// Generate static params from Sanity
+export async function generateStaticParams() {
+  const { client } = await import("../../../../sanity/lib/client");
+  const slugs = await client.fetch<string[]>(
+    `*[_type == "product" && defined(slug.current)].slug.current`
+  );
+  return slugs.map((slug) => ({ slug }));
 }

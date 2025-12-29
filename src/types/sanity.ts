@@ -47,6 +47,16 @@ export interface ProductDimensions {
   seatHeight?: string;
 }
 
+export type SustainabilityBadge = "fsc" | "carbon-neutral" | "recycled" | "local" | "handmade";
+
+export const sustainabilityBadgeLabels: Record<SustainabilityBadge, string> = {
+  fsc: "FSC Certified",
+  "carbon-neutral": "Carbon Neutral",
+  recycled: "Recycled Materials",
+  local: "Locally Sourced",
+  handmade: "Handcrafted",
+};
+
 export interface ProductCard {
   _id: string;
   name: string;
@@ -58,6 +68,7 @@ export interface ProductCard {
   productType?: ProductType;
   featured?: boolean;
   inStock?: boolean;
+  sustainabilityBadges?: SustainabilityBadge[];
   maker?: {
     name: string;
     badge?: string;
@@ -66,6 +77,7 @@ export interface ProductCard {
     name: string;
     origin?: string;
     colorHex?: string;
+    description?: string;
   };
 }
 

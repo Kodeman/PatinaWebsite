@@ -1,0 +1,1 @@
+export { OriginStory } from './OriginStory';

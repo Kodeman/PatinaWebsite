@@ -1,221 +1,253 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
+import { MinimalNav } from "@/components/layout/MinimalNav";
+import { StickyNav } from "@/components/layout/StickyNav";
 
 export interface HeroProps {
   title: string;
   titleEmphasis?: string;
   description: string;
+  /** Secondary line displayed below description, styled in brand accent color */
+  secondaryLine?: string;
   provenanceLine?: string;
+  trustLine?: string;
   primaryCta?: {
-    label: string;
-    href: string;
-  };
-  secondaryCta?: {
     label: string;
     href: string;
   };
   imageUrl?: string;
   imagePlaceholder?: string;
-  materialTag?: {
-    name: string;
-    origin: string;
-  };
+  /** ID of the section to scroll to when clicking the scroll indicator */
+  scrollTargetId?: string;
 }
 
 /**
- * Hero Section - Two-column layout with paper texture and organic shapes
- * From design docs: patina-visual-refined.html
+ * Hero Section - "The Morning Light" design
+ * Full viewport immersive hero with gradient overlay and scroll-reveal navigation
  */
 export function Hero({
   title,
   titleEmphasis,
   description,
-  provenanceLine,
+  secondaryLine,
+  trustLine = "Trusted by 10,000+ design enthusiasts",
   primaryCta,
-  secondaryCta,
   imageUrl,
   imagePlaceholder = "Hero Photography",
-  materialTag,
+  scrollTargetId = "value-proposition",
 }: HeroProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const elementHeight = sectionRef.current.offsetHeight;
+        const progress = Math.min(window.scrollY / elementHeight, 1);
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial call
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Split title if emphasis is provided
-  const titleParts = titleEmphasis
-    ? title.split(titleEmphasis)
-    : [title];
+  const titleParts = titleEmphasis ? title.split(titleEmphasis) : [title];
+
+  // Navigation visibility logic
+  const minimalNavOpacity = 1 - scrollProgress / 0.5; // Fades out by 50% scroll
+  const showStickyNav = scrollProgress >= 0.7;
+
+  // Parallax offset for background image
+  const parallaxOffset = prefersReducedMotion ? 0 : scrollProgress * 100;
+
+  // Animation variants for staggered entrance
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.6,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
+  const fadeVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.6,
+        delay: prefersReducedMotion ? 0 : 0.8,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
+  const scrollIndicatorVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.6,
+        delay: prefersReducedMotion ? 0 : 1.2,
+        ease: "easeOut" as const,
+      },
+    },
+  };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[var(--patina-warm-white)] to-[var(--patina-off-white)]">
-      {/* Paper grain texture overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
+    <>
+      {/* Navigation Components */}
+      <MinimalNav opacity={Math.max(0, minimalNavOpacity)} />
+      <StickyNav isVisible={showStickyNav} />
 
-      {/* Organic background shapes */}
-      <div
-        className="absolute -bottom-12 -left-20 w-[300px] h-[200px] bg-[var(--patina-clay-beige)] opacity-[0.04] pointer-events-none"
-        style={{
-          borderRadius: "60% 40% 50% 50% / 50% 50% 40% 60%",
-          transform: "rotate(-15deg)",
-        }}
-      />
-      <div
-        className="absolute top-[15%] right-[35%] w-[150px] h-[100px] bg-[var(--patina-clay-beige)] opacity-[0.04] pointer-events-none"
-        style={{
-          borderRadius: "60% 40% 50% 50% / 50% 50% 40% 60%",
-          transform: "rotate(30deg)",
-        }}
-      />
-
-      {/* Radial gradient accent */}
-      <div
-        className="absolute -top-[20%] -right-[10%] w-[50%] h-[80%] pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse at center, rgba(163, 146, 124, 0.06) 0%, transparent 70%)",
-          borderRadius: "50%",
-        }}
-      />
-
-      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-12 lg:py-20">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Content Column */}
-          <div className="order-2 lg:order-1">
-            <h1 className="text-display-1 text-[var(--patina-charcoal)] mb-6">
-              {titleParts[0]}
-              {titleEmphasis && (
-                <em className="italic text-[var(--patina-mocha-brown)]">
-                  {titleEmphasis}
-                </em>
-              )}
-              {titleParts[1]}
-            </h1>
-
-            <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-6 max-w-[440px]">
-              {description}
-            </p>
-
-            {/* Provenance Line */}
-            {provenanceLine && (
-              <div className="flex items-center gap-3 py-3 mb-8 border-y border-[rgba(163,146,124,0.15)]">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 stroke-[var(--patina-clay-beige)]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 6v6l4 2" />
-                  </svg>
-                </div>
-                <span className="text-sm italic text-[var(--patina-mocha-brown)]">
-                  {provenanceLine}
-                </span>
-              </div>
-            )}
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
-              {primaryCta && (
-                <Link
-                  href={primaryCta.href}
-                  className={cn(
-                    "inline-flex items-center justify-center",
-                    "px-8 py-4 text-[0.9375rem] font-medium",
-                    "bg-[var(--patina-clay-beige)] text-[var(--patina-off-white)]",
-                    "rounded-[var(--radius-lg)]",
-                    "transition-all duration-[var(--duration-normal)] ease-[var(--ease-patina)]",
-                    "hover:bg-[var(--patina-mocha-brown)]",
-                    "shadow-[0_4px_12px_rgba(163,146,124,0.25)]",
-                    "hover:shadow-[0_6px_20px_rgba(163,146,124,0.35)]"
-                  )}
-                >
-                  {primaryCta.label}
-                </Link>
-              )}
-              {secondaryCta && (
-                <Link
-                  href={secondaryCta.href}
-                  className={cn(
-                    "inline-flex items-center justify-center",
-                    "px-8 py-4 text-[0.9375rem] font-medium",
-                    "bg-transparent text-[var(--patina-charcoal)]",
-                    "border-2 border-[var(--patina-clay-beige)]",
-                    "rounded-[var(--radius-lg)]",
-                    "transition-all duration-[var(--duration-normal)] ease-[var(--ease-patina)]",
-                    "hover:bg-[var(--patina-soft-cream)]",
-                    "hover:border-[var(--patina-mocha-brown)]"
-                  )}
-                >
-                  {secondaryCta.label}
-                </Link>
-              )}
+      <section
+        ref={sectionRef}
+        className={cn(
+          "relative overflow-hidden",
+          "min-h-screen min-h-[100dvh]", // 100vh with dynamic viewport fallback
+          "flex flex-col justify-end" // Content at bottom
+        )}
+        id="hero"
+      >
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="Featured furniture in natural setting"
+              className="absolute inset-0 w-full h-full object-cover will-change-transform"
+              style={{
+                transform: `translateY(${parallaxOffset}px) scale(1.1)`,
+              }}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#5C564F] to-[#3F3B37] flex items-center justify-center">
+              <span className="text-xs tracking-widest uppercase text-[var(--patina-off-white)]/50 bg-black/20 px-4 py-2 rounded-md">
+                {imagePlaceholder}
+              </span>
             </div>
-          </div>
+          )}
 
-          {/* Image Column */}
-          <div className="order-1 lg:order-2">
-            <div className="relative">
-              {/* Main Image Container */}
-              <div
+          {/* Gradient Overlay for Text Legibility */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(
+                to top,
+                rgba(63, 59, 55, 0.8) 0%,
+                rgba(63, 59, 55, 0.5) 30%,
+                rgba(63, 59, 55, 0.2) 60%,
+                transparent 100%
+              )`,
+            }}
+          />
+        </div>
+
+        {/* Content Container */}
+        <motion.div
+          className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pb-24 lg:pb-32 w-full"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Headline */}
+          <motion.h1
+            className="text-display-1 text-[var(--patina-off-white)] mb-6 max-w-[720px]"
+            variants={itemVariants}
+          >
+            {titleParts[0]}
+            {titleEmphasis && (
+              <em className="italic text-[var(--patina-clay-beige)]">
+                {titleEmphasis}
+              </em>
+            )}
+            {titleParts[1]}
+          </motion.h1>
+
+          {/* Description */}
+          <motion.p
+            className="text-lg lg:text-xl text-[var(--patina-off-white)]/90 leading-relaxed mb-4 max-w-[500px]"
+            variants={itemVariants}
+          >
+            {description}
+          </motion.p>
+
+          {/* Secondary Line - Aesthete Engine positioning */}
+          {secondaryLine && (
+            <motion.p
+              className="text-base text-[var(--patina-clay-beige)] mb-8 max-w-[500px]"
+              variants={itemVariants}
+            >
+              {secondaryLine}
+            </motion.p>
+          )}
+
+          {/* CTA Button - Single focus */}
+          {primaryCta && (
+            <motion.div variants={itemVariants} className="mb-8">
+              <Link
+                href={primaryCta.href}
                 className={cn(
-                  "relative aspect-[4/3] rounded-[var(--radius-2xl)] overflow-hidden",
-                  "bg-gradient-to-br from-[#D8D2C8] to-[#C4BDB0]",
-                  "shadow-[0_20px_60px_rgba(101,91,82,0.15)]"
+                  "inline-flex items-center justify-center",
+                  "px-8 py-4 text-[0.9375rem] font-medium",
+                  "bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)]",
+                  "rounded-[var(--radius-lg)]",
+                  "transition-all duration-300 ease-[var(--ease-patina)]",
+                  "hover:bg-[var(--patina-off-white)]",
+                  "shadow-[0_4px_20px_rgba(0,0,0,0.2)]",
+                  "hover:shadow-[0_6px_30px_rgba(0,0,0,0.3)]"
                 )}
               >
-                {/* Organic frame accent */}
-                <div
-                  className="absolute inset-[-3px] rounded-[27px] pointer-events-none"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(163, 146, 124, 0.2), transparent 50%, rgba(163, 146, 124, 0.1))",
-                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                    padding: "3px",
-                  }}
-                />
+                {primaryCta.label}
+              </Link>
+            </motion.div>
+          )}
 
-                {/* Image or Placeholder */}
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="Featured furniture in natural setting"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xs tracking-widest uppercase text-[var(--patina-mocha-brown)] bg-white/80 px-4 py-2 rounded-md">
-                      {imagePlaceholder}
-                    </span>
-                  </div>
-                )}
+          {/* Trust Line */}
+          {trustLine && (
+            <motion.p
+              className="text-sm text-[var(--patina-off-white)]/60"
+              variants={fadeVariants}
+            >
+              {trustLine}
+            </motion.p>
+          )}
+        </motion.div>
 
-                {/* Material Tag */}
-                {materialTag && (
-                  <div className="absolute bottom-5 left-5 flex items-center gap-2 bg-white/[0.92] backdrop-blur-sm px-4 py-3 rounded-[var(--radius-md)] shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-                    <div
-                      className="w-6 h-6 rounded-full border-2 border-white/80"
-                      style={{
-                        background: "linear-gradient(135deg, #8B7355 0%, #6B5344 100%)",
-                      }}
-                    />
-                    <div className="text-[0.6875rem] leading-tight">
-                      <div className="font-semibold text-[var(--patina-charcoal)]">
-                        {materialTag.name}
-                      </div>
-                      <div className="text-[var(--patina-clay-beige)]">
-                        {materialTag.origin}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+        {/* Scroll Indicator - Centered at bottom */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+          variants={scrollIndicatorVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <ScrollIndicator targetId={scrollTargetId} />
+        </motion.div>
+      </section>
+    </>
   );
 }

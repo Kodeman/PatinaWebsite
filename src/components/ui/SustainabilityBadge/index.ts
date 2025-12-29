@@ -1,0 +1,1 @@
+export { SustainabilityBadge } from "./SustainabilityBadge";

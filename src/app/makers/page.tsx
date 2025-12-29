@@ -1,8 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { sanityFetch } from "../../../sanity/lib/client";
+import { makersQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Our Makers | Patina",
@@ -10,70 +13,25 @@ export const metadata: Metadata = {
     "Meet the artisan workshops and craftspeople behind Patina furniture. Each maker brings generations of tradition and a commitment to quality.",
 };
 
-const makers = [
-  {
-    name: "Nakashima Workshop",
-    location: "New Hope, Pennsylvania",
-    founded: 1946,
-    specialty: "Live edge wood furniture",
-    badge: "3rd Generation",
-    description:
-      "Continuing the legacy of George Nakashima, the workshop creates pieces that celebrate the natural beauty of wood grain and organic forms.",
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&q=80",
-  },
-  {
-    name: "Vermont Woodworks",
-    location: "Burlington, Vermont",
-    founded: 1972,
-    specialty: "Sustainable hardwood furniture",
-    badge: "50+ Years",
-    description:
-      "A B Corp certified workshop using locally sourced, sustainably harvested timber to create furniture designed to last generations.",
-    imageUrl: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=600&h=400&fit=crop&q=80",
-  },
-  {
-    name: "Sashimono Studio",
-    location: "Kyoto, Japan",
-    founded: 1923,
-    specialty: "Traditional Japanese joinery",
-    badge: "Master Craftsman",
-    description:
-      "Fourth-generation practitioners of sashimono, the art of creating furniture using intricate wooden joints without nails or screws.",
-    imageUrl: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=400&fit=crop&q=80",
-  },
-  {
-    name: "Studio Piet",
-    location: "Copenhagen, Denmark",
-    founded: 2015,
-    specialty: "Modern Scandinavian design",
-    badge: "Carbon Neutral",
-    description:
-      "A young workshop combining Danish design heritage with contemporary sustainability practices and minimal environmental impact.",
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&q=80",
-  },
-  {
-    name: "Woodward & Sons",
-    location: "Richmond, Virginia",
-    founded: 1889,
-    specialty: "American traditional furniture",
-    badge: "4th Generation",
-    description:
-      "One of America's oldest furniture workshops, known for their mastery of traditional techniques and use of native hardwoods.",
-    imageUrl: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&h=400&fit=crop&q=80",
-  },
-  {
-    name: "Nordic Atelier",
-    location: "Aarhus, Denmark",
-    founded: 1968,
-    specialty: "Hand-carved Scandinavian pieces",
-    badge: "Slow Made",
-    description:
-      "Specialists in hand-carved details and the art of slow making, creating furniture that takes months to complete by a single craftsperson.",
-    imageUrl: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=600&h=400&fit=crop&q=80",
-  },
-];
+interface Maker {
+  _id: string;
+  name: string;
+  slug: string;
+  location: string;
+  foundedYear: number;
+  yearsOfCraft: number;
+  badges: string[];
+  quote?: string;
+  imageUrl?: string;
+}
 
-export default function MakersPage() {
+export default async function MakersPage() {
+  const { isEnabled: isDraft } = await draftMode();
+
+  const makers = await sanityFetch<Maker[]>({
+    query: makersQuery,
+    isDraftMode: isDraft,
+  }) || [];
   return (
     <>
       <Navigation />
@@ -110,24 +68,32 @@ export default function MakersPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {makers.map((maker) => (
                 <article
-                  key={maker.name}
+                  key={maker._id}
                   className="group bg-[var(--patina-soft-cream)] rounded-[var(--radius-xl)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-lg)]"
                 >
                   {/* Image */}
-                  <div className="relative aspect-[3/2] overflow-hidden">
-                    <Image
-                      src={maker.imageUrl}
-                      alt={`${maker.name} workshop`}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
+                  <div className="relative aspect-[3/2] overflow-hidden bg-[var(--patina-clay-beige)]/10">
+                    {maker.imageUrl ? (
+                      <Image
+                        src={maker.imageUrl}
+                        alt={`${maker.name} workshop`}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <span className="text-[var(--patina-clay-beige)] text-sm">No image</span>
+                      </div>
+                    )}
                     {/* Badge */}
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                      <span className="text-xs font-medium text-[var(--patina-charcoal)]">
-                        {maker.badge}
-                      </span>
-                    </div>
+                    {maker.badges?.[0] && (
+                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                        <span className="text-xs font-medium text-[var(--patina-charcoal)]">
+                          {maker.badges[0]}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
@@ -136,14 +102,18 @@ export default function MakersPage() {
                       {maker.name}
                     </h3>
                     <p className="text-sm text-[var(--patina-clay-beige)] mb-3">
-                      {maker.location} · Est. {maker.founded}
+                      {maker.location} · Est. {maker.foundedYear}
                     </p>
-                    <p className="text-sm text-[var(--patina-mocha-brown)] mb-4">
-                      {maker.description}
-                    </p>
-                    <p className="text-xs uppercase tracking-wider text-[var(--patina-clay-beige)]">
-                      Specialty: {maker.specialty}
-                    </p>
+                    {maker.quote && (
+                      <p className="text-sm text-[var(--patina-mocha-brown)] mb-4 italic">
+                        &ldquo;{maker.quote}&rdquo;
+                      </p>
+                    )}
+                    {maker.yearsOfCraft && (
+                      <p className="text-xs uppercase tracking-wider text-[var(--patina-clay-beige)]">
+                        {maker.yearsOfCraft} years of craft
+                      </p>
+                    )}
                   </div>
                 </article>
               ))}

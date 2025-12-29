@@ -76,6 +76,9 @@ export function ARPreviewButton({
       {showModal && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ar-modal-title"
           onClick={() => setShowModal(false)}
         >
           {/* Backdrop */}
@@ -88,6 +91,7 @@ export function ARPreviewButton({
           >
             <button
               onClick={() => setShowModal(false)}
+              aria-label="Close dialog"
               className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-[var(--patina-soft-cream)] transition-colors"
             >
               <svg
@@ -128,7 +132,7 @@ export function ARPreviewButton({
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-display font-semibold text-[var(--patina-charcoal)] mb-2">
+                  <h3 id="ar-modal-title" className="text-xl font-display font-semibold text-[var(--patina-charcoal)] mb-2">
                     Scan to View in AR
                   </h3>
                   <p className="text-[var(--patina-mocha-brown)] mb-6">
@@ -170,7 +174,7 @@ export function ARPreviewButton({
                     </svg>
                   </div>
 
-                  <h3 className="text-xl font-display font-semibold text-[var(--patina-charcoal)] mb-2">
+                  <h3 id="ar-modal-title" className="text-xl font-display font-semibold text-[var(--patina-charcoal)] mb-2">
                     AR Preview Coming Soon
                   </h3>
                   <p className="text-[var(--patina-mocha-brown)] mb-6">

@@ -59,7 +59,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[rgba(237,233,228,0.65)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+                    className="text-sm text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -78,7 +78,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[rgba(237,233,228,0.65)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+                    className="text-sm text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -97,7 +97,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[rgba(237,233,228,0.65)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+                    className="text-sm text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -109,20 +109,20 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-[rgba(163,146,124,0.15)]">
-          <p className="text-[0.8125rem] text-[rgba(237,233,228,0.5)]">
+          <p className="text-[0.8125rem] text-[rgba(237,233,228,0.7)]">
             &copy; {currentYear} Patina. All rights reserved.
           </p>
 
           <div className="flex gap-6">
             <Link
               href="/privacy"
-              className="text-[0.8125rem] text-[rgba(237,233,228,0.5)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+              className="text-[0.8125rem] text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="text-[0.8125rem] text-[rgba(237,233,228,0.5)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+              className="text-[0.8125rem] text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
             >
               Terms
             </Link>

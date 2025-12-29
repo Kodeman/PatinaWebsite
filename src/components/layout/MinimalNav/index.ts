@@ -1,0 +1,1 @@
+export { MinimalNav } from "./MinimalNav";

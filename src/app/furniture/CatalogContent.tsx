@@ -215,6 +215,8 @@ export function CatalogContent({ products, categories }: CatalogContentProps) {
                 key={product._id}
                 product={product}
                 priority={index < 6}
+                position={index}
+                source="catalog"
               />
             ))}
           </div>

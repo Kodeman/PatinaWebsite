@@ -203,6 +203,22 @@ export const materialsQuery = groq`
   }
 `;
 
+// Get all materials with full details for materials page
+export const materialsFullQuery = groq`
+  *[_type == "material"] | order(name asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    category,
+    origin,
+    colorHex,
+    description,
+    properties,
+    sustainability,
+    "imageUrl": image.asset->url
+  }
+`;
+
 // Get unique categories from products
 export const categoriesQuery = groq`
   array::unique(*[_type == "product"].category)

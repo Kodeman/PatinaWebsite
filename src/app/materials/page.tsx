@@ -1,8 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { sanityFetch } from "../../../sanity/lib/client";
+import { materialsFullQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Materials | Patina",
@@ -10,68 +13,18 @@ export const metadata: Metadata = {
     "Discover the premium materials behind Patina furniture. From sustainably sourced hardwoods to hand-selected leathers, learn about our commitment to quality.",
 };
 
-const materials = [
-  {
-    name: "American Black Walnut",
-    category: "Hardwood",
-    origin: "Eastern United States",
-    description:
-      "Prized for its rich, chocolate-brown heartwood and straight grain, American Black Walnut has been the choice of fine furniture makers for centuries. Each board tells a story through its unique grain patterns.",
-    properties: ["Naturally rot-resistant", "Develops deeper patina with age", "FSC certified sources"],
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&q=80",
-    colorHex: "#5D4037",
-  },
-  {
-    name: "White Oak",
-    category: "Hardwood",
-    origin: "North America",
-    description:
-      "Known for its strength and distinctive ray fleck patterns, White Oak brings both durability and visual interest. Its tight grain makes it naturally water-resistant.",
-    properties: ["Quarter-sawn for stability", "Natural tannins protect wood", "Ideal for outdoor use"],
-    imageUrl: "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=600&h=400&fit=crop&q=80",
-    colorHex: "#D7CCC8",
-  },
-  {
-    name: "Japanese Hinoki",
-    category: "Softwood",
-    origin: "Japan",
-    description:
-      "Sacred to Japanese culture, Hinoki cypress is renowned for its subtle, citrus-like fragrance and pale golden color. Traditionally used in temple construction for its spiritual significance.",
-    properties: ["Natural antibacterial properties", "Distinctive aromatic scent", "Sustainably harvested"],
-    imageUrl: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&h=400&fit=crop&q=80",
-    colorHex: "#FFF8E1",
-  },
-  {
-    name: "Vegetable-Tanned Leather",
-    category: "Leather",
-    origin: "Tuscany, Italy",
-    description:
-      "Using methods passed down through generations, Tuscan tanneries create leather using only natural plant extracts. This slow process produces leather that ages beautifully over decades.",
-    properties: ["Chrome-free tanning", "Develops unique patina", "Biodegradable material"],
-    imageUrl: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&h=400&fit=crop&q=80",
-    colorHex: "#8D6E63",
-  },
-  {
-    name: "Danish Paper Cord",
-    category: "Natural Fiber",
-    origin: "Denmark",
-    description:
-      "A hallmark of Scandinavian design, paper cord weaving creates seats that are both incredibly durable and naturally comfortable. Each seat takes hours of hand-weaving to complete.",
-    properties: ["3-ply twisted construction", "Molds to body over time", "Renewable material"],
-    imageUrl: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=600&h=400&fit=crop&q=80",
-    colorHex: "#EFEBE9",
-  },
-  {
-    name: "Solid Brass",
-    category: "Metal",
-    origin: "Various",
-    description:
-      "We use solid brass for hardware and accents, never plated alternatives. This living metal develops a warm patina over time, adding character to each piece.",
-    properties: ["Solid, never plated", "Naturally antimicrobial", "Infinitely recyclable"],
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&q=80",
-    colorHex: "#FFD54F",
-  },
-];
+interface Material {
+  _id: string;
+  name: string;
+  slug?: string;
+  category?: string;
+  origin: string;
+  colorHex: string;
+  description?: string;
+  properties?: string[];
+  sustainability?: string;
+  imageUrl?: string;
+}
 
 const sustainabilityStats = [
   { value: "100%", label: "FSC Certified Wood" },
@@ -80,7 +33,13 @@ const sustainabilityStats = [
   { value: "Local", label: "Sourcing Priority" },
 ];
 
-export default function MaterialsPage() {
+export default async function MaterialsPage() {
+  const { isEnabled: isDraft } = await draftMode();
+
+  const materials = await sanityFetch<Material[]>({
+    query: materialsFullQuery,
+    isDraftMode: isDraft,
+  }) || [];
   return (
     <>
       <Navigation />
@@ -136,30 +95,40 @@ export default function MaterialsPage() {
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
               {materials.map((material) => (
                 <article
-                  key={material.name}
+                  key={material._id}
                   className="group bg-[var(--patina-soft-cream)] rounded-[var(--radius-xl)] overflow-hidden"
                 >
                   {/* Image */}
-                  <div className="relative aspect-[3/2] overflow-hidden">
-                    <Image
-                      src={material.imageUrl}
-                      alt={material.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                  <div className="relative aspect-[3/2] overflow-hidden bg-[var(--patina-clay-beige)]/10">
+                    {material.imageUrl ? (
+                      <Image
+                        src={material.imageUrl}
+                        alt={material.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <span className="text-[var(--patina-clay-beige)] text-sm">No image</span>
+                      </div>
+                    )}
                     {/* Category Badge */}
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                      <span className="text-xs font-medium text-[var(--patina-charcoal)]">
-                        {material.category}
-                      </span>
-                    </div>
+                    {material.category && (
+                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                        <span className="text-xs font-medium text-[var(--patina-charcoal)]">
+                          {material.category}
+                        </span>
+                      </div>
+                    )}
                     {/* Color Swatch */}
-                    <div
-                      className="absolute bottom-4 right-4 w-8 h-8 rounded-full border-2 border-white shadow-lg"
-                      style={{ backgroundColor: material.colorHex }}
-                      title={`${material.name} color sample`}
-                    />
+                    {material.colorHex && (
+                      <div
+                        className="absolute bottom-4 right-4 w-8 h-8 rounded-full border-2 border-white shadow-lg"
+                        style={{ backgroundColor: material.colorHex }}
+                        title={`${material.name} color sample`}
+                      />
+                    )}
                   </div>
 
                   {/* Content */}
@@ -174,9 +143,12 @@ export default function MaterialsPage() {
                         </p>
                       </div>
                     </div>
-                    <p className="text-[var(--patina-mocha-brown)] mb-4 leading-relaxed">
-                      {material.description}
-                    </p>
+                    {material.description && (
+                      <p className="text-[var(--patina-mocha-brown)] mb-4 leading-relaxed">
+                        {material.description}
+                      </p>
+                    )}
+                    {material.properties && material.properties.length > 0 && (
                     <ul className="space-y-2">
                       {material.properties.map((property) => (
                         <li
@@ -200,6 +172,7 @@ export default function MaterialsPage() {
                         </li>
                       ))}
                     </ul>
+                    )}
                   </div>
                 </article>
               ))}

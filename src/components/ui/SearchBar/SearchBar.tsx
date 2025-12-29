@@ -279,7 +279,12 @@ export function SearchBar({ variant = "default" }: SearchBarProps) {
 
       {/* Search Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-[100]">
+        <div
+          className="fixed inset-0 z-[100]"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search"
+        >
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-[var(--patina-charcoal)]/60 backdrop-blur-sm"
@@ -320,6 +325,7 @@ export function SearchBar({ variant = "default" }: SearchBarProps) {
                     setIsOpen(false);
                     setQuery("");
                   }}
+                  aria-label="Close search (press Escape)"
                   className="text-xs text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] px-2 py-1 bg-[rgba(163,146,124,0.1)] rounded"
                 >
                   ESC
