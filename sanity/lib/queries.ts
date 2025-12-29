@@ -227,3 +227,428 @@ export const relatedProductsQuery = groq`
     }
   }
 `;
+
+// ============================================
+// SINGLETON PAGE QUERIES
+// ============================================
+
+// Homepage content
+export const homePageQuery = groq`
+  *[_type == "homePage" && _id == "homePage"][0] {
+    heroTitle,
+    heroTitleEmphasis,
+    heroDescription,
+    heroSecondaryLine,
+    heroTrustLine,
+    heroCta,
+    heroImage {
+      asset-> { url, metadata { lqip } },
+      alt
+    },
+    valueHeader,
+    valueFeatures[] {
+      title,
+      description,
+      icon,
+      examples,
+      highlight
+    },
+    engineHeader,
+    engineBody,
+    engineCta,
+    enginePillars[] {
+      title,
+      description,
+      icon,
+      examples,
+      highlight
+    },
+    experienceHeader,
+    experienceBody,
+    experienceSteps[] {
+      number,
+      title,
+      text
+    },
+    makersHeader,
+    makersBody,
+    featuredMakers[]-> {
+      _id,
+      name,
+      "slug": slug.current,
+      location,
+      foundedYear,
+      yearsOfCraft,
+      badges,
+      quote,
+      "imageUrl": image.asset->url
+    },
+    testimonialsHeader,
+    homeTestimonials[]-> {
+      _id,
+      quote,
+      author,
+      title,
+      location,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    trustBadges[]-> {
+      value,
+      label,
+      icon
+    },
+    servicesHeader,
+    servicesBody,
+    servicesBenefit,
+    servicesHandoffItems,
+    servicesCta,
+    servicesImage {
+      asset-> { url },
+      alt
+    },
+    ctaHeader,
+    ctaBody,
+    ctaSecondary,
+    ctaPrimary,
+    ctaSecondaryLink
+  }
+`;
+
+// About page content
+export const aboutPageQuery = groq`
+  *[_type == "aboutPage" && _id == "aboutPage"][0] {
+    heroHeadline,
+    heroSubheadline,
+    heroBackground {
+      asset-> { url, metadata { lqip } },
+      alt
+    },
+    problemHeading,
+    problemDescription,
+    problemStatistic,
+    problemLeftImage {
+      asset-> { url },
+      alt
+    },
+    problemRightImage {
+      asset-> { url },
+      alt
+    },
+    originHeroImage {
+      asset-> { url },
+      alt
+    },
+    narrativeBlocks[] {
+      title,
+      content,
+      quote,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    wordDefinition,
+    pronunciation,
+    partOfSpeech,
+    definition,
+    definitionQuote,
+    definitionBackground {
+      asset-> { url },
+      alt
+    },
+    brandValues[] {
+      title,
+      description,
+      materialTexture
+    },
+    founders[]-> {
+      _id,
+      name,
+      role,
+      title,
+      bio,
+      credentials,
+      location,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    foundersTogetherImage {
+      asset-> { url },
+      alt
+    },
+    studioHeading,
+    studioDescription,
+    studioLinkText,
+    studioLinkUrl,
+    studioLogo {
+      asset-> { url },
+      alt
+    },
+    timeline[] {
+      year,
+      title,
+      description,
+      quote,
+      icon
+    },
+    ctaHeadline,
+    ctaActions[] {
+      label,
+      href,
+      variant,
+      isExternal
+    }
+  }
+`;
+
+// App page content
+export const appPageQuery = groq`
+  *[_type == "appPage" && _id == "appPage"][0] {
+    heroEyebrow,
+    heroHeadline,
+    heroHeadlineEmphasis,
+    heroSubheadline,
+    heroSecondaryLine,
+    heroPrimaryCta,
+    heroSecondaryCta,
+    heroAndroidNote,
+    heroMockup {
+      asset-> { url, metadata { lqip } },
+      alt
+    },
+    problemHeader,
+    problemParagraphs,
+    comparisonLeft {
+      label,
+      description,
+      itemCount,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    comparisonRight {
+      label,
+      description,
+      itemCount,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    journeyHeader,
+    journeySteps[] {
+      stepNumber,
+      title,
+      description,
+      tagline,
+      icon,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    engineHeader,
+    engineDiagram {
+      asset-> { url },
+      alt
+    },
+    enginePillars[] {
+      title,
+      description,
+      icon,
+      examples,
+      highlight
+    },
+    handoffHeader,
+    handoffDescription,
+    handoffBenefit,
+    handoffItems,
+    handoffCta,
+    trustEyebrow,
+    trustIndicators[] {
+      title,
+      description,
+      icon
+    },
+    ctaHeadline,
+    ctaHeadlineEmphasis,
+    ctaSubheadline,
+    ctaTertiaryLine,
+    ctaPrimary,
+    ctaSecondaryText,
+    ctaSecondaryLink
+  }
+`;
+
+// Services page content
+export const servicesPageQuery = groq`
+  *[_type == "servicesPage" && _id == "servicesPage"][0] {
+    heroEyebrow,
+    heroHeadline,
+    heroHeadlineEmphasis,
+    heroDescription,
+    packagesHeader,
+    packages[]-> {
+      _id,
+      name,
+      price,
+      description,
+      features,
+      cta,
+      featured
+    },
+    processHeader,
+    processSteps[] {
+      number,
+      title,
+      description
+    },
+    ctaHeader,
+    ctaDescription,
+    ctaPrimary,
+    ctaSecondary
+  }
+`;
+
+// Designers page content
+export const designersPageQuery = groq`
+  *[_type == "designersPage" && _id == "designersPage"][0] {
+    heroEyebrow,
+    heroHeadline,
+    heroHeadlineEmphasis,
+    heroDescription,
+    heroPrimaryCta,
+    heroSecondaryCta,
+    benefitsHeader,
+    benefits[] {
+      title,
+      description,
+      icon
+    },
+    testimonialsHeader,
+    testimonials[]-> {
+      _id,
+      quote,
+      author,
+      title,
+      location,
+      image {
+        asset-> { url },
+        alt
+      }
+    },
+    applyHeader,
+    applyDescription
+  }
+`;
+
+// Site settings
+export const siteSettingsQuery = groq`
+  *[_type == "siteSettings" && _id == "siteSettings"][0] {
+    siteName,
+    tagline,
+    logo {
+      asset-> { url }
+    },
+    email,
+    phone,
+    address,
+    socialLinks[] {
+      platform,
+      url
+    },
+    defaultMetaTitle,
+    defaultMetaDescription,
+    defaultOgImage {
+      asset-> { url }
+    }
+  }
+`;
+
+// All testimonials
+export const testimonialsQuery = groq`
+  *[_type == "testimonial"] | order(_createdAt desc) {
+    _id,
+    quote,
+    author,
+    title,
+    location,
+    category,
+    featured,
+    image {
+      asset-> { url },
+      alt
+    }
+  }
+`;
+
+// Featured testimonials
+export const featuredTestimonialsQuery = groq`
+  *[_type == "testimonial" && featured == true] | order(_createdAt desc) [0...4] {
+    _id,
+    quote,
+    author,
+    title,
+    location,
+    image {
+      asset-> { url },
+      alt
+    }
+  }
+`;
+
+// All team members
+export const teamMembersQuery = groq`
+  *[_type == "teamMember"] | order(sortOrder asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    role,
+    title,
+    bio,
+    credentials,
+    location,
+    memberType,
+    image {
+      asset-> { url },
+      alt
+    }
+  }
+`;
+
+// Founders only
+export const foundersQuery = groq`
+  *[_type == "teamMember" && memberType == "founder"] | order(sortOrder asc) {
+    _id,
+    name,
+    role,
+    title,
+    bio,
+    credentials,
+    image {
+      asset-> { url },
+      alt
+    }
+  }
+`;
+
+// Featured makers for homepage
+export const featuredMakersQuery = groq`
+  *[_type == "maker"] | order(_createdAt desc) [0...4] {
+    _id,
+    name,
+    "slug": slug.current,
+    location,
+    foundedYear,
+    yearsOfCraft,
+    badges,
+    quote,
+    "imageUrl": image.asset->url
+  }
+`;
