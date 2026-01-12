@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina.cloud Structural Redesign | UX Architecture Proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+      --patina-accent-warm: #D4A574;
+      --patina-error: #B87969;
+      --patina-success: #7A9C85;
+      
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--patina-off-white);
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+    }
+    
+    /* ===== NAVIGATION ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(237, 233, 228, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.2);
+      padding: 1rem 2rem;
+    }
+    
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--patina-charcoal);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: var(--patina-charcoal);
+    }
+    
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      background: linear-gradient(180deg, var(--patina-warm-white) 0%, var(--patina-off-white) 100%);
+      position: relative;
+    }
+    
+    .hero-content {
+      max-width: 900px;
+    }
+    
+    .hero-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5.5vw, 4rem);
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero h1 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--patina-mocha-brown);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 500;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    
+    .section-title em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .section-intro {
+      font-size: 1.05rem;
+      color: var(--patina-mocha-brown);
+      max-width: 700px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    
+    /* ===== PROBLEM STATEMENT ===== */
+    .problem-section {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 5rem 2rem;
+      margin: 0;
+      max-width: none;
+    }
+    
+    .problem-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .problem-section .section-label {
+      color: var(--patina-clay-beige);
+    }
+    
+    .problem-section .section-title {
+      color: var(--patina-off-white);
+    }
+    
+    .problem-section .section-title em {
+      color: var(--patina-clay-beige);
+    }
+    
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .problem-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .problem-column h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+      color: var(--patina-clay-beige);
+    }
+    
+    .problem-column ul {
+      list-style: none;
+    }
+    
+    .problem-column li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.2);
+      font-size: 0.95rem;
+      color: rgba(237, 233, 228, 0.85);
+      line-height: 1.5;
+    }
+    
+    /* ===== ARCHITECTURE DIAGRAM ===== */
+    .architecture-section {
+      padding: 5rem 2rem;
+      background: var(--patina-soft-cream);
+    }
+    
+    .architecture-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .architecture-comparison {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+    
+    @media (max-width: 900px) {
+      .architecture-comparison {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .architecture-arrow {
+        transform: rotate(90deg);
+      }
+    }
+    
+    .architecture-column {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 24px rgba(101, 91, 82, 0.08);
+      border: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .architecture-column h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .architecture-column p {
+      font-size: 0.85rem;
+      color: var(--patina-mocha-brown);
+      margin-bottom: 1.5rem;
+    }
+    
+    .arch-current h3 {
+      color: var(--patina-error);
+    }
+    
+    .arch-proposed h3 {
+      color: var(--patina-success);
+    }
+    
+    .architecture-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--patina-clay-beige);
+      padding-top: 4rem;
+    }
+    
+    .section-block {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .section-block-name {
+      font-weight: 500;
+    }
+    
+    .section-block-tag {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .block-hero { background: rgba(163, 146, 124, 0.15); }
+    .block-tech { background: rgba(184, 121, 105, 0.15); }
+    .block-story { background: rgba(122, 156, 133, 0.15); }
+    .block-process { background: rgba(212, 165, 116, 0.15); }
+    .block-social { background: rgba(163, 146, 124, 0.1); }
+    .block-cta { background: rgba(63, 59, 55, 0.1); }
+    .block-sensory { background: rgba(122, 156, 133, 0.2); }
+    .block-new { 
+      background: rgba(122, 156, 133, 0.15);
+      border: 1px dashed var(--patina-success);
+    }
+    
+    .tag-keep { background: var(--patina-clay-beige); color: white; }
+    .tag-move { background: var(--patina-accent-warm); color: var(--patina-charcoal); }
+    .tag-remove { background: var(--patina-error); color: white; }
+    .tag-new { background: var(--patina-success); color: white; }
+    .tag-redesign { background: var(--patina-mocha-brown); color: white; }
+    
+    /* ===== RECOMMENDATION CARDS ===== */
+    .recommendation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .recommendation-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(101, 91, 82, 0.08);
+      border: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .recommendation-header {
+      padding: 1.5rem 1.5rem 1rem;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .recommendation-number {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+    
+    .recommendation-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--patina-charcoal);
+      line-height: 1.3;
+    }
+    
+    .recommendation-body {
+      padding: 1.5rem;
+    }
+    
+    .recommendation-body p {
+      font-size: 0.95rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .recommendation-body p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .principle-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(163, 146, 124, 0.15);
+      color: var(--patina-mocha-brown);
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .recommendation-visual {
+      background: var(--patina-soft-cream);
+      padding: 1.5rem;
+      border-top: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .visual-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.75rem;
+    }
+    
+    .visual-sketch {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: var(--patina-mocha-brown);
+      border: 1px solid rgba(163, 146, 124, 0.15);
+    }
+    
+    .visual-sketch code {
+      display: block;
+      white-space: pre-wrap;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.75rem;
+      line-height: 1.6;
+    }
+    
+    /* ===== WIREFRAME SECTION ===== */
+    .wireframe-section {
+      background: var(--patina-charcoal);
+      padding: 5rem 2rem;
+    }
+    
+    .wireframe-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .wireframe-section .section-label {
+      color: var(--patina-clay-beige);
+    }
+    
+    .wireframe-section .section-title {
+      color: var(--patina-off-white);
+    }
+    
+    .wireframe-section .section-title em {
+      color: var(--patina-clay-beige);
+    }
+    
+    .wireframe-section .section-intro {
+      color: rgba(237, 233, 228, 0.8);
+    }
+    
+    .wireframe-container {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(163, 146, 124, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .wireframe-block {
+      background: rgba(163, 146, 124, 0.1);
+      border: 1px solid rgba(163, 146, 124, 0.3);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    
+    .wireframe-block:last-child {
+      margin-bottom: 0;
+    }
+    
+    .wireframe-block-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+    
+    .wireframe-block-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--patina-off-white);
+      margin-bottom: 0.5rem;
+    }
+    
+    .wireframe-block-desc {
+      font-size: 0.85rem;
+      color: rgba(237, 233, 228, 0.7);
+      line-height: 1.5;
+    }
+    
+    .wireframe-block-new {
+      border-style: dashed;
+      border-color: var(--patina-success);
+    }
+    
+    .wireframe-block-new .wireframe-block-label {
+      color: var(--patina-success);
+    }
+    
+    .wireframe-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(163, 146, 124, 0.3), transparent);
+      margin: 2rem 0;
+    }
+    
+    .wireframe-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(237, 233, 228, 0.5);
+      font-style: italic;
+      margin-top: 1rem;
+    }
+    
+    /* ===== INTERACTION PATTERNS ===== */
+    .interaction-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .interaction-card {
+      background: var(--patina-soft-cream);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(163, 146, 124, 0.15);
+    }
+    
+    .interaction-card h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: var(--patina-charcoal);
+    }
+    
+    .interaction-card p {
+      font-size: 0.9rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.5;
+    }
+    
+    .interaction-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--patina-clay-beige);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: var(--patina-off-white);
+      font-size: 1.1rem;
+    }
+    
+    /* ===== SUMMARY ===== */
+    .summary-section {
+      background: linear-gradient(180deg, var(--patina-off-white) 0%, var(--patina-soft-cream) 100%);
+      padding: 5rem 2rem;
+    }
+    
+    .summary-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .summary-stat {
+      text-align: center;
+    }
+    
+    .summary-stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-stat-label {
+      font-size: 0.85rem;
+      color: var(--patina-mocha-brown);
+    }
+    
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(163, 146, 124, 0.15);
+    }
+    
+    .footer p {
+      font-size: 0.85rem;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .strata-mark {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-top: 1.5rem;
+    }
+    
+    .strata-line {
+      height: 2px;
+      border-radius: 1px;
+    }
+    
+    .strata-line:nth-child(1) {
+      width: 50px;
+      background: var(--patina-mocha-brown);
+    }
+    
+    .strata-line:nth-child(2) {
+      width: 40px;
+      background: var(--patina-clay-beige);
+    }
+    
+    .strata-line:nth-child(3) {
+      width: 30px;
+      background: var(--patina-clay-beige);
+      opacity: 0.5;
+    }
+    
+    /* ===== CALLOUT BOX ===== */
+    .callout {
+      background: rgba(212, 165, 116, 0.1);
+      border-left: 4px solid var(--patina-accent-warm);
+      padding: 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 2rem 0;
+    }
+    
+    .callout h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.5rem;
+    }
+    
+    .callout p {
+      font-size: 0.95rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">PATINA</a>
+      <ul class="nav-links">
+        <li><a href="#problems">Problems</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#recommendations">Recommendations</a></li>
+        <li><a href="#wireframe">Wireframe</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-content">
+      <p class="hero-label">UI/UX Structural Proposal</p>
+      <h1>Structure Should <em>Feel Like Voice</em></h1>
+      <p class="hero-subtitle">
+        The warmest copy in the world can't save a page that feels like a SaaS product tour. Here's how to restructure patina.cloud so the layout itself embodies "tactile over technical, stories over specs, journey over task."
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <!-- PROBLEM STATEMENT -->
+    <section id="problems" class="problem-section">
+      <div class="problem-inner">
+        <p class="section-label">The Core Tension</p>
+        <h2 class="section-title">The Current Structure <em>Contradicts the Voice</em></h2>
+        
+        <div class="problem-grid">
+          <div class="problem-column">
+            <h3>What the Brand Says</h3>
+            <ul>
+              <li><strong>"Tactile Over Technical"</strong> — Every interaction should feel like touching fabric swatches</li>
+              <li><strong>"Stories Over Specs"</strong> — Lead with provenance and craftsmanship, not features</li>
+              <li><strong>"Journey Over Task"</strong> — Frame scanning as "walking your room together," not "capture data"</li>
+              <li><strong>"Technology should be invisible"</strong> — Let users focus on what matters</li>
+            </ul>
+          </div>
+          <div class="problem-column">
+            <h3>What the Structure Does</h3>
+            <ul>
+              <li><strong>Leads with tech explanation</strong> — "The Intelligence" section is the 2nd major content block</li>
+              <li><strong>Buries the makers</strong> — Craft stories appear after feature explanations</li>
+              <li><strong>Uses SaaS patterns</strong> — Hero → Features → How It Works → Social Proof → CTA</li>
+              <li><strong>Puts metrics on display</strong> — "90%+ Match Accuracy" reads as startup marketing</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE COMPARISON -->
+    <section id="architecture" class="architecture-section">
+      <div class="architecture-inner">
+        <p class="section-label">Information Architecture</p>
+        <h2 class="section-title">Reordering for <em>Story-First Flow</em></h2>
+        <p class="section-intro">
+          The current page leads with what Patina <em>is</em> (technology), then what it <em>does</em> (features), then why you should trust it (makers + testimonials). The proposed structure flips this: lead with <em>feeling</em>, then <em>story</em>, then (quietly) how it works.
+        </p>
+
+        <div class="architecture-comparison">
+          <div class="architecture-column arch-current">
+            <h3>✗ Current Structure</h3>
+            <p>Tech-forward, feature-centric</p>
+            
+            <div class="section-block block-hero">
+              <span class="section-block-name">Hero + "Powered by Aesthete Engine"</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+            <div class="section-block block-tech">
+              <span class="section-block-name">Why Patina (3 feature cards)</span>
+              <span class="section-block-tag tag-move">Move ↓</span>
+            </div>
+            <div class="section-block block-tech">
+              <span class="section-block-name">The Intelligence (Aesthete Engine deep-dive)</span>
+              <span class="section-block-tag tag-remove">Remove/Collapse</span>
+            </div>
+            <div class="section-block block-process">
+              <span class="section-block-name">The Experience (4-step process)</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+            <div class="section-block block-story">
+              <span class="section-block-name">The Makers (4 cards)</span>
+              <span class="section-block-tag tag-move">Move ↑</span>
+            </div>
+            <div class="section-block block-social">
+              <span class="section-block-name">Community (testimonial carousel)</span>
+              <span class="section-block-tag tag-redesign">Distribute</span>
+            </div>
+            <div class="section-block block-cta">
+              <span class="section-block-name">Professional Help</span>
+              <span class="section-block-tag tag-move">Move ↑</span>
+            </div>
+            <div class="section-block block-cta">
+              <span class="section-block-name">Final CTA + Stats Bar</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+          </div>
+
+          <div class="architecture-arrow">→</div>
+
+          <div class="architecture-column arch-proposed">
+            <h3>✓ Proposed Structure</h3>
+            <p>Story-forward, feeling-centric</p>
+            
+            <div class="section-block block-hero">
+              <span class="section-block-name">Hero (Emotional, no tech mention)</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+            <div class="section-block block-new">
+              <span class="section-block-name">First Touch (Interactive preview)</span>
+              <span class="section-block-tag tag-new">New</span>
+            </div>
+            <div class="section-block block-story">
+              <span class="section-block-name">The Makers (Expanded, moved up)</span>
+              <span class="section-block-tag tag-move">From #5</span>
+            </div>
+            <div class="section-block block-new">
+              <span class="section-block-name">Material Stories (Sensory interlude)</span>
+              <span class="section-block-tag tag-new">New</span>
+            </div>
+            <div class="section-block block-process">
+              <span class="section-block-name">The Journey (Organic, not numbered steps)</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+            <div class="section-block block-cta">
+              <span class="section-block-name">Professional Design Services</span>
+              <span class="section-block-tag tag-move">Elevated</span>
+            </div>
+            <div class="section-block block-social">
+              <span class="section-block-name">Voices (Testimonials distributed + collected)</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+            <div class="section-block block-tech">
+              <span class="section-block-name">How It Works (Collapsed/optional)</span>
+              <span class="section-block-tag tag-move">From #3</span>
+            </div>
+            <div class="section-block block-cta">
+              <span class="section-block-name">Final CTA (Story-based, no metrics)</span>
+              <span class="section-block-tag tag-redesign">Redesign</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAILED RECOMMENDATIONS -->
+    <section id="recommendations" class="section">
+      <p class="section-label">Structural Recommendations</p>
+      <h2 class="section-title">Nine Changes That <em>Matter Most</em></h2>
+      <p class="section-intro">
+        Each recommendation addresses a specific tension between the current structure and Patina's voice principles. Collectively, they transform the page from a product tour into an invitation.
+      </p>
+
+      <div class="recommendation-grid">
+        
+        <!-- Recommendation 1 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 01</p>
+            <h3>Remove "Powered by" from Hero</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>The hero's job is to create desire, not explain technology. "Powered by The Aesthete Engine" positions the tech as the product rather than the experience.</p>
+            <p><strong>Instead:</strong> Let the hero be purely emotional. Save the "how" for later—or better, let users discover it themselves.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Invisible Technology</span>
+              <span class="principle-tag">Journey Over Task</span>
+            </div>
+          </div>
+          <div class="recommendation-visual">
+            <p class="visual-label">Proposed Hero Copy</p>
+            <div class="visual-sketch">
+              <strong>Where Time Adds Value</strong><br><br>
+              Discover furniture that grows more beautiful with every year. See it in your space. Know the hands that made it.
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 2 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 02</p>
+            <h3>Add a "First Touch" Interactive Moment</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>Currently, the only action before the CTA is scrolling. For a brand about tactile experience, this is a missed opportunity.</p>
+            <p><strong>Add:</strong> A simple interactive element early in the page—a mini style quiz, a material selector, or an AR preview teaser. Let users <em>touch</em> before they're asked to download.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Tactile Over Technical</span>
+              <span class="principle-tag">Layered Discovery</span>
+            </div>
+          </div>
+          <div class="recommendation-visual">
+            <p class="visual-label">Concept Sketch</p>
+            <div class="visual-sketch">
+              <code>"What draws your eye?"
+
+┌─────────┐ ┌─────────┐
+│ Warm    │ │ Cool    │
+│ Wood    │ │ Stone   │
+└─────────┘ └─────────┘
+┌─────────┐ ┌─────────┐
+│ Soft    │ │ Bold    │
+│ Fabric  │ │ Leather │
+└─────────┘ └─────────┘
+
+(Tap reveals: "We'll remember that.")</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 3 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 03</p>
+            <h3>Move Makers Section Up—Way Up</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>The maker stories are Patina's differentiator, yet they're currently the 5th section. By the time users reach them, they've already scrolled through feature explanations.</p>
+            <p><strong>Move makers to position 2 or 3.</strong> Lead with the human story. Let "Nordic Atelier, Est. 1968" create trust before explaining algorithms.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Stories Over Specs</span>
+              <span class="principle-tag">Midwestern Warmth</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 4 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 04</p>
+            <h3>Add a "Material Stories" Sensory Interlude</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>The page has no moment of pure sensory immersion. Every section is informational. The brand guidelines call for "linen, leather, cedar, grain"—but there's no place where users just <em>feel</em> materials.</p>
+            <p><strong>Add:</strong> A full-bleed section with macro photography of materials—weathered oak grain, aged leather, raw linen weave. Minimal text. Maximum texture.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Sensory & Tangible</span>
+              <span class="principle-tag">Layered Discovery</span>
+            </div>
+          </div>
+          <div class="recommendation-visual">
+            <p class="visual-label">Concept</p>
+            <div class="visual-sketch">
+              Full-bleed image grid:<br>
+              • Oak grain in morning light<br>
+              • Linen weave close-up<br>
+              • Patina on aged leather<br><br>
+              Copy: "Materials that tell their own story."
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 5 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 05</p>
+            <h3>Collapse or Remove "The Intelligence" Section</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>This is the biggest structural contradiction. The brand says "technology should be invisible," but an entire section explains the algorithm in detail.</p>
+            <p><strong>Option A:</strong> Remove entirely. Let the tech be truly invisible.<br>
+            <strong>Option B:</strong> Collapse into an expandable "How it works" link for curious users.<br>
+            <strong>Option C:</strong> Move to a dedicated page, link subtly from footer.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Invisible Technology</span>
+              <span class="principle-tag">Confident Yet Unpretentious</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 6 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 06</p>
+            <h3>Redesign "The Experience" as a Journey, Not Steps</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>The current 4-step numbered process reads like a product tour: "Step 1: Walk your room together. Step 2: See what fits." This is task-oriented, not journey-oriented.</p>
+            <p><strong>Redesign as:</strong> A flowing visual narrative without numbers. Show the journey as a continuous experience, not discrete steps. Use scroll-triggered animations to reveal each moment organically.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Journey Over Task</span>
+              <span class="principle-tag">Warm Guidance</span>
+            </div>
+          </div>
+          <div class="recommendation-visual">
+            <p class="visual-label">Alternative Structure</p>
+            <div class="visual-sketch">
+              Instead of:<br>
+              1 → 2 → 3 → 4<br><br>
+              Use flowing sections:<br>
+              "First, you walk..."<br>
+              ↓ (scroll)<br>
+              "Then, you see..."<br>
+              ↓ (scroll)<br>
+              "Finally, you know..."
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 7 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 07</p>
+            <h3>Distribute Testimonials Throughout</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>All testimonials are currently in one carousel section. Carousels have notoriously low engagement, and grouping all social proof together feels like a "testimonials" checkbox.</p>
+            <p><strong>Distribute:</strong> Place relevant quotes near the content they validate. Sarah Chen's AR quote should appear near AR content. Rachel K's "designer notes" quote belongs near maker content.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Story-Driven</span>
+              <span class="principle-tag">Midwestern Warmth</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 8 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 08</p>
+            <h3>Remove or Redesign the Stats Bar</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>"4.8★ App Store Rating • 10K+ Happy Users • 90%+ Match Accuracy • 50+ Heritage Makers"—this is SaaS marketing language, not craft-brand positioning.</p>
+            <p><strong>Option A:</strong> Remove entirely. Let quality speak for itself.<br>
+            <strong>Option B:</strong> Reframe as stories: "50 families of makers, some with 135 years of craft."</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Confident Yet Unpretentious</span>
+              <span class="principle-tag">Stories Over Specs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation 9 -->
+        <div class="recommendation-card">
+          <div class="recommendation-header">
+            <p class="recommendation-number">Recommendation 09</p>
+            <h3>Elevate Professional Services</h3>
+          </div>
+          <div class="recommendation-body">
+            <p>Designer services are a key conversion path but feel like an afterthought structurally. The section appears late and uses the same visual weight as other content.</p>
+            <p><strong>Elevate:</strong> Give professional services its own visual moment—perhaps a different background treatment, larger imagery, or a more prominent position. This is the "when you're ready for more" moment that deserves ceremony.</p>
+            <div style="margin-top: 1rem;">
+              <span class="principle-tag">Layered Discovery</span>
+              <span class="principle-tag">Warm Guidance</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout">
+        <h4>The Underlying Principle</h4>
+        <p>Every structural decision should answer: "Does this feel like walking through a design studio with material samples in hand, or does it feel like a software product tour?" If it's the latter, restructure.</p>
+      </div>
+    </section>
+
+    <!-- INTERACTION PATTERNS -->
+    <section class="section" style="background: var(--patina-soft-cream); max-width: none; padding: 5rem 2rem;">
+      <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-label">Interaction Patterns</p>
+        <h2 class="section-title">Microinteractions That <em>Reinforce Voice</em></h2>
+        <p class="section-intro">
+          Structure isn't just about section order—it's about how elements respond to touch, scroll, and attention. These patterns make the page feel alive and tactile.
+        </p>
+
+        <div class="interaction-grid">
+          <div class="interaction-card">
+            <div class="interaction-icon">↕️</div>
+            <h4>Parallax with Restraint</h4>
+            <p>Use subtle parallax on material photography (0.8x speed) to create depth. Never on UI elements—they should feel grounded, not floating.</p>
+          </div>
+          <div class="interaction-card">
+            <div class="interaction-icon">👆</div>
+            <h4>Hover States That Reveal</h4>
+            <p>Product cards should reveal texture on hover—a zoom into material grain, a shift in lighting. Not just opacity changes.</p>
+          </div>
+          <div class="interaction-card">
+            <div class="interaction-icon">📜</div>
+            <h4>Scroll-Triggered Reveals</h4>
+            <p>Content should emerge as users scroll, like "peeling back layers of patina." Staggered animations (animation-delay) create rhythm.</p>
+          </div>
+          <div class="interaction-card">
+            <div class="interaction-icon">🌅</div>
+            <h4>Time-Aware Styling</h4>
+            <p>Consider subtle morning/evening mode shifts (+3% warm/cool overlay as specified in brand guidelines). The page breathes with the day.</p>
+          </div>
+          <div class="interaction-card">
+            <div class="interaction-icon">✨</div>
+            <h4>Loading as Craft</h4>
+            <p>Loading indicators should feel organic—"like plant growth" per guidelines. The Strata Mark could animate as a loading state.</p>
+          </div>
+          <div class="interaction-card">
+            <div class="interaction-icon">📱</div>
+            <h4>Haptic Moments (App)</h4>
+            <p>When AR furniture "snaps" to position, when a piece is saved—gentle haptic feedback makes digital feel physical.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIREFRAME -->
+    <section id="wireframe" class="wireframe-section">
+      <div class="wireframe-inner">
+        <p class="section-label">Proposed Page Flow</p>
+        <h2 class="section-title">The New <em>Narrative Arc</em></h2>
+        <p class="section-intro">
+          A high-level wireframe showing how the restructured page tells a story: invitation → discovery → trust → journey → commitment.
+        </p>
+
+        <div class="wireframe-container">
+          
+          <div class="wireframe-block">
+            <p class="wireframe-block-label">Section 1 — The Invitation</p>
+            <p class="wireframe-block-title">Hero: Pure Emotion</p>
+            <p class="wireframe-block-desc">No technology mentions. "Where Time Adds Value" + evocative imagery. The only CTA is "Begin" or "Explore."</p>
+          </div>
+
+          <div class="wireframe-block wireframe-block-new">
+            <p class="wireframe-block-label">Section 2 — First Touch (New)</p>
+            <p class="wireframe-block-title">Interactive Style Preview</p>
+            <p class="wireframe-block-desc">Simple 2x2 or 4-image selector. "What draws your eye?" Users tap, system acknowledges. Creates engagement before asking for download.</p>
+          </div>
+
+          <div class="wireframe-block">
+            <p class="wireframe-block-label">Section 3 — The Trust</p>
+            <p class="wireframe-block-title">Meet the Makers (Expanded)</p>
+            <p class="wireframe-block-desc">Larger cards, more story. "Nordic Atelier, Aarhus • Est. 1968 • Three generations of woodcraft." Include one inline testimonial from a designer about maker quality.</p>
+          </div>
+
+          <div class="wireframe-block wireframe-block-new">
+            <p class="wireframe-block-label">Section 4 — The Breath (New)</p>
+            <p class="wireframe-block-title">Material Stories: Sensory Interlude</p>
+            <p class="wireframe-block-desc">Full-bleed macro photography. Minimal text: "Materials that tell their own story." A pause in the information flow—pure feeling.</p>
+          </div>
+
+          <div class="wireframe-divider"></div>
+
+          <div class="wireframe-block">
+            <p class="wireframe-block-label">Section 5 — The Journey</p>
+            <p class="wireframe-block-title">How It Feels (Redesigned Experience)</p>
+            <p class="wireframe-block-desc">Flowing narrative, not numbered steps. Scroll-triggered reveals. "First, you walk your room with us..." Include Rachel K testimonial about AR inline.</p>
+          </div>
+
+          <div class="wireframe-block">
+            <p class="wireframe-block-label">Section 6 — The Invitation to More</p>
+            <p class="wireframe-block-title">Professional Design Services (Elevated)</p>
+            <p class="wireframe-block-desc">Different visual treatment—perhaps darker background. "When you're ready for more, so is your profile." Include Sarah Chen testimonial about client presentations.</p>
+          </div>
+
+          <div class="wireframe-block">
+            <p class="wireframe-block-label">Section 7 — The Voices</p>
+            <p class="wireframe-block-title">Community Stories (Remaining Testimonials)</p>
+            <p class="wireframe-block-desc">Not a carousel. Static grid or masonry layout. Focus on story, not metrics. No "4.8★ rating" badges.</p>
+          </div>
+
+          <div class="wireframe-divider"></div>
+
+          <div class="wireframe-block" style="opacity: 0.7;">
+            <p class="wireframe-block-label">Section 8 — For the Curious (Optional)</p>
+            <p class="wireframe-block-title">How It Works (Collapsed)</p>
+            <p class="wireframe-block-desc">A simple "Curious how it works?" link that expands to show Aesthete Engine explanation. For users who need to know—not forced on everyone.</p>
+          </div>
+
+          <div class="wireframe-block">
+            <p class="wireframe-block-label">Section 9 — The Close</p>
+            <p class="wireframe-block-title">Final CTA: Story-Based</p>
+            <p class="wireframe-block-desc">"The best interiors aren't decorated—they're cultivated." Single CTA. No stats bar. The Strata Mark as a quiet signature.</p>
+          </div>
+
+          <p class="wireframe-note">Scroll depth: ~4500px estimated. Intentionally allows breathing room between sections.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT STAYS -->
+    <section class="section">
+      <p class="section-label">What Works Today</p>
+      <h2 class="section-title">Elements Worth <em>Keeping</em></h2>
+      <p class="section-intro">
+        Not everything needs to change. These structural elements already align with the brand voice and should be preserved or only lightly refined.
+      </p>
+
+      <div class="interaction-grid">
+        <div class="interaction-card">
+          <h4>The Strata Mark</h4>
+          <p>Already used beautifully as a visual signature. Could be animated as a loading state or section divider.</p>
+        </div>
+        <div class="interaction-card">
+          <h4>Maker Card Structure</h4>
+          <p>The format (name, location, established date, badge) works well. Just needs more prominence and richer content.</p>
+        </div>
+        <div class="interaction-card">
+          <h4>Color & Typography System</h4>
+          <p>Playfair + Inter, the earth tone palette—all correctly implemented. The visual identity is solid.</p>
+        </div>
+        <div class="interaction-card">
+          <h4>Navigation Structure</h4>
+          <p>Clean, simple, stays out of the way. The sticky header with blur effect is appropriately subtle.</p>
+        </div>
+        <div class="interaction-card">
+          <h4>Professional Services Concept</h4>
+          <p>"Your profile transfers seamlessly" is a powerful differentiator. The idea is right; it just needs more ceremony.</p>
+        </div>
+        <div class="interaction-card">
+          <h4>Testimonial Content</h4>
+          <p>The actual quotes are excellent ("designer notes saved me from mistakes"). Distribution is the issue, not content.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section id="summary" class="summary-section">
+      <div class="summary-inner">
+        <p class="section-label">Implementation Summary</p>
+        <h2 class="section-title">The Structural <em>Shift</em></h2>
+        <p style="max-width: 600px; margin: 0 auto 2rem; color: var(--patina-mocha-brown); line-height: 1.7;">
+          These changes transform the page from a product tour into a story. The technology becomes invisible. The craft becomes central. The journey becomes the point.
+        </p>
+
+        <div class="summary-grid">
+          <div class="summary-stat">
+            <div class="summary-stat-number">2</div>
+            <div class="summary-stat-label">New Sections to Add</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-number">1</div>
+            <div class="summary-stat-label">Section to Remove/Collapse</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-number">3</div>
+            <div class="summary-stat-label">Major Repositions</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-number">4</div>
+            <div class="summary-stat-label">Sections to Redesign</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 4rem; padding: 2rem; background: white; border-radius: 12px; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto;">
+          <h3 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 1rem;">The Guiding Question</h3>
+          <p style="font-size: 1.1rem; color: var(--patina-mocha-brown); line-height: 1.7; font-style: italic;">
+            "Does scrolling through this page feel like walking through a design studio with material samples in hand—or does it feel like evaluating enterprise software?"
+          </p>
+          <p style="font-size: 0.95rem; color: var(--patina-mocha-brown); margin-top: 1rem;">
+            Every structural decision should serve the former. When in doubt, add texture, remove explanation, and let the craft speak.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Patina.cloud Structural UX Proposal • 2026</p>
+    <div class="strata-mark">
+      <div class="strata-line"></div>
+      <div class="strata-line"></div>
+      <div class="strata-line"></div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,13 +1,41 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { sanityFetch } from "../../../sanity/lib/client";
+import { careersPageQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Careers | Patina",
   description:
     "Join the Patina team. We're building the future of furniture retail with a focus on craftsmanship, sustainability, and design.",
 };
+
+interface CareersPageData {
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroHeadlineEmphasis?: string;
+  heroDescription?: string;
+  valuesHeader?: string;
+  valuesDescription?: string;
+  values?: Array<{ title: string; description: string }>;
+  benefitsHeader?: string;
+  benefitsDescription?: string;
+  benefits?: string[];
+  positionsHeader?: string;
+  positionsDescription?: string;
+  openPositions?: Array<{
+    title: string;
+    department: string;
+    location: string;
+    type: string;
+    description: string;
+  }>;
+  ctaHeader?: string;
+  ctaDescription?: string;
+  ctaLink?: { label: string; href: string };
+}
 
 const openPositions = [
   {
@@ -86,7 +114,18 @@ const benefits = [
   "401(k) with 4% match",
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const { isEnabled: isDraft } = await draftMode();
+
+  const pageData = await sanityFetch<CareersPageData | null>({
+    query: careersPageQuery,
+    isDraftMode: isDraft,
+  });
+
+  const displayValues = pageData?.values?.length ? pageData.values : values;
+  const displayBenefits = pageData?.benefits?.length ? pageData.benefits : benefits;
+  const displayPositions = pageData?.openPositions?.length ? pageData.openPositions : openPositions;
+
   return (
     <>
       <Navigation />
@@ -104,15 +143,14 @@ export default function CareersPage() {
 
           <div className="relative z-10 max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-              Join Our Team
+              {pageData?.heroEyebrow || "Join Our Team"}
             </p>
             <h1 className="text-display-1 text-[var(--patina-charcoal)] mb-6">
-              Build something{" "}
-              <em className="italic text-[var(--patina-mocha-brown)]">lasting</em>
+              {pageData?.heroHeadline || "Build something"}{" "}
+              <em className="italic text-[var(--patina-mocha-brown)]">{pageData?.heroHeadlineEmphasis || "lasting"}</em>
             </h1>
             <p className="text-xl text-[var(--patina-mocha-brown)] leading-relaxed max-w-2xl mx-auto">
-              We&apos;re a small team with a big mission: making it easy for people
-              to discover and own furniture with stories worth telling. Join us.
+              {pageData?.heroDescription || "We're a small team with a big mission: making it easy for people to discover and own furniture with stories worth telling. Join us."}
             </p>
           </div>
         </section>
@@ -122,15 +160,15 @@ export default function CareersPage() {
           <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
-                Our values
+                {pageData?.valuesHeader || "Our values"}
               </h2>
               <p className="text-lg text-[var(--patina-mocha-brown)] max-w-xl mx-auto">
-                These aren&apos;t just words on a wall—they guide every decision we make.
+                {pageData?.valuesDescription || "These aren't just words on a wall—they guide every decision we make."}
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {values.map((value) => (
+              {displayValues.map((value) => (
                 <div
                   key={value.title}
                   className="bg-[var(--patina-soft-cream)] p-6 rounded-[var(--radius-lg)]"
@@ -153,14 +191,14 @@ export default function CareersPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-heading-1 text-[var(--patina-off-white)] mb-4">
-                  Benefits & Perks
+                  {pageData?.benefitsHeader || "Benefits & Perks"}
                 </h2>
                 <p className="text-lg text-[rgba(237,233,228,0.75)]">
-                  We take care of our team so they can focus on doing their best work.
+                  {pageData?.benefitsDescription || "We take care of our team so they can focus on doing their best work."}
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
-                {benefits.map((benefit) => (
+                {displayBenefits.map((benefit) => (
                   <div
                     key={benefit}
                     className="flex items-center gap-3 text-[var(--patina-off-white)]"
@@ -191,15 +229,15 @@ export default function CareersPage() {
           <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
-                Open positions
+                {pageData?.positionsHeader || "Open positions"}
               </h2>
               <p className="text-lg text-[var(--patina-mocha-brown)]">
-                Find your place on our team.
+                {pageData?.positionsDescription || "Find your place on our team."}
               </p>
             </div>
 
             <div className="space-y-4">
-              {openPositions.map((position) => (
+              {displayPositions.map((position) => (
                 <article
                   key={position.title}
                   className="group bg-[var(--patina-soft-cream)] p-6 rounded-[var(--radius-lg)] hover:shadow-[var(--shadow-md)] transition-shadow"
@@ -274,17 +312,16 @@ export default function CareersPage() {
         <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
           <div className="max-w-[600px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-heading-2 text-[var(--patina-charcoal)] mb-4">
-              Don&apos;t see a fit?
+              {pageData?.ctaHeader || "Don't see a fit?"}
             </h2>
             <p className="text-[var(--patina-mocha-brown)] mb-8">
-              We&apos;re always looking for talented people who share our values.
-              Send us your portfolio or resume—we&apos;d love to hear from you.
+              {pageData?.ctaDescription || "We're always looking for talented people who share our values. Send us your portfolio or resume—we'd love to hear from you."}
             </p>
             <Link
-              href="mailto:careers@patina.com"
+              href={pageData?.ctaLink?.href || "mailto:careers@patina.com"}
               className="inline-flex items-center justify-center px-8 py-4 border-2 border-[var(--patina-charcoal)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-charcoal)] hover:text-[var(--patina-off-white)]"
             >
-              Send General Application
+              {pageData?.ctaLink?.label || "Send General Application"}
             </Link>
           </div>
         </section>

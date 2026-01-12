@@ -1,45 +1,40 @@
 import { draftMode } from "next/headers";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
+import { FirstTouchJourney } from "@/components/sections/FirstTouchJourney";
 import {
-  ValuePropositionSection,
-  AestheteEngineSection,
-  ARShowcaseSection,
   FeaturedMakersSection,
-  TestimonialsSection,
+  MaterialStoriesSection,
+  TheJourneySection,
   DesignerServicesSection,
-  AppCTASection,
+  VoicesSection,
+  HowItWorksSection,
+  FinalCTASection,
 } from "./HomeContent";
 import { sanityFetch } from "../../sanity/lib/client";
 import { homePageQuery, featuredMakersQuery, testimonialsQuery, trustBadgesQuery } from "../../sanity/lib/queries";
 
 interface HomePage {
+  // Hero
   heroTitle?: string;
   heroTitleEmphasis?: string;
   heroDescription?: string;
-  heroSecondaryLine?: string;
   heroTrustLine?: string;
   heroCta?: { label: string; href: string };
-  valueHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
-  valueFeatures?: Array<{ title: string; description: string; icon?: string }>;
-  engineHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
-  engineBody?: string;
-  engineCta?: { label: string; href: string };
-  enginePillars?: Array<{ title: string; description: string; examples?: string[]; highlight?: string }>;
-  experienceHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
-  experienceBody?: string;
-  experienceSteps?: Array<{ number: number; title: string; text: string }>;
+  // Makers
   makersHeader?: { eyebrow?: string; headline?: string };
   makersBody?: string;
+  // Testimonials / Voices
   testimonialsHeader?: { eyebrow?: string; headline?: string };
+  // Professional Services
   servicesHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
   servicesBody?: string;
   servicesBenefit?: string;
   servicesHandoffItems?: string[];
   servicesCta?: { label: string; href: string };
+  // Final CTA
   ctaHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
   ctaBody?: string;
-  ctaSecondary?: string;
   ctaPrimary?: { label: string; href: string };
   ctaSecondaryLink?: { label: string; href: string };
 }
@@ -97,65 +92,53 @@ export default async function HomePage() {
         <Hero
           title={homePage?.heroTitle || "Where Time "}
           titleEmphasis={homePage?.heroTitleEmphasis || "Adds Value"}
-          description={homePage?.heroDescription || "Discover furniture that grows more beautiful with every year. See it in your space. Know the makers."}
-          secondaryLine={homePage?.heroSecondaryLine || "Powered by The Aesthete Engine—designer-taught intelligence that learns what you love."}
-          primaryCta={homePage?.heroCta || { label: "Get the App", href: "/app" }}
+          description={homePage?.heroDescription || "Discover furniture that grows more beautiful with every year. See it in your space. Know the hands that made it."}
+          primaryCta={homePage?.heroCta || { label: "Begin Your Journey", href: "/app" }}
           trustLine={homePage?.heroTrustLine || "Heritage makers since 1904"}
           imageUrl="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=2000&h=1200&fit=crop&q=80"
-          scrollTargetId="value-proposition"
+          scrollTargetId="first-touch"
         />
 
-        {/* 2. Value Proposition Section */}
-        <div id="value-proposition">
-          <ValuePropositionSection
-            header={homePage?.valueHeader}
-            features={homePage?.valueFeatures}
-          />
-        </div>
+        {/* 2. First Touch - Cinematic Scroll Journey */}
+        <FirstTouchJourney continueTargetId="makers" />
 
-        {/* 3. The Aesthete Engine */}
-        <AestheteEngineSection
-          header={homePage?.engineHeader}
-          body={homePage?.engineBody}
-          pillars={homePage?.enginePillars}
-          cta={homePage?.engineCta}
-        />
-
-        {/* 4. AR Experience Showcase */}
-        <ARShowcaseSection
-          header={homePage?.experienceHeader}
-          body={homePage?.experienceBody}
-          steps={homePage?.experienceSteps}
-        />
-
-        {/* 5. Featured Makers */}
+        {/* 3. Meet the Makers */}
         <FeaturedMakersSection
           header={homePage?.makersHeader}
           body={homePage?.makersBody}
           makers={makers || undefined}
-        />
-
-        {/* 6. Testimonials / Social Proof */}
-        <TestimonialsSection
-          header={homePage?.testimonialsHeader}
           testimonials={testimonials || undefined}
-          trustBadges={trustBadges || undefined}
         />
 
-        {/* 7. Designer Services */}
+        {/* 4. Material Stories - Sensory Interlude */}
+        <MaterialStoriesSection />
+
+        {/* 5. The Journey - Organic Flow */}
+        <TheJourneySection testimonials={testimonials || undefined} />
+
+        {/* 6. Professional Design Services */}
         <DesignerServicesSection
           header={homePage?.servicesHeader}
           body={homePage?.servicesBody}
           benefit={homePage?.servicesBenefit}
           handoffItems={homePage?.servicesHandoffItems}
           cta={homePage?.servicesCta}
+          testimonials={testimonials || undefined}
         />
 
-        {/* 8. Final CTA */}
-        <AppCTASection
+        {/* 7. Voices - Community Stories */}
+        <VoicesSection
+          header={homePage?.testimonialsHeader}
+          testimonials={testimonials || undefined}
+        />
+
+        {/* 8. How It Works - Collapsible */}
+        <HowItWorksSection />
+
+        {/* 9. Final CTA - Story Based */}
+        <FinalCTASection
           header={homePage?.ctaHeader}
           body={homePage?.ctaBody}
-          secondary={homePage?.ctaSecondary}
           primaryCta={homePage?.ctaPrimary}
           secondaryLink={homePage?.ctaSecondaryLink}
         />

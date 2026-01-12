@@ -988,6 +988,353 @@ const appPage = {
 };
 
 // ============================================
+// SERVICES PAGE SINGLETON
+// ============================================
+const servicesPage = {
+  _id: "servicesPage",
+  _type: "servicesPage",
+  heroEyebrow: "Design Services",
+  heroHeadline: "Let us help you find",
+  heroHeadlineEmphasis: "the perfect pieces",
+  heroDescription:
+    "From a single statement piece to a complete home, our design team is here to guide you through our collection of artisan-crafted furniture.",
+  packagesHeader: {
+    eyebrow: "Our Services",
+    headline: "Choose your level of",
+    subheadline: "guidance",
+  },
+  processHeader: {
+    eyebrow: "How It Works",
+    headline: "A thoughtful",
+    subheadline: "process",
+  },
+  processSteps: [
+    {
+      number: "01",
+      title: "Discovery",
+      description:
+        "We start with a conversation about your space, style preferences, and how you live. Share inspiration, measurements, and photos.",
+    },
+    {
+      number: "02",
+      title: "Curation",
+      description:
+        "Our designers hand-select pieces from our collection of artisan makers. Each recommendation is chosen specifically for your space.",
+    },
+    {
+      number: "03",
+      title: "Visualization",
+      description:
+        "See every piece in your actual space using our AR tools. Adjust, swap, and refine until it feels perfect.",
+    },
+    {
+      number: "04",
+      title: "Delivery",
+      description:
+        "We coordinate directly with makers for production and handle white-glove delivery and placement in your home.",
+    },
+  ],
+  ctaHeader: {
+    eyebrow: "Get Started",
+    headline: "Ready to begin?",
+  },
+  ctaDescription:
+    "Schedule a free consultation call. We'll discuss your space, style preferences, and how we can help you find furniture with meaning.",
+  ctaPrimary: { label: "Email Us", href: "mailto:design@patina.com", variant: "primary" },
+  ctaSecondary: { label: "Browse Collection", href: "/furniture", variant: "secondary" },
+};
+
+// ============================================
+// DESIGNERS PAGE SINGLETON
+// ============================================
+const designersPage = {
+  _id: "designersPage",
+  _type: "designersPage",
+  heroEyebrow: "For Designers",
+  heroHeadline: "Elevate your practice with",
+  heroHeadlineEmphasis: "exceptional craft",
+  heroDescription:
+    "Join a network of designers who source the world's finest handcrafted furniture. Trade pricing, AR visualization, and white-glove service—all designed for your workflow.",
+  heroPrimaryCta: { label: "Apply for Trade Access", href: "#apply", variant: "primary" },
+  heroSecondaryCta: { label: "Browse Collection", href: "/furniture", variant: "secondary" },
+  benefitsHeader: {
+    eyebrow: "Trade Benefits",
+    headline: "Everything you need to",
+    subheadline: "succeed",
+  },
+  benefits: [
+    {
+      title: "Trade Pricing",
+      description:
+        "Access exclusive designer pricing on every piece. Earn competitive commissions on client purchases.",
+      icon: "money",
+    },
+    {
+      title: "AR Client Presentations",
+      description:
+        "Show clients exactly how pieces will look in their space. Close deals faster with immersive visualization.",
+      icon: "ar",
+    },
+    {
+      title: "Curated Collections",
+      description:
+        "Every piece is vetted for quality and provenance. Recommend with confidence, backed by maker stories.",
+      icon: "sparkle",
+    },
+    {
+      title: "Dedicated Support",
+      description:
+        "Your own account manager for custom orders, rush deliveries, and special client requests.",
+      icon: "user",
+    },
+    {
+      title: "White Glove Delivery",
+      description:
+        "Professional installation included. We handle the logistics so you can focus on design.",
+      icon: "truck",
+    },
+    {
+      title: "Maker Introductions",
+      description:
+        "Connect directly with craftspeople for custom commissions and bespoke pieces.",
+      icon: "book",
+    },
+  ],
+  testimonialsHeader: {
+    eyebrow: "Designer Stories",
+    headline: "Trusted by leading",
+    subheadline: "designers",
+  },
+  testimonials: [
+    { _type: "reference", _ref: "testimonial-designer-1" },
+    { _type: "reference", _ref: "testimonial-designer-2" },
+  ],
+  applyHeader: {
+    eyebrow: "Join Us",
+    headline: "Apply for trade access",
+  },
+  applyDescription:
+    "Tell us about your practice and we'll be in touch within 48 hours.",
+};
+
+// ============================================
+// CAREERS PAGE SINGLETON
+// ============================================
+const careersPage = {
+  _id: "careersPage",
+  _type: "careersPage",
+  heroEyebrow: "Join Our Team",
+  heroHeadline: "Build something",
+  heroHeadlineEmphasis: "lasting",
+  heroDescription:
+    "We're a small team with a big mission: making it easy for people to discover and own furniture with stories worth telling. Join us.",
+  valuesHeader: "Our values",
+  valuesDescription: "These aren't just words on a wall—they guide every decision we make.",
+  values: [
+    {
+      title: "Craft Over Speed",
+      description:
+        "We believe in doing things right, not just fast. Quality work takes time, and we give our team the space to produce their best.",
+    },
+    {
+      title: "Transparency First",
+      description:
+        "Open communication, honest feedback, and clear expectations. No hidden agendas, no politics—just good work.",
+    },
+    {
+      title: "Sustainable Thinking",
+      description:
+        "From our products to our practices, we consider the long-term impact. This applies to how we treat our people too.",
+    },
+    {
+      title: "Maker Mindset",
+      description:
+        "Everyone at Patina is a maker in some way. We value craftsmanship in all its forms—code, design, writing, and beyond.",
+    },
+  ],
+  benefitsHeader: "Benefits & Perks",
+  benefitsDescription: "We take care of our team so they can focus on doing their best work.",
+  benefits: [
+    "Competitive salary + equity",
+    "Comprehensive health, dental, vision",
+    "Unlimited PTO (we mean it)",
+    "Remote-first flexibility",
+    "Furniture discount (40% off)",
+    "Professional development budget",
+    "12 weeks parental leave",
+    "401(k) with 4% match",
+  ],
+  positionsHeader: "Open positions",
+  positionsDescription: "Find your place on our team.",
+  openPositions: [
+    {
+      title: "Senior Product Designer",
+      department: "Design",
+      location: "Brooklyn, NY (Hybrid)",
+      type: "Full-time",
+      description:
+        "Lead the design of our digital experiences, from our web platform to our AR features. You'll work closely with makers and customers to create intuitive, beautiful interfaces.",
+    },
+    {
+      title: "Full-Stack Engineer",
+      department: "Engineering",
+      location: "Remote (US)",
+      type: "Full-time",
+      description:
+        "Build the technology that connects makers with customers. You'll work on our Next.js platform, Sanity CMS integration, and AR visualization tools.",
+    },
+    {
+      title: "Design Services Lead",
+      department: "Customer Experience",
+      location: "Brooklyn, NY",
+      type: "Full-time",
+      description:
+        "Guide our customers through their furniture journey, managing our team of design consultants and developing our concierge service offerings.",
+    },
+    {
+      title: "Maker Relations Manager",
+      department: "Partnerships",
+      location: "Remote (US)",
+      type: "Full-time",
+      description:
+        "Be the bridge between Patina and our network of artisan workshops. You'll discover new makers, maintain relationships, and ensure quality standards.",
+    },
+    {
+      title: "Content Producer",
+      department: "Marketing",
+      location: "Brooklyn, NY (Hybrid)",
+      type: "Full-time",
+      description:
+        "Tell the stories of our makers and their craft. You'll create compelling content across photography, video, and written formats.",
+    },
+  ],
+  ctaHeader: "Don't see a fit?",
+  ctaDescription:
+    "We're always looking for talented people who share our values. Send us your portfolio or resume—we'd love to hear from you.",
+  ctaLink: {
+    label: "Send General Application",
+    href: "mailto:careers@patina.com",
+    variant: "secondary",
+  },
+};
+
+// ============================================
+// CONTACT PAGE SINGLETON
+// ============================================
+const contactPage = {
+  _id: "contactPage",
+  _type: "contactPage",
+  heroEyebrow: "Get in Touch",
+  heroHeadline: "We'd love to",
+  heroHeadlineEmphasis: "hear",
+  heroDescription:
+    "Whether you have a question about a piece, want to partner with us, or just want to say hello—we're here.",
+  contactInfoHeader: "Other ways to reach us",
+  email: "hello@patina.com",
+  phone: "1-800-555-1234",
+  phoneHours: "Mon-Fri, 9am-6pm EST",
+  showroomAddress: "123 Craft District\nBrooklyn, NY 11201",
+  showroomNote: "By appointment only",
+  quickLinks: [
+    { label: "Work with a Designer", href: "/services", variant: "link" },
+    { label: "Apply as a Maker", href: "/makers", variant: "link" },
+    { label: "Download the App", href: "/app", variant: "link" },
+  ],
+  contactReasons: [
+    { value: "general", label: "General Inquiry" },
+    { value: "product", label: "Product Question" },
+    { value: "order", label: "Order Support" },
+    { value: "designer", label: "Designer Partnership" },
+    { value: "maker", label: "Maker Application" },
+    { value: "press", label: "Press & Media" },
+  ],
+  successMessage: "Thank you for reaching out. We typically respond within 24 hours.",
+};
+
+// ============================================
+// MAKERS APPLY PAGE SINGLETON
+// ============================================
+const makersApplyPage = {
+  _id: "makersApplyPage",
+  _type: "makersApplyPage",
+  heroEyebrow: "Join Our Network",
+  heroHeadline: "Become a Patina",
+  heroHeadlineEmphasis: "maker",
+  heroDescription:
+    "We partner with exceptional craftspeople who share our commitment to quality, sustainability, and transparency.",
+  criteriaHeader: "What we look for",
+  criteria: [
+    {
+      title: "Exceptional Craft",
+      description:
+        "Mastery of your medium, attention to detail, and pride in every piece.",
+      icon: "sparkle",
+    },
+    {
+      title: "Sustainable Practices",
+      description:
+        "Commitment to responsible sourcing and environmental stewardship.",
+      icon: "globe",
+    },
+    {
+      title: "Authentic Story",
+      description: "A compelling narrative about your craft, heritage, or approach.",
+      icon: "comment",
+    },
+    {
+      title: "Partnership Mindset",
+      description: "Willingness to collaborate, communicate, and grow together.",
+      icon: "users",
+    },
+  ],
+  formHeader: "Apply to join",
+  formDescription:
+    "Tell us about your workshop and craft. All fields marked with * are required.",
+  specialties: [
+    "Wood furniture",
+    "Upholstery",
+    "Metal work",
+    "Leather goods",
+    "Ceramics",
+    "Textiles",
+    "Mixed media",
+    "Other",
+  ],
+  successMessage:
+    "Thank you for your interest in joining Patina. Our maker relations team will review your application and reach out within 2 weeks.",
+  successLinkText: "Meet our current makers",
+  successLinkHref: "/makers",
+};
+
+// ============================================
+// DESIGNER TESTIMONIALS
+// ============================================
+const designerTestimonials = [
+  {
+    _id: "testimonial-designer-1",
+    _type: "testimonial",
+    quote:
+      "Patina has transformed how I present furniture to clients. The AR feature alone has helped me close three major projects this quarter.",
+    author: "Sarah Chen",
+    title: "Principal, Chen Interiors",
+    location: "San Francisco, CA",
+    category: "designer",
+    featured: true,
+  },
+  {
+    _id: "testimonial-designer-2",
+    _type: "testimonial",
+    quote:
+      "The quality is consistent, the stories are genuine, and my clients love knowing who made their furniture. It's become my go-to source.",
+    author: "Marcus Webb",
+    title: "Founder, Webb Design Studio",
+    location: "Brooklyn, NY",
+    category: "designer",
+    featured: true,
+  },
+];
+
+// ============================================
 // SITE SETTINGS SINGLETON
 // ============================================
 const siteSettings = {
@@ -1067,11 +1414,22 @@ async function migrateAll() {
       await createOrReplace(member);
     }
 
-    // 7. Migrate Singleton Pages
+    // 7. Migrate Designer Testimonials (needed for designers page)
+    console.log("\n--- Migrating Designer Testimonials ---");
+    for (const testimonial of designerTestimonials) {
+      await createOrReplace(testimonial);
+    }
+
+    // 8. Migrate Singleton Pages
     console.log("\n--- Migrating Singleton Pages ---");
     await createOrReplace(homePage);
     await createOrReplace(aboutPage);
     await createOrReplace(appPage);
+    await createOrReplace(servicesPage);
+    await createOrReplace(designersPage);
+    await createOrReplace(careersPage);
+    await createOrReplace(contactPage);
+    await createOrReplace(makersApplyPage);
     await createOrReplace(siteSettings);
 
     console.log("\n========================================");
@@ -1082,10 +1440,10 @@ async function migrateAll() {
     console.log(`  Materials: ${materials.length}`);
     console.log(`  Makers: ${makers.length}`);
     console.log(`  Products: ${products.length}`);
-    console.log(`  Testimonials: ${testimonials.length}`);
+    console.log(`  Testimonials: ${testimonials.length + designerTestimonials.length}`);
     console.log(`  Trust Badges: ${trustBadges.length}`);
     console.log(`  Team Members: ${teamMembers.length}`);
-    console.log(`  Singleton Pages: 4 (home, about, app, settings)`);
+    console.log(`  Singleton Pages: 9 (home, about, app, services, designers, careers, contact, makers-apply, settings)`);
     console.log("");
   } catch (error) {
     console.error("\nMigration failed:", error);

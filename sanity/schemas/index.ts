@@ -22,6 +22,9 @@ import { aboutPage } from "./singletons/aboutPage";
 import { appPage } from "./singletons/appPage";
 import { servicesPage } from "./singletons/servicesPage";
 import { designersPage } from "./singletons/designersPage";
+import { careersPage } from "./singletons/careersPage";
+import { contactPage } from "./singletons/contactPage";
+import { makersApplyPage } from "./singletons/makersApplyPage";
 import { siteSettings } from "./singletons/siteSettings";
 
 export const schemaTypes = [
@@ -49,5 +52,8 @@ export const schemaTypes = [
   appPage,
   servicesPage,
   designersPage,
+  careersPage,
+  contactPage,
+  makersApplyPage,
   siteSettings,
 ];

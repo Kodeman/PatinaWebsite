@@ -7,6 +7,9 @@ const SINGLETONS = [
   "appPage",
   "servicesPage",
   "designersPage",
+  "careersPage",
+  "contactPage",
+  "makersApplyPage",
   "siteSettings",
 ];
 
@@ -49,6 +52,27 @@ export const deskStructure = (S: StructureBuilder) =>
                   S.document()
                     .schemaType("designersPage")
                     .documentId("designersPage")
+                ),
+              S.listItem()
+                .title("Careers Page")
+                .child(
+                  S.document()
+                    .schemaType("careersPage")
+                    .documentId("careersPage")
+                ),
+              S.listItem()
+                .title("Contact Page")
+                .child(
+                  S.document()
+                    .schemaType("contactPage")
+                    .documentId("contactPage")
+                ),
+              S.listItem()
+                .title("Makers Apply Page")
+                .child(
+                  S.document()
+                    .schemaType("makersApplyPage")
+                    .documentId("makersApplyPage")
                 ),
             ])
         ),

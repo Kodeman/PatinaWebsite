@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina.cloud Copy Proposal | Voice Alignment Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+      --patina-accent-warm: #D4A574;
+      --patina-error: #B87969;
+      --patina-success: #7A9C85;
+      
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--patina-off-white);
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* ===== NAVIGATION ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(237, 233, 228, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.2);
+      padding: 1rem 2rem;
+    }
+    
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--patina-charcoal);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: var(--patina-charcoal);
+    }
+    
+    /* ===== HERO SECTION ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      background: linear-gradient(180deg, var(--patina-warm-white) 0%, var(--patina-off-white) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: -10%;
+      width: 40%;
+      height: 60%;
+      background: radial-gradient(ellipse, rgba(163, 146, 124, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 10%;
+      right: -5%;
+      width: 30%;
+      height: 40%;
+      background: radial-gradient(ellipse, rgba(212, 165, 116, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .hero-content {
+      max-width: 900px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      color: var(--patina-charcoal);
+    }
+    
+    .hero h1 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--patina-mocha-brown);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+    
+    .strata-mark {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4rem;
+      opacity: 0.6;
+    }
+    
+    .strata-line {
+      height: 2px;
+      border-radius: 1px;
+    }
+    
+    .strata-line:nth-child(1) {
+      width: 60px;
+      background: var(--patina-mocha-brown);
+    }
+    
+    .strata-line:nth-child(2) {
+      width: 48px;
+      background: var(--patina-clay-beige);
+    }
+    
+    .strata-line:nth-child(3) {
+      width: 36px;
+      background: var(--patina-clay-beige);
+      opacity: 0.5;
+    }
+    
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 500;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    
+    .section-title em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .section-intro {
+      font-size: 1.1rem;
+      color: var(--patina-mocha-brown);
+      max-width: 700px;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+    
+    /* ===== VOICE PRINCIPLES ===== */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .principle-card {
+      background: var(--patina-soft-cream);
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid rgba(163, 146, 124, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .principle-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(101, 91, 82, 0.1);
+    }
+    
+    .principle-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--patina-clay-beige);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--patina-off-white);
+      font-size: 1.25rem;
+    }
+    
+    .principle-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: var(--patina-charcoal);
+    }
+    
+    .principle-card p {
+      font-size: 0.95rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.6;
+    }
+    
+    /* ===== COMPARISON CARDS ===== */
+    .comparison-container {
+      margin: 3rem 0;
+    }
+    
+    .comparison-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 3rem;
+      box-shadow: 0 4px 24px rgba(101, 91, 82, 0.08);
+      border: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .comparison-header {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .comparison-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+    
+    .severity-badge {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    .severity-high {
+      background: var(--patina-error);
+      color: white;
+    }
+    
+    .severity-medium {
+      background: var(--patina-accent-warm);
+      color: var(--patina-charcoal);
+    }
+    
+    .severity-low {
+      background: var(--patina-clay-beige);
+      color: white;
+    }
+    
+    .comparison-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    
+    @media (max-width: 768px) {
+      .comparison-body {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .comparison-side {
+      padding: 2rem;
+    }
+    
+    .comparison-current {
+      background: rgba(184, 121, 105, 0.05);
+      border-right: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .comparison-proposed {
+      background: rgba(122, 156, 133, 0.05);
+    }
+    
+    .comparison-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .comparison-current .comparison-label {
+      color: var(--patina-error);
+    }
+    
+    .comparison-proposed .comparison-label {
+      color: var(--patina-success);
+    }
+    
+    .comparison-content {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--patina-charcoal);
+    }
+    
+    .comparison-content blockquote {
+      border-left: 3px solid var(--patina-clay-beige);
+      padding-left: 1rem;
+      margin: 1rem 0;
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .comparison-footer {
+      background: var(--patina-soft-cream);
+      padding: 1.5rem 2rem;
+      border-top: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .comparison-footer h4 {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+    
+    .comparison-footer p {
+      font-size: 0.9rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.6;
+    }
+    
+    /* ===== DO/DON'T EXAMPLES ===== */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .example-box {
+      background: var(--patina-soft-cream);
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid rgba(163, 146, 124, 0.15);
+    }
+    
+    .example-box h4 {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .example-do h4 {
+      color: var(--patina-success);
+    }
+    
+    .example-dont h4 {
+      color: var(--patina-error);
+    }
+    
+    .example-box ul {
+      list-style: none;
+    }
+    
+    .example-box li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+      font-size: 0.95rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.5;
+    }
+    
+    .example-box li:last-child {
+      border-bottom: none;
+    }
+    
+    /* ===== SUMMARY SECTION ===== */
+    .summary-section {
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      padding: 5rem 2rem;
+      margin-top: 4rem;
+    }
+    
+    .summary-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .summary-section .section-label {
+      color: var(--patina-clay-beige);
+    }
+    
+    .summary-section .section-title {
+      color: var(--patina-off-white);
+    }
+    
+    .summary-section .section-title em {
+      color: var(--patina-clay-beige);
+    }
+    
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    @media (max-width: 768px) {
+      .summary-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 500;
+      color: var(--patina-clay-beige);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.85rem;
+      color: rgba(237, 233, 228, 0.7);
+    }
+    
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(163, 146, 124, 0.15);
+    }
+    
+    .footer p {
+      font-size: 0.85rem;
+      color: var(--patina-mocha-brown);
+    }
+    
+    /* ===== ISSUE TAGS ===== */
+    .issue-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .issue-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(163, 146, 124, 0.15);
+      color: var(--patina-mocha-brown);
+      letter-spacing: 0.05em;
+    }
+    
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    
+    /* ===== TABLE OF CONTENTS ===== */
+    .toc {
+      background: var(--patina-soft-cream);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0 4rem;
+      border: 1px solid rgba(163, 146, 124, 0.15);
+    }
+    
+    .toc h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--patina-charcoal);
+    }
+    
+    .toc-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 0.5rem 2rem;
+    }
+    
+    .toc-list a {
+      font-size: 0.9rem;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+      display: block;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+      transition: color 0.2s ease;
+    }
+    
+    .toc-list a:hover {
+      color: var(--patina-charcoal);
+    }
+    
+    .toc-list a span {
+      color: var(--patina-clay-beige);
+      margin-right: 0.5rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">PATINA</a>
+      <ul class="nav-links">
+        <li><a href="#analysis">Analysis</a></li>
+        <li><a href="#principles">Principles</a></li>
+        <li><a href="#proposals">Proposals</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-content">
+      <p class="hero-label">Copy & Voice Alignment Proposal</p>
+      <h1>Bringing <em>Warmth</em> Back to the Words</h1>
+      <p class="hero-subtitle">
+        A comprehensive review of patina.cloud's website copy, with proposed revisions that better honor the brand's core voice: confident yet unpretentious, sensory and tangible, story-driven, with Midwestern warmth.
+      </p>
+      <div class="strata-mark">
+        <div class="strata-line"></div>
+        <div class="strata-line"></div>
+        <div class="strata-line"></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TABLE OF CONTENTS -->
+    <section class="section">
+      <nav class="toc">
+        <h3>In This Proposal</h3>
+        <ul class="toc-list">
+          <li><a href="#analysis"><span>01</span> Current State Analysis</a></li>
+          <li><a href="#principles"><span>02</span> Voice Principles Recap</a></li>
+          <li><a href="#proposals"><span>03</span> Section-by-Section Proposals</a></li>
+          <li><a href="#problematic"><span>04</span> Problematic Phrases</a></li>
+          <li><a href="#examples"><span>05</span> Do's & Don'ts Reference</a></li>
+          <li><a href="#summary"><span>06</span> Implementation Summary</a></li>
+        </ul>
+      </nav>
+    </section>
+
+    <!-- ANALYSIS SECTION -->
+    <section id="analysis" class="section">
+      <p class="section-label">Current State Analysis</p>
+      <h2 class="section-title">Where We Are <em>& Where We Should Be</em></h2>
+      <p class="section-intro">
+        The current patina.cloud copy does many things well—it's clear, informative, and professionally written. However, several areas lean too heavily toward tech-startup language, missing opportunities to embody the warm, sensory, story-driven voice that makes Patina distinctive.
+      </p>
+
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="principle-icon">⚠️</div>
+          <h3>Over-Reliance on Tech Speak</h3>
+          <p>Phrases like "proprietary intelligence system" and "behavioral signals" feel clinical. They describe <em>what</em> the technology does rather than <em>how</em> it makes users feel.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">⚠️</div>
+          <h3>Missing Sensory Language</h3>
+          <p>The brand guidelines call for "language that evokes touch and texture—linen, leather, cedar, grain." Current copy rarely engages the senses.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">⚠️</div>
+          <h3>Surveillance Undertones</h3>
+          <p>"We notice what you don't realize you're telling us" reads as intrusive rather than intuitive. This needs significant softening.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">✓</div>
+          <h3>Strong Foundations</h3>
+          <p>The maker stories, designer quotes, and overall structure are solid. These provide excellent scaffolding for voice refinement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRINCIPLES SECTION -->
+    <section id="principles" class="section">
+      <p class="section-label">Voice Principles</p>
+      <h2 class="section-title">The Four Pillars of <em>Patina's Voice</em></h2>
+      <p class="section-intro">
+        From the brand guidelines, these four voice attributes should guide every word on the site. Current copy sometimes honors these—but often doesn't.
+      </p>
+
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="principle-icon">🎯</div>
+          <h3>Confident Yet Unpretentious</h3>
+          <p>"We know quality when we see it. Expert guidance delivered with warmth, not arrogance." Avoid jargon that positions Patina as superior through exclusivity.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">✋</div>
+          <h3>Sensory & Tangible</h3>
+          <p>"Language that evokes touch and texture. Linen, leather, cedar, grain." Every description should make readers want to reach out and touch.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">📖</div>
+          <h3>Story-Driven</h3>
+          <p>"Every piece has a provenance. 'Hand-turned in Ohio since 1904.'" Lead with the human story, not the feature list.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">🌾</div>
+          <h3>Midwestern Warmth</h3>
+          <p>"Plain-spoken honesty. The friendly neighbor with great taste." Write like you're talking to a friend, not presenting to investors.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROPOSALS SECTION -->
+    <section id="proposals" class="section">
+      <p class="section-label">Section-by-Section Proposals</p>
+      <h2 class="section-title">Where the <em>Changes Matter Most</em></h2>
+      <p class="section-intro">
+        Below are the specific sections requiring revision, with current copy compared against proposed alternatives that better align with Patina's voice guidelines.
+      </p>
+
+      <div class="comparison-container">
+        
+        <!-- COMPARISON 1: Hero Subhead -->
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>Hero Section — Powered By Statement</h3>
+            <span class="severity-badge severity-high">High Priority</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Current Copy</p>
+              <div class="comparison-content">
+                <blockquote>"Powered by The Aesthete Engine—designer-taught intelligence that learns what you love."</blockquote>
+                <div class="issue-tags">
+                  <span class="issue-tag">Tech jargon</span>
+                  <span class="issue-tag">Feature-focused</span>
+                  <span class="issue-tag">Cold</span>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Proposed Copy</p>
+              <div class="comparison-content">
+                <blockquote>"Interior designers have spent decades learning what makes a room feel right. We asked them to teach what they know—and built something that remembers."</blockquote>
+                <div class="issue-tags">
+                  <span class="issue-tag">Human-centered</span>
+                  <span class="issue-tag">Story-driven</span>
+                  <span class="issue-tag">Warm</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-footer">
+            <h4>Why This Change?</h4>
+            <p>The current copy leads with the technology name and uses AI-industry terminology. The proposed version leads with human expertise, frames the technology as a listener and learner, and avoids "intelligence" which carries surveillance connotations.</p>
+          </div>
+        </div>
+
+        <!-- COMPARISON 2: The Intelligence Section Header -->
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>Intelligence Section — Header & Intro</h3>
+            <span class="severity-badge severity-high">High Priority</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Current Copy</p>
+              <div class="comparison-content">
+                <blockquote>"Other apps show you what's popular. Patina shows you what's right."</blockquote>
+                <p style="margin-top: 1rem;">Then:</p>
+                <blockquote>"The Aesthete Engine is our proprietary intelligence system where professional interior designers actively teach the AI what no algorithm could discover on its own."</blockquote>
+                <div class="issue-tags">
+                  <span class="issue-tag">Competitive positioning</span>
+                  <span class="issue-tag">"Proprietary" is cold</span>
+                  <span class="issue-tag">Algorithm-focused</span>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Proposed Copy</p>
+              <div class="comparison-content">
+                <blockquote>"Recommendations that feel like they came from a friend who really knows you."</blockquote>
+                <p style="margin-top: 1rem;">Then:</p>
+                <blockquote>"Most apps sort by popularity or price. We asked designers a different question: 'What makes a piece feel right in someone's life?' Then we built a way to remember their answers—and apply them to yours."</blockquote>
+                <div class="issue-tags">
+                  <span class="issue-tag">Relatable</span>
+                  <span class="issue-tag">Human story</span>
+                  <span class="issue-tag">Midwestern honesty</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-footer">
+            <h4>Why This Change?</h4>
+            <p>The brand guidelines explicitly say <em>not</em> to write "Our AI-powered algorithm optimizes your furniture selection." The current copy comes dangerously close. The proposed version honors "plain-spoken honesty" while still communicating differentiation.</p>
+          </div>
+        </div>
+
+        <!-- COMPARISON 3: Invisible Learning Section -->
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>Invisible Learning — The Surveillance Problem</h3>
+            <span class="severity-badge severity-high">Critical</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Current Copy</p>
+              <div class="comparison-content">
+                <p><strong>Header:</strong> "Invisible Learning"</p>
+                <blockquote>"Your actions reveal authentic preferences. Quick taps show confidence. Slow swipes reveal thoughtfulness. Time spent viewing signals genuine interest.</blockquote>
+                <blockquote style="color: var(--patina-error); border-color: var(--patina-error);">"We notice what you don't realize you're telling us."</blockquote>
+                <div class="issue-tags">
+                  <span class="issue-tag">Surveillance tone</span>
+                  <span class="issue-tag">Creepy</span>
+                  <span class="issue-tag">Privacy concern</span>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Proposed Copy</p>
+              <div class="comparison-content">
+                <p><strong>Header:</strong> "Learning Your Language"</p>
+                <blockquote>"Some preferences are hard to put into words. Maybe you linger on weathered oak but scroll past polished chrome. Maybe warm tones make you pause."</blockquote>
+                <blockquote>"We pay attention so you don't have to explain—you just explore, and the recommendations get better."</blockquote>
+                <div class="issue-tags">
+                  <span class="issue-tag">Sensory language</span>
+                  <span class="issue-tag">Empowering</span>
+                  <span class="issue-tag">Collaborative</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-footer">
+            <h4>Why This Change?</h4>
+            <p>This is the most urgent revision. "We notice what you don't realize you're telling us" reads as invasive. The proposed version flips the frame: instead of watching <em>you</em>, we're learning your <em>language</em>. It also adds the sensory texture (weathered oak, warm tones) that's missing throughout.</p>
+          </div>
+        </div>
+
+        <!-- COMPARISON 4: The Experience Section -->
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>The Experience Section — Step Headers</h3>
+            <span class="severity-badge severity-medium">Medium Priority</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Current Copy</p>
+              <div class="comparison-content">
+                <p><strong>Step 1:</strong> "Walk your room together"</p>
+                <p><strong>Step 2:</strong> "See what fits"</p>
+                <p><strong>Step 3:</strong> "Live with it first"</p>
+                <p><strong>Step 4:</strong> "Purchase with clarity"</p>
+                <div class="issue-tags">
+                  <span class="issue-tag">Good foundations</span>
+                  <span class="issue-tag">Could be warmer</span>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Proposed Copy</p>
+              <div class="comparison-content">
+                <p><strong>Step 1:</strong> "Walk your room with us"</p>
+                <p><strong>Step 2:</strong> "Ten pieces, not ten thousand"</p>
+                <p><strong>Step 3:</strong> "Watch the morning light catch the grain"</p>
+                <p><strong>Step 4:</strong> "Bring it home knowing it belongs"</p>
+                <div class="issue-tags">
+                  <span class="issue-tag">Personal</span>
+                  <span class="issue-tag">Sensory</span>
+                  <span class="issue-tag">Confident</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-footer">
+            <h4>Why This Change?</h4>
+            <p>The current steps are functional but forgettable. The proposed versions add sensory texture ("morning light catch the grain"), plain-spoken honesty ("ten pieces, not ten thousand"), and emotional resonance ("knowing it belongs").</p>
+          </div>
+        </div>
+
+        <!-- COMPARISON 5: Accuracy Metrics -->
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>Always Improving Section — The Numbers Problem</h3>
+            <span class="severity-badge severity-medium">Medium Priority</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Current Copy</p>
+              <div class="comparison-content">
+                <blockquote>"Start at 75% match accuracy. Reach 90%+ over time. The Aesthete Engine doesn't just remember your preferences—it understands the patterns behind them."</blockquote>
+                <p style="margin-top: 1rem; font-size: 1.5rem; color: var(--patina-mocha-brown);">75% → 90%+</p>
+                <div class="issue-tags">
+                  <span class="issue-tag">Cold metrics</span>
+                  <span class="issue-tag">Tech-forward</span>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Proposed Copy</p>
+              <div class="comparison-content">
+                <blockquote>"Your first recommendations are good. By your fifth visit, they're uncanny. It's like working with a designer who's been paying attention—because, in a way, dozens of them have."</blockquote>
+                <p style="margin-top: 1rem; font-style: italic; color: var(--patina-mocha-brown);">"It only gets better from here."</p>
+                <div class="issue-tags">
+                  <span class="issue-tag">Story-driven</span>
+                  <span class="issue-tag">Human analogy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-footer">
+            <h4>Why This Change?</h4>
+            <p>Percentage metrics feel like SaaS marketing, not a lifestyle brand about craftsmanship and timelessness. The proposed version communicates the same improvement arc through narrative, connecting back to the designer-teaching story.</p>
+          </div>
+        </div>
+
+        <!-- COMPARISON 6: Professional Help Section -->
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>Professional Help Section — Bullet List</h3>
+            <span class="severity-badge severity-low">Lower Priority</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Current Copy</p>
+              <div class="comparison-content">
+                <ul style="list-style: disc; padding-left: 1.5rem; line-height: 2;">
+                  <li>Complete room dimensions and 3D model</li>
+                  <li>Your full style profile with confidence scores</li>
+                  <li>Behavioral signals revealing hidden preferences</li>
+                  <li>Saved pieces showing your direction</li>
+                </ul>
+                <div class="issue-tags">
+                  <span class="issue-tag">Technical list</span>
+                  <span class="issue-tag">"Behavioral signals"</span>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Proposed Copy</p>
+              <div class="comparison-content">
+                <ul style="list-style: disc; padding-left: 1.5rem; line-height: 2;">
+                  <li>Your room—measured down to the inch</li>
+                  <li>What you're drawn to, even things you didn't realize</li>
+                  <li>Every piece you saved along the way</li>
+                  <li>The designer insights that made you pause</li>
+                </ul>
+                <div class="issue-tags">
+                  <span class="issue-tag">Conversational</span>
+                  <span class="issue-tag">Human-scale</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-footer">
+            <h4>Why This Change?</h4>
+            <p>"Behavioral signals revealing hidden preferences" sounds like a privacy policy, not a benefit. The proposed version says the same thing ("even things you didn't realize") but in the voice of a friend explaining what they're handing off.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROBLEMATIC PHRASES SECTION -->
+    <section id="problematic" class="section">
+      <p class="section-label">Specific Phrases to Retire</p>
+      <h2 class="section-title">Words That Work <em>Against the Brand</em></h2>
+      <p class="section-intro">
+        Beyond full section rewrites, these specific phrases appear throughout the site and should be systematically replaced. Each carries connotations that conflict with Patina's warm, human-centered voice.
+      </p>
+
+      <div class="comparison-container">
+        <div class="comparison-card">
+          <div class="comparison-header">
+            <h3>Phrase Replacement Guide</h3>
+            <span class="severity-badge severity-medium">Site-Wide</span>
+          </div>
+          <div class="comparison-body">
+            <div class="comparison-side comparison-current">
+              <p class="comparison-label">✗ Retire These</p>
+              <div class="comparison-content">
+                <ul style="list-style: none; line-height: 2.2;">
+                  <li><strong>"Proprietary intelligence system"</strong></li>
+                  <li><strong>"Behavioral signals"</strong></li>
+                  <li><strong>"Match accuracy"</strong></li>
+                  <li><strong>"Confidence scores"</strong></li>
+                  <li><strong>"The result?"</strong> (copywriting cliché)</li>
+                  <li><strong>"Game changer"</strong> (testimonial)</li>
+                  <li><strong>"Unlock"</strong> (if used anywhere)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="comparison-side comparison-proposed">
+              <p class="comparison-label">✓ Use Instead</p>
+              <div class="comparison-content">
+                <ul style="list-style: none; line-height: 2.2;">
+                  <li><strong>"Designer-taught recommendations"</strong></li>
+                  <li><strong>"The way you browse" / "what catches your eye"</strong></li>
+                  <li><strong>"How well we know you"</strong></li>
+                  <li><strong>"How certain we are"</strong></li>
+                  <li><strong>Just make the statement directly</strong></li>
+                  <li><strong>"Changed how I..." / "Saved me from..."</strong></li>
+                  <li><strong>"Discover" / "Find" / "Explore"</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DO/DON'T SECTION -->
+    <section id="examples" class="section">
+      <p class="section-label">Quick Reference</p>
+      <h2 class="section-title">The Voice at a <em>Glance</em></h2>
+      <p class="section-intro">
+        A condensed reference for writers and editors when creating or reviewing Patina copy. Derived directly from the brand guidelines.
+      </p>
+
+      <div class="examples-grid">
+        <div class="example-box example-do">
+          <h4>✓ Write Like This</h4>
+          <ul>
+            <li>"Solid oak will ground the room—no veneer here."</li>
+            <li>"This leather only gets better with Sunday afternoons."</li>
+            <li>"Layer in character, one piece at a time."</li>
+            <li>"Crafted in Vermont since 1892."</li>
+            <li>"Hand-turned in Ohio since 1904."</li>
+            <li>"Reclaimed Douglas fir from Pacific Northwest barns."</li>
+            <li>"Third-generation upholsterers in North Carolina."</li>
+          </ul>
+        </div>
+        <div class="example-box example-dont">
+          <h4>✗ Never Write This</h4>
+          <ul>
+            <li>"Our AI-powered algorithm optimizes your furniture selection."</li>
+            <li>"This premium luxury item will elevate your space."</li>
+            <li>"Click here to unlock exclusive deals!"</li>
+            <li>"Limited time offer—act now!"</li>
+            <li>"Proprietary intelligence system..."</li>
+            <li>"Behavioral signals revealing..."</li>
+            <li>"We notice what you don't realize you're telling us."</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY SECTION -->
+    <section id="summary" class="summary-section">
+      <div class="summary-inner">
+        <p class="section-label">Implementation Summary</p>
+        <h2 class="section-title">The Path <em>Forward</em></h2>
+        <p style="color: rgba(237, 233, 228, 0.85); max-width: 600px; margin: 0 auto 2rem; line-height: 1.7;">
+          These changes aren't about rewriting everything—they're about bringing warmth, texture, and humanity back to copy that sometimes drifts toward tech-speak. The bones are good. The voice just needs to come home.
+        </p>
+        
+        <div class="summary-stats">
+          <div class="stat-item">
+            <div class="stat-number">6</div>
+            <div class="stat-label">Major Sections to Revise</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">7</div>
+            <div class="stat-label">Phrases to Retire</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Critical Fix (Surveillance)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Voice Pillars to Honor</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA SECTION -->
+    <section class="section" style="text-align: center; padding-top: 4rem;">
+      <p class="section-label">Next Steps</p>
+      <h2 class="section-title">Ready to Bring <em>the Warmth Back?</em></h2>
+      <p class="section-intro" style="margin: 0 auto 2rem; text-align: center;">
+        This proposal provides a roadmap for copy revisions. The next step would be implementing these changes across the site, testing with users, and establishing a voice review process for future content.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+        <div style="background: var(--patina-clay-beige); color: var(--patina-off-white); padding: 1rem 2rem; border-radius: 8px; font-size: 0.9rem;">
+          Phase 1: Critical Fixes (Surveillance copy)
+        </div>
+        <div style="background: var(--patina-soft-cream); color: var(--patina-charcoal); padding: 1rem 2rem; border-radius: 8px; font-size: 0.9rem; border: 1px solid rgba(163, 146, 124, 0.2);">
+          Phase 2: High-Priority Sections
+        </div>
+        <div style="background: var(--patina-soft-cream); color: var(--patina-charcoal); padding: 1rem 2rem; border-radius: 8px; font-size: 0.9rem; border: 1px solid rgba(163, 146, 124, 0.2);">
+          Phase 3: Site-Wide Phrase Sweep
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Patina Voice Alignment Proposal • Prepared for the Patina Team • 2026</p>
+    <div class="strata-mark" style="margin-top: 1.5rem;">
+      <div class="strata-line"></div>
+      <div class="strata-line"></div>
+      <div class="strata-line"></div>
+    </div>
+  </footer>
+
+</body>
+</html>

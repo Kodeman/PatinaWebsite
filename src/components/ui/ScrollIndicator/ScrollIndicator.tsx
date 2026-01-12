@@ -32,31 +32,22 @@ export function ScrollIndicator({ targetId, className }: ScrollIndicatorProps) {
       onClick={handleClick}
       aria-label="Scroll to explore"
       className={cn(
-        "flex flex-col items-center gap-2 cursor-pointer group",
+        "flex flex-col items-center gap-3 cursor-pointer group",
         "text-[var(--patina-off-white)]/60 hover:text-[var(--patina-off-white)]",
         "transition-colors duration-300",
         className
       )}
     >
-      <span className="text-xs tracking-[0.15em] uppercase font-medium">
-        Scroll
+      <span className="text-[0.7rem] tracking-[0.2em] uppercase font-medium">
+        Explore
       </span>
-      <svg
+      <div
         className={cn(
-          "w-5 h-5",
-          !prefersReducedMotion && "animate-[scrollBounce_1.5s_ease-in-out_infinite]"
+          "w-[1px] h-10",
+          "bg-gradient-to-b from-current to-transparent",
+          !prefersReducedMotion && "animate-[scrollPulse_2s_ease-in-out_infinite]"
         )}
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={1.5}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
-        />
-      </svg>
+      />
     </button>
   );
 }

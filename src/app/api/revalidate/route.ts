@@ -93,15 +93,31 @@ export async function POST(req: NextRequest) {
         pathsToRevalidate.push("/designers");
         break;
 
+      case "careersPage":
+        pathsToRevalidate.push("/careers");
+        break;
+
+      case "contactPage":
+        pathsToRevalidate.push("/contact");
+        break;
+
+      case "makersApplyPage":
+        pathsToRevalidate.push("/makers/apply");
+        break;
+
       case "siteSettings":
         // Revalidate all pages for site settings changes
         pathsToRevalidate.push("/");
         pathsToRevalidate.push("/furniture");
         pathsToRevalidate.push("/makers");
+        pathsToRevalidate.push("/makers/apply");
+        pathsToRevalidate.push("/materials");
         pathsToRevalidate.push("/about");
         pathsToRevalidate.push("/app");
         pathsToRevalidate.push("/designers");
         pathsToRevalidate.push("/services");
+        pathsToRevalidate.push("/careers");
+        pathsToRevalidate.push("/contact");
         break;
 
       default:

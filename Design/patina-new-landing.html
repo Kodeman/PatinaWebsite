@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina | Where Time Adds Value</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --patina-off-white: #EDE9E4;
+      --patina-clay-beige: #A3927C;
+      --patina-mocha-brown: #655B52;
+      --patina-charcoal: #3F3B37;
+      --patina-soft-cream: #F5F2ED;
+      --patina-warm-white: #FAF7F2;
+      --patina-accent-warm: #D4A574;
+      --patina-success: #7A9C85;
+      
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      
+      --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--patina-off-white);
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* ===== NAVIGATION ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.25rem 2rem;
+      transition: all 0.4s var(--transition-smooth);
+    }
+    
+    .nav.scrolled {
+      background: rgba(237, 233, 228, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(163, 146, 124, 0.15);
+    }
+    
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--patina-charcoal);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .nav-logo:hover {
+      opacity: 0.7;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--patina-clay-beige);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: var(--patina-charcoal);
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-cta {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      background: var(--patina-charcoal);
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-cta:hover {
+      background: var(--patina-mocha-brown);
+      transform: translateY(-1px);
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+    
+    /* ===== HERO SECTION ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 6rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--patina-warm-white);
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    
+    .hero-bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(163, 146, 124, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(212, 165, 116, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, var(--patina-warm-white) 0%, var(--patina-off-white) 100%);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+    
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.75rem;
+      color: var(--patina-charcoal);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s var(--transition-smooth) 0.2s forwards;
+    }
+    
+    .hero h1 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 300;
+      color: var(--patina-mocha-brown);
+      max-width: 550px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s var(--transition-smooth) 0.4s forwards;
+    }
+    
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      background: var(--patina-charcoal);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.4s var(--transition-smooth);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s var(--transition-smooth) 0.6s forwards;
+    }
+    
+    .hero-cta:hover {
+      background: var(--patina-mocha-brown);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(101, 91, 82, 0.2);
+    }
+    
+    .hero-cta svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.3s ease;
+    }
+    
+    .hero-cta:hover svg {
+      transform: translateX(4px);
+    }
+    
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.5s forwards;
+    }
+    
+    .hero-scroll-hint span {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+    }
+    
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--patina-clay-beige), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+    
+    /* ===== FIRST TOUCH SECTION ===== */
+    .first-touch {
+      padding: 8rem 2rem;
+      background: var(--patina-off-white);
+      position: relative;
+    }
+    
+    .first-touch-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .section-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 1rem;
+    }
+    
+    .first-touch h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 400;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+    }
+    
+    .first-touch h2 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .first-touch-subtitle {
+      font-size: 1.05rem;
+      color: var(--patina-mocha-brown);
+      margin-bottom: 3rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    
+    @media (max-width: 500px) {
+      .style-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .style-card {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s var(--transition-smooth);
+      border: 2px solid transparent;
+    }
+    
+    .style-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--transition-smooth);
+    }
+    
+    .style-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(63, 59, 55, 0.7) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.25rem;
+      transition: all 0.4s ease;
+    }
+    
+    .style-card-label {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--patina-off-white);
+      transition: transform 0.3s ease;
+    }
+    
+    .style-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(101, 91, 82, 0.15);
+    }
+    
+    .style-card:hover img {
+      transform: scale(1.05);
+    }
+    
+    .style-card.selected {
+      border-color: var(--patina-clay-beige);
+    }
+    
+    .style-card.selected .style-card-overlay {
+      background: linear-gradient(to top, rgba(163, 146, 124, 0.85) 0%, rgba(163, 146, 124, 0.3) 60%);
+    }
+    
+    .style-card-check {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 28px;
+      height: 28px;
+      background: var(--patina-off-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.3s var(--transition-spring);
+    }
+    
+    .style-card.selected .style-card-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    .style-card-check svg {
+      width: 14px;
+      height: 14px;
+      color: var(--patina-clay-beige);
+    }
+    
+    .first-touch-response {
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .first-touch-response p {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+    }
+    
+    .first-touch-response p.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* ===== MAKERS SECTION ===== */
+    .makers {
+      padding: 8rem 2rem;
+      background: var(--patina-soft-cream);
+    }
+    
+    .makers-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .makers-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    
+    .makers-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 400;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+    }
+    
+    .makers-header h2 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .makers-header p {
+      font-size: 1.1rem;
+      color: var(--patina-mocha-brown);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    
+    .makers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    
+    @media (max-width: 900px) {
+      .makers-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .makers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .maker-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s var(--transition-smooth);
+      border: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .maker-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(101, 91, 82, 0.12);
+    }
+    
+    .maker-image {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--patina-soft-cream) 0%, var(--patina-off-white) 100%);
+    }
+    
+    .maker-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--transition-smooth);
+    }
+    
+    .maker-card:hover .maker-image img {
+      transform: scale(1.05);
+    }
+    
+    .maker-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      color: var(--patina-mocha-brown);
+    }
+    
+    .maker-content {
+      padding: 1.75rem;
+    }
+    
+    .maker-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      margin-bottom: 0.5rem;
+    }
+    
+    .maker-location {
+      font-size: 0.9rem;
+      color: var(--patina-mocha-brown);
+      margin-bottom: 0.75rem;
+    }
+    
+    .maker-established {
+      font-size: 0.8rem;
+      color: var(--patina-clay-beige);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .maker-established::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--patina-clay-beige);
+    }
+    
+    .maker-story {
+      font-size: 0.95rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.6;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(163, 146, 124, 0.1);
+    }
+    
+    .makers-testimonial {
+      margin-top: 4rem;
+      padding: 2.5rem;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid rgba(163, 146, 124, 0.1);
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    @media (max-width: 700px) {
+      .makers-testimonial {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+    
+    .testimonial-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--patina-clay-beige) 0%, var(--patina-mocha-brown) 100%);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--patina-off-white);
+    }
+    
+    .testimonial-content blockquote {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .testimonial-author {
+      font-size: 0.9rem;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .testimonial-author strong {
+      color: var(--patina-charcoal);
+    }
+    
+    /* ===== MATERIAL STORIES SECTION ===== */
+    .materials {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    @media (max-width: 768px) {
+      .materials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .material-item {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    
+    @media (max-width: 768px) {
+      .material-item {
+        aspect-ratio: 16/9;
+      }
+    }
+    
+    .material-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--transition-smooth);
+    }
+    
+    .material-item:hover img {
+      transform: scale(1.1);
+    }
+    
+    .material-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(63, 59, 55, 0.6) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
+    .material-item:hover .material-overlay {
+      opacity: 1;
+    }
+    
+    .material-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--patina-off-white);
+      margin-bottom: 0.5rem;
+    }
+    
+    .material-origin {
+      font-size: 0.85rem;
+      color: rgba(237, 233, 228, 0.8);
+    }
+    
+    .materials-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(to top, var(--patina-off-white) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    
+    .materials-caption p {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    /* ===== JOURNEY SECTION ===== */
+    .journey {
+      padding: 10rem 2rem;
+      background: var(--patina-off-white);
+      position: relative;
+    }
+    
+    .journey-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .journey-header {
+      text-align: center;
+      margin-bottom: 6rem;
+    }
+    
+    .journey-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 400;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+    }
+    
+    .journey-header h2 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .journey-header p {
+      font-size: 1.1rem;
+      color: var(--patina-mocha-brown);
+      max-width: 550px;
+      margin: 0 auto;
+    }
+    
+    .journey-step {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 8rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s var(--transition-smooth);
+    }
+    
+    .journey-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .journey-step:nth-child(even) {
+      direction: rtl;
+    }
+    
+    .journey-step:nth-child(even) > * {
+      direction: ltr;
+    }
+    
+    @media (max-width: 768px) {
+      .journey-step,
+      .journey-step:nth-child(even) {
+        grid-template-columns: 1fr;
+        direction: ltr;
+        gap: 2rem;
+      }
+    }
+    
+    .journey-step:last-child {
+      margin-bottom: 0;
+    }
+    
+    .journey-visual {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--patina-soft-cream);
+    }
+    
+    .journey-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .journey-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(163, 146, 124, 0.1) 0%, transparent 50%);
+    }
+    
+    .journey-content h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    
+    .journey-content h3 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .journey-content p {
+      font-size: 1.05rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    
+    .journey-quote {
+      padding: 1.25rem;
+      background: var(--patina-soft-cream);
+      border-radius: 12px;
+      border-left: 3px solid var(--patina-clay-beige);
+    }
+    
+    .journey-quote blockquote {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    
+    .journey-quote cite {
+      font-size: 0.8rem;
+      font-style: normal;
+      color: var(--patina-mocha-brown);
+    }
+    
+    /* ===== DESIGNER SERVICES SECTION ===== */
+    .services {
+      padding: 8rem 2rem;
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .services::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--patina-clay-beige), transparent);
+    }
+    
+    .services-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    
+    @media (max-width: 900px) {
+      .services-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+    
+    .services-content .section-eyebrow {
+      color: var(--patina-clay-beige);
+    }
+    
+    .services-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 400;
+      color: var(--patina-off-white);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .services-content h2 em {
+      font-style: italic;
+      color: var(--patina-clay-beige);
+    }
+    
+    .services-content > p {
+      font-size: 1.1rem;
+      color: rgba(237, 233, 228, 0.85);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    
+    .services-features {
+      list-style: none;
+      margin-bottom: 2.5rem;
+    }
+    
+    .services-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      font-size: 0.95rem;
+      color: rgba(237, 233, 228, 0.9);
+      border-bottom: 1px solid rgba(163, 146, 124, 0.2);
+    }
+    
+    .services-features li:last-child {
+      border-bottom: none;
+    }
+    
+    .services-features li svg {
+      width: 18px;
+      height: 18px;
+      color: var(--patina-clay-beige);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .services-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+      background: var(--patina-off-white);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.4s var(--transition-smooth);
+    }
+    
+    .services-cta:hover {
+      background: var(--patina-clay-beige);
+      color: var(--patina-off-white);
+      transform: translateY(-2px);
+    }
+    
+    .services-visual {
+      position: relative;
+    }
+    
+    .services-image {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+    }
+    
+    .services-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .services-testimonial {
+      position: absolute;
+      bottom: -2rem;
+      left: -2rem;
+      right: 2rem;
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    }
+    
+    @media (max-width: 900px) {
+      .services-testimonial {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        margin-top: 1.5rem;
+      }
+    }
+    
+    .services-testimonial blockquote {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    
+    .services-testimonial cite {
+      font-size: 0.8rem;
+      font-style: normal;
+      color: var(--patina-mocha-brown);
+    }
+    
+    /* ===== VOICES SECTION ===== */
+    .voices {
+      padding: 8rem 2rem;
+      background: var(--patina-soft-cream);
+    }
+    
+    .voices-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .voices-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    
+    .voices-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 400;
+      color: var(--patina-charcoal);
+    }
+    
+    .voices-header h2 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    @media (max-width: 900px) {
+      .voices-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .voices-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .voice-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(163, 146, 124, 0.1);
+      transition: all 0.4s var(--transition-smooth);
+    }
+    
+    .voice-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(101, 91, 82, 0.1);
+    }
+    
+    .voice-card blockquote {
+      font-size: 1rem;
+      color: var(--patina-charcoal);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .voice-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .voice-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--patina-clay-beige) 0%, var(--patina-mocha-brown) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--patina-off-white);
+    }
+    
+    .voice-info strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--patina-charcoal);
+    }
+    
+    .voice-info span {
+      font-size: 0.8rem;
+      color: var(--patina-mocha-brown);
+    }
+    
+    /* ===== HOW IT WORKS (COLLAPSED) ===== */
+    .how-it-works {
+      padding: 4rem 2rem;
+      background: var(--patina-off-white);
+      text-align: center;
+    }
+    
+    .how-it-works-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .how-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+      color: var(--patina-mocha-brown);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .how-toggle:hover {
+      color: var(--patina-charcoal);
+    }
+    
+    .how-toggle svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .how-toggle.open svg {
+      transform: rotate(180deg);
+    }
+    
+    .how-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s var(--transition-smooth);
+    }
+    
+    .how-content.open {
+      max-height: 600px;
+    }
+    
+    .how-content-inner {
+      padding: 2rem 0;
+      text-align: left;
+    }
+    
+    .how-content-inner h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--patina-charcoal);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .how-content-inner p {
+      font-size: 1rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      padding: 10rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--patina-off-white) 0%, var(--patina-warm-white) 100%);
+    }
+    
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, var(--patina-clay-beige), transparent);
+    }
+    
+    .final-cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .final-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      color: var(--patina-charcoal);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .final-cta h2 em {
+      font-style: italic;
+      color: var(--patina-mocha-brown);
+    }
+    
+    .final-cta > p {
+      font-size: 1.15rem;
+      color: var(--patina-mocha-brown);
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+    
+    .final-cta-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--patina-off-white);
+      background: var(--patina-charcoal);
+      padding: 1.1rem 2.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.4s var(--transition-smooth);
+    }
+    
+    .btn-primary:hover {
+      background: var(--patina-mocha-brown);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(101, 91, 82, 0.2);
+    }
+    
+    .btn-secondary {
+      font-size: 0.95rem;
+      color: var(--patina-mocha-brown);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+      color: var(--patina-charcoal);
+    }
+    
+    .strata-mark {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5rem;
+    }
+    
+    .strata-line {
+      height: 2px;
+      border-radius: 1px;
+    }
+    
+    .strata-line:nth-child(1) {
+      width: 50px;
+      background: var(--patina-mocha-brown);
+    }
+    
+    .strata-line:nth-child(2) {
+      width: 40px;
+      background: var(--patina-clay-beige);
+    }
+    
+    .strata-line:nth-child(3) {
+      width: 30px;
+      background: var(--patina-clay-beige);
+      opacity: 0.5;
+    }
+    
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 5rem 2rem 3rem;
+      background: var(--patina-charcoal);
+      color: var(--patina-off-white);
+    }
+    
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+    
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .footer-brand .nav-logo {
+      color: var(--patina-off-white);
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-brand p {
+      font-size: 0.95rem;
+      color: rgba(237, 233, 228, 0.7);
+      line-height: 1.6;
+      max-width: 280px;
+    }
+    
+    .footer-column h4 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--patina-clay-beige);
+      margin-bottom: 1.25rem;
+    }
+    
+    .footer-column ul {
+      list-style: none;
+    }
+    
+    .footer-column li {
+      margin-bottom: 0.75rem;
+    }
+    
+    .footer-column a {
+      font-size: 0.9rem;
+      color: rgba(237, 233, 228, 0.8);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-column a:hover {
+      color: var(--patina-off-white);
+    }
+    
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(163, 146, 124, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .footer-bottom p {
+      font-size: 0.8rem;
+      color: rgba(237, 233, 228, 0.5);
+    }
+    
+    .footer-legal {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .footer-legal a {
+      font-size: 0.8rem;
+      color: rgba(237, 233, 228, 0.5);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-legal a:hover {
+      color: rgba(237, 233, 228, 0.8);
+    }
+    
+    /* ===== SCROLL ANIMATIONS ===== */
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s var(--transition-smooth);
+    }
+    
+    .fade-in-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">PATINA</a>
+      <ul class="nav-links">
+        <li><a href="#makers">Makers</a></li>
+        <li><a href="#journey">Experience</a></li>
+        <li><a href="#services">Design Services</a></li>
+        <li><a href="/about">Our Story</a></li>
+      </ul>
+      <a href="/app" class="nav-cta">Get the App</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-gradient"></div>
+    </div>
+    <div class="hero-content">
+      <h1>Where Time <em>Adds Value</em></h1>
+      <p class="hero-subtitle">
+        Discover furniture that grows more beautiful with every year. 
+        See it in your space. Know the hands that made it.
+      </p>
+      <a href="/app" class="hero-cta">
+        Begin Your Journey
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Explore</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- FIRST TOUCH -->
+  <section class="first-touch fade-in-section">
+    <div class="first-touch-inner">
+      <p class="section-eyebrow">First, a question</p>
+      <h2>What <em>draws your eye?</em></h2>
+      <p class="first-touch-subtitle">Tap one—we'll remember.</p>
+      
+      <div class="style-grid">
+        <div class="style-card" data-style="warm-wood" onclick="selectStyle(this)">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=450&fit=crop&q=80" alt="Warm wood living room">
+          <div class="style-card-overlay">
+            <span class="style-card-label">Warm Wood</span>
+          </div>
+          <div class="style-card-check">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        <div class="style-card" data-style="cool-stone" onclick="selectStyle(this)">
+          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=450&fit=crop&q=80" alt="Cool stone modern space">
+          <div class="style-card-overlay">
+            <span class="style-card-label">Cool Stone</span>
+          </div>
+          <div class="style-card-check">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        <div class="style-card" data-style="soft-fabric" onclick="selectStyle(this)">
+          <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&h=450&fit=crop&q=80" alt="Soft fabric cozy room">
+          <div class="style-card-overlay">
+            <span class="style-card-label">Soft Fabric</span>
+          </div>
+          <div class="style-card-check">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        <div class="style-card" data-style="bold-leather" onclick="selectStyle(this)">
+          <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=450&fit=crop&q=80" alt="Bold leather statement piece">
+          <div class="style-card-overlay">
+            <span class="style-card-label">Bold Leather</span>
+          </div>
+          <div class="style-card-check">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="first-touch-response">
+        <p id="styleResponse">We'll remember that.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAKERS -->
+  <section class="makers fade-in-section" id="makers">
+    <div class="makers-inner">
+      <div class="makers-header">
+        <p class="section-eyebrow">The craftspeople</p>
+        <h2>Fifty families of makers. <em>Generations of craft.</em></h2>
+        <p>Every piece in our collection comes from makers we trust—artisans whose work has been refined over decades, sometimes centuries. These are their stories.</p>
+      </div>
+      
+      <div class="makers-grid">
+        <div class="maker-card">
+          <div class="maker-image">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=450&fit=crop&q=80" alt="Nordic Atelier workshop">
+            <span class="maker-badge">Slow Made</span>
+          </div>
+          <div class="maker-content">
+            <h3>Nordic Atelier</h3>
+            <p class="maker-location">Aarhus, Denmark</p>
+            <p class="maker-established">Est. 1968 · 56 years</p>
+            <p class="maker-story">Three generations of woodcraft. Their joinery technique—learned from grandfather to father to son—creates furniture that tightens with age, not loosens.</p>
+          </div>
+        </div>
+        
+        <div class="maker-card">
+          <div class="maker-image">
+            <img src="https://images.unsplash.com/photo-1609587312208-cea54be969e7?w=600&h=450&fit=crop&q=80" alt="Woodward & Sons workshop">
+            <span class="maker-badge">4th Generation</span>
+          </div>
+          <div class="maker-content">
+            <h3>Woodward & Sons</h3>
+            <p class="maker-location">Richmond, Virginia</p>
+            <p class="maker-established">Est. 1889 · 135 years</p>
+            <p class="maker-story">Hand-turned in Virginia since before electric power reached the workshop. Today, the great-great-grandson still uses the original lathe—because it makes better legs.</p>
+          </div>
+        </div>
+        
+        <div class="maker-card">
+          <div class="maker-image">
+            <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&h=450&fit=crop&q=80" alt="Sashimono Studio workshop">
+            <span class="maker-badge">Master Craftsman</span>
+          </div>
+          <div class="maker-content">
+            <h3>Sashimono Studio</h3>
+            <p class="maker-location">Kyoto, Japan</p>
+            <p class="maker-established">Est. 1923 · 101 years</p>
+            <p class="maker-story">Sashimono joinery uses no nails, no screws—just wood fitted to wood so precisely it needs nothing else. Each piece takes months. The wait is part of the value.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="makers-testimonial">
+        <div class="testimonial-avatar">RK</div>
+        <div class="testimonial-content">
+          <blockquote>"The little notes on each piece—'better with 9ft ceilings' or 'this fabric shows pet hair'—saved me from mistakes I would have made anywhere else."</blockquote>
+          <p class="testimonial-author"><strong>Rachel K.</strong> · Minneapolis, MN</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATERIAL STORIES -->
+  <section class="materials">
+    <div class="materials-grid">
+      <div class="material-item">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop&q=80" alt="Weathered oak grain">
+        <div class="material-overlay">
+          <span class="material-name">Weathered Oak</span>
+          <span class="material-origin">Pacific Northwest reclaimed barns</span>
+        </div>
+      </div>
+      <div class="material-item">
+        <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&h=600&fit=crop&q=80" alt="Aged leather texture">
+        <div class="material-overlay">
+          <span class="material-name">Full-Grain Leather</span>
+          <span class="material-origin">Only gets better with time</span>
+        </div>
+      </div>
+      <div class="material-item">
+        <img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?w=600&h=600&fit=crop&q=80" alt="Natural linen weave">
+        <div class="material-overlay">
+          <span class="material-name">Belgian Linen</span>
+          <span class="material-origin">Softens with every wash</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section class="journey" id="journey">
+    <div class="journey-inner">
+      <div class="journey-header fade-in-section">
+        <p class="section-eyebrow">The experience</p>
+        <h2>How it <em>feels</em></h2>
+        <p>Not a product tour. A way of discovering what belongs in your home.</p>
+      </div>
+      
+      <div class="journey-step" id="step1">
+        <div class="journey-visual">
+          <img src="https://images.unsplash.com/photo-1615529182904-14819c35db37?w=800&h=600&fit=crop&q=80" alt="Person scanning room with phone">
+          <div class="journey-visual-overlay"></div>
+        </div>
+        <div class="journey-content">
+          <h3>First, you <em>walk your room</em> with us</h3>
+          <p>Point your phone and move through the space. While you scan, gentle questions emerge—not a quiz, just a conversation about what you're looking for.</p>
+          <p>By the time your room is mapped, we already understand more than any questionnaire could capture.</p>
+        </div>
+      </div>
+      
+      <div class="journey-step" id="step2">
+        <div class="journey-visual">
+          <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80" alt="Curated furniture selection">
+          <div class="journey-visual-overlay"></div>
+        </div>
+        <div class="journey-content">
+          <h3>Then, you see <em>ten pieces—not ten thousand</em></h3>
+          <p>Every recommendation is vetted by professional designers. Not just "customers also bought"—but "this leather ages beautifully" and "watch the scale if your ceilings are under nine feet."</p>
+          <div class="journey-quote">
+            <blockquote>"I was skeptical about an app understanding my style. But the recommendations were eerily accurate—it showed me pieces I didn't know I wanted but immediately loved."</blockquote>
+            <cite>— Alex R., Denver</cite>
+          </div>
+        </div>
+      </div>
+      
+      <div class="journey-step" id="step3">
+        <div class="journey-visual">
+          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80" alt="AR furniture preview in room">
+          <div class="journey-visual-overlay"></div>
+        </div>
+        <div class="journey-content">
+          <h3>Watch the <em>morning light catch the grain</em></h3>
+          <p>See the piece in your actual room. Not a floating 3D model—placed where it would live, casting real shadows, catching your light.</p>
+          <p>Slide through sunrise to sunset. Watch how leather warms in afternoon sun. Know it works before it arrives.</p>
+          <div class="journey-quote">
+            <blockquote>"The AR feature saved me from a huge mistake. I could see the sofa was too large before ordering."</blockquote>
+            <cite>— Sarah M., Chicago</cite>
+          </div>
+        </div>
+      </div>
+      
+      <div class="journey-step" id="step4">
+        <div class="journey-visual">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&q=80" alt="Beautifully furnished room">
+          <div class="journey-visual-overlay"></div>
+        </div>
+        <div class="journey-content">
+          <h3>Finally, you <em>bring it home knowing it belongs</em></h3>
+          <p>Every piece ships from makers we trust, with the story of who made it and how to care for it. No surprises—just furniture that was meant for your space.</p>
+          <p>And if you ever want to go deeper, your profile transfers seamlessly to a professional designer. No starting over. No re-explaining.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESIGNER SERVICES -->
+  <section class="services" id="services">
+    <div class="services-inner">
+      <div class="services-content">
+        <p class="section-eyebrow">When you're ready for more</p>
+        <h2>Your profile <em>becomes your designer's starting point</em></h2>
+        <p>Some projects need more than an app. When you're ready, everything you've discovered—your room dimensions, your style instincts, every piece that made you pause—transfers to a professional designer.</p>
+        
+        <ul class="services-features">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Your room—measured down to the inch
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            What you're drawn to, even things you didn't realize
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Every piece you saved along the way
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            The designer insights that made you pause
+          </li>
+        </ul>
+        
+        <a href="/services" class="services-cta">Learn About Design Services</a>
+      </div>
+      
+      <div class="services-visual">
+        <div class="services-image">
+          <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=750&fit=crop&q=80" alt="Designer reviewing plans with client">
+        </div>
+        <div class="services-testimonial">
+          <blockquote>"Patina has transformed how I present furniture to clients. The AR feature alone has helped me close three major projects this quarter."</blockquote>
+          <cite>— Sarah Chen, Interior Designer, San Francisco</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOICES -->
+  <section class="voices">
+    <div class="voices-inner">
+      <div class="voices-header fade-in-section">
+        <h2>What people <em>are saying</em></h2>
+      </div>
+      
+      <div class="voices-grid">
+        <div class="voice-card">
+          <blockquote>"The quality is consistent, the stories are genuine, and my clients love knowing who made their furniture. It's become my go-to source."</blockquote>
+          <div class="voice-author">
+            <div class="voice-avatar">MW</div>
+            <div class="voice-info">
+              <strong>Marcus Webb</strong>
+              <span>Brooklyn, NY</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="voice-card">
+          <blockquote>"I used to spend weeks researching furniture. Now I spend that time living in rooms that actually feel like mine."</blockquote>
+          <div class="voice-author">
+            <div class="voice-avatar">JT</div>
+            <div class="voice-info">
+              <strong>Jamie Torres</strong>
+              <span>Austin, TX</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="voice-card">
+          <blockquote>"The first recommendation was a chair I'd never have found on my own. It's been in my reading corner for six months and I still smile every time I sit down."</blockquote>
+          <div class="voice-author">
+            <div class="voice-avatar">EK</div>
+            <div class="voice-info">
+              <strong>Elena Kim</strong>
+              <span>Seattle, WA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (COLLAPSED) -->
+  <section class="how-it-works">
+    <div class="how-it-works-inner">
+      <button class="how-toggle" onclick="toggleHow()" id="howToggle">
+        Curious how it works?
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      
+      <div class="how-content" id="howContent">
+        <div class="how-content-inner">
+          <h3>Designer-taught recommendations</h3>
+          <p>Interior designers have spent decades learning what makes a room feel right. We asked them to teach what they know—and built something that remembers.</p>
+          <p>Every piece in our catalog is analyzed by professional designers who add the insights you won't find on a product page: "This leather only gets better with Sunday afternoons." "Marble needs coasters—always." "Perfect for pet-free homes."</p>
+          <p>The more you explore, the better the recommendations become. Not because we're tracking you—because we're learning your language. Some preferences are hard to put into words. Maybe you linger on weathered oak but scroll past polished chrome. Maybe warm tones make you pause. We pay attention so you don't have to explain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="final-cta-inner fade-in-section">
+      <h2>The best interiors aren't decorated—<em>they're cultivated</em></h2>
+      <p>Over time, with pieces that grow more beautiful with age. Start with one room. See where it leads.</p>
+      
+      <div class="final-cta-buttons">
+        <a href="/app" class="btn-primary">
+          Download the App
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/furniture" class="btn-secondary">Or explore furniture on web</a>
+      </div>
+      
+      <div class="strata-mark">
+        <div class="strata-line"></div>
+        <div class="strata-line"></div>
+        <div class="strata-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo">PATINA</a>
+          <p>Where Time Adds Value. Furniture that grows more beautiful with every year.</p>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="/furniture">Furniture</a></li>
+            <li><a href="/makers">Makers</a></li>
+            <li><a href="/materials">Materials</a></li>
+            <li><a href="/collections">Collections</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Work With Us</h4>
+          <ul>
+            <li><a href="/designers">For Designers</a></li>
+            <li><a href="/makers/apply">For Makers</a></li>
+            <li><a href="/services">Design Services</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about">Our Story</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/careers">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2026 Patina. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Style card selection
+    function selectStyle(card) {
+      // Remove selection from all cards
+      document.querySelectorAll('.style-card').forEach(c => {
+        c.classList.remove('selected');
+      });
+      
+      // Add selection to clicked card
+      card.classList.add('selected');
+      
+      // Show response
+      const response = document.getElementById('styleResponse');
+      const style = card.dataset.style;
+      
+      const responses = {
+        'warm-wood': "You're drawn to warmth. We'll remember that.",
+        'cool-stone': "Clean and calm. We'll remember that.",
+        'soft-fabric': "Comfort first. We'll remember that.",
+        'bold-leather': "Character and patina. We'll remember that."
+      };
+      
+      response.textContent = responses[style];
+      response.classList.add('visible');
+    }
+
+    // How it works toggle
+    function toggleHow() {
+      const toggle = document.getElementById('howToggle');
+      const content = document.getElementById('howContent');
+      
+      toggle.classList.toggle('open');
+      content.classList.toggle('open');
+    }
+
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe fade-in sections
+    document.querySelectorAll('.fade-in-section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Observe journey steps
+    document.querySelectorAll('.journey-step').forEach(step => {
+      observer.observe(step);
+    });
+  </script>
+</body>
+</html>

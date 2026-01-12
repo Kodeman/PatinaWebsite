@@ -559,8 +559,16 @@ export const designersPageQuery = groq`
     heroHeadline,
     heroHeadlineEmphasis,
     heroDescription,
-    heroPrimaryCta,
-    heroSecondaryCta,
+    heroPrimaryCta {
+      label,
+      href,
+      variant
+    },
+    heroSecondaryCta {
+      label,
+      href,
+      variant
+    },
     benefitsHeader,
     benefits[] {
       title,
@@ -581,6 +589,89 @@ export const designersPageQuery = groq`
     },
     applyHeader,
     applyDescription
+  }
+`;
+
+// Careers page content
+export const careersPageQuery = groq`
+  *[_type == "careersPage" && _id == "careersPage"][0] {
+    heroEyebrow,
+    heroHeadline,
+    heroHeadlineEmphasis,
+    heroDescription,
+    valuesHeader,
+    valuesDescription,
+    values[] {
+      title,
+      description
+    },
+    benefitsHeader,
+    benefitsDescription,
+    benefits,
+    positionsHeader,
+    positionsDescription,
+    openPositions[] {
+      title,
+      department,
+      location,
+      type,
+      description
+    },
+    ctaHeader,
+    ctaDescription,
+    ctaLink {
+      label,
+      href,
+      variant
+    }
+  }
+`;
+
+// Contact page content
+export const contactPageQuery = groq`
+  *[_type == "contactPage" && _id == "contactPage"][0] {
+    heroEyebrow,
+    heroHeadline,
+    heroHeadlineEmphasis,
+    heroDescription,
+    contactInfoHeader,
+    email,
+    phone,
+    phoneHours,
+    showroomAddress,
+    showroomNote,
+    quickLinks[] {
+      label,
+      href,
+      variant
+    },
+    contactReasons[] {
+      label,
+      value
+    },
+    successMessage
+  }
+`;
+
+// Makers apply page content
+export const makersApplyPageQuery = groq`
+  *[_type == "makersApplyPage" && _id == "makersApplyPage"][0] {
+    heroEyebrow,
+    heroHeadline,
+    heroHeadlineEmphasis,
+    heroDescription,
+    criteriaHeader,
+    criteria[] {
+      title,
+      description,
+      icon
+    },
+    formHeader,
+    formDescription,
+    specialties,
+    successMessage,
+    successLinkText,
+    successLinkHref
   }
 `;
 

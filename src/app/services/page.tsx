@@ -1,13 +1,30 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { sanityFetch } from "../../../sanity/lib/client";
+import { servicesPageQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Design Services | Patina",
   description:
     "Work with our expert designers to curate the perfect furniture collection for your space. From consultation to installation, we're with you every step.",
 };
+
+interface ServicesPageData {
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroHeadlineEmphasis?: string;
+  heroDescription?: string;
+  packagesHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
+  processHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
+  processSteps?: Array<{ number: string; title: string; description: string }>;
+  ctaHeader?: { eyebrow?: string; headline?: string };
+  ctaDescription?: string;
+  ctaPrimary?: { label: string; href: string };
+  ctaSecondary?: { label: string; href: string };
+}
 
 const packages = [
   {
@@ -86,7 +103,16 @@ const processSteps = [
   },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const { isEnabled: isDraft } = await draftMode();
+
+  const pageData = await sanityFetch<ServicesPageData | null>({
+    query: servicesPageQuery,
+    isDraftMode: isDraft,
+  });
+
+  const displayProcessSteps = pageData?.processSteps?.length ? pageData.processSteps : processSteps;
+
   return (
     <>
       <Navigation />
@@ -96,18 +122,16 @@ export default function ServicesPage() {
         <section className="pt-32 pb-20 bg-[var(--patina-soft-cream)]">
           <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-              Design Services
+              {pageData?.heroEyebrow || "Design Services"}
             </p>
             <h1 className="text-display-1 text-[var(--patina-charcoal)] mb-6">
-              Let us help you find{" "}
+              {pageData?.heroHeadline || "Let us help you find"}{" "}
               <em className="italic text-[var(--patina-mocha-brown)]">
-                the perfect pieces
+                {pageData?.heroHeadlineEmphasis || "the perfect pieces"}
               </em>
             </h1>
             <p className="text-xl text-[var(--patina-mocha-brown)] max-w-2xl mx-auto">
-              From a single statement piece to a complete home, our design team
-              is here to guide you through our collection of artisan-crafted
-              furniture.
+              {pageData?.heroDescription || "From a single statement piece to a complete home, our design team is here to guide you through our collection of artisan-crafted furniture."}
             </p>
           </div>
         </section>
@@ -117,12 +141,12 @@ export default function ServicesPage() {
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-                Our Services
+                {pageData?.packagesHeader?.eyebrow || "Our Services"}
               </p>
               <h2 className="text-heading-1 text-[var(--patina-charcoal)]">
-                Choose your level of{" "}
+                {pageData?.packagesHeader?.headline || "Choose your level of"}{" "}
                 <em className="italic text-[var(--patina-mocha-brown)]">
-                  guidance
+                  {pageData?.packagesHeader?.subheadline || "guidance"}
                 </em>
               </h2>
             </div>
@@ -225,21 +249,21 @@ export default function ServicesPage() {
           <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-                How It Works
+                {pageData?.processHeader?.eyebrow || "How It Works"}
               </p>
               <h2 className="text-heading-1 text-[var(--patina-charcoal)]">
-                A thoughtful{" "}
+                {pageData?.processHeader?.headline || "A thoughtful"}{" "}
                 <em className="italic text-[var(--patina-mocha-brown)]">
-                  process
+                  {pageData?.processHeader?.subheadline || "process"}
                 </em>
               </h2>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {processSteps.map((step, index) => (
+              {displayProcessSteps.map((step, index) => (
                 <div key={step.number} className="relative">
                   {/* Connector line */}
-                  {index < processSteps.length - 1 && (
+                  {index < displayProcessSteps.length - 1 && (
                     <div className="hidden lg:block absolute top-8 left-[calc(50%+40px)] w-[calc(100%-40px)] h-px bg-[var(--patina-clay-beige)] opacity-30" />
                   )}
 
@@ -272,15 +296,13 @@ export default function ServicesPage() {
 
           <div className="relative z-10 max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-              Get Started
+              {pageData?.ctaHeader?.eyebrow || "Get Started"}
             </p>
             <h2 className="text-heading-1 text-[var(--patina-off-white)] mb-4">
-              Ready to begin?
+              {pageData?.ctaHeader?.headline || "Ready to begin?"}
             </h2>
             <p className="text-lg text-[rgba(237,233,228,0.75)] mb-10">
-              Schedule a free consultation call. We&apos;ll discuss your space,
-              style preferences, and how we can help you find furniture with
-              meaning.
+              {pageData?.ctaDescription || "Schedule a free consultation call. We'll discuss your space, style preferences, and how we can help you find furniture with meaning."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

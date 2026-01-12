@@ -1,13 +1,38 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { sanityFetch } from "../../../sanity/lib/client";
+import { designersPageQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "For Designers | Patina",
   description:
     "Join Patina's network of interior designers. Access exclusive pieces, earn commissions, and delight your clients with AR visualization tools.",
 };
+
+interface DesignersPageData {
+  heroEyebrow?: string;
+  heroHeadline?: string;
+  heroHeadlineEmphasis?: string;
+  heroDescription?: string;
+  heroPrimaryCta?: { label: string; href: string };
+  heroSecondaryCta?: { label: string; href: string };
+  benefitsHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
+  benefits?: Array<{ title: string; description: string; icon?: string }>;
+  testimonialsHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
+  testimonials?: Array<{
+    _id: string;
+    quote: string;
+    author: string;
+    title: string;
+    location: string;
+    image?: { asset?: { url: string }; alt?: string };
+  }>;
+  applyHeader?: { eyebrow?: string; headline?: string };
+  applyDescription?: string;
+}
 
 const benefits = [
   {
@@ -81,7 +106,17 @@ const testimonials = [
   },
 ];
 
-export default function DesignersPage() {
+export default async function DesignersPage() {
+  const { isEnabled: isDraft } = await draftMode();
+
+  const pageData = await sanityFetch<DesignersPageData | null>({
+    query: designersPageQuery,
+    isDraftMode: isDraft,
+  });
+
+  const displayBenefits = pageData?.benefits?.length ? pageData.benefits : benefits;
+  const displayTestimonials = pageData?.testimonials?.length ? pageData.testimonials : testimonials;
+
   return (
     <>
       <Navigation variant="dark" />
@@ -108,32 +143,30 @@ export default function DesignersPage() {
           <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-32">
             <div className="max-w-2xl">
               <p className="text-label text-[var(--patina-clay-beige)] mb-4">
-                For Designers
+                {pageData?.heroEyebrow || "For Designers"}
               </p>
               <h1 className="text-display-1 text-[var(--patina-off-white)] mb-6">
-                Elevate your practice with{" "}
+                {pageData?.heroHeadline || "Elevate your practice with"}{" "}
                 <em className="italic text-[var(--patina-clay-beige)]">
-                  exceptional craft
+                  {pageData?.heroHeadlineEmphasis || "exceptional craft"}
                 </em>
               </h1>
               <p className="text-xl text-[rgba(237,233,228,0.75)] leading-relaxed mb-10">
-                Join a network of designers who source the world&apos;s finest
-                handcrafted furniture. Trade pricing, AR visualization, and
-                white-glove service—all designed for your workflow.
+                {pageData?.heroDescription || "Join a network of designers who source the world's finest handcrafted furniture. Trade pricing, AR visualization, and white-glove service—all designed for your workflow."}
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="#apply"
+                  href={pageData?.heroPrimaryCta?.href || "#apply"}
                   className="inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-off-white)] shadow-lg"
                 >
-                  Apply for Trade Access
+                  {pageData?.heroPrimaryCta?.label || "Apply for Trade Access"}
                 </a>
                 <Link
-                  href="/furniture"
+                  href={pageData?.heroSecondaryCta?.href || "/furniture"}
                   className="inline-flex items-center justify-center px-8 py-4 border-2 border-[var(--patina-clay-beige)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[rgba(163,146,124,0.1)]"
                 >
-                  Browse Collection
+                  {pageData?.heroSecondaryCta?.label || "Browse Collection"}
                 </Link>
               </div>
             </div>
@@ -145,12 +178,12 @@ export default function DesignersPage() {
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
             <div className="text-center mb-16">
               <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-                Trade Benefits
+                {pageData?.benefitsHeader?.eyebrow || "Trade Benefits"}
               </p>
               <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
-                Everything you need to{" "}
+                {pageData?.benefitsHeader?.headline || "Everything you need to"}{" "}
                 <em className="italic text-[var(--patina-mocha-brown)]">
-                  succeed
+                  {pageData?.benefitsHeader?.subheadline || "succeed"}
                 </em>
               </h2>
               <p className="text-lg text-[var(--patina-mocha-brown)] max-w-xl mx-auto">
@@ -160,7 +193,7 @@ export default function DesignersPage() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {benefits.map((benefit, index) => (
+              {displayBenefits.map((benefit, index) => (
                 <div
                   key={index}
                   className="bg-[var(--patina-soft-cream)] rounded-[var(--radius-xl)] p-8 transition-all duration-300 hover:shadow-[var(--shadow-md)]"
@@ -185,18 +218,18 @@ export default function DesignersPage() {
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
             <div className="text-center mb-16">
               <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-                Designer Stories
+                {pageData?.testimonialsHeader?.eyebrow || "Designer Stories"}
               </p>
               <h2 className="text-heading-1 text-[var(--patina-charcoal)]">
-                Trusted by leading{" "}
+                {pageData?.testimonialsHeader?.headline || "Trusted by leading"}{" "}
                 <em className="italic text-[var(--patina-mocha-brown)]">
-                  designers
+                  {pageData?.testimonialsHeader?.subheadline || "designers"}
                 </em>
               </h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              {testimonials.map((testimonial, index) => (
+              {displayTestimonials.map((testimonial, index) => (
                 <blockquote
                   key={index}
                   className="bg-[var(--patina-warm-white)] rounded-[var(--radius-2xl)] p-8 lg:p-10"
@@ -233,13 +266,13 @@ export default function DesignersPage() {
           <div className="max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-                Join Us
+                {pageData?.applyHeader?.eyebrow || "Join Us"}
               </p>
               <h2 className="text-heading-1 text-[var(--patina-off-white)] mb-4">
-                Apply for trade access
+                {pageData?.applyHeader?.headline || "Apply for trade access"}
               </h2>
               <p className="text-lg text-[rgba(237,233,228,0.75)]">
-                Tell us about your practice and we&apos;ll be in touch within 48 hours.
+                {pageData?.applyDescription || "Tell us about your practice and we'll be in touch within 48 hours."}
               </p>
             </div>
 

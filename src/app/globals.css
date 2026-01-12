@@ -12,6 +12,12 @@
   --patina-charcoal: #3F3B37;
   --patina-soft-cream: #F5F2ED;
   --patina-warm-white: #FAF7F2;
+  --patina-accent-warm: #D4A574;
+  --patina-success: #7A9C85;
+
+  /* Transition Timing (aliases for convenience) */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   /* Semantic Colors */
   --background: var(--patina-off-white);
@@ -36,6 +42,8 @@
   --color-patina-charcoal: #3F3B37;
   --color-patina-soft-cream: #F5F2ED;
   --color-patina-warm-white: #FAF7F2;
+  --color-patina-accent-warm: #D4A574;
+  --color-patina-success: #7A9C85;
 
   /* Background & Foreground */
   --color-background: var(--patina-off-white);
@@ -164,6 +172,17 @@
   50% {
     transform: translateY(8px);
     opacity: 1;
+  }
+}
+
+@keyframes scrollPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.2);
   }
 }
 

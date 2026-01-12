@@ -15,7 +15,7 @@ import { appPageQuery } from '../../../sanity/lib/queries';
 export const metadata: Metadata = {
   title: 'Get the App | Patina',
   description:
-    "Discover furniture that belongs with The Aesthete Engine. Scan your space, uncover your style, and find pieces that fit—not just the room, but the life you're building.",
+    "Discover furniture that grows more beautiful with time. Scan your space, see pieces in your room, and find what belongs—guided by the insights of professional designers.",
 };
 
 interface AppPage {

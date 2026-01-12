@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
@@ -69,6 +69,19 @@ export function Hero({
 
   // Parallax offset for background image
   const parallaxOffset = prefersReducedMotion ? 0 : scrollProgress * 100;
+
+  // Fade-to-black overlay using Framer Motion scroll
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Black overlay opacity: starts at 30% scroll, complete at 60%
+  const blackOverlayOpacity = useTransform(
+    scrollYProgress,
+    [0.3, 0.6],
+    prefersReducedMotion ? [0, 0] : [0, 1]
+  );
 
   // Animation variants for staggered entrance
   const containerVariants = {
@@ -145,10 +158,18 @@ export function Hero({
               }}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#5C564F] to-[#3F3B37] flex items-center justify-center">
-              <span className="text-xs tracking-widest uppercase text-[var(--patina-off-white)]/50 bg-black/20 px-4 py-2 rounded-md">
-                {imagePlaceholder}
-              </span>
+            <div className="absolute inset-0 bg-[var(--patina-warm-white)]">
+              {/* Radial gradient overlays for depth */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `
+                    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(163, 146, 124, 0.08) 0%, transparent 50%),
+                    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(212, 165, 116, 0.06) 0%, transparent 50%),
+                    linear-gradient(180deg, var(--patina-warm-white) 0%, var(--patina-off-white) 100%)
+                  `,
+                }}
+              />
             </div>
           )}
 
@@ -164,6 +185,13 @@ export function Hero({
                 transparent 100%
               )`,
             }}
+          />
+
+          {/* Fade-to-Black Overlay - Transitions Hero into Void */}
+          <motion.div
+            className="absolute inset-0 bg-black pointer-events-none z-10"
+            style={{ opacity: blackOverlayOpacity }}
+            aria-hidden="true"
           />
         </div>
 
