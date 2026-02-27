@@ -95,9 +95,40 @@ src/
 
 Tests are in `e2e/` directory. Each page has a corresponding spec file testing critical UI elements and navigation.
 
+## PostHog Integration (Next Priority)
+
+**Goal:** Replace console-log analytics with PostHog Cloud for real product analytics.
+
+**Current state:** `src/lib/analytics.ts` has a fully typed analytics abstraction with 15+ event types (product views, AR clicks, designer conversions, search, filters). Currently logs to console in dev and is a no-op in prod. Vercel Analytics is also installed (basic pageviews only).
+
+**Integration plan:**
+1. `npm install posthog-js posthog-node` (client + server)
+2. Create `src/lib/posthog.ts` — PostHog client init with `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST`
+3. Add `PostHogProvider` wrapper in `src/app/layout.tsx` (client component wrapper)
+4. Wire `analytics.ts` → PostHog: replace the production placeholder in `track()` with `posthog.capture(eventName, data)` and `pageView()` with `posthog.capture('$pageview')`
+5. Keep Vercel Analytics alongside (free, different purpose — Web Vitals)
+6. Consider `posthog-node` for any server-side events (contact form submissions)
+
+**Key decisions:**
+- Use PostHog Cloud (not self-hosted) — less infra to maintain
+- Keep the typed `AnalyticsEvents` abstraction — it's clean and PostHog is just a backend swap
+- Autocapture OFF initially — we have explicit typed events, don't want noise
+- Session recording ON — valuable for understanding furniture browsing patterns
+
+**Events already defined in analytics.ts:**
+- Product discovery: `product_card_viewed`, `product_card_clicked`
+- Detail engagement: `product_detail_viewed`, `image_gallery_scrolled`, `material_chip_clicked`
+- AR: `view_in_space_clicked`, `ar_qr_code_shown`
+- Conversion: `work_with_designer_clicked`, `app_download_clicked`
+- Search: `search_opened`, `search_query`, `search_result_clicked`
+- Forms: `contact_form_submitted`, `maker_application_submitted`
+- Navigation: `page_viewed`, `nav_link_clicked`, `filter_applied`
+
 ## Environment Variables
 
 Copy `.env.example` to `.env.local`. Required for Sanity CMS integration:
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SITE_URL`
+- `NEXT_PUBLIC_POSTHOG_KEY` — PostHog project API key (public, safe for client)
+- `NEXT_PUBLIC_POSTHOG_HOST` — PostHog ingest URL (default: `https://us.i.posthog.com`)
