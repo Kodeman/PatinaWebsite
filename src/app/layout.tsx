@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { defaultMetadata, generateOrganizationJsonLd, generateWebsiteJsonLd } from "@/lib/seo";
 import { SkipLink } from "@/components/ui/SkipLink";
+import { PostHogProviders } from "./providers";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -49,7 +50,9 @@ export default function RootLayout({
       </head>
       <body className={`${playfair.variable} ${inter.variable} antialiased`}>
         <SkipLink />
-        {children}
+        <PostHogProviders>
+          {children}
+        </PostHogProviders>
         <Analytics />
         <SpeedInsights />
       </body>

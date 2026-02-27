@@ -1,9 +1,10 @@
 /**
  * Analytics utility for tracking user interactions
  *
- * Currently logs to console in development.
- * In production, replace with your analytics provider (e.g., Segment, Mixpanel, GA4).
+ * Logs to console in development, sends to PostHog in production.
  */
+
+import { getPostHogClient } from "./posthog";
 
 type ProductEventData = {
   product_id: string;
@@ -106,15 +107,9 @@ class Analytics {
       console.log(`[Analytics] ${eventName}`, data);
     }
 
-    // In production, send to analytics provider
-    // Example: segment.track(eventName, data);
-    // Example: gtag('event', eventName, data);
-    // Example: mixpanel.track(eventName, data);
-
-    // Placeholder for production analytics
     if (this.isProduction) {
-      // Send to your analytics provider here
-      // window.gtag?.('event', eventName, data);
+      const posthog = getPostHogClient();
+      posthog?.capture(eventName, data);
     }
   }
 
@@ -135,8 +130,10 @@ class Analytics {
       console.log(`[Analytics] identify`, { userId, traits });
     }
 
-    // In production, identify with analytics provider
-    // Example: segment.identify(userId, traits);
+    if (this.isProduction) {
+      const posthog = getPostHogClient();
+      posthog?.identify(userId, traits);
+    }
   }
 }
 
