@@ -95,27 +95,63 @@ src/
 
 Tests are in `e2e/` directory. Each page has a corresponding spec file testing critical UI elements and navigation.
 
-## PostHog Integration (Next Priority)
+## Engagement Tracking — Full Cross-Platform Workflow
 
-**Goal:** Replace console-log analytics with PostHog Cloud for real product analytics.
+**📋 Full plan: `docs/engagement-tracking-plan.md`** — Read this first. It has schemas, code examples, and phasing.
 
-**Current state:** `src/lib/analytics.ts` has a fully typed analytics abstraction with 15+ event types (product views, AR clicks, designer conversions, search, filters). Currently logs to console in dev and is a no-op in prod. Vercel Analytics is also installed (basic pageviews only).
+### What We're Building (Website's Role)
 
-**Integration plan:**
-1. `npm install posthog-js posthog-node` (client + server)
-2. Create `src/lib/posthog.ts` — PostHog client init with `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST`
-3. Add `PostHogProvider` wrapper in `src/app/layout.tsx` (client component wrapper)
-4. Wire `analytics.ts` → PostHog: replace the production placeholder in `track()` with `posthog.capture(eventName, data)` and `pageView()` with `posthog.capture('$pageview')`
-5. Keep Vercel Analytics alongside (free, different purpose — Web Vitals)
-6. Consider `posthog-node` for any server-side events (contact form submissions)
+The website is the **top of the funnel**. Users land here → browse → sign up for waitlist → eventually convert to authenticated users on portal/extension/iOS. PostHog tracks them across all surfaces with a unified identity.
 
-**Key decisions:**
-- Use PostHog Cloud (not self-hosted) — less infra to maintain
-- Keep the typed `AnalyticsEvents` abstraction — it's clean and PostHog is just a backend swap
-- Autocapture OFF initially — we have explicit typed events, don't want noise
-- Session recording ON — valuable for understanding furniture browsing patterns
+### Current State
+- `src/lib/analytics.ts` — Fully typed analytics abstraction with 15+ event types. Currently logs to console in dev, no-op in prod. **PostHog is a backend swap into this existing layer.**
+- `@vercel/analytics` — Already installed (basic pageviews/Web Vitals). Keep alongside PostHog.
+- No signup/waitlist form exists yet — **this needs to be built**.
 
-**Events already defined in analytics.ts:**
+### Phase 1 Deliverables (This Website)
+
+1. **PostHog Cloud integration:**
+   - `npm install posthog-js posthog-node`
+   - Create `src/lib/posthog.ts` — init with `NEXT_PUBLIC_POSTHOG_KEY` + `NEXT_PUBLIC_POSTHOG_HOST`
+   - Add `PostHogProvider` wrapper component in layout (client component)
+   - Wire `analytics.ts` → PostHog: replace production placeholder in `track()` with `posthog.capture()`
+   - Autocapture OFF, session recording ON
+   - `capture_pageview: false` (we handle manually for SPA navigation)
+
+2. **Waitlist signup form:**
+   - Add signup form component — appears on hero, designers page, footer, maybe a dedicated `/waitlist` route
+   - Capture: email, role (designer/consumer/unknown), signup page, CTA text
+   - UTM parameters auto-captured from URL and stored with signup
+   - Attribution: first-touch and last-touch stored in localStorage, sent with signup
+   - Server action or API route → Supabase `waitlist` table (on self-hosted `api.patina.cloud`)
+   - On signup: `posthog.identify()` with email + `posthog.capture('waitlist_signup', {...})`
+   - PostHog `distinct_id` stored in waitlist row for later cross-platform identity merge
+
+3. **UTM attribution capture:**
+   - `AttributionManager` class (see plan) — captures UTM params from URL on landing
+   - Stores first-touch + last-touch in localStorage with 30-day window
+   - Registers UTM params with PostHog via `posthog.register()` for session persistence
+   - Attribution data sent with every waitlist signup
+
+4. **Cookie consent:**
+   - Minimal consent banner (GDPR/CCPA)
+   - PostHog only initializes after analytics consent
+   - `respect_dnt: true`, IP anonymization via `sanitize_properties`
+
+### Key Architecture Decisions
+- **PostHog Cloud** (not self-hosted) — zero ops, free tier 1M events/month
+- **Single PostHog project** across all Patina surfaces — unified user identity
+- **Supabase `waitlist` table** on self-hosted instance (`api.patina.cloud`) — NOT the cloud Supabase
+- **Identity merge:** Anonymous PostHog `distinct_id` → stored in waitlist row → linked to `auth.users` on conversion via trigger
+- Keep the typed `AnalyticsEvents` abstraction in `analytics.ts` — it's clean
+
+### Supabase Connection
+- Self-hosted at `api.patina.cloud` (192.168.1.14)
+- Waitlist table schema in `docs/engagement-tracking-plan.md` Section 1.1
+- The `handle_new_user()` trigger auto-creates profiles from waitlist data when users convert
+
+### Events (Website-Specific)
+Already defined in `src/lib/analytics.ts`:
 - Product discovery: `product_card_viewed`, `product_card_clicked`
 - Detail engagement: `product_detail_viewed`, `image_gallery_scrolled`, `material_chip_clicked`
 - AR: `view_in_space_clicked`, `ar_qr_code_shown`
@@ -123,6 +159,7 @@ Tests are in `e2e/` directory. Each page has a corresponding spec file testing c
 - Search: `search_opened`, `search_query`, `search_result_clicked`
 - Forms: `contact_form_submitted`, `maker_application_submitted`
 - Navigation: `page_viewed`, `nav_link_clicked`, `filter_applied`
+- **New:** `waitlist_signup`, `cta_click`, `content_engagement`, `consent_updated`
 
 ## Environment Variables
 
