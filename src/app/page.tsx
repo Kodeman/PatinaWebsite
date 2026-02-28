@@ -2,6 +2,7 @@ import { draftMode } from "next/headers";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { FirstTouchJourney } from "@/components/sections/FirstTouchJourney";
+import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import {
   FeaturedMakersSection,
   MaterialStoriesSection,
@@ -10,6 +11,7 @@ import {
   VoicesSection,
   HowItWorksSection,
   FinalCTASection,
+  HomeScrollDepthTracker,
 } from "./HomeContent";
 import { sanityFetch } from "../../sanity/lib/client";
 import { homePageQuery, featuredMakersQuery, testimonialsQuery, trustBadgesQuery } from "../../sanity/lib/queries";
@@ -88,12 +90,13 @@ export default async function HomePage() {
   return (
     <>
       <main id="main-content">
+        <HomeScrollDepthTracker />
         {/* 1. Hero Section */}
         <Hero
           title={homePage?.heroTitle || "Where Time "}
           titleEmphasis={homePage?.heroTitleEmphasis || "Adds Value"}
           description={homePage?.heroDescription || "Discover furniture that grows more beautiful with every year. See it in your space. Know the hands that made it."}
-          primaryCta={homePage?.heroCta || { label: "Begin Your Journey", href: "/app" }}
+          ctaSlot={<WaitlistForm source="hero" variant="dark" ctaText="Join the Waitlist" />}
           trustLine={homePage?.heroTrustLine || "Heritage makers since 1904"}
           imageUrl="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=2000&h=1200&fit=crop&q=80"
           scrollTargetId="first-touch"

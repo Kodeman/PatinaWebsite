@@ -5,7 +5,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from "@/components/motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useScrollDepth } from "@/hooks/useScrollDepth";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { WaitlistForm } from "@/components/ui/WaitlistForm";
 
 // ============================================
 // Types
@@ -799,7 +801,7 @@ interface FinalCTAProps {
   secondaryLink?: CTA;
 }
 
-export function FinalCTASection({ header, body, primaryCta, secondaryLink }: FinalCTAProps) {
+export function FinalCTASection({ header, body, secondaryLink }: FinalCTAProps) {
   return (
     <section
       className="py-32 lg:py-40 relative overflow-hidden text-center"
@@ -819,15 +821,11 @@ export function FinalCTASection({ header, body, primaryCta, secondaryLink }: Fin
         </p>
 
         <div className="flex flex-col items-center gap-4 mb-16">
-          <Link
-            href={primaryCta?.href || "/app"}
-            className="inline-flex items-center gap-3 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] px-10 py-4 rounded-[var(--radius-lg)] text-[1.05rem] font-medium transition-all duration-400 hover:bg-[var(--patina-mocha-brown)] hover:-translate-y-0.5 shadow-[0_12px_35px_rgba(101,91,82,0.2)]"
-          >
-            {primaryCta?.label || "Download the App"}
-            <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+          <WaitlistForm
+            source="final_cta"
+            ctaText="Join the Waitlist"
+            className="max-w-md w-full"
+          />
 
           <Link
             href={secondaryLink?.href || "/furniture"}
@@ -844,4 +842,13 @@ export function FinalCTASection({ header, body, primaryCta, secondaryLink }: Fin
       </FadeIn>
     </section>
   );
+}
+
+// ============================================
+// Scroll Depth Tracker (renders nothing, just fires events)
+// ============================================
+
+export function HomeScrollDepthTracker() {
+  useScrollDepth("/");
+  return null;
 }

@@ -4,6 +4,7 @@ import { useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { getPostHogClient } from "@/lib/posthog";
+import { captureAttribution } from "@/lib/attribution";
 
 function PostHogPageView() {
   const pathname = usePathname();
@@ -27,6 +28,7 @@ function PostHogPageView() {
 export function PostHogProviders({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     getPostHogClient();
+    captureAttribution();
   }, []);
 
   const posthog = typeof window !== "undefined" ? getPostHogClient() : null;

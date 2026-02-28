@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { StrataMark } from "@/components/ui/StrataMark";
 import { SearchBar } from "@/components/ui/SearchBar";
+import { WaitlistPopover } from "@/components/ui/WaitlistPopover";
 import { MobileMenu } from "../MobileMenu";
 
 const navLinks = [
@@ -94,19 +95,7 @@ export function Navigation({ variant = "default" }: NavigationProps) {
               <SearchBar variant={isDark ? "dark" : "default"} />
 
               {/* CTA Button */}
-              <Link
-                href="/app"
-                className={cn(
-                  "inline-flex items-center justify-center",
-                  "px-4 py-2 text-sm font-medium rounded-[var(--radius-lg)]",
-                  "transition-all duration-[var(--duration-normal)] ease-[var(--ease-patina)]",
-                  isDark
-                    ? "bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] hover:bg-[var(--patina-off-white)]"
-                    : "bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] hover:bg-[var(--patina-mocha-brown)]"
-                )}
-              >
-                Get the App
-              </Link>
+              <WaitlistPopover isDark={isDark} />
             </div>
 
             {/* Mobile Menu Button */}

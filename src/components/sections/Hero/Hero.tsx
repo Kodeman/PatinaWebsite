@@ -21,6 +21,8 @@ export interface HeroProps {
     label: string;
     href: string;
   };
+  /** When provided, renders this element instead of the default CTA link */
+  ctaSlot?: React.ReactNode;
   imageUrl?: string;
   imagePlaceholder?: string;
   /** ID of the section to scroll to when clicking the scroll indicator */
@@ -38,6 +40,7 @@ export function Hero({
   secondaryLine,
   trustLine = "Trusted by 10,000+ design enthusiasts",
   primaryCta,
+  ctaSlot,
   imageUrl,
   imagePlaceholder = "Hero Photography",
   scrollTargetId = "value-proposition",
@@ -235,23 +238,27 @@ export function Hero({
           )}
 
           {/* CTA Button - Single focus */}
-          {primaryCta && (
+          {(ctaSlot || primaryCta) && (
             <motion.div variants={itemVariants} className="mb-8">
-              <Link
-                href={primaryCta.href}
-                className={cn(
-                  "inline-flex items-center justify-center",
-                  "px-8 py-4 text-[0.9375rem] font-medium",
-                  "bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)]",
-                  "rounded-[var(--radius-lg)]",
-                  "transition-all duration-300 ease-[var(--ease-patina)]",
-                  "hover:bg-[var(--patina-off-white)]",
-                  "shadow-[0_4px_20px_rgba(0,0,0,0.2)]",
-                  "hover:shadow-[0_6px_30px_rgba(0,0,0,0.3)]"
-                )}
-              >
-                {primaryCta.label}
-              </Link>
+              {ctaSlot || (
+                primaryCta && (
+                  <Link
+                    href={primaryCta.href}
+                    className={cn(
+                      "inline-flex items-center justify-center",
+                      "px-8 py-4 text-[0.9375rem] font-medium",
+                      "bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)]",
+                      "rounded-[var(--radius-lg)]",
+                      "transition-all duration-300 ease-[var(--ease-patina)]",
+                      "hover:bg-[var(--patina-off-white)]",
+                      "shadow-[0_4px_20px_rgba(0,0,0,0.2)]",
+                      "hover:shadow-[0_6px_30px_rgba(0,0,0,0.3)]"
+                    )}
+                  >
+                    {primaryCta.label}
+                  </Link>
+                )
+              )}
             </motion.div>
           )}
 

@@ -293,11 +293,6 @@ export const ctaContent = {
       href: '/makers',
       variant: 'secondary',
     },
-    {
-      label: 'Get the App',
-      href: '/app',
-      variant: 'secondary',
-    },
   ] satisfies CTAAction[],
 };
 

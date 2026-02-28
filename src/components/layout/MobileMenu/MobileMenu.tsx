@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { WaitlistForm } from "@/components/ui/WaitlistForm";
 
 interface NavLink {
   href: string;
@@ -132,23 +133,12 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
             ))}
           </nav>
 
-          {/* Footer CTA */}
+          {/* Footer CTA — Waitlist */}
           <div className="p-6 border-t border-[rgba(163,146,124,0.15)]">
-            <Link
-              href="/app"
-              onClick={onClose}
-              className={cn(
-                "flex items-center justify-center w-full",
-                "px-8 py-4 text-base font-medium",
-                "bg-[var(--patina-clay-beige)] text-[var(--patina-off-white)]",
-                "rounded-[var(--radius-lg)]",
-                "transition-all duration-[var(--duration-normal)] ease-[var(--ease-patina)]",
-                "hover:bg-[var(--patina-mocha-brown)]",
-                "shadow-[0_4px_12px_rgba(163,146,124,0.25)]"
-              )}
-            >
-              Get the App
-            </Link>
+            <p className="text-sm text-[rgba(237,233,228,0.6)] mb-3 text-center">
+              Get notified when the app launches.
+            </p>
+            <WaitlistForm source="mobile_menu" variant="dark" />
           </div>
         </div>
       </div>

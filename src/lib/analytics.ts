@@ -88,6 +88,29 @@ type AnalyticsEvents = {
     filter_value: string;
   };
   filter_cleared: Record<string, never>;
+
+  // Waitlist
+  waitlist_signup: {
+    email_domain: string;
+    source: string;
+    signup_page: string;
+    cta_text: string;
+    has_utm: boolean;
+  };
+
+  // CTA interactions
+  cta_click: {
+    cta_text: string;
+    cta_location: string;
+    destination: string;
+    page: string;
+  };
+
+  // Content engagement
+  scroll_depth_reached: {
+    depth: 25 | 50 | 75 | 100;
+    page: string;
+  };
 };
 
 type EventName = keyof AnalyticsEvents;
