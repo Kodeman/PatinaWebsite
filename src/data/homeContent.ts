@@ -7,11 +7,11 @@ export const heroContent = {
   title: "Where Time ",
   titleEmphasis: "Adds Value",
   description:
-    "Discover furniture that grows more beautiful with every year. See it in your space. Know the makers.",
+    "Discover furniture that grows more beautiful with every year. Real designers. Real makers. A room that's really yours.",
   secondaryLine:
     "Powered by The Aesthete Engine—designer-taught intelligence that learns what you love.",
-  trustLine: "Heritage makers since 1904",
-  primaryCta: { label: "Get the App", href: "/app" },
+  trustLine: "Curated by real designers",
+  primaryCta: { label: "Become a Founding Member", href: "/founding" },
 };
 
 // Value Proposition Section
@@ -198,19 +198,19 @@ export const testimonials: Testimonial[] = [
     quote:
       "The AR feature saved me from a huge mistake. I could see the sofa was too large before ordering. Game changer.",
     author: "Sarah M.",
-    location: "Chicago, IL",
+    location: "Chicago, IL (Beta)",
   },
   {
     quote:
       "I was skeptical about an app understanding my style. But the recommendations were eerily accurate—it showed me pieces I didn't know I wanted but immediately loved.",
     author: "Alex R.",
-    location: "Denver, CO",
+    location: "Denver, CO (Beta)",
   },
   {
     quote:
       "The little notes on each piece—'better with 9ft ceilings' or 'this fabric shows pet hair'—saved me from mistakes I would have made anywhere else.",
     author: "Rachel K.",
-    location: "Minneapolis, MN",
+    location: "Minneapolis, MN (Early user)",
   },
 ];
 
@@ -251,8 +251,8 @@ export const finalCtaContent = {
   eyebrow: "GET STARTED",
   headline: "Ready to discover",
   headlineEmphasis: "what belongs?",
-  body: "The best interiors aren't decorated—they're cultivated over time, with pieces that grow more beautiful with age. Let The Aesthete Engine show you where to start.",
+  body: "The best interiors aren't decorated—they're cultivated over time, with pieces that grow more beautiful with age. We're building that experience now — and founding members get first access.",
   secondary: "Scan your first room in under 10 minutes.",
-  primaryCta: { label: "Download on the App Store", href: "/app" },
-  secondaryLink: { label: "explore furniture on web", href: "/furniture" },
+  primaryCta: { label: "Join the Founding Circle", href: "/founding" },
+  secondaryLink: { label: "Meet the Makers", href: "/makers" },
 };

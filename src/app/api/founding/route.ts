@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     );
 
     if (error) {
-      console.error("[Waitlist] Supabase error:", error);
+      console.error("[Founding] Supabase error:", error);
       return NextResponse.json({ error: "Failed to save signup" }, { status: 500 });
     }
 

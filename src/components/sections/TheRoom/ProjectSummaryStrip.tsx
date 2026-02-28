@@ -29,13 +29,6 @@ export function ProjectSummaryStrip({ hotspots }: ProjectSummaryStripProps) {
     }
   }, [isInView, hotspots.length, partnerCount, curatedCount, sourcedCount]);
 
-  const handleShopClick = () => {
-    track("shop_this_room_clicked", {
-      source: "project_summary",
-      total_products: hotspots.length,
-    });
-  };
-
   return (
     <FadeIn delay={0.2}>
       <div
@@ -69,22 +62,9 @@ export function ProjectSummaryStrip({ hotspots }: ProjectSummaryStripProps) {
           </div>
         </div>
 
-        <button
-          onClick={handleShopClick}
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] hover:bg-[var(--patina-mocha-brown)] transition-colors duration-300"
-        >
-          Shop this Room
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          >
-            <path d="M5 2.5l5 4.5-5 4.5" />
-          </svg>
-        </button>
+        <p className="text-sm text-[var(--patina-mocha-brown)] italic max-w-[220px] text-right">
+          Rooms like this, curated for you — coming soon to founding members.
+        </p>
       </div>
     </FadeIn>
   );

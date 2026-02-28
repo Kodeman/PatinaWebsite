@@ -157,6 +157,25 @@ export default async function MakersPage() {
             </div>
           </div>
         </section>
+
+        {/* Know a Maker CTA */}
+        <section className="py-16 lg:py-20 bg-[var(--patina-soft-cream)]">
+          <div className="max-w-[600px] mx-auto px-4 sm:px-6 text-center">
+            <h2 className="font-display text-[clamp(1.5rem,3vw,2rem)] font-normal text-[var(--patina-charcoal)] mb-4">
+              Know a maker who belongs here?
+            </h2>
+            <p className="text-[var(--patina-mocha-brown)] leading-relaxed mb-8">
+              We&apos;re building our founding catalog with makers who value craft over volume.
+              If you know someone, we&apos;d love an introduction.
+            </p>
+            <Link
+              href="/makers/apply"
+              className="inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-mocha-brown)]"
+            >
+              Tell Us About a Maker →
+            </Link>
+          </div>
+        </section>
       </main>
 
       <Footer />

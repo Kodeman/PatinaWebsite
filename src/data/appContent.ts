@@ -13,16 +13,16 @@ import type {
 
 // Hero Section Content
 export const appHeroContent = {
-  eyebrow: 'POWERED BY THE AESTHETE ENGINE',
-  headline: 'Every room tells a story.',
-  headlineEmphasis: "Let's discover yours.",
+  eyebrow: 'THE PATINA APP',
+  headline: 'See your room the way',
+  headlineEmphasis: 'a designer would.',
   subheadline:
-    "Scan your space. Uncover your style. Find furniture that fits—not just the room, but the life you're building.",
+    "Scan your space. Uncover your style. Find furniture that fits—not just the room, but the life you're building. Founding members will be the first to test it.",
   secondaryLine:
     'Designer-taught AI delivers focused recommendations, not endless scrolling.',
   primaryCTA: {
-    label: 'Download for iOS',
-    href: '#',
+    label: 'Become a Founding Member',
+    href: '/founding',
   } satisfies CTALink,
   secondaryCTA: {
     label: 'See How It Works',
@@ -250,19 +250,19 @@ export const trustIndicators: TrustIndicator[] = [
 
 // Final CTA Content
 export const appCTAContent = {
-  headline: 'Ready to discover',
-  headlineEmphasis: 'what belongs?',
+  headline: 'Ready to help us',
+  headlineEmphasis: 'build this?',
   subheadline:
-    "The best interiors aren't decorated—they're cultivated over time, with pieces that grow more beautiful with age.",
-  tertiaryLine: 'Start your journey in under 10 minutes.',
+    "Founding members get first access. Help us test, shape, and refine the app before it launches.",
+  tertiaryLine: 'Your feedback makes it better for everyone.',
   primaryCTA: {
-    label: 'Download on the App Store',
-    href: '#',
+    label: 'Join the Founding Circle',
+    href: '/founding',
   } satisfies CTALink,
-  secondaryText: 'Or browse our collection on the web.',
+  secondaryText: 'Or read more about our story.',
   secondaryLink: {
-    label: 'browse our collection',
-    href: '/furniture',
+    label: 'our story',
+    href: '/about',
   } satisfies CTALink,
 };
 

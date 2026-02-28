@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Container } from '@/components/layout/Container';
 import { FadeIn } from '@/components/motion';
-import { WaitlistForm } from '@/components/ui/WaitlistForm';
+import { FoundingCircleForm } from '@/components/ui/FoundingCircleForm';
 import { appCTAContent } from '@/data/appContent';
 
 interface AppCTAProps {
@@ -62,7 +62,7 @@ export function AppCTA({
 
           {/* Primary CTA */}
           <FadeIn delay={0.2}>
-            <WaitlistForm source="app_cta" variant="dark" ctaText="Join the Waitlist" className="max-w-md mx-auto" />
+            <FoundingCircleForm source="app_cta" variant="dark" ctaText="Join the Founding Circle" className="max-w-md mx-auto" />
           </FadeIn>
 
           {/* Secondary link */}

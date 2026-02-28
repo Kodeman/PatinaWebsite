@@ -4,7 +4,8 @@ import { Hero } from "@/components/sections/Hero";
 import { ThePromise } from "@/components/sections/ThePromise";
 import { TheRoom } from "@/components/sections/TheRoom";
 import { FirstTouchJourney } from "@/components/sections/FirstTouchJourney";
-import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { FoundingCircleForm } from "@/components/ui/FoundingCircleForm";
+import { FoundingCounter } from "@/components/ui/FoundingCounter";
 import {
   FeaturedMakersSection,
   MaterialStoriesSection,
@@ -117,7 +118,14 @@ export default async function HomePage() {
           title={homePage?.heroTitle || "Where Time "}
           titleEmphasis={homePage?.heroTitleEmphasis || "Adds Value"}
           description={homePage?.heroDescription || "The complete room, designer-curated. Handcrafted anchor pieces surrounded by everything else your space needs \u2014 all chosen with intention."}
-          ctaSlot={<WaitlistForm source="hero" variant="dark" ctaText="Join the Waitlist" />}
+          ctaSlot={
+            <>
+              <FoundingCircleForm source="hero" variant="dark" ctaText="Join the Founding Circle" />
+              <div className="mt-4">
+                <FoundingCounter variant="dark" />
+              </div>
+            </>
+          }
           trustLine={homePage?.heroTrustLine || "Heritage makers \u00b7 Designer-selected brands \u00b7 Every detail specified"}
           imageUrl="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=2000&h=1200&fit=crop&q=80"
           scrollTargetId="first-touch"

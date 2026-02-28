@@ -39,12 +39,12 @@ test.describe("Homepage", () => {
     await expect(footer.getByRole("link", { name: "How It Works" })).toBeVisible();
   });
 
-  test("should display Final CTA section with waitlist form", async ({ page }) => {
-    // The final CTA section contains a waitlist form - verify it exists in the DOM
+  test("should display Final CTA section with founding circle form", async ({ page }) => {
+    // The final CTA section contains a founding circle form - verify it exists in the DOM
     // (FadeIn keeps it at opacity:0 until scrolled, so check DOM presence)
-    const waitlistForms = page.locator('form').filter({ has: page.locator('button:has-text("Join the Waitlist")') });
-    // There should be at least 2 waitlist forms (hero + final CTA)
-    await expect(waitlistForms).toHaveCount(2);
+    const foundingForms = page.locator('form').filter({ has: page.locator('button:has-text("Join the Founding Circle")') });
+    // There should be at least 2 founding circle forms (hero + final CTA)
+    await expect(foundingForms).toHaveCount(2);
   });
 
   test("should display updated hero description", async ({ page }) => {

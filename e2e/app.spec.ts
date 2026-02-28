@@ -6,7 +6,7 @@ test.describe("App Download Page", () => {
   });
 
   test("should display the page with correct title", async ({ page }) => {
-    await expect(page).toHaveTitle(/Get the App.*Patina/);
+    await expect(page).toHaveTitle(/The Patina App.*Patina/);
   });
 
   test("should display hero section with heading", async ({ page }) => {

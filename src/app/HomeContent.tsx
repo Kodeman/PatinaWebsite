@@ -7,7 +7,8 @@ import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from "@/components/moti
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useScrollDepth } from "@/hooks/useScrollDepth";
 import { StrataMark } from "@/components/ui/StrataMark";
-import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { FoundingCircleForm } from "@/components/ui/FoundingCircleForm";
+import { FoundingCounter } from "@/components/ui/FoundingCounter";
 
 // ============================================
 // Types
@@ -737,6 +738,10 @@ export function VoicesSection({ header, testimonials }: VoicesSectionProps) {
             </StaggerItem>
           ))}
         </StaggerChildren>
+
+        <FadeIn delay={0.3} className="mt-10 text-center">
+          <FoundingCounter />
+        </FadeIn>
       </div>
     </section>
   );
@@ -821,21 +826,21 @@ export function FinalCTASection({ header, body, secondaryLink }: FinalCTAProps) 
           {header?.headline || "Ready to see "}<em className="italic text-[var(--patina-mocha-brown)]">{header?.subheadline || "the whole room?"}</em>
         </h2>
         <p className="text-lg text-[var(--patina-mocha-brown)] max-w-xl mx-auto mb-10 leading-relaxed">
-          {body || "The best interiors aren\u2019t decorated \u2014 they\u2019re cultivated over time, with pieces that grow more beautiful with every year. Join the waitlist for complete, designer-curated rooms."}
+          {body || "The best interiors aren\u2019t decorated \u2014 they\u2019re cultivated over time, with pieces that grow more beautiful with every year. We\u2019re building that experience now \u2014 and founding members get first access."}
         </p>
 
         <div className="flex flex-col items-center gap-4 mb-16">
-          <WaitlistForm
+          <FoundingCircleForm
             source="final_cta"
-            ctaText="Join the Waitlist"
+            ctaText="Join the Founding Circle"
             className="max-w-md w-full"
           />
 
           <Link
-            href={secondaryLink?.href || "/furniture"}
+            href={secondaryLink?.href || "/makers"}
             className="text-[0.95rem] text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"
           >
-            {secondaryLink?.label || "Or explore furniture on web"}
+            {secondaryLink?.label || "Meet the Makers"}
           </Link>
         </div>
 

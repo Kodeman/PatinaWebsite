@@ -5,10 +5,12 @@ const footerLinks = {
   explore: [
     { href: "/furniture", label: "Your Room" },
     { href: "/makers", label: "Makers" },
+    { href: "/app", label: "The App" },
     { href: "/materials", label: "Materials" },
     { href: "/#journey", label: "How It Works" },
   ],
   workWithUs: [
+    { href: "/founding", label: "Founding Circle" },
     { href: "/designers", label: "For Designers" },
     { href: "/makers/apply", label: "For Makers" },
     { href: "/services", label: "Design Services" },
@@ -16,7 +18,6 @@ const footerLinks = {
   company: [
     { href: "/about", label: "Our Story" },
     { href: "/contact", label: "Contact" },
-    { href: "/careers", label: "Careers" },
   ],
 };
 

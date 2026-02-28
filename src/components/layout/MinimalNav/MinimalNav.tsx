@@ -46,7 +46,7 @@ export function MinimalNav({ opacity = 1 }: MinimalNavProps) {
 
           {/* Subtle CTA - Hidden on mobile */}
           <Link
-            href="/app"
+            href="/founding"
             className={cn(
               "hidden sm:inline-flex items-center justify-center",
               "px-4 py-2 text-sm font-medium",
@@ -57,7 +57,7 @@ export function MinimalNav({ opacity = 1 }: MinimalNavProps) {
               "transition-all duration-300"
             )}
           >
-            Get the App
+            Become a Founding Member
           </Link>
         </div>
       </div>

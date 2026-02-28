@@ -89,7 +89,44 @@ type AnalyticsEvents = {
   };
   filter_cleared: Record<string, never>;
 
-  // Waitlist
+  // Founding Circle
+  founding_circle_signup: {
+    email_domain: string;
+    source: string;
+    signup_page: string;
+    cta_text: string;
+    has_utm: boolean;
+    preferred_styles?: string[];
+    referrer?: string;
+  };
+
+  founding_cta_click: {
+    source: string;
+    element_location: 'hero' | 'nav' | 'footer' | 'inline' | 'mobile_menu';
+  };
+
+  // Style selection
+  style_card_selected: {
+    style_name: string;
+    selection_count: number;
+  };
+
+  style_cta_click: {
+    styles_selected: string[];
+  };
+
+  // App features
+  app_feature_status_view: {
+    feature_name: string;
+    status: 'in-development' | 'founding-first' | 'at-launch';
+  };
+
+  // Maker recruitment
+  maker_apply_click: {
+    source: string;
+  };
+
+  // Legacy alias
   waitlist_signup: {
     email_domain: string;
     source: string;

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks";
 import { cn } from "@/lib/utils";
@@ -83,7 +84,21 @@ export function PaletteGrid({ selectedPalettes, onSelect, className }: PaletteGr
           transition={{ delay: prefersReducedMotion ? 0 : 0.8, duration: 0.5 }}
           className="text-center text-[var(--patina-off-white)]/50 text-sm mt-8 px-4"
         >
-          Select up to 3 that resonate with you
+          We&apos;re building recommendations around styles like these. Founding members help us decide what comes first.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: prefersReducedMotion ? 0 : 1.0, duration: 0.5 }}
+          className="text-center text-sm mt-4 px-4"
+        >
+          <Link
+            href="/founding"
+            className="text-[var(--patina-clay-beige)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+          >
+            Want to help shape which styles launch first? → Join the Founding Circle
+          </Link>
         </motion.p>
       </div>
     </section>

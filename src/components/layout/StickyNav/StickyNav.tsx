@@ -83,7 +83,7 @@ export function StickyNav({ isVisible }: StickyNavProps) {
                 <div className="hidden lg:flex items-center gap-4">
                   <SearchBar variant="default" />
                   <Link
-                    href="/app"
+                    href="/founding"
                     className={cn(
                       "inline-flex items-center justify-center",
                       "px-4 py-2 text-sm font-medium rounded-[var(--radius-lg)]",
@@ -92,7 +92,7 @@ export function StickyNav({ isVisible }: StickyNavProps) {
                       "transition-all duration-300"
                     )}
                   >
-                    Get the App
+                    Become a Founding Member
                   </Link>
                 </div>
 

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { StrataMark } from "@/components/ui/StrataMark";
-import { WaitlistForm } from "@/components/ui/WaitlistForm";
 
 interface NavLink {
   href: string;
@@ -136,9 +135,15 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
           {/* Footer CTA — Waitlist */}
           <div className="p-6 border-t border-[rgba(163,146,124,0.15)]">
             <p className="text-sm text-[rgba(237,233,228,0.6)] mb-3 text-center">
-              Get notified when the app launches.
+              We&apos;re building something different. Come see how.
             </p>
-            <WaitlistForm source="mobile_menu" variant="dark" />
+            <Link
+              href="/founding"
+              onClick={onClose}
+              className="block w-full text-center px-6 py-3 text-sm font-medium bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] hover:bg-[var(--patina-off-white)] transition-colors duration-300"
+            >
+              Join the Founding Circle →
+            </Link>
           </div>
         </div>
       </div>

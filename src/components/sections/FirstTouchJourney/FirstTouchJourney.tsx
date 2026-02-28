@@ -6,7 +6,7 @@ import { QuestionReveal } from "./QuestionReveal";
 import { PaletteGrid } from "./PaletteGrid";
 import { ResponseMessage } from "./ResponseMessage";
 import { ContinueCTA } from "./ContinueCTA";
-import { getCombinedResponseMessage } from "./palettes";
+import { getCombinedResponseMessage, palettes } from "./palettes";
 import type { PaletteSelection } from "./types";
 
 interface FirstTouchJourneyProps {
@@ -29,29 +29,29 @@ export function FirstTouchJourney({
   const handlePaletteSelect = useCallback((paletteId: string) => {
     setSelection((prev) => {
       const isSelected = prev.selectedPalettes.includes(paletteId);
+      let newSelection: string[];
 
       if (isSelected) {
-        // Deselect
-        const newSelection = prev.selectedPalettes.filter((id) => id !== paletteId);
-        return {
-          selectedPalettes: newSelection,
-          showResponse: newSelection.length > 0,
-        };
+        newSelection = prev.selectedPalettes.filter((id) => id !== paletteId);
+      } else if (prev.selectedPalettes.length >= 3) {
+        newSelection = [...prev.selectedPalettes.slice(1), paletteId];
+      } else {
+        newSelection = [...prev.selectedPalettes, paletteId];
       }
 
-      if (prev.selectedPalettes.length >= 3) {
-        // Max reached, replace oldest selection
-        const newSelection = [...prev.selectedPalettes.slice(1), paletteId];
-        return {
-          selectedPalettes: newSelection,
-          showResponse: true,
-        };
+      // Persist style preferences to localStorage for the founding signup form
+      try {
+        const names = newSelection
+          .map((id) => palettes.find((p) => p.id === id)?.name)
+          .filter(Boolean);
+        localStorage.setItem('patina_style_preferences', JSON.stringify(names));
+      } catch {
+        // localStorage unavailable
       }
 
-      // Add selection
       return {
-        selectedPalettes: [...prev.selectedPalettes, paletteId],
-        showResponse: true,
+        selectedPalettes: newSelection,
+        showResponse: newSelection.length > 0,
       };
     });
   }, []);

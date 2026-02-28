@@ -117,7 +117,6 @@ test.describe("About Page", () => {
       { name: /Explore Furniture Collection/i, href: "/furniture" },
       { name: /For Designers/i, href: "/designers" },
       { name: /For Makers/i, href: "/makers" },
-      { name: /Get the App/i, href: "/app" },
     ];
 
     for (const action of actions) {

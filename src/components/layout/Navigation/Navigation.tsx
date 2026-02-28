@@ -5,12 +5,13 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { StrataMark } from "@/components/ui/StrataMark";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { WaitlistPopover } from "@/components/ui/WaitlistPopover";
+import { FoundingPopover } from "@/components/ui/FoundingPopover";
 import { MobileMenu } from "../MobileMenu";
 
 const navLinks = [
   { href: "/furniture", label: "Your Room" },
   { href: "/makers", label: "Our Makers" },
+  { href: "/app", label: "The App" },
   { href: "/designers", label: "For Designers" },
   { href: "/about", label: "Our Story" },
 ];
@@ -95,7 +96,7 @@ export function Navigation({ variant = "default" }: NavigationProps) {
               <SearchBar variant={isDark ? "dark" : "default"} />
 
               {/* CTA Button */}
-              <WaitlistPopover isDark={isDark} />
+              <FoundingPopover isDark={isDark} />
             </div>
 
             {/* Mobile Menu Button */}

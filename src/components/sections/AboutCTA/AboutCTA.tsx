@@ -3,7 +3,7 @@ import { Container } from '@/components/layout/Container';
 import { FadeIn, StaggerChildren, StaggerItem } from '@/components/motion';
 import { StrataMark } from '@/components/ui/StrataMark';
 import { Button } from '@/components/ui/Button';
-import { WaitlistForm } from '@/components/ui/WaitlistForm';
+import { FoundingCircleForm } from '@/components/ui/FoundingCircleForm';
 import { ctaContent } from '@/data/aboutContent';
 
 interface AboutCTAProps {
@@ -60,9 +60,9 @@ export function AboutCTA({ headline, actions }: AboutCTAProps) {
           <FadeIn delay={0.4}>
             <div className="mt-8">
               <p className="text-sm text-[rgba(237,233,228,0.6)] mb-3">
-                Get notified when the app launches.
+                Be among the first to shape Patina.
               </p>
-              <WaitlistForm source="about_cta" variant="dark" className="max-w-md mx-auto" />
+              <FoundingCircleForm source="about_cta" variant="dark" className="max-w-md mx-auto" />
             </div>
           </FadeIn>
         </div>

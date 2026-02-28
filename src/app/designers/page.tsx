@@ -96,13 +96,13 @@ const testimonials = [
     quote: "Patina has transformed how I present furniture to clients. The AR feature alone has helped me close three major projects this quarter.",
     author: "Sarah Chen",
     title: "Principal, Chen Interiors",
-    location: "San Francisco, CA",
+    location: "San Francisco, CA (Beta)",
   },
   {
     quote: "The quality is consistent, the stories are genuine, and my clients love knowing who made their furniture. It's become my go-to source.",
     author: "Marcus Webb",
     title: "Founder, Webb Design Studio",
-    location: "Brooklyn, NY",
+    location: "Brooklyn, NY (Beta tester)",
   },
 ];
 

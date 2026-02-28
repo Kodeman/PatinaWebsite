@@ -1,0 +1,1 @@
+export { FoundingCounter } from './FoundingCounter';

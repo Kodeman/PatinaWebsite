@@ -13,9 +13,13 @@ import { sanityFetch } from '../../../sanity/lib/client';
 import { appPageQuery } from '../../../sanity/lib/queries';
 
 export const metadata: Metadata = {
-  title: 'Get the App | Patina',
+  title: 'The Patina App | Patina',
   description:
-    "Discover furniture that grows more beautiful with time. Scan your space, see pieces in your room, and find what belongs—guided by the insights of professional designers.",
+    "See your room the way a designer would. The Patina app brings AR room visualization, designer-taught recommendations, and heritage makers together in one experience. Founding members get first access.",
+  openGraph: {
+    title: 'The Patina App — See Your Room the Way a Designer Would',
+    description: 'AR room visualization, designer-taught recommendations, and heritage makers. Founding members get first access.',
+  },
 };
 
 interface AppPage {

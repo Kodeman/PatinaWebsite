@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Container } from '@/components/layout/Container';
 import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
-import { WaitlistForm } from '@/components/ui/WaitlistForm';
+import { FoundingCircleForm } from '@/components/ui/FoundingCircleForm';
 import { appHeroContent } from '@/data/appContent';
 
 interface AppHeroProps {
@@ -110,7 +110,7 @@ export function AppHero({
               variants={itemVariants}
             >
               {/* Primary CTA - Waitlist */}
-              <WaitlistForm source="app_hero" ctaText="Join the Waitlist" className="w-full sm:w-auto" />
+              <FoundingCircleForm source="app_hero" ctaText="Join the Founding Circle" className="w-full sm:w-auto" />
 
               {/* Secondary CTA - Anchor */}
               <a
@@ -143,7 +143,7 @@ export function AppHero({
               className="mt-4 text-sm text-[var(--patina-mocha-brown)]/60 text-center lg:text-left"
               variants={itemVariants}
             >
-              {androidNote || "Join the waitlist — we'll notify you when it's ready."}
+              {androidNote || "Founding members get first access when the app launches."}
             </motion.p>
           </motion.div>
 
