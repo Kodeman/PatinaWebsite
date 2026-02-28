@@ -261,6 +261,33 @@ export const homePageQuery = groq`
       asset-> { url, metadata { lqip } },
       alt
     },
+    promiseOverline,
+    promiseHeadline,
+    promiseBody,
+    promiseFeatures[] {
+      title,
+      description,
+      icon,
+      examples,
+      highlight
+    },
+    roomHeader,
+    roomImage {
+      asset-> { url, metadata { lqip } },
+      alt
+    },
+    roomHotspots[] {
+      id,
+      xPercent,
+      yPercent,
+      productName,
+      productPrice,
+      productMaker,
+      tier,
+      designerNote,
+      ctaLabel,
+      ctaUrl
+    },
     valueHeader,
     valueFeatures[] {
       title,

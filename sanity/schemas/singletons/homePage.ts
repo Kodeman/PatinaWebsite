@@ -6,9 +6,11 @@ export const homePage = defineType({
   type: "document",
   groups: [
     { name: "hero", title: "Hero Section" },
+    { name: "promise", title: "The Promise" },
     { name: "valueProps", title: "Value Proposition" },
     { name: "aestheteEngine", title: "Aesthete Engine" },
     { name: "experience", title: "AR Experience" },
+    { name: "theRoom", title: "The Room" },
     { name: "makers", title: "Makers Section" },
     { name: "testimonials", title: "Testimonials" },
     { name: "designerServices", title: "Designer Services" },
@@ -59,6 +61,86 @@ export const homePage = defineType({
       title: "Hero Image",
       type: "imageWithMeta",
       group: "hero",
+    }),
+
+    // THE PROMISE SECTION
+    defineField({
+      name: "promiseOverline",
+      title: "Overline",
+      type: "string",
+      group: "promise",
+    }),
+    defineField({
+      name: "promiseHeadline",
+      title: "Headline",
+      type: "string",
+      group: "promise",
+    }),
+    defineField({
+      name: "promiseBody",
+      title: "Body Text",
+      type: "text",
+      rows: 3,
+      group: "promise",
+    }),
+    defineField({
+      name: "promiseFeatures",
+      title: "Features",
+      type: "array",
+      of: [{ type: "featureItem" }],
+      group: "promise",
+      validation: (Rule) => Rule.max(3),
+    }),
+
+    // THE ROOM SECTION
+    defineField({
+      name: "roomHeader",
+      title: "Section Header",
+      type: "sectionHeader",
+      group: "theRoom",
+    }),
+    defineField({
+      name: "roomImage",
+      title: "Room Image",
+      type: "imageWithMeta",
+      group: "theRoom",
+    }),
+    defineField({
+      name: "roomHotspots",
+      title: "Room Hotspots",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "id", title: "ID", type: "string" },
+            { name: "xPercent", title: "X Position (%)", type: "number" },
+            { name: "yPercent", title: "Y Position (%)", type: "number" },
+            { name: "productName", title: "Product Name", type: "string" },
+            { name: "productPrice", title: "Product Price", type: "number" },
+            { name: "productMaker", title: "Maker Name", type: "string" },
+            {
+              name: "tier",
+              title: "Product Tier",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Partner (Maker Pieces)", value: "partner" },
+                  { title: "Curated (Designer Picks)", value: "curated" },
+                  { title: "Sourced (Every Detail)", value: "sourced" },
+                ],
+              },
+            },
+            { name: "designerNote", title: "Designer Note", type: "text", rows: 2 },
+            { name: "ctaLabel", title: "CTA Label", type: "string" },
+            { name: "ctaUrl", title: "CTA URL", type: "string" },
+          ],
+          preview: {
+            select: { title: "productName", subtitle: "tier" },
+          },
+        },
+      ],
+      group: "theRoom",
     }),
 
     // VALUE PROPOSITION SECTION

@@ -16,7 +16,7 @@ test.describe("404 Not Found Page", () => {
 
   test("should display navigation", async ({ page }) => {
     await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Furniture" })).toBeVisible();
+    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
   });
 
   test("should have Go Home button", async ({ page }) => {

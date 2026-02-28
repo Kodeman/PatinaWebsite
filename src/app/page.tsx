@@ -1,6 +1,8 @@
 import { draftMode } from "next/headers";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
+import { ThePromise } from "@/components/sections/ThePromise";
+import { TheRoom } from "@/components/sections/TheRoom";
 import { FirstTouchJourney } from "@/components/sections/FirstTouchJourney";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import {
@@ -23,6 +25,25 @@ interface HomePage {
   heroDescription?: string;
   heroTrustLine?: string;
   heroCta?: { label: string; href: string };
+  // Promise
+  promiseOverline?: string;
+  promiseHeadline?: string;
+  promiseBody?: string;
+  promiseFeatures?: { title: string; description: string; icon?: string }[];
+  // Room
+  roomHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
+  roomHotspots?: {
+    id: string;
+    xPercent: number;
+    yPercent: number;
+    productName: string;
+    productPrice: number;
+    productMaker?: string;
+    tier: "partner" | "curated" | "sourced";
+    designerNote?: string;
+    ctaLabel?: string;
+    ctaUrl?: string;
+  }[];
   // Makers
   makersHeader?: { eyebrow?: string; headline?: string };
   makersBody?: string;
@@ -95,17 +116,31 @@ export default async function HomePage() {
         <Hero
           title={homePage?.heroTitle || "Where Time "}
           titleEmphasis={homePage?.heroTitleEmphasis || "Adds Value"}
-          description={homePage?.heroDescription || "Discover furniture that grows more beautiful with every year. See it in your space. Know the hands that made it."}
+          description={homePage?.heroDescription || "The complete room, designer-curated. Handcrafted anchor pieces surrounded by everything else your space needs \u2014 all chosen with intention."}
           ctaSlot={<WaitlistForm source="hero" variant="dark" ctaText="Join the Waitlist" />}
-          trustLine={homePage?.heroTrustLine || "Heritage makers since 1904"}
+          trustLine={homePage?.heroTrustLine || "Heritage makers \u00b7 Designer-selected brands \u00b7 Every detail specified"}
           imageUrl="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=2000&h=1200&fit=crop&q=80"
           scrollTargetId="first-touch"
         />
 
-        {/* 2. First Touch - Cinematic Scroll Journey */}
-        <FirstTouchJourney continueTargetId="makers" />
+        {/* 2. The Promise - Value Proposition */}
+        <ThePromise
+          overline={homePage?.promiseOverline}
+          headline={homePage?.promiseHeadline}
+          body={homePage?.promiseBody}
+          features={homePage?.promiseFeatures}
+        />
 
-        {/* 3. Meet the Makers */}
+        {/* 3. First Touch - Cinematic Scroll Journey */}
+        <FirstTouchJourney continueTargetId="the-room" />
+
+        {/* 4. The Room - Interactive Hotspot Viewer */}
+        <TheRoom
+          header={homePage?.roomHeader}
+          hotspots={homePage?.roomHotspots}
+        />
+
+        {/* 5. Meet the Makers */}
         <FeaturedMakersSection
           header={homePage?.makersHeader}
           body={homePage?.makersBody}
@@ -113,13 +148,13 @@ export default async function HomePage() {
           testimonials={testimonials || undefined}
         />
 
-        {/* 4. Material Stories - Sensory Interlude */}
+        {/* 6. Material Stories - Sensory Interlude */}
         <MaterialStoriesSection />
 
-        {/* 5. The Journey - Organic Flow */}
+        {/* 7. The Journey - Organic Flow */}
         <TheJourneySection testimonials={testimonials || undefined} />
 
-        {/* 6. Professional Design Services */}
+        {/* 8. Professional Design Services */}
         <DesignerServicesSection
           header={homePage?.servicesHeader}
           body={homePage?.servicesBody}
@@ -129,16 +164,16 @@ export default async function HomePage() {
           testimonials={testimonials || undefined}
         />
 
-        {/* 7. Voices - Community Stories */}
+        {/* 9. Voices - Community Stories */}
         <VoicesSection
           header={homePage?.testimonialsHeader}
           testimonials={testimonials || undefined}
         />
 
-        {/* 8. How It Works - Collapsible */}
+        {/* 10. How It Works - Collapsible */}
         <HowItWorksSection />
 
-        {/* 9. Final CTA - Story Based */}
+        {/* 11. Final CTA - Story Based */}
         <FinalCTASection
           header={homePage?.ctaHeader}
           body={homePage?.ctaBody}

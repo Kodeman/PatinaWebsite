@@ -17,7 +17,7 @@ test.describe("Designer Portal Page", () => {
 
   test("should display navigation with dark variant", async ({ page }) => {
     await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Furniture" })).toBeVisible();
+    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
   });
 
   test("should have Apply for Trade Access CTA button", async ({ page }) => {

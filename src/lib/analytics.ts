@@ -111,6 +111,28 @@ type AnalyticsEvents = {
     depth: 25 | 50 | 75 | 100;
     page: string;
   };
+
+  // Room & Promise sections
+  promise_section_viewed: Record<string, never>;
+  room_hotspot_clicked: {
+    hotspot_id: string;
+    product_name: string;
+    tier: "partner" | "curated" | "sourced";
+  };
+  room_hotspot_tier: {
+    tier: "partner" | "curated" | "sourced";
+    interaction_count: number;
+  };
+  room_summary_viewed: {
+    total_products: number;
+    partner_count: number;
+    curated_count: number;
+    sourced_count: number;
+  };
+  shop_this_room_clicked: {
+    source: string;
+    total_products: number;
+  };
 };
 
 type EventName = keyof AnalyticsEvents;

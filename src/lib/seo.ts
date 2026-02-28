@@ -3,12 +3,12 @@ import type { Product } from "@/types/sanity";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://patina.design";
 const siteName = "Patina";
-const siteDescription = "Discover handcrafted furniture with stories worth telling. AR visualization, artisan makers, and quality that lasts generations.";
+const siteDescription = "The complete room, designer-curated. Handcrafted anchor pieces from heritage makers, surrounded by designer-selected brands and every finishing detail.";
 
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Patina | Where Time Adds Value",
+    default: "Patina | Complete Designer-Curated Rooms | Where Time Adds Value",
     template: "%s | Patina",
   },
   description: siteDescription,
@@ -20,6 +20,10 @@ export const defaultMetadata: Metadata = {
     "heirloom quality",
     "furniture makers",
     "interior design",
+    "complete room design",
+    "designer-curated rooms",
+    "room planning",
+    "turnkey interior design",
   ],
   authors: [{ name: "Patina" }],
   creator: "Patina",
@@ -29,20 +33,20 @@ export const defaultMetadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: siteName,
-    title: "Patina | Where Time Adds Value",
+    title: "Patina | Complete Designer-Curated Rooms | Where Time Adds Value",
     description: siteDescription,
     images: [
       {
         url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Patina - Handcrafted Furniture Marketplace",
+        alt: "Patina - Complete Designer-Curated Rooms",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Patina | Where Time Adds Value",
+    title: "Patina | Complete Designer-Curated Rooms | Where Time Adds Value",
     description: siteDescription,
     images: [`${siteUrl}/og-image.jpg`],
   },

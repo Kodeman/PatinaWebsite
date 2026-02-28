@@ -134,3 +134,43 @@ export const productTypeLabels: Record<ProductType, string> = {
   lighting: "Lighting",
   accessory: "Accessories",
 };
+
+// Product tier system for room compositions
+export type ProductTier = "partner" | "curated" | "sourced";
+
+export const tierConfig: Record<
+  ProductTier,
+  { label: string; icon: string; color: string; description: string }
+> = {
+  partner: {
+    label: "Maker Pieces",
+    icon: "★",
+    color: "var(--patina-clay-beige)",
+    description: "Handcrafted by our partner makers",
+  },
+  curated: {
+    label: "Designer Picks",
+    icon: "✓",
+    color: "#8B7355",
+    description: "Selected by our design team",
+  },
+  sourced: {
+    label: "Every Detail",
+    icon: "○",
+    color: "#E5E2DD",
+    description: "Finishing touches that complete the room",
+  },
+};
+
+export interface RoomHotspot {
+  id: string;
+  xPercent: number;
+  yPercent: number;
+  productName: string;
+  productPrice: number;
+  productMaker?: string;
+  tier: ProductTier;
+  designerNote?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+}

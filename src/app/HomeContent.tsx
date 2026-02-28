@@ -105,10 +105,11 @@ const defaultTestimonials: Testimonial[] = [
 ];
 
 const defaultHandoffItems = [
-  "Your room—measured down to the inch",
-  "What you're drawn to, even things you didn't realize",
+  "Your room\u2014measured down to the inch",
+  "What you\u2019re drawn to, even things you didn\u2019t realize",
   "Every piece you saved along the way",
   "The designer insights that made you pause",
+  "Plus every product in your project \u2014 from anchor pieces to paint colors \u2014 with the designer\u2019s notes on why each one was chosen.",
 ];
 
 // ============================================
@@ -288,10 +289,10 @@ export function FeaturedMakersSection({ header, body, makers, testimonials }: Fe
             {header?.eyebrow || "The craftspeople"}
           </p>
           <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
-            {header?.headline || "Fifty families of makers."} <em className="italic text-[var(--patina-mocha-brown)]">Generations of craft.</em>
+            {header?.headline || "The anchor pieces."} <em className="italic text-[var(--patina-mocha-brown)]">Generations of craft.</em>
           </h2>
           <p className="text-lg text-[var(--patina-mocha-brown)] max-w-[600px] mx-auto leading-relaxed">
-            {body || "Every piece in our collection comes from makers we trust—artisans whose work has been refined over decades, sometimes centuries. These are their stories."}
+            {body || "Every Patina room starts with a story \u2014 a piece handcrafted by makers we know personally. These are the anchor pieces that define your space. The ones your kids will fight over someday. Everything else in the room? Chosen by our designers to make these pieces shine."}
           </p>
         </FadeIn>
 
@@ -468,8 +469,8 @@ const journeySteps: JourneyStep[] = [
   },
   {
     title: "Then, you see",
-    titleEmphasis: "ten pieces—not ten thousand",
-    text: "Every recommendation is vetted by professional designers. Not just \"customers also bought\"—but \"this leather ages beautifully\" and \"watch the scale if your ceilings are under nine feet.\"",
+    titleEmphasis: "your whole room — not a single chair",
+    text: "Every recommendation is vetted by professional designers who think in complete rooms. Not just \"customers also bought\" — but anchor pieces, supporting brands, paint colors, and finishing details, all chosen to work together.",
     imageUrl: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80",
     quote: {
       text: "I was skeptical about an app understanding my style. But the recommendations were eerily accurate—it showed me pieces I didn't know I wanted but immediately loved.",
@@ -491,9 +492,9 @@ const journeySteps: JourneyStep[] = [
   },
   {
     title: "Finally, you",
-    titleEmphasis: "bring it home knowing it belongs",
-    text: "Every piece ships from makers we trust, with the story of who made it and how to care for it. No surprises—just furniture that was meant for your space.",
-    secondaryText: "And if you ever want to go deeper, your profile transfers seamlessly to a professional designer. No starting over. No re-explaining.",
+    titleEmphasis: "bring it all home",
+    text: "Every product in your room \u2014 from the handcrafted dining table to the paint color on the walls \u2014 ships with the story of why it was chosen and how to care for it.",
+    secondaryText: "And if you ever want to go deeper, your profile transfers seamlessly to a professional designer. No starting over. No re-explaining. They already know your room.",
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&q=80",
   },
 ];
@@ -681,17 +682,17 @@ interface VoicesSectionProps {
 // Curated testimonials for the Voices section
 const voicesTestimonials = [
   {
-    quote: "The quality is consistent, the stories are genuine, and my clients love knowing who made their furniture. It's become my go-to source.",
+    quote: "The quality is consistent, the stories are genuine, and my clients love knowing who made their furniture. It\u2019s become my go-to source.",
     author: "Marcus Webb",
     location: "Brooklyn, NY",
   },
   {
-    quote: "I used to spend weeks researching furniture. Now I spend that time living in rooms that actually feel like mine.",
-    author: "Jamie Torres",
-    location: "Austin, TX",
+    quote: "I came for the dining table and stayed for the complete room. The designer picked lighting, rugs, even the paint color \u2014 and it all just works together in a way I never could have done alone.",
+    author: "Jamie L.",
+    location: "Milwaukee, WI",
   },
   {
-    quote: "The first recommendation was a chair I'd never have found on my own. It's been in my reading corner for six months and I still smile every time I sit down.",
+    quote: "The first recommendation was a chair I\u2019d never have found on my own. It\u2019s been in my reading corner for six months and I still smile every time I sit down.",
     author: "Elena Kim",
     location: "Seattle, WA",
   },
@@ -780,8 +781,11 @@ export function HowItWorksSection() {
             <p className="text-[var(--patina-mocha-brown)] leading-relaxed mb-4">
               Every piece in our catalog is analyzed by professional designers who add the insights you won&apos;t find on a product page: &ldquo;This leather only gets better with Sunday afternoons.&rdquo; &ldquo;Marble needs coasters—always.&rdquo; &ldquo;Perfect for pet-free homes.&rdquo;
             </p>
+            <p className="text-[var(--patina-mocha-brown)] leading-relaxed mb-4">
+              The more you explore, the better the recommendations become. Not because we&apos;re tracking you&mdash;because we&apos;re learning your language. Some preferences are hard to put into words. Maybe you linger on weathered oak but scroll past polished chrome. Maybe warm tones make you pause. We pay attention so you don&apos;t have to explain.
+            </p>
             <p className="text-[var(--patina-mocha-brown)] leading-relaxed">
-              The more you explore, the better the recommendations become. Not because we&apos;re tracking you—because we&apos;re learning your language. Some preferences are hard to put into words. Maybe you linger on weathered oak but scroll past polished chrome. Maybe warm tones make you pause. We pay attention so you don&apos;t have to explain.
+              Our Aesthete Engine doesn&apos;t just recommend individual pieces&mdash;it learns how rooms work together. Which anchor pieces pair with which brands. Which finishing details complete a palette. Over time, it assembles compositions that feel intentional, not algorithmic.
             </p>
           </div>
         </div>
@@ -814,10 +818,10 @@ export function FinalCTASection({ header, body, secondaryLink }: FinalCTAProps) 
 
       <FadeIn className="max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h2 className="font-display text-[clamp(2rem,5vw,3rem)] font-normal text-[var(--patina-charcoal)] mb-6 leading-tight">
-          {header?.headline || "The best interiors aren't decorated—"}<em className="italic text-[var(--patina-mocha-brown)]">{header?.subheadline || "they're cultivated"}</em>
+          {header?.headline || "Ready to see "}<em className="italic text-[var(--patina-mocha-brown)]">{header?.subheadline || "the whole room?"}</em>
         </h2>
         <p className="text-lg text-[var(--patina-mocha-brown)] max-w-xl mx-auto mb-10 leading-relaxed">
-          {body || "Over time, with pieces that grow more beautiful with age. Start with one room. See where it leads."}
+          {body || "The best interiors aren\u2019t decorated \u2014 they\u2019re cultivated over time, with pieces that grow more beautiful with every year. Join the waitlist for complete, designer-curated rooms."}
         </p>
 
         <div className="flex flex-col items-center gap-4 mb-16">

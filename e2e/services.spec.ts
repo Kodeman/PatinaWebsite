@@ -17,7 +17,7 @@ test.describe("Design Services Page", () => {
 
   test("should display navigation", async ({ page }) => {
     await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Furniture" })).toBeVisible();
+    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
   });
 
   test("should display all 3 service packages", async ({ page }) => {
@@ -54,7 +54,7 @@ test.describe("Design Services Page", () => {
   });
 
   test("should display process steps section", async ({ page }) => {
-    await expect(page.getByText("How It Works")).toBeVisible();
+    await expect(page.locator("#main-content").getByText("How It Works")).toBeVisible();
 
     const steps = ["Discovery", "Curation", "Visualization", "Delivery"];
     for (const step of steps) {

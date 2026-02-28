@@ -9,9 +9,9 @@ import { WaitlistPopover } from "@/components/ui/WaitlistPopover";
 import { MobileMenu } from "../MobileMenu";
 
 const navLinks = [
-  { href: "/furniture", label: "Discover" },
-  { href: "/furniture", label: "Furniture" },
-  { href: "/designers", label: "Designers" },
+  { href: "/furniture", label: "Your Room" },
+  { href: "/makers", label: "Our Makers" },
+  { href: "/designers", label: "For Designers" },
   { href: "/about", label: "Our Story" },
 ];
 

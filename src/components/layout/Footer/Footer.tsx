@@ -3,10 +3,10 @@ import { StrataMark } from "@/components/ui/StrataMark";
 
 const footerLinks = {
   explore: [
-    { href: "/furniture", label: "Furniture" },
-    { href: "/furniture?collection=featured", label: "Collections" },
+    { href: "/furniture", label: "Your Room" },
     { href: "/makers", label: "Makers" },
     { href: "/materials", label: "Materials" },
+    { href: "/#journey", label: "How It Works" },
   ],
   workWithUs: [
     { href: "/designers", label: "For Designers" },

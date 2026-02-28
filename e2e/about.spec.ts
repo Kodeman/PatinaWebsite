@@ -15,7 +15,7 @@ test.describe("About Page", () => {
 
   test("should display navigation", async ({ page }) => {
     await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Furniture" })).toBeVisible();
+    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
   });
 
   test("should display problem section", async ({ page }) => {
