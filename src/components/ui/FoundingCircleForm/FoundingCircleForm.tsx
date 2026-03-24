@@ -67,6 +67,8 @@ export function FoundingCircleForm({
           utm: attribution?.last_touch,
           posthog_distinct_id: posthog?.get_distinct_id?.() || null,
           preferred_styles: preferredStyles,
+          first_touch_attribution: attribution?.first_touch || null,
+          last_touch_attribution: attribution?.last_touch || null,
         }),
       });
 
