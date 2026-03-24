@@ -52,8 +52,10 @@ export async function POST(request: NextRequest) {
         utm_term: utm?.utm_term || null,
         referrer: utm?.referrer || null,
         posthog_distinct_id: posthog_distinct_id || null,
-        preferred_styles: preferred_styles || null,
-        first_touch_attribution: first_touch_attribution || null,
+        first_touch_attribution: {
+          ...(first_touch_attribution || {}),
+          ...(preferred_styles ? { preferred_styles } : {}),
+        },
         last_touch_attribution: last_touch_attribution || null,
         user_agent: request.headers.get("user-agent") || null,
       },
