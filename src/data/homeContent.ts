@@ -10,7 +10,7 @@ export const heroContent = {
     "Discover furniture that grows more beautiful with every year. Real designers. Real makers. A room that's really yours.",
   secondaryLine:
     "Powered by The Aesthete Engine—designer-taught intelligence that learns what you love.",
-  trustLine: "Curated by real designers",
+  trustLine: "Real designers \u00b7 Real makers \u00b7 Coming to founding members first",
   primaryCta: { label: "Become a Founding Member", href: "/founding" },
 };
 
@@ -146,73 +146,20 @@ export const makersContent = {
   body: "Every piece in our collection comes from makers we trust—artisans with generations of expertise. Professional designers evaluate each partnership, so quality is assured before a piece ever reaches your screen.",
 };
 
-export const featuredMakers = [
-  {
-    name: "Vermont Woodworks",
-    location: "Burlington, Vermont",
-    heritage: "Since 1972 · 50+ Years",
-    specialty: "Sustainable hardwood",
-    imageUrl:
-      "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400&h=500&fit=crop&q=80",
-  },
-  {
-    name: "Nakashima Workshop",
-    location: "New Hope, Pennsylvania",
-    heritage: "Est. 1946 · 3rd Generation",
-    specialty: "Live edge wood",
-    imageUrl:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=500&fit=crop&q=80",
-  },
-  {
-    name: "Sashimono Studio",
-    location: "Kyoto, Japan",
-    heritage: "Since 1923 · Master Craftsman",
-    specialty: "Traditional joinery",
-    imageUrl:
-      "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400&h=500&fit=crop&q=80",
-  },
-  {
-    name: "Studio Piet",
-    location: "Copenhagen, Denmark",
-    heritage: "Est. 2015 · Carbon Neutral",
-    specialty: "Scandinavian design",
-    imageUrl:
-      "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=400&h=500&fit=crop&q=80",
-  },
-];
-
-// Testimonials Section
-export const testimonialsContent = {
-  eyebrow: "COMMUNITY",
-  headline: "Loved by design enthusiasts",
-};
-
-export type Testimonial = {
-  quote: string;
-  author: string;
+// Founding makers — real makers come from Sanity CMS
+export const featuredMakers: Array<{
+  name: string;
   location: string;
-};
+  heritage: string;
+  specialty: string;
+  imageUrl: string;
+}> = [];
 
-export const testimonials: Testimonial[] = [
-  {
-    quote:
-      "The AR feature saved me from a huge mistake. I could see the sofa was too large before ordering. Game changer.",
-    author: "Sarah M.",
-    location: "Chicago, IL (Beta)",
-  },
-  {
-    quote:
-      "I was skeptical about an app understanding my style. But the recommendations were eerily accurate—it showed me pieces I didn't know I wanted but immediately loved.",
-    author: "Alex R.",
-    location: "Denver, CO (Beta)",
-  },
-  {
-    quote:
-      "The little notes on each piece—'better with 9ft ceilings' or 'this fabric shows pet hair'—saved me from mistakes I would have made anywhere else.",
-    author: "Rachel K.",
-    location: "Minneapolis, MN (Early user)",
-  },
-];
+// Testimonials Section — real testimonials come from Sanity CMS
+export const testimonialsContent = {
+  eyebrow: "FROM THE FOUNDERS",
+  headline: "Why we're building this",
+};
 
 export type TrustBadge = {
   value: string;
@@ -220,10 +167,10 @@ export type TrustBadge = {
 };
 
 export const trustBadges: TrustBadge[] = [
-  { value: "4.8★", label: "App Store Rating" },
-  { value: "10K+", label: "Happy Users" },
-  { value: "90%+", label: "Match Accuracy" },
-  { value: "50+", label: "Heritage Makers" },
+  { value: "15", label: "Founding Makers" },
+  { value: "50", label: "Designer Cohort" },
+  { value: "200", label: "Founding Members" },
+  { value: "3", label: "Countries" },
 ];
 
 // Designer Services Section
@@ -248,11 +195,11 @@ export const designerServicesContent = {
 
 // Final CTA Section
 export const finalCtaContent = {
-  eyebrow: "GET STARTED",
-  headline: "Ready to discover",
-  headlineEmphasis: "what belongs?",
-  body: "The best interiors aren't decorated—they're cultivated over time, with pieces that grow more beautiful with age. We're building that experience now — and founding members get first access.",
-  secondary: "Scan your first room in under 10 minutes.",
+  eyebrow: "JOIN US",
+  headline: "Ready to help us",
+  headlineEmphasis: "build this?",
+  body: "The best platforms are shaped by their earliest members. Join the Founding Circle and help define how furniture discovery should work.",
+  secondary: "200 founding spots. Be one of the first.",
   primaryCta: { label: "Join the Founding Circle", href: "/founding" },
   secondaryLink: { label: "Meet the Makers", href: "/makers" },
 };

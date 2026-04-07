@@ -30,6 +30,11 @@ const benefits = [
     title: 'First Access',
     body: "When the app launches, you're first through the door — and first to test it as we build. Your feedback makes it better for everyone.",
   },
+  {
+    icon: '◆',
+    title: 'Permanent Status',
+    body: "Founding member status never expires. When we launch publicly, your early support is recognized — permanently.",
+  },
 ];
 
 export function FoundingPageContent() {
@@ -43,9 +48,12 @@ export function FoundingPageContent() {
               <span className="text-label text-[var(--patina-clay-beige)] mb-4 block">
                 JOIN US
               </span>
-              <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-normal text-[var(--patina-charcoal)] mb-6 leading-tight">
+              <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-normal text-[var(--patina-charcoal)] mb-3 leading-tight">
                 The Founding Circle
               </h1>
+              <p className="font-mono text-sm text-[var(--patina-mocha-brown)]/70 mb-6">
+                Limited to 200 founding members
+              </p>
             </FadeIn>
 
             <FadeIn delay={0.1}>
@@ -68,7 +76,7 @@ export function FoundingPageContent() {
 
             <FadeIn delay={0.3}>
               <div className="mt-6">
-                <FoundingCounter />
+                <FoundingCounter showCap cap={200} />
               </div>
             </FadeIn>
           </div>
@@ -223,8 +231,11 @@ export function FoundingPageContent() {
 
             <FadeIn delay={0.2}>
               <div className="mt-6">
-                <FoundingCounter variant="dark" />
+                <FoundingCounter variant="dark" showCap cap={200} />
               </div>
+              <p className="mt-4 font-mono text-xs text-[rgba(237,233,228,0.5)]">
+                200 spots. Once they&apos;re filled, this page becomes a waitlist.
+              </p>
             </FadeIn>
 
             <FadeIn delay={0.3}>

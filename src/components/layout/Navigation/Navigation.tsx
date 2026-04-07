@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/app", label: "The App" },
   { href: "/designers", label: "For Designers" },
   { href: "/about", label: "Our Story" },
+  { href: "/journal", label: "Journal" },
 ];
 
 export interface NavigationProps {

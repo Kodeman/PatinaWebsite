@@ -15,6 +15,7 @@ import { testimonial } from "./documents/testimonial";
 import { teamMember } from "./documents/teamMember";
 import { servicePackage } from "./documents/servicePackage";
 import { trustBadge } from "./documents/trustBadge";
+import { journalPost } from "./documents/journalPost";
 
 // Singleton documents (pages)
 import { homePage } from "./singletons/homePage";
@@ -45,6 +46,7 @@ export const schemaTypes = [
   teamMember,
   servicePackage,
   trustBadge,
+  journalPost,
 
   // Singleton documents
   homePage,

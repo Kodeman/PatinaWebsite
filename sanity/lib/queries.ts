@@ -816,3 +816,36 @@ export const trustBadgesQuery = groq`
     icon
   }
 `;
+
+// Journal posts - all published, newest first
+export const journalPostsQuery = groq`
+  *[_type == "journalPost"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    category,
+    publishedAt,
+    author,
+    featured,
+    "coverImageUrl": coverImage.asset->url,
+    "coverImageAlt": coverImage.alt
+  }
+`;
+
+// Single journal post by slug
+export const journalPostBySlugQuery = groq`
+  *[_type == "journalPost" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    body,
+    category,
+    publishedAt,
+    author,
+    featured,
+    "coverImageUrl": coverImage.asset->url,
+    "coverImageAlt": coverImage.alt
+  }
+`;

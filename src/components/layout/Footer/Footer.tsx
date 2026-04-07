@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 
 const footerLinks = {
   explore: [
@@ -8,6 +9,7 @@ const footerLinks = {
     { href: "/app", label: "The App" },
     { href: "/materials", label: "Materials" },
     { href: "/#journey", label: "How It Works" },
+    { href: "/journal", label: "Journal" },
   ],
   workWithUs: [
     { href: "/founding", label: "Founding Circle" },
@@ -35,6 +37,11 @@ export function Footer() {
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 pb-8">
+        {/* Newsletter Signup */}
+        <div className="mb-12 pb-12 border-b border-[rgba(163,146,124,0.15)]">
+          <NewsletterSignup variant="footer" source="footer" />
+        </div>
+
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
           {/* Brand Column */}

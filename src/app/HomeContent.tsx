@@ -50,60 +50,10 @@ interface CTA {
 // Default Data
 // ============================================
 
-const defaultMakers: Maker[] = [
-  {
-    name: "Nordic Atelier",
-    location: "Aarhus, Denmark",
-    foundedYear: 1968,
-    yearsOfCraft: 56,
-    badges: ["Slow Made"],
-    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=450&fit=crop&q=80",
-    story: "Three generations of woodcraft. Their joinery technique—learned from grandfather to father to son—creates furniture that tightens with age, not loosens.",
-  },
-  {
-    name: "Woodward & Sons",
-    location: "Richmond, Virginia",
-    foundedYear: 1889,
-    yearsOfCraft: 135,
-    badges: ["4th Generation"],
-    imageUrl: "https://images.unsplash.com/photo-1609587312208-cea54be969e7?w=600&h=450&fit=crop&q=80",
-    story: "Hand-turned in Virginia since before electric power reached the workshop. Today, the great-great-grandson still uses the original lathe—because it makes better legs.",
-  },
-  {
-    name: "Sashimono Studio",
-    location: "Kyoto, Japan",
-    foundedYear: 1923,
-    yearsOfCraft: 101,
-    badges: ["Master Craftsman"],
-    imageUrl: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&h=450&fit=crop&q=80",
-    story: "Sashimono joinery uses no nails, no screws—just wood fitted to wood so precisely it needs nothing else. Each piece takes months. The wait is part of the value.",
-  },
-];
+// No default makers — real makers come from Sanity CMS
+const defaultMakers: Maker[] = [];
 
-const defaultTestimonials: Testimonial[] = [
-  {
-    quote: "The AR feature saved me from a huge mistake. I could see the sofa was too large before ordering.",
-    author: "Sarah M.",
-    title: "Interior Design Client",
-    location: "Chicago, IL",
-  },
-  {
-    quote: "I was skeptical about an app understanding my style. But the recommendations were eerily accurate—it showed me pieces I didn't know I wanted but immediately loved.",
-    author: "Alex R.",
-    location: "Denver, CO",
-  },
-  {
-    quote: "The little notes on each piece—'better with 9ft ceilings' or 'this fabric shows pet hair'—saved me from mistakes I would have made anywhere else.",
-    author: "Rachel K.",
-    location: "Minneapolis, MN",
-  },
-  {
-    quote: "When I was ready for professional help, my designer already knew everything about my taste. No starting over. No re-explaining.",
-    author: "Marcus T.",
-    title: "Design Services Client",
-    location: "Austin, TX",
-  },
-];
+// No default testimonials — real testimonials come from Sanity CMS
 
 const defaultHandoffItems = [
   "Your room\u2014measured down to the inch",
@@ -276,105 +226,131 @@ function getInitials(name: string): string {
 export function FeaturedMakersSection({ header, body, makers, testimonials }: FeaturedMakersProps) {
   const displayMakers = makers?.length ? makers : defaultMakers;
 
-  // Find a maker-related testimonial
+  // Find a maker-related testimonial from Sanity (no hardcoded fallback)
   const makerTestimonial = testimonials?.find(t =>
     t.quote.toLowerCase().includes('notes') ||
     t.quote.toLowerCase().includes('piece')
-  ) || defaultTestimonials.find(t => t.author === "Rachel K.");
+  );
 
+  // If real makers exist from Sanity, show the maker cards
+  if (displayMakers.length > 0) {
+    return (
+      <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]" id="makers">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn className="text-center mb-12">
+            <p className="text-label text-[var(--patina-clay-beige)] mb-3">
+              {header?.eyebrow || "The craftspeople"}
+            </p>
+            <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
+              {header?.headline || "The anchor pieces."} <em className="italic text-[var(--patina-mocha-brown)]">Generations of craft.</em>
+            </h2>
+            <p className="text-lg text-[var(--patina-mocha-brown)] max-w-[600px] mx-auto leading-relaxed">
+              {body || "Every Patina room starts with a story \u2014 a piece handcrafted by makers we know personally. These are the anchor pieces that define your space. The ones your kids will fight over someday. Everything else in the room? Chosen by our designers to make these pieces shine."}
+            </p>
+          </FadeIn>
+
+          <StaggerChildren className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" staggerDelay={0.1}>
+            {displayMakers.slice(0, 3).map((maker, index) => (
+              <StaggerItem key={maker._id || index}>
+                <article className="bg-white rounded-[var(--radius-xl)] overflow-hidden shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-lg)] transition-all duration-400 hover:-translate-y-1.5 h-full border border-[var(--patina-clay-beige)]/10">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[var(--patina-soft-cream)] to-[var(--patina-off-white)]">
+                    {maker.imageUrl ? (
+                      <Image
+                        src={maker.imageUrl}
+                        alt={`${maker.name} workshop`}
+                        fill
+                        className="object-cover transition-transform duration-600 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full bg-[var(--patina-clay-beige)]/10">
+                        <span className="text-[var(--patina-clay-beige)] text-sm">Workshop</span>
+                      </div>
+                    )}
+                    {maker.badges && maker.badges[0] && (
+                      <span className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded text-[0.65rem] font-medium tracking-wide uppercase text-[var(--patina-mocha-brown)]">
+                        {maker.badges[0]}
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-display font-medium text-[var(--patina-charcoal)] mb-1">
+                      {maker.name}
+                    </h3>
+                    <p className="text-sm text-[var(--patina-mocha-brown)] mb-2">
+                      {maker.location}
+                    </p>
+                    {(maker.foundedYear || maker.yearsOfCraft) && (
+                      <p className="text-xs text-[var(--patina-clay-beige)] flex items-center gap-2 mb-4">
+                        <span className="w-5 h-px bg-[var(--patina-clay-beige)]" />
+                        {maker.foundedYear && `Est. ${maker.foundedYear}`}
+                        {maker.yearsOfCraft && ` · ${maker.yearsOfCraft} years`}
+                      </p>
+                    )}
+                    {maker.story && (
+                      <p className="text-[0.95rem] text-[var(--patina-mocha-brown)] leading-relaxed pt-4 border-t border-[var(--patina-clay-beige)]/10">
+                        {maker.story}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              </StaggerItem>
+            ))}
+          </StaggerChildren>
+
+          {makerTestimonial && (
+            <FadeIn delay={0.3}>
+              <div className="mt-12 p-8 bg-white rounded-[var(--radius-xl)] border border-[var(--patina-clay-beige)]/10 flex flex-col md:flex-row gap-6 items-center md:items-start">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--patina-clay-beige)] to-[var(--patina-mocha-brown)] flex-shrink-0 flex items-center justify-center">
+                  <span className="font-display text-xl text-[var(--patina-off-white)]">
+                    {getInitials(makerTestimonial.author)}
+                  </span>
+                </div>
+                <div className="text-center md:text-left">
+                  <blockquote className="font-display text-lg lg:text-xl italic text-[var(--patina-charcoal)] leading-relaxed mb-4">
+                    &ldquo;{makerTestimonial.quote}&rdquo;
+                  </blockquote>
+                  <footer className="text-sm text-[var(--patina-mocha-brown)]">
+                    <strong className="text-[var(--patina-charcoal)]">{makerTestimonial.author}</strong> · {makerTestimonial.location}
+                  </footer>
+                </div>
+              </div>
+            </FadeIn>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // No real makers yet — show "Founding Partners" invitation
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]" id="makers">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-        <FadeIn className="text-center mb-12">
+      <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn className="text-center">
           <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-            {header?.eyebrow || "The craftspeople"}
+            {header?.eyebrow || "The makers"}
           </p>
           <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
-            {header?.headline || "The anchor pieces."} <em className="italic text-[var(--patina-mocha-brown)]">Generations of craft.</em>
+            Founding Partners &mdash; <em className="italic text-[var(--patina-mocha-brown)]">hand-selected by our designers</em>
           </h2>
-          <p className="text-lg text-[var(--patina-mocha-brown)] max-w-[600px] mx-auto leading-relaxed">
-            {body || "Every Patina room starts with a story \u2014 a piece handcrafted by makers we know personally. These are the anchor pieces that define your space. The ones your kids will fight over someday. Everything else in the room? Chosen by our designers to make these pieces shine."}
+          <p className="text-lg text-[var(--patina-mocha-brown)] max-w-[650px] mx-auto leading-relaxed mb-8">
+            We&apos;re building our launch collection with 15 makers we know personally &mdash; artisans whose craft, values, and commitment to quality match our own. Founding Partners get featured placement, designer classification of their full catalog, and a voice in how the platform evolves.
+          </p>
+
+          <Link
+            href="/makers/apply"
+            className="inline-flex items-center gap-3 px-8 py-4 text-[0.9375rem] font-medium bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] transition-all duration-400 hover:bg-[var(--patina-mocha-brown)] hover:-translate-y-0.5 mb-8"
+          >
+            Apply to be a Founding Partner
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+
+          <p className="font-mono text-sm text-[var(--patina-mocha-brown)]/70">
+            0 of 15 founding partners confirmed
           </p>
         </FadeIn>
-
-        {/* Maker Cards - 3 column grid */}
-        <StaggerChildren className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" staggerDelay={0.1}>
-          {displayMakers.slice(0, 3).map((maker, index) => (
-            <StaggerItem key={maker._id || index}>
-              <article className="bg-white rounded-[var(--radius-xl)] overflow-hidden shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-lg)] transition-all duration-400 hover:-translate-y-1.5 h-full border border-[var(--patina-clay-beige)]/10">
-                <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-[var(--patina-soft-cream)] to-[var(--patina-off-white)]">
-                  {maker.imageUrl ? (
-                    <Image
-                      src={maker.imageUrl}
-                      alt={`${maker.name} workshop`}
-                      fill
-                      className="object-cover transition-transform duration-600 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full bg-[var(--patina-clay-beige)]/10">
-                      <span className="text-[var(--patina-clay-beige)] text-sm">Workshop</span>
-                    </div>
-                  )}
-                  {/* Badge overlay */}
-                  {maker.badges && maker.badges[0] && (
-                    <span className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded text-[0.65rem] font-medium tracking-wide uppercase text-[var(--patina-mocha-brown)]">
-                      {maker.badges[0]}
-                    </span>
-                  )}
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-display font-medium text-[var(--patina-charcoal)] mb-1">
-                    {maker.name}
-                  </h3>
-                  <p className="text-sm text-[var(--patina-mocha-brown)] mb-2">
-                    {maker.location}
-                  </p>
-
-                  {/* Established line with decorative dash */}
-                  {(maker.foundedYear || maker.yearsOfCraft) && (
-                    <p className="text-xs text-[var(--patina-clay-beige)] flex items-center gap-2 mb-4">
-                      <span className="w-5 h-px bg-[var(--patina-clay-beige)]" />
-                      {maker.foundedYear && `Est. ${maker.foundedYear}`}
-                      {maker.yearsOfCraft && ` · ${maker.yearsOfCraft} years`}
-                    </p>
-                  )}
-
-                  {/* Story paragraph */}
-                  {maker.story && (
-                    <p className="text-[0.95rem] text-[var(--patina-mocha-brown)] leading-relaxed pt-4 border-t border-[var(--patina-clay-beige)]/10">
-                      {maker.story}
-                    </p>
-                  )}
-                </div>
-              </article>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
-
-        {/* Testimonial Card with Avatar */}
-        {makerTestimonial && (
-          <FadeIn delay={0.3}>
-            <div className="mt-12 p-8 bg-white rounded-[var(--radius-xl)] border border-[var(--patina-clay-beige)]/10 flex flex-col md:flex-row gap-6 items-center md:items-start">
-              {/* Avatar */}
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--patina-clay-beige)] to-[var(--patina-mocha-brown)] flex-shrink-0 flex items-center justify-center">
-                <span className="font-display text-xl text-[var(--patina-off-white)]">
-                  {getInitials(makerTestimonial.author)}
-                </span>
-              </div>
-              {/* Content */}
-              <div className="text-center md:text-left">
-                <blockquote className="font-display text-lg lg:text-xl italic text-[var(--patina-charcoal)] leading-relaxed mb-4">
-                  &ldquo;{makerTestimonial.quote}&rdquo;
-                </blockquote>
-                <footer className="text-sm text-[var(--patina-mocha-brown)]">
-                  <strong className="text-[var(--patina-charcoal)]">{makerTestimonial.author}</strong> · {makerTestimonial.location}
-                </footer>
-              </div>
-            </div>
-          </FadeIn>
-        )}
       </div>
     </section>
   );
@@ -473,11 +449,6 @@ const journeySteps: JourneyStep[] = [
     titleEmphasis: "your whole room — not a single chair",
     text: "Every recommendation is vetted by professional designers who think in complete rooms. Not just \"customers also bought\" — but anchor pieces, supporting brands, paint colors, and finishing details, all chosen to work together.",
     imageUrl: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80",
-    quote: {
-      text: "I was skeptical about an app understanding my style. But the recommendations were eerily accurate—it showed me pieces I didn't know I wanted but immediately loved.",
-      author: "Alex R.",
-      location: "Denver",
-    },
   },
   {
     title: "Watch the",
@@ -485,11 +456,6 @@ const journeySteps: JourneyStep[] = [
     text: "See the piece in your actual room. Not a floating 3D model—placed where it would live, casting real shadows, catching your light.",
     secondaryText: "Slide through sunrise to sunset. Watch how leather warms in afternoon sun. Know it works before it arrives.",
     imageUrl: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80",
-    quote: {
-      text: "The AR feature saved me from a huge mistake. I could see the sofa was too large before ordering.",
-      author: "Sarah M.",
-      location: "Chicago",
-    },
   },
   {
     title: "Finally, you",
@@ -509,6 +475,9 @@ export function TheJourneySection({ testimonials }: TheJourneyProps) {
     <section className="py-24 lg:py-40 bg-[var(--patina-off-white)]" id="journey">
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn className="text-center mb-20">
+          <p className="font-mono text-xs tracking-widest uppercase text-[var(--patina-clay-beige)] mb-4">
+            Coming to founding members first
+          </p>
           <p className="text-label text-[var(--patina-clay-beige)] mb-3">
             The experience
           </p>
@@ -591,17 +560,11 @@ interface DesignerServicesProps {
 export function DesignerServicesSection({ header, body, benefit, handoffItems, cta, imageUrl, testimonials }: DesignerServicesProps) {
   const displayItems = handoffItems?.length ? handoffItems : defaultHandoffItems;
 
-  // Find designer-related testimonial
-  const designerTestimonial = testimonials?.find(t =>
-    t.quote.toLowerCase().includes('designer') ||
-    t.quote.toLowerCase().includes('professional')
-  ) || defaultTestimonials.find(t => t.author === "Marcus T.");
-
-  // Find a specific testimonial for the floating card
+  // Founder quote for the floating card
   const floatingTestimonial = {
-    quote: "Patina has transformed how I present furniture to clients. The AR feature alone has helped me close three major projects this quarter.",
-    author: "Sarah Chen",
-    title: "Interior Designer, San Francisco",
+    quote: "Every recommendation carries a designer\u2019s instinct \u2014 because a real designer taught it.",
+    author: "Leah Kochaver",
+    title: "Founder, Middlewest Studio",
   };
 
   return (
@@ -680,60 +643,105 @@ interface VoicesSectionProps {
   testimonials?: Testimonial[];
 }
 
-// Curated testimonials for the Voices section
-const voicesTestimonials = [
+// Founding principles for the "From the Founders" section
+const foundingPrinciples = [
   {
-    quote: "The quality is consistent, the stories are genuine, and my clients love knowing who made their furniture. It\u2019s become my go-to source.",
-    author: "Marcus Webb",
-    location: "Brooklyn, NY",
+    title: "Designer Intelligence",
+    description: "Real designers teach the system what\u2019s beautiful \u2014 not algorithms guessing from purchase data.",
   },
   {
-    quote: "I came for the dining table and stayed for the complete room. The designer picked lighting, rugs, even the paint color \u2014 and it all just works together in a way I never could have done alone.",
-    author: "Jamie L.",
-    location: "Milwaukee, WI",
+    title: "Complete Rooms",
+    description: "Not just a chair. The table, the lighting, the rug, the paint color \u2014 all chosen to work together.",
   },
   {
-    quote: "The first recommendation was a chair I\u2019d never have found on my own. It\u2019s been in my reading corner for six months and I still smile every time I sit down.",
-    author: "Elena Kim",
-    location: "Seattle, WA",
+    title: "Honest Craft",
+    description: "Every maker is someone we know personally. Every story is real. Every material is what we say it is.",
   },
 ];
 
 export function VoicesSection({ header, testimonials }: VoicesSectionProps) {
-  const displayTestimonials = testimonials?.length ? testimonials.slice(0, 3) : voicesTestimonials;
+  // If real testimonials exist in Sanity, show those
+  if (testimonials?.length) {
+    return (
+      <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
+        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn className="text-center mb-12">
+            <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
+              {header?.headline || "What people"} <em className="italic text-[var(--patina-mocha-brown)]">are saying</em>
+            </h2>
+          </FadeIn>
 
+          <StaggerChildren className="grid md:grid-cols-3 gap-6" staggerDelay={0.15}>
+            {testimonials.slice(0, 3).map((testimonial, index) => (
+              <StaggerItem key={index}>
+                <div className="bg-white rounded-[var(--radius-xl)] p-8 h-full flex flex-col border border-[var(--patina-clay-beige)]/10 transition-all duration-400 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+                  <blockquote className="text-[var(--patina-charcoal)] leading-relaxed flex-grow mb-6">
+                    &ldquo;{testimonial.quote}&rdquo;
+                  </blockquote>
+                  <footer className="flex items-center gap-3 mt-auto">
+                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[var(--patina-clay-beige)] to-[var(--patina-mocha-brown)] flex items-center justify-center flex-shrink-0">
+                      <span className="font-display text-sm text-[var(--patina-off-white)]">
+                        {getInitials(testimonial.author)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-[var(--patina-charcoal)]">
+                        {testimonial.author}
+                      </p>
+                      <p className="text-xs text-[var(--patina-mocha-brown)]">
+                        {testimonial.location}
+                      </p>
+                    </div>
+                  </footer>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerChildren>
+
+          <FadeIn delay={0.3} className="mt-10 text-center">
+            <FoundingCounter />
+          </FadeIn>
+        </div>
+      </section>
+    );
+  }
+
+  // Default: "From the Founders" section with real quote + principles
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn className="text-center mb-12">
-          <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-4">
-            {header?.headline || "What people"} <em className="italic text-[var(--patina-mocha-brown)]">are saying</em>
+          <p className="text-label text-[var(--patina-clay-beige)] mb-3">
+            From the founders
+          </p>
+          <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-6">
+            Why we&apos;re <em className="italic text-[var(--patina-mocha-brown)]">building this</em>
           </h2>
         </FadeIn>
 
+        {/* Founder Quote */}
+        <FadeIn delay={0.1}>
+          <div className="max-w-[700px] mx-auto mb-16 p-8 bg-white rounded-[var(--radius-xl)] border border-[var(--patina-clay-beige)]/10">
+            <blockquote className="font-display text-xl lg:text-2xl italic text-[var(--patina-charcoal)] leading-relaxed mb-4 text-center">
+              &ldquo;We&apos;re building what we wish existed &mdash; a way to get the benefit of working with a great designer, whether or not you hire one.&rdquo;
+            </blockquote>
+            <cite className="block text-sm not-italic text-[var(--patina-mocha-brown)] text-center">
+              &mdash; Kody &amp; Leah, Founders
+            </cite>
+          </div>
+        </FadeIn>
+
+        {/* Principles Grid */}
         <StaggerChildren className="grid md:grid-cols-3 gap-6" staggerDelay={0.15}>
-          {displayTestimonials.map((testimonial, index) => (
+          {foundingPrinciples.map((principle, index) => (
             <StaggerItem key={index}>
-              <div className="bg-white rounded-[var(--radius-xl)] p-8 h-full flex flex-col border border-[var(--patina-clay-beige)]/10 transition-all duration-400 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
-                <blockquote className="text-[var(--patina-charcoal)] leading-relaxed flex-grow mb-6">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </blockquote>
-                <footer className="flex items-center gap-3 mt-auto">
-                  {/* Avatar with initials */}
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[var(--patina-clay-beige)] to-[var(--patina-mocha-brown)] flex items-center justify-center flex-shrink-0">
-                    <span className="font-display text-sm text-[var(--patina-off-white)]">
-                      {getInitials(testimonial.author)}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--patina-charcoal)]">
-                      {testimonial.author}
-                    </p>
-                    <p className="text-xs text-[var(--patina-mocha-brown)]">
-                      {testimonial.location}
-                    </p>
-                  </div>
-                </footer>
+              <div className="bg-white rounded-[var(--radius-xl)] p-8 h-full border border-[var(--patina-clay-beige)]/10 transition-all duration-400 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+                <h3 className="font-display text-lg text-[var(--patina-charcoal)] mb-3">
+                  {principle.title}
+                </h3>
+                <p className="text-[var(--patina-mocha-brown)] leading-relaxed">
+                  {principle.description}
+                </p>
               </div>
             </StaggerItem>
           ))}
@@ -800,6 +808,86 @@ export function HowItWorksSection() {
 }
 
 // ============================================
+// Why This Is Different — Competitive Positioning
+// ============================================
+
+export function WhyDifferentSection() {
+  return (
+    <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
+      <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn>
+          <p className="text-label text-[var(--patina-clay-beige)] mb-3 text-center">
+            Why this is different
+          </p>
+          <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-10 text-center leading-tight">
+            The platforms that came before treated designers as labor. <em className="italic text-[var(--patina-mocha-brown)]">We treat them as the intelligence layer.</em>
+          </h2>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <div className="space-y-8 text-[var(--patina-mocha-brown)] text-[1.0625rem] leading-relaxed">
+            <p>
+              Modsy and Havenly tried to replace design expertise with technology. They commoditized designers, burned cash on 3D rendering, and died without a moat. Patina does the opposite &mdash; technology amplifies the designer&apos;s taste, and every interaction makes the system smarter.
+            </p>
+            <p>
+              This isn&apos;t another marketplace. It&apos;s an ecosystem where professional designers teach the AI what&apos;s beautiful, manufacturers reach the consumers who&apos;ll love their work, and consumers get recommendations with the credibility of a designer&apos;s eye.
+            </p>
+            <p>
+              The AI doesn&apos;t guess. It learns from working professionals who classify products using their own vocabulary &mdash; not someone else&apos;s categories. <strong className="text-[var(--patina-charcoal)]">That&apos;s a moat no competitor can copy.</strong>
+            </p>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
+
+// ============================================
+// Middlewest Studio — Founder Credibility
+// ============================================
+
+export function MiddlewestSection() {
+  return (
+    <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn className="text-center">
+          <p className="text-label text-[var(--patina-clay-beige)] mb-3">
+            The foundation
+          </p>
+          <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-6">
+            Born from real design work at <em className="italic text-[var(--patina-mocha-brown)]">Middlewest Studio</em>
+          </h2>
+          <p className="text-lg text-[var(--patina-mocha-brown)] max-w-[650px] mx-auto leading-relaxed mb-10">
+            Patina didn&apos;t come from a business plan. It came from years of real interior design work &mdash; sourcing products for real clients, managing real projects, and wishing the tools were better. Every feature solves a problem Leah encounters daily at her practice in Madison, Wisconsin.
+          </p>
+
+          <div className="flex justify-center gap-12 mb-10">
+            <div>
+              <p className="font-display text-4xl text-[var(--patina-charcoal)]">100+</p>
+              <p className="font-mono text-xs text-[var(--patina-mocha-brown)]/70 mt-1">Products sourced per project</p>
+            </div>
+            <div>
+              <p className="font-display text-4xl text-[var(--patina-charcoal)]">2023</p>
+              <p className="font-mono text-xs text-[var(--patina-mocha-brown)]/70 mt-1">Middlewest Studio founded</p>
+            </div>
+          </div>
+
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-2 text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] transition-colors font-medium"
+          >
+            Meet the founders
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
+
+// ============================================
 // Final CTA Section (Story-based, no metrics)
 // ============================================
 
@@ -823,10 +911,10 @@ export function FinalCTASection({ header, body, secondaryLink }: FinalCTAProps) 
 
       <FadeIn className="max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h2 className="font-display text-[clamp(2rem,5vw,3rem)] font-normal text-[var(--patina-charcoal)] mb-6 leading-tight">
-          {header?.headline || "Ready to see "}<em className="italic text-[var(--patina-mocha-brown)]">{header?.subheadline || "the whole room?"}</em>
+          {header?.headline || "Ready to help us "}<em className="italic text-[var(--patina-mocha-brown)]">{header?.subheadline || "build this?"}</em>
         </h2>
         <p className="text-lg text-[var(--patina-mocha-brown)] max-w-xl mx-auto mb-10 leading-relaxed">
-          {body || "The best interiors aren\u2019t decorated \u2014 they\u2019re cultivated over time, with pieces that grow more beautiful with every year. We\u2019re building that experience now \u2014 and founding members get first access."}
+          {body || "The best platforms are shaped by their earliest members. Join the Founding Circle and help define how furniture discovery should work."}
         </p>
 
         <div className="flex flex-col items-center gap-4 mb-16">

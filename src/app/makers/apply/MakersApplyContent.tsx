@@ -70,13 +70,41 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
     heardFrom: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const specialties = props.specialties?.length ? props.specialties : defaultSpecialties;
   const criteria = props.criteria?.length ? props.criteria : defaultCriteria;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (submitting) return;
+
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const res = await fetch("/api/makers-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          brand_name: formData.workshopName,
+          contact_name: formData.contactName,
+          email: formData.email,
+          website: formData.website || formData.portfolio || null,
+          description: formData.description,
+          referral_source: formData.heardFrom || null,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to submit");
+
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -96,14 +124,14 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
 
           <div className="relative z-10 max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-              {props.heroEyebrow || "Join Our Network"}
+              {props.heroEyebrow || "For Makers"}
             </p>
             <h1 className="text-display-1 text-[var(--patina-charcoal)] mb-6">
-              {props.heroHeadline || "Become a Patina"}{" "}
-              <em className="italic text-[var(--patina-mocha-brown)]">{props.heroHeadlineEmphasis || "maker"}</em>
+              {props.heroHeadline || "Apply to be a"}{" "}
+              <em className="italic text-[var(--patina-mocha-brown)]">{props.heroHeadlineEmphasis || "Founding Partner"}</em>
             </h1>
             <p className="text-xl text-[var(--patina-mocha-brown)] leading-relaxed">
-              {props.heroDescription || "We partner with exceptional craftspeople who share our commitment to quality, sustainability, and transparency."}
+              {props.heroDescription || "We\u2019re hand-selecting 15 makers for our launch collection \u2014 brands we believe in, whose craft and values align with ours. Founding Partners get featured placement from day one, designer classification of your full catalog, and a direct voice in how the platform evolves."}
             </p>
           </div>
         </section>
@@ -450,13 +478,20 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
                   </div>
 
                   <div className="pt-4">
+                    {submitError && (
+                      <p className="text-sm text-red-600 mb-4">{submitError}</p>
+                    )}
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-mocha-brown)] shadow-lg"
+                      disabled={submitting}
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-mocha-brown)] shadow-lg disabled:opacity-50"
                     >
-                      Submit Application
+                      {submitting ? "Submitting..." : "Submit Application"}
                     </button>
                     <p className="mt-4 text-xs text-[var(--patina-clay-beige)]">
+                      We review applications weekly. Leah personally evaluates every brand for fit.
+                    </p>
+                    <p className="mt-2 text-xs text-[var(--patina-clay-beige)]">
                       By submitting, you agree to our{" "}
                       <Link
                         href="/privacy"

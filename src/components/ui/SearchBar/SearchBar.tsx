@@ -62,26 +62,8 @@ const searchData: SearchResult[] = [
   // Makers
   {
     type: "maker",
-    title: "Nakashima Workshop",
-    subtitle: "New Hope, Pennsylvania",
-    href: "/makers",
-  },
-  {
-    type: "maker",
-    title: "Vermont Woodworks",
-    subtitle: "Burlington, Vermont",
-    href: "/makers",
-  },
-  {
-    type: "maker",
-    title: "Sashimono Studio",
-    subtitle: "Kyoto, Japan",
-    href: "/makers",
-  },
-  {
-    type: "maker",
-    title: "Studio Piet",
-    subtitle: "Copenhagen, Denmark",
+    title: "Browse All Makers",
+    subtitle: "Discover our founding partners",
     href: "/makers",
   },
   // Materials

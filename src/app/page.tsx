@@ -6,6 +6,7 @@ import { TheRoom } from "@/components/sections/TheRoom";
 import { FirstTouchJourney } from "@/components/sections/FirstTouchJourney";
 import { FoundingCircleForm } from "@/components/ui/FoundingCircleForm";
 import { FoundingCounter } from "@/components/ui/FoundingCounter";
+import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import {
   FeaturedMakersSection,
   MaterialStoriesSection,
@@ -13,6 +14,8 @@ import {
   DesignerServicesSection,
   VoicesSection,
   HowItWorksSection,
+  WhyDifferentSection,
+  MiddlewestSection,
   FinalCTASection,
   HomeScrollDepthTracker,
 } from "./HomeContent";
@@ -121,7 +124,10 @@ export default async function HomePage() {
           ctaSlot={
             <>
               <FoundingCircleForm source="hero" variant="dark" ctaText="Join the Founding Circle" />
-              <div className="mt-4">
+              <p className="mt-3 text-sm text-[var(--patina-off-white)]/60 font-mono">
+                Be among the first 200 to shape what we&apos;re building
+              </p>
+              <div className="mt-3">
                 <FoundingCounter variant="dark" />
               </div>
             </>
@@ -131,7 +137,7 @@ export default async function HomePage() {
           scrollTargetId="first-touch"
         />
 
-        {/* 2. The Promise - Value Proposition */}
+        {/* 2. The Promise — Value Proposition */}
         <ThePromise
           overline={homePage?.promiseOverline}
           headline={homePage?.promiseHeadline}
@@ -139,16 +145,24 @@ export default async function HomePage() {
           features={homePage?.promiseFeatures}
         />
 
-        {/* 3. First Touch - Cinematic Scroll Journey */}
+        {/* 3. Why This Is Different — Competitive Positioning */}
+        <WhyDifferentSection />
+
+        {/* 4. First Touch — Cinematic Scroll Journey */}
         <FirstTouchJourney continueTargetId="the-room" />
 
-        {/* 4. The Room - Interactive Hotspot Viewer */}
+        {/* 5. The Room — Interactive Hotspot Viewer */}
         <TheRoom
           header={homePage?.roomHeader}
           hotspots={homePage?.roomHotspots}
         />
 
-        {/* 5. Meet the Makers */}
+        {/* 6. Newsletter Signup */}
+        <section className="bg-[var(--patina-off-white)]">
+          <NewsletterSignup variant="inline" source="homepage" />
+        </section>
+
+        {/* 7. Founding Partners */}
         <FeaturedMakersSection
           header={homePage?.makersHeader}
           body={homePage?.makersBody}
@@ -156,13 +170,16 @@ export default async function HomePage() {
           testimonials={testimonials || undefined}
         />
 
-        {/* 6. Material Stories - Sensory Interlude */}
+        {/* 8. Material Stories — Sensory Interlude */}
         <MaterialStoriesSection />
 
-        {/* 7. The Journey - Organic Flow */}
+        {/* 9. The Journey — How It Feels */}
         <TheJourneySection testimonials={testimonials || undefined} />
 
-        {/* 8. Professional Design Services */}
+        {/* 10. Built from Middlewest Studio */}
+        <MiddlewestSection />
+
+        {/* 11. Professional Design Services */}
         <DesignerServicesSection
           header={homePage?.servicesHeader}
           body={homePage?.servicesBody}
@@ -172,16 +189,16 @@ export default async function HomePage() {
           testimonials={testimonials || undefined}
         />
 
-        {/* 9. Voices - Community Stories */}
+        {/* 12. From the Founders */}
         <VoicesSection
           header={homePage?.testimonialsHeader}
           testimonials={testimonials || undefined}
         />
 
-        {/* 10. How It Works - Collapsible */}
+        {/* 13. How It Works — Collapsible */}
         <HowItWorksSection />
 
-        {/* 11. Final CTA - Story Based */}
+        {/* 14. Final CTA */}
         <FinalCTASection
           header={homePage?.ctaHeader}
           body={homePage?.ctaBody}
