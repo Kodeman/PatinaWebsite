@@ -811,30 +811,56 @@ export function HowItWorksSection() {
 // Why This Is Different — Competitive Positioning
 // ============================================
 
-export function WhyDifferentSection() {
+interface WhyDifferentProps {
+  overline?: string;
+  headline?: string;
+  headlineEmphasis?: string;
+  paragraphs?: string[];
+  closingBold?: string;
+}
+
+export function WhyDifferentSection({
+  overline,
+  headline,
+  headlineEmphasis,
+  paragraphs,
+  closingBold,
+}: WhyDifferentProps = {}) {
+  const eyebrow = overline || "Why this is different";
+  const headlineText = headline || "The platforms that came before treated designers as labor.";
+  const emphasisText = headlineEmphasis || "We treat them as the intelligence layer.";
+  const bodyParagraphs = paragraphs && paragraphs.length > 0 ? paragraphs : [
+    "Modsy and Havenly tried to replace design expertise with technology. They commoditized designers, burned cash on 3D rendering, and died without a moat. Patina does the opposite \u2014 technology amplifies the designer\u2019s taste, and every interaction makes the system smarter.",
+    "This isn\u2019t another marketplace. It\u2019s an ecosystem where professional designers teach the AI what\u2019s beautiful, manufacturers reach the consumers who\u2019ll love their work, and consumers get recommendations with the credibility of a designer\u2019s eye.",
+    "The AI doesn\u2019t guess. It learns from working professionals who classify products using their own vocabulary \u2014 not someone else\u2019s categories.",
+  ];
+  const closing = closingBold ?? "That\u2019s a moat no competitor can copy.";
+
   return (
     <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn>
           <p className="text-label text-[var(--patina-clay-beige)] mb-3 text-center">
-            Why this is different
+            {eyebrow}
           </p>
           <h2 className="text-heading-1 text-[var(--patina-charcoal)] mb-10 text-center leading-tight">
-            The platforms that came before treated designers as labor. <em className="italic text-[var(--patina-mocha-brown)]">We treat them as the intelligence layer.</em>
+            {headlineText}{emphasisText ? <> <em className="italic text-[var(--patina-mocha-brown)]">{emphasisText}</em></> : null}
           </h2>
         </FadeIn>
 
         <FadeIn delay={0.1}>
           <div className="space-y-8 text-[var(--patina-mocha-brown)] text-[1.0625rem] leading-relaxed">
-            <p>
-              Modsy and Havenly tried to replace design expertise with technology. They commoditized designers, burned cash on 3D rendering, and died without a moat. Patina does the opposite &mdash; technology amplifies the designer&apos;s taste, and every interaction makes the system smarter.
-            </p>
-            <p>
-              This isn&apos;t another marketplace. It&apos;s an ecosystem where professional designers teach the AI what&apos;s beautiful, manufacturers reach the consumers who&apos;ll love their work, and consumers get recommendations with the credibility of a designer&apos;s eye.
-            </p>
-            <p>
-              The AI doesn&apos;t guess. It learns from working professionals who classify products using their own vocabulary &mdash; not someone else&apos;s categories. <strong className="text-[var(--patina-charcoal)]">That&apos;s a moat no competitor can copy.</strong>
-            </p>
+            {bodyParagraphs.map((p, i) => {
+              const isLast = i === bodyParagraphs.length - 1;
+              return (
+                <p key={i}>
+                  {p}
+                  {isLast && closing ? (
+                    <> <strong className="text-[var(--patina-charcoal)]">{closing}</strong></>
+                  ) : null}
+                </p>
+              );
+            })}
           </div>
         </FadeIn>
       </div>

@@ -7,6 +7,7 @@ export const homePage = defineType({
   groups: [
     { name: "hero", title: "Hero Section" },
     { name: "promise", title: "The Promise" },
+    { name: "whyDifferent", title: "Why This Is Different" },
     { name: "valueProps", title: "Value Proposition" },
     { name: "aestheteEngine", title: "Aesthete Engine" },
     { name: "experience", title: "AR Experience" },
@@ -90,6 +91,43 @@ export const homePage = defineType({
       of: [{ type: "featureItem" }],
       group: "promise",
       validation: (Rule) => Rule.max(3),
+    }),
+
+    // WHY THIS IS DIFFERENT SECTION
+    defineField({
+      name: "whyDifferentOverline",
+      title: "Overline",
+      type: "string",
+      group: "whyDifferent",
+    }),
+    defineField({
+      name: "whyDifferentHeadline",
+      title: "Headline",
+      type: "string",
+      description: "Main headline text (non-emphasized portion)",
+      group: "whyDifferent",
+    }),
+    defineField({
+      name: "whyDifferentHeadlineEmphasis",
+      title: "Headline Emphasis",
+      type: "string",
+      description: "Italicized/emphasized portion of the headline",
+      group: "whyDifferent",
+    }),
+    defineField({
+      name: "whyDifferentParagraphs",
+      title: "Body Paragraphs",
+      type: "array",
+      of: [{ type: "text", rows: 3 }],
+      description: "Body paragraphs. The final paragraph's closing clause can be bolded via 'Closing Bold'.",
+      group: "whyDifferent",
+    }),
+    defineField({
+      name: "whyDifferentClosingBold",
+      title: "Closing Bold Text",
+      type: "string",
+      description: "Bolded closing sentence appended to the final paragraph (e.g., 'That's a moat no competitor can copy.')",
+      group: "whyDifferent",
     }),
 
     // THE ROOM SECTION

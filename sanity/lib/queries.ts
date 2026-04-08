@@ -271,6 +271,11 @@ export const homePageQuery = groq`
       examples,
       highlight
     },
+    whyDifferentOverline,
+    whyDifferentHeadline,
+    whyDifferentHeadlineEmphasis,
+    whyDifferentParagraphs,
+    whyDifferentClosingBold,
     roomHeader,
     roomImage {
       asset-> { url, metadata { lqip } },

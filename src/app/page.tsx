@@ -34,6 +34,12 @@ interface HomePage {
   promiseHeadline?: string;
   promiseBody?: string;
   promiseFeatures?: { title: string; description: string; icon?: string }[];
+  // Why Different
+  whyDifferentOverline?: string;
+  whyDifferentHeadline?: string;
+  whyDifferentHeadlineEmphasis?: string;
+  whyDifferentParagraphs?: string[];
+  whyDifferentClosingBold?: string;
   // Room
   roomHeader?: { eyebrow?: string; headline?: string; subheadline?: string };
   roomHotspots?: {
@@ -146,7 +152,13 @@ export default async function HomePage() {
         />
 
         {/* 3. Why This Is Different — Competitive Positioning */}
-        <WhyDifferentSection />
+        <WhyDifferentSection
+          overline={homePage?.whyDifferentOverline}
+          headline={homePage?.whyDifferentHeadline}
+          headlineEmphasis={homePage?.whyDifferentHeadlineEmphasis}
+          paragraphs={homePage?.whyDifferentParagraphs}
+          closingBold={homePage?.whyDifferentClosingBold}
+        />
 
         {/* 4. First Touch — Cinematic Scroll Journey */}
         <FirstTouchJourney continueTargetId="the-room" />
