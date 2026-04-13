@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getConsent, setConsent } from "@/lib/posthog";
+import { track } from "@/lib/analytics";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -18,11 +19,22 @@ export function CookieConsent() {
   if (!visible) return null;
 
   function handleAccept() {
+    const previous = getConsent();
     setConsent("granted");
+    track("consent_updated", {
+      status: "granted",
+      previous_status: previous || "none",
+    });
     setVisible(false);
   }
 
   function handleDecline() {
+    const previous = getConsent();
+    // Track before opting out so the event actually fires
+    track("consent_updated", {
+      status: "denied",
+      previous_status: previous || "none",
+    });
     setConsent("denied");
     setVisible(false);
   }

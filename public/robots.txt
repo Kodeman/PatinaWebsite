@@ -1,0 +1,41 @@
+# Patina robots.txt
+# AI Crawler Access Rules
+
+# OpenAI GPTBot
+User-agent: GPTBot
+Allow: /
+
+# ChatGPT User
+User-agent: ChatGPT-User
+Allow: /
+
+# Perplexity Bot
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic ClaudeBot
+User-agent: ClaudeBot
+Allow: /
+
+# Google Extended (for Gemini)
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic AI
+User-agent: anthropic-ai
+Allow: /
+
+# ByteDance Bytespider
+User-agent: Bytespider
+Allow: /
+
+# Default rules for all other bots
+User-agent: *
+Allow: /
+Disallow: /.next/
+Disallow: /api/
+Disallow: *?*sort=
+Disallow: *?*filter=
+
+# Sitemap
+Sitemap: https://patina.cloud/sitemap.xml

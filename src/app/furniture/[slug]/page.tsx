@@ -76,7 +76,7 @@ export default async function ProductPage({ params }: PageProps) {
         {/* Breadcrumb */}
         <div className="pt-24 pb-6 bg-[var(--patina-soft-cream)]">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
-            <nav className="flex items-center gap-2 text-sm">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
               <Link
                 href="/"
                 className="text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"

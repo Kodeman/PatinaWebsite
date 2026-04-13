@@ -126,6 +126,20 @@ type AnalyticsEvents = {
     source: string;
   };
 
+  // Newsletter
+  newsletter_signup: {
+    email_domain: string;
+    source: string;
+    signup_page: string;
+    has_utm: boolean;
+  };
+
+  // Consent
+  consent_updated: {
+    status: "granted" | "denied";
+    previous_status: "granted" | "denied" | "none";
+  };
+
   // Legacy alias
   waitlist_signup: {
     email_domain: string;

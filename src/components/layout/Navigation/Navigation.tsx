@@ -63,7 +63,7 @@ export function Navigation({ variant = "default", hideAtTop = false }: Navigatio
 
   return (
     <>
-      <nav className={containerClasses}>
+      <nav aria-label="Main navigation" className={containerClasses}>
         {/* Paper texture overlay for default variant */}
         {variant === "default" && (
           <div

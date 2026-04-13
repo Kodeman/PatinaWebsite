@@ -108,14 +108,57 @@ export function generateOrganizationJsonLd() {
     name: "Patina",
     url: siteUrl,
     logo: `${siteUrl}/logo.png`,
-    sameAs: [
-      "https://twitter.com/patina",
-      "https://instagram.com/patina",
-      "https://linkedin.com/company/patina",
+    description:
+      "Designer-taught furniture discovery platform where professional interior designers and makers classify every product.",
+    slogan: "Where Time Adds Value",
+    foundingDate: "2023",
+    foundingLocation: {
+      "@type": "Place",
+      name: "Madison, Wisconsin",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Madison",
+        addressRegion: "WI",
+        addressCountry: "US",
+      },
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "hello@patina.cloud",
+      contactType: "customer service",
+    },
+    founder: [
+      {
+        "@type": "Person",
+        name: "Leah Kochaver",
+        jobTitle: "Co-Founder, Design & Experience",
+        knowsAbout: [
+          "interior design",
+          "furniture sourcing",
+          "residential design",
+        ],
+        worksFor: { "@type": "Organization", name: "Middlewest Studio" },
+      },
+      {
+        "@type": "Person",
+        name: "Kody Kochaver",
+        jobTitle: "Co-Founder, Technology & Product",
+        knowsAbout: [
+          "technology",
+          "product development",
+          "construction technology",
+        ],
+      },
     ],
-    description: siteDescription,
+    sameAs: [
+      "https://middlewest.studio",
+      "https://www.instagram.com/patina.cloud",
+      "https://www.linkedin.com/company/patina-cloud",
+    ],
     address: {
       "@type": "PostalAddress",
+      addressLocality: "Madison",
+      addressRegion: "WI",
       addressCountry: "US",
     },
   };
@@ -152,6 +195,104 @@ export function generateBreadcrumbJsonLd(items: { name: string; url: string }[])
   };
 }
 
+export function generateSoftwareApplicationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Patina",
+    operatingSystem: "iOS",
+    applicationCategory: "LifestyleApplication",
+    description:
+      "Scan your room, discover your style, find furniture that belongs. Professional designers teach the AI what fits your space.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    creator: {
+      "@type": "Organization",
+      name: "Patina",
+      url: siteUrl,
+    },
+  };
+}
+
+export function generateServiceJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Patina Design Services",
+    provider: {
+      "@type": "Organization",
+      name: "Patina",
+      url: siteUrl,
+    },
+    serviceType: "Interior Design",
+    description:
+      "Professional interior design services powered by the Patina platform. From single-room refreshes to complete home transformations, guided by designers who use the Aesthete Engine.",
+    areaServed: {
+      "@type": "Country",
+      name: "United States",
+    },
+    url: `${siteUrl}/services`,
+  };
+}
+
+export function generateArticleJsonLd({
+  title,
+  description,
+  url,
+  datePublished,
+  dateModified,
+  authorName,
+  authorJobTitle,
+  imageUrl,
+}: {
+  title: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  authorName: string;
+  authorJobTitle?: string;
+  imageUrl?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    url,
+    datePublished,
+    dateModified: dateModified || datePublished,
+    author: {
+      "@type": "Person",
+      name: authorName,
+      jobTitle: authorJobTitle,
+      url: `${siteUrl}/about`,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Patina",
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/logo.png`,
+      },
+    },
+    ...(imageUrl && {
+      image: {
+        "@type": "ImageObject",
+        url: imageUrl,
+      },
+    }),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+  };
+}
+
 export function generateAboutPageJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -170,15 +311,26 @@ export function generateAboutPageJsonLd() {
           "@type": "Person",
           name: "Leah Kochaver",
           jobTitle: "Co-Founder, Design & Experience",
-          worksFor: {
-            "@type": "Organization",
-            name: "Patina",
-          },
+          knowsAbout: [
+            "interior design",
+            "furniture sourcing",
+            "residential design",
+          ],
+          worksFor: [
+            { "@type": "Organization", name: "Patina" },
+            { "@type": "Organization", name: "Middlewest Studio" },
+          ],
+          sameAs: ["https://middlewest.studio"],
         },
         {
           "@type": "Person",
           name: "Kody Kochaver",
           jobTitle: "Co-Founder, Technology & Product",
+          knowsAbout: [
+            "technology",
+            "product development",
+            "construction technology",
+          ],
           worksFor: {
             "@type": "Organization",
             name: "Patina",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { draftMode } from "next/headers";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { generateServiceJsonLd } from "@/lib/seo";
 import { sanityFetch } from "../../../sanity/lib/client";
 import { servicesPageQuery } from "../../../sanity/lib/queries";
 
@@ -113,8 +114,14 @@ export default async function ServicesPage() {
 
   const displayProcessSteps = pageData?.processSteps?.length ? pageData.processSteps : processSteps;
 
+  const serviceJsonLd = generateServiceJsonLd();
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
       <Navigation />
 
       <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">

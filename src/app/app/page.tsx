@@ -9,6 +9,7 @@ import { AestheteEngineExplainer } from '@/components/sections/AestheteEngineExp
 import { AppDesignerHandoff } from '@/components/sections/AppDesignerHandoff';
 import { AppTrustSection } from '@/components/sections/AppTrustSection';
 import { AppCTA } from '@/components/sections/AppCTA';
+import { generateSoftwareApplicationJsonLd } from '@/lib/seo';
 import { sanityFetch } from '../../../sanity/lib/client';
 import { appPageQuery } from '../../../sanity/lib/queries';
 
@@ -87,8 +88,14 @@ export default async function AppPage() {
     isDraftMode: isDraft,
   });
 
+  const softwareAppJsonLd = generateSoftwareApplicationJsonLd();
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
+      />
       <Navigation />
 
       <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">

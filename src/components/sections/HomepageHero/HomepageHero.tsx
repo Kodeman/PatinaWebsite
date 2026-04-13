@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { AnimatedStrataMark } from "@/components/ui/AnimatedStrataMark";
+import { StrataMark } from "@/components/ui/StrataMark";
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v));
@@ -36,6 +37,7 @@ export function HomepageHero({
   const contentRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const badgesRef = useRef<HTMLDivElement>(null);
+  const discoverRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
   const scrollTextRef = useRef<HTMLSpanElement>(null);
   const scrollLineRef = useRef<HTMLDivElement>(null);
@@ -51,6 +53,21 @@ export function HomepageHero({
     return () => clearTimeout(timer);
   }, [prefersReducedMotion]);
 
+  // Remove hero-reveal class after entrance animation completes
+  // so that scroll-driven inline styles can take effect
+  // (animation fill-mode: both overrides inline styles)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      [strataRef, taglineRef, ctaRef, topBarRef, badgesRef].forEach((ref) => {
+        ref.current?.classList.remove("hero-reveal");
+      });
+      // Also remove from the description element
+      const descEl = contentRef.current?.querySelector("[data-desc]");
+      descEl?.classList.remove("hero-reveal");
+    }, 1200); // after entrance animations finish (~1.1s max)
+    return () => clearTimeout(timer);
+  }, []);
+
   // Scroll-driven animations
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -63,65 +80,48 @@ export function HomepageHero({
           const y = window.scrollY;
           const progress = clamp(y / vh, 0, 1);
 
-          // --- Background: fade to black (0→0.4 progress = 0→1 opacity) ---
+          // --- Background: fade to black (0→0.5 progress) ---
           if (blackOverlayRef.current) {
-            const blackOpacity = clamp(progress / 0.4, 0, 1);
+            const blackOpacity = clamp(progress / 0.5, 0, 1);
             blackOverlayRef.current.style.opacity = String(blackOpacity);
           }
 
-          // --- Secondary content: fade out fast (0→0.15 progress) ---
-          const fadeOutProgress = clamp(progress / 0.15, 0, 1);
-          const fadeOutOpacity = 1 - fadeOutProgress;
-          const fadeOutY = fadeOutProgress * 40;
+          // --- All hero content: unified fade out + drift up (0→0.3 progress) ---
+          const fadeOutProgress = clamp(progress / 0.3, 0, 1);
+          const eased = 1 - Math.pow(1 - fadeOutProgress, 3); // ease-out cubic
+          const fadeOutOpacity = 1 - eased;
+          const fadeOutY = eased * -30; // drift upward
 
-          if (ctaRef.current) {
-            ctaRef.current.style.opacity = String(fadeOutOpacity);
-            ctaRef.current.style.transform = `translateY(${fadeOutY}px)`;
-          }
-          if (topBarRef.current) {
-            topBarRef.current.style.opacity = String(fadeOutOpacity);
-            topBarRef.current.style.transform = `translateY(-${fadeOutProgress * 20}px)`;
-          }
-          if (badgesRef.current) {
-            badgesRef.current.style.opacity = String(fadeOutOpacity * 0.4); // badges start at 0.4 opacity
-            badgesRef.current.style.transform = `translateY(${fadeOutY}px)`;
+          const contentEls = [
+            { el: headlineRef.current, baseOpacity: 1 },
+            { el: strataRef.current, baseOpacity: 1 },
+            { el: taglineRef.current, baseOpacity: 0.75 },
+            { el: ctaRef.current, baseOpacity: 1 },
+            { el: topBarRef.current, baseOpacity: 1 },
+            { el: badgesRef.current, baseOpacity: 0.4 },
+          ];
+
+          for (const { el, baseOpacity } of contentEls) {
+            if (el) {
+              el.style.opacity = String(fadeOutOpacity * baseOpacity);
+              el.style.transform = `translateY(${fadeOutY}px)`;
+            }
           }
 
-          // Description fades slightly slower
+          // Description (nested inside contentRef)
           const descEl = contentRef.current?.querySelector("[data-desc]") as HTMLElement | null;
           if (descEl) {
-            const descFade = clamp(progress / 0.2, 0, 1);
-            descEl.style.opacity = String(0.75 * (1 - descFade));
-            descEl.style.transform = `translateY(${descFade * 30}px)`;
+            descEl.style.opacity = String(fadeOutOpacity * 0.75);
+            descEl.style.transform = `translateY(${fadeOutY}px)`;
           }
 
-          // --- Headline: translate to bottom + scale down ---
-          if (headlineRef.current) {
-            const headlineMoveProgress = clamp(progress / 0.35, 0, 1);
-            const eased = 1 - Math.pow(1 - headlineMoveProgress, 3); // ease-out cubic
-
-            const targetY = vh * 0.45;
-            const headlineY = lerp(0, targetY, eased);
-            const headlineScale = lerp(1, 0.45, eased);
-
-            headlineRef.current.style.transform = `translateY(${headlineY}px) scale(${headlineScale})`;
-            headlineRef.current.style.transformOrigin = "left bottom";
-
-            // Fade out headline after it's settled (progress 0.6→0.9)
-            const headlineFadeProgress = clamp((progress - 0.6) / 0.3, 0, 1);
-            headlineRef.current.style.opacity = String(1 - headlineFadeProgress);
-          }
-
-          // --- Strata mark + tagline: fade out with description ---
-          if (strataRef.current) {
-            const strataFade = clamp(progress / 0.2, 0, 1);
-            strataRef.current.style.opacity = String(1 - strataFade);
-            strataRef.current.style.transform = `translateY(${strataFade * 30}px)`;
-          }
-          if (taglineRef.current) {
-            const taglineFade = clamp(progress / 0.2, 0, 1);
-            taglineRef.current.style.opacity = String(0.75 * (1 - taglineFade));
-            taglineRef.current.style.transform = `translateY(${taglineFade * 30}px)`;
+          // --- "Discover Patina": emerge from black (0.4→0.7 progress) ---
+          if (discoverRef.current) {
+            const discoverProgress = clamp((progress - 0.4) / 0.3, 0, 1);
+            const discoverEased = 1 - Math.pow(1 - discoverProgress, 3);
+            const discoverY = lerp(40, 0, discoverEased);
+            discoverRef.current.style.opacity = String(discoverEased);
+            discoverRef.current.style.transform = `translateY(${discoverY}px)`;
           }
 
           // --- Scroll indicator: theme-aware (stays fixed, detects bg) ---
@@ -294,6 +294,24 @@ export function HomepageHero({
         )}
       </div>
 
+      {/* "Discover Patina" — emerges from black on scroll */}
+      <div
+        ref={discoverRef}
+        className="absolute bottom-[clamp(60px,10vh,100px)] left-0 right-0 z-20 text-center pointer-events-none will-change-transform"
+        style={{ opacity: 0 }}
+      >
+        <span style={{ fontSize: "clamp(24px, 4vw, 48px)" }}>
+          <span className="font-display font-light italic tracking-[0.08em] text-[var(--patina-clay-beige)]">
+            Discover
+          </span>
+          <span className="font-display font-medium tracking-[0.15em] text-[var(--patina-off-white)] ml-[0.3em]">
+            Patina
+          </span>
+        </span>
+        <div className="mt-5 flex justify-center">
+          <StrataMark variant="reversed" size="medium" align="center" />
+        </div>
+      </div>
     </section>
 
     {/* Fixed Scroll Indicator — outside section, persists across page */}

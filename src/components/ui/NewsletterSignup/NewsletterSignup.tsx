@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
+import { getPostHogClient } from "@/lib/posthog";
 
 interface NewsletterSignupProps {
   variant?: "inline" | "footer";
@@ -41,6 +42,7 @@ export function NewsletterSignup({
 
     try {
       const attribution = getAttribution();
+      const posthog = getPostHogClient();
 
       const res = await fetch("/api/newsletter", {
         method: "POST",
@@ -49,6 +51,7 @@ export function NewsletterSignup({
           email: trimmed,
           source,
           signup_page: window.location.pathname,
+          posthog_distinct_id: posthog?.get_distinct_id?.() || null,
           utm: {
             utm_source: attribution?.last_touch?.utm_source,
             utm_medium: attribution?.last_touch?.utm_medium,
@@ -61,7 +64,17 @@ export function NewsletterSignup({
 
       setState("success");
       setEmail("");
-      track("cta_click", { cta_text: "Newsletter Subscribe", cta_location: source, destination: "/api/newsletter", page: window.location.pathname });
+
+      // Identify user in PostHog so anonymous browsing merges with this email
+      posthog?.identify(trimmed, { email: trimmed, newsletter_source: source });
+
+      const emailDomain = trimmed.split("@")[1] || "";
+      track("newsletter_signup", {
+        email_domain: emailDomain,
+        source,
+        signup_page: window.location.pathname,
+        has_utm: !!attribution?.last_touch?.utm_source,
+      });
     } catch {
       setErrorMessage("Something went wrong. Try again?");
       setState("error");

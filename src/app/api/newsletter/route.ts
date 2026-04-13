@@ -7,7 +7,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, source, signup_page, utm } = body;
+    const { email, source, signup_page, posthog_distinct_id, utm } = body;
 
     if (!email || !EMAIL_REGEX.test(email)) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
@@ -45,13 +45,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Failed to save signup" }, { status: 500 });
     }
 
-    // Track server-side
+    // Track server-side with proper identity merge
     const posthog = getServerPostHog();
     if (posthog) {
+      // Use the anonymous distinct_id from the client so PostHog links
+      // server-side events to the same user the client already identified
+      const distinctId = posthog_distinct_id || normalizedEmail;
       posthog.capture({
-        distinctId: normalizedEmail,
+        distinctId,
         event: "newsletter_signup",
-        properties: { source, signup_page },
+        properties: {
+          email_domain: normalizedEmail.split("@")[1],
+          source,
+          signup_page,
+          utm_source: utm?.utm_source || null,
+          utm_medium: utm?.utm_medium || null,
+          utm_campaign: utm?.utm_campaign || null,
+        },
       });
     }
 

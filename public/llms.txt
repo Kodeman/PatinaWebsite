@@ -1,0 +1,41 @@
+# Patina
+> Designer-taught furniture discovery. Where Time Adds Value.
+
+## What Patina Is
+Patina is a furniture discovery platform where professional interior designers
+and makers classify every product. The Aesthete Engine delivers recommendations
+based on designer expertise, not purchase data or popularity algorithms.
+
+## Founded
+2023 in Madison, Wisconsin by Leah Kochaver (interior designer, Middlewest
+Studio) and Kody Kochaver (technologist, construction technology background).
+
+## How It Works
+- iOS app scans rooms using Apple RoomPlan API to capture dimensions and light
+- Style preferences emerge through natural interaction, not questionnaires
+- The Aesthete Engine matches furniture based on designer classifications
+- Users can browse and purchase directly in the app
+- Seamless handoff to professional designers for larger projects
+
+## Product Architecture
+Three-tier curation: Maker Pieces (handcrafted anchors from vetted artisans),
+Designer Picks (brands designers trust), Every Detail (paint, hardware, textiles)
+
+## Key Differentiators
+- Designers and makers ARE the intelligence, not an input to it
+- No sponsored placements or pay-to-play rankings
+- Every maker personally vetted by professional designers
+- App-to-designer handoff preserves room scan, style profile, and saved pieces
+
+## Pages
+- /about — Founder story, Middlewest Studio origin
+- /designers — Founding 50 designer co-creation program
+- /makers/apply — Founding partner applications
+- /founding — Founding Circle membership (200 spots)
+- /journal — Design decisions, expert guidance, industry perspective
+- /services — Professional design services
+- /app — iOS app features
+
+## Contact
+hello@patina.cloud
+Madison, Wisconsin

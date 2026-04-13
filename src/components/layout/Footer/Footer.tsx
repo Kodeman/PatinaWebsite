@@ -27,7 +27,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[var(--patina-charcoal)] relative">
+    <footer aria-label="Site footer" className="bg-[var(--patina-charcoal)] relative">
       {/* Paper texture overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -59,9 +59,9 @@ export function Footer() {
 
           {/* Explore Column */}
           <div>
-            <h5 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
+            <h2 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
               Explore
-            </h5>
+            </h2>
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
                 <li key={link.href}>
@@ -78,9 +78,9 @@ export function Footer() {
 
           {/* Work With Us Column */}
           <div>
-            <h5 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
+            <h2 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
               Work With Us
-            </h5>
+            </h2>
             <ul className="space-y-3">
               {footerLinks.workWithUs.map((link) => (
                 <li key={link.href}>
@@ -97,9 +97,9 @@ export function Footer() {
 
           {/* Company Column */}
           <div>
-            <h5 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
+            <h2 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
               Company
-            </h5>
+            </h2>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
