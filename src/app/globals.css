@@ -15,9 +15,20 @@
   --patina-accent-warm: #D4A574;
   --patina-success: #7A9C85;
 
+  /* Extended Palette (homepage redesign) */
+  --patina-pearl: #E5E2DD;
+  --patina-clay-light: #B8A999;
+  --patina-charcoal-deep: #2C2926;
+  --patina-ink: #1A1816;
+  --patina-golden: #C4A265;
+
   /* Transition Timing (aliases for convenience) */
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Cinematic Easing Curves */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 
   /* Semantic Colors */
   --background: var(--patina-off-white);
@@ -49,9 +60,16 @@
   --color-background: var(--patina-off-white);
   --color-foreground: var(--patina-charcoal);
 
+  --color-patina-pearl: #E5E2DD;
+  --color-patina-clay-light: #B8A999;
+  --color-patina-charcoal-deep: #2C2926;
+  --color-patina-ink: #1A1816;
+  --color-patina-golden: #C4A265;
+
   /* Typography - Font Families */
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "DM Mono", "Consolas", monospace;
 
   /* Font Sizes */
   --font-size-display-1: 3.5rem;
@@ -186,6 +204,65 @@
   }
 }
 
+@keyframes scrollLinePulse {
+  0% { top: -100%; }
+  50% { top: 100%; }
+  100% { top: 100%; }
+}
+
+/* Hero entrance animations */
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroTextReveal {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroStrataLine {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-reveal {
+  animation: heroReveal 1s var(--ease-out-expo) both;
+}
+
+.hero-text-reveal {
+  animation: heroTextReveal 1.1s var(--ease-out-expo) both;
+}
+
+.hero-strata-line {
+  transform-origin: left;
+  animation: heroStrataLine 0.8s var(--ease-out-expo) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal,
+  .hero-text-reveal,
+  .hero-strata-line {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* ============================================
    BASE STYLES
    ============================================ */
@@ -197,6 +274,24 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--patina-clay-beige);
+  color: var(--patina-off-white);
+}
+
+/* Film grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
 }
 
 /* ============================================
@@ -275,6 +370,28 @@ body {
 
 .font-body {
   font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Gradient text effect for hero/handoff headlines */
+.hero-gradient-text {
+  background: linear-gradient(135deg, var(--patina-clay-light), var(--patina-golden));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Section label (used across homepage sections) */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--patina-clay-beige);
 }
 
 /* Display sizes */

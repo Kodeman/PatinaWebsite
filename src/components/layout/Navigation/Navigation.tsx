@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { StrataMark } from "@/components/ui/StrataMark";
-import { SearchBar } from "@/components/ui/SearchBar";
 import { FoundingPopover } from "@/components/ui/FoundingPopover";
 import { MobileMenu } from "../MobileMenu";
 
@@ -20,9 +19,11 @@ const navLinks = [
 export interface NavigationProps {
   /** Use dark variant for dark backgrounds */
   variant?: "default" | "dark" | "transparent";
+  /** Hide the nav when at the very top of the page (for hero sections) */
+  hideAtTop?: boolean;
 }
 
-export function Navigation({ variant = "default" }: NavigationProps) {
+export function Navigation({ variant = "default", hideAtTop = false }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -43,7 +44,9 @@ export function Navigation({ variant = "default" }: NavigationProps) {
     variant === "dark" && "bg-[var(--patina-charcoal)]",
     variant === "transparent" && !isScrolled && "bg-transparent",
     variant === "transparent" && isScrolled && "bg-[var(--patina-charcoal)]/95 backdrop-blur-sm",
-    isScrolled && variant === "default" && "shadow-[var(--shadow-md)]"
+    isScrolled && variant === "default" && "shadow-[var(--shadow-md)]",
+    hideAtTop && !isScrolled && "opacity-0 pointer-events-none -translate-y-full",
+    hideAtTop && isScrolled && "opacity-100 pointer-events-auto translate-y-0",
   );
 
   const linkClasses = cn(
@@ -92,11 +95,8 @@ export function Navigation({ variant = "default" }: NavigationProps) {
               ))}
             </div>
 
-            {/* Search and CTA */}
+            {/* CTA */}
             <div className="hidden lg:flex items-center gap-4">
-              <SearchBar variant={isDark ? "dark" : "default"} />
-
-              {/* CTA Button */}
               <FoundingPopover isDark={isDark} />
             </div>
 
