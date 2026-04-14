@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    const { error } = await supabaseAdmin.from("designer_applications").insert({
+    const { error } = await supabaseAdmin.from("founding_designer_applications").insert({
       first_name,
       last_name,
       email: normalizedEmail,
