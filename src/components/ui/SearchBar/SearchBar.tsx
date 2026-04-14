@@ -378,13 +378,6 @@ export function SearchBar({ variant = "default" }: SearchBarProps) {
                     </p>
                     <div className="space-y-1">
                       <Link
-                        href="/furniture"
-                        onClick={handleCloseSearch}
-                        className="block px-3 py-2 rounded-[var(--radius-md)] text-[var(--patina-mocha-brown)] hover:bg-[var(--patina-soft-cream)] hover:text-[var(--patina-charcoal)] transition-colors"
-                      >
-                        Browse All Furniture
-                      </Link>
-                      <Link
                         href="/makers"
                         onClick={handleCloseSearch}
                         className="block px-3 py-2 rounded-[var(--radius-md)] text-[var(--patina-mocha-brown)] hover:bg-[var(--patina-soft-cream)] hover:text-[var(--patina-charcoal)] transition-colors"

@@ -225,17 +225,17 @@ export default async function MaterialsPage() {
         <section className="py-20 lg:py-28">
           <div className="max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-heading-2 text-[var(--patina-charcoal)] mb-4">
-              See materials in action
+              Materials chosen with care
             </h2>
             <p className="text-[var(--patina-mocha-brown)] mb-8">
-              Browse our collection to see how these materials come together in
-              finished pieces.
+              Every piece on Patina starts with a material that&apos;s built to last.
+              Meet the makers who insist on it.
             </p>
             <Link
-              href="/furniture"
+              href="/makers"
               className="inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-mocha-brown)] shadow-lg"
             >
-              Explore the Collection
+              Meet Our Makers
             </Link>
           </div>
         </section>

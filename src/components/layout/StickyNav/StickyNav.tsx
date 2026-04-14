@@ -10,7 +10,6 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const navLinks = [
-  { href: "/furniture", label: "Your Room" },
   { href: "/makers", label: "Our Makers" },
   { href: "/designers", label: "For Designers" },
   { href: "/about", label: "Our Story" },

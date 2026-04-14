@@ -4,7 +4,6 @@ const footerColumns = [
   {
     title: "Explore",
     links: [
-      { href: "/furniture", label: "Your Room" },
       { href: "/makers", label: "Makers" },
       { href: "/app", label: "The App" },
       { href: "/journal", label: "Journal" },

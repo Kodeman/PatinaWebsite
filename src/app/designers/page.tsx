@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { DesignerApplicationForm } from "./DesignerApplicationForm";
 
 export const metadata: Metadata = {
   title: "The Founding 50 | Patina",
@@ -49,9 +50,6 @@ const founding50Benefits = [
       "There's no fee. Your expertise is the contribution. In exchange, you get tools that make your practice more efficient and a lead pipeline you didn't have before.",
   },
 ];
-
-const inputClasses =
-  "w-full px-4 py-3 bg-[rgba(255,255,255,0.05)] border border-[rgba(163,146,124,0.3)] rounded-[var(--radius-md)] text-[var(--patina-off-white)] placeholder-[rgba(237,233,228,0.4)] focus:outline-none focus:border-[var(--patina-clay-beige)] transition-colors";
 
 export default function DesignersPage() {
   return (
@@ -173,111 +171,7 @@ export default function DesignersPage() {
               </p>
             </div>
 
-            <form className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    className={inputClasses}
-                    placeholder="Jane"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    className={inputClasses}
-                    placeholder="Smith"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className={inputClasses}
-                  placeholder="jane@designstudio.com"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="company"
-                  className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
-                >
-                  Company / Studio Name
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  className={inputClasses}
-                  placeholder="Smith Design Studio"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="website"
-                  className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
-                >
-                  Website / Portfolio
-                </label>
-                <input
-                  type="url"
-                  id="website"
-                  name="website"
-                  className={inputClasses}
-                  placeholder="https://smithdesign.com"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="motivation"
-                  className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
-                >
-                  Why do you want to help build this?
-                </label>
-                <textarea
-                  id="motivation"
-                  name="motivation"
-                  rows={3}
-                  className={`${inputClasses} resize-none`}
-                  placeholder="A sentence or two is fine."
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full px-8 py-4 bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-off-white)] shadow-lg"
-              >
-                Apply to the Founding 50
-              </button>
-            </form>
+            <DesignerApplicationForm />
           </div>
         </section>
 

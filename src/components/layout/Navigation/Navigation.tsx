@@ -8,7 +8,6 @@ import { FoundingPopover } from "@/components/ui/FoundingPopover";
 import { MobileMenu } from "../MobileMenu";
 
 const navLinks = [
-  { href: "/furniture", label: "Your Room" },
   { href: "/makers", label: "Our Makers" },
   { href: "/app", label: "The App" },
   { href: "/designers", label: "For Designers" },

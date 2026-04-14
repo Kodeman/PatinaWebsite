@@ -332,12 +332,6 @@ export default async function ServicesPage() {
                 </svg>
                 Email Us
               </a>
-              <Link
-                href="/furniture"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-[var(--patina-clay-beige)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[rgba(163,146,124,0.1)]"
-              >
-                Browse Collection
-              </Link>
             </div>
           </div>
         </section>

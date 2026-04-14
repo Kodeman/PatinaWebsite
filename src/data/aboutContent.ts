@@ -279,18 +279,13 @@ export const ctaContent = {
   headline: 'The best things are built together, one careful layer at a time.',
   actions: [
     {
-      label: 'Explore Furniture Collection',
-      href: '/furniture',
+      label: 'Meet Our Makers',
+      href: '/makers',
       variant: 'primary',
     },
     {
       label: 'For Designers',
       href: '/designers',
-      variant: 'secondary',
-    },
-    {
-      label: 'For Makers',
-      href: '/makers',
       variant: 'secondary',
     },
   ] satisfies CTAAction[],

@@ -71,6 +71,12 @@ type AnalyticsEvents = {
     specialty: string;
     location: string;
   };
+  designer_application_submitted: {
+    email_domain: string;
+    has_company: boolean;
+    has_website: boolean;
+    has_motivation: boolean;
+  };
 
   // Navigation
   page_viewed: {

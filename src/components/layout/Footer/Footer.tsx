@@ -4,7 +4,6 @@ import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 
 const footerLinks = {
   explore: [
-    { href: "/furniture", label: "Your Room" },
     { href: "/makers", label: "Makers" },
     { href: "/app", label: "The App" },
     { href: "/materials", label: "Materials" },

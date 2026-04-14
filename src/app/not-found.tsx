@@ -28,10 +28,10 @@ export default function NotFound() {
               Go Home
             </Link>
             <Link
-              href="/furniture"
+              href="/makers"
               className="inline-flex items-center justify-center px-8 py-4 border-2 border-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-soft-cream)]"
             >
-              Browse Furniture
+              Meet Our Makers
             </Link>
           </div>
         </div>

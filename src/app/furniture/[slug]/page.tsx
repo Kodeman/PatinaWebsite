@@ -9,7 +9,10 @@ import { ARPreviewButton } from "@/components/features/ARPreviewButton";
 import { ProductCard } from "@/components/features/ProductCard";
 import { MaterialTag } from "@/components/ui/MaterialTag";
 import { formatPrice } from "@/lib/utils";
+import { generateProductJsonLd, generateBreadcrumbJsonLd } from "@/lib/seo";
 import { sanityFetch } from "../../../../sanity/lib/client";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://patina.cloud";
 import { productBySlugQuery, relatedProductsQuery } from "../../../../sanity/lib/queries";
 import type { Product, ProductCard as ProductCardType } from "@/types/sanity";
 
@@ -68,8 +71,23 @@ export default async function ProductPage({ params }: PageProps) {
     caption: img.caption,
   })) || [];
 
+  const productJsonLd = generateProductJsonLd(product);
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: "Home", url: siteUrl },
+    { name: "Furniture", url: `${siteUrl}/furniture` },
+    { name: product.name, url: `${siteUrl}/furniture/${product.slug}` },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navigation />
 
       <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">
@@ -82,13 +100,6 @@ export default async function ProductPage({ params }: PageProps) {
                 className="text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"
               >
                 Home
-              </Link>
-              <span className="text-[var(--patina-clay-beige)]">/</span>
-              <Link
-                href="/furniture"
-                className="text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"
-              >
-                Furniture
               </Link>
               <span className="text-[var(--patina-clay-beige)]">/</span>
               <span className="text-[var(--patina-charcoal)]">
@@ -428,25 +439,6 @@ export default async function ProductPage({ params }: PageProps) {
                   <em className="italic text-[var(--patina-mocha-brown)]">beautifully</em>
                 </h2>
               </div>
-              <Link
-                href="/furniture"
-                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] transition-colors"
-              >
-                View all furniture
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                  />
-                </svg>
-              </Link>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {relatedProducts.map((relatedProduct) => (
