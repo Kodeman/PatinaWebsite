@@ -15,8 +15,10 @@ export function DesignerApplicationForm() {
     lastName: "",
     email: "",
     company: "",
+    location: "",
     website: "",
     motivation: "",
+    sourcingProcess: "",
   });
   const [state, setState] = useState<FormState>("idle");
   const [error, setError] = useState<string>("");
@@ -50,8 +52,10 @@ export function DesignerApplicationForm() {
           last_name: fields.lastName.trim(),
           email,
           company: fields.company.trim(),
+          location: fields.location.trim(),
           website: fields.website.trim(),
           motivation: fields.motivation.trim(),
+          sourcing_process: fields.sourcingProcess.trim(),
           referral_source: attribution?.last_touch?.utm_source || null,
         }),
       });
@@ -192,10 +196,29 @@ export function DesignerApplicationForm() {
 
       <div>
         <label
+          htmlFor="location"
+          className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
+        >
+          Location
+        </label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value={fields.location}
+          onChange={(e) => setFields((f) => ({ ...f, location: e.target.value }))}
+          className={inputClasses}
+          placeholder="City, State"
+          autoComplete="address-level2"
+        />
+      </div>
+
+      <div>
+        <label
           htmlFor="website"
           className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
         >
-          Website / Portfolio
+          Portfolio or Website
         </label>
         <input
           type="url"
@@ -214,7 +237,7 @@ export function DesignerApplicationForm() {
           htmlFor="motivation"
           className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
         >
-          Why do you want to help build this?
+          What does &ldquo;timeless design&rdquo; mean to you?
         </label>
         <textarea
           id="motivation"
@@ -224,6 +247,24 @@ export function DesignerApplicationForm() {
           onChange={(e) => setFields((f) => ({ ...f, motivation: e.target.value }))}
           className={`${inputClasses} resize-none`}
           placeholder="A sentence or two is fine."
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor="sourcingProcess"
+          className="block text-sm font-medium text-[var(--patina-off-white)] mb-2"
+        >
+          How do you currently source furniture for clients?
+        </label>
+        <textarea
+          id="sourcingProcess"
+          name="sourcingProcess"
+          rows={3}
+          value={fields.sourcingProcess}
+          onChange={(e) => setFields((f) => ({ ...f, sourcingProcess: e.target.value }))}
+          className={`${inputClasses} resize-none`}
+          placeholder="Trade showrooms, custom shops, online catalogs, past relationships…"
         />
       </div>
 

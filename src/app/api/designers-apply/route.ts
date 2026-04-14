@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getServerPostHog } from "@/lib/posthog-server";
+import { sendDesignerReceived } from "@/lib/emails/application-received";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -12,8 +13,10 @@ export async function POST(request: NextRequest) {
       last_name,
       email,
       company,
+      location,
       website,
       motivation,
+      sourcing_process,
       referral_source,
     } = body;
 
@@ -45,8 +48,10 @@ export async function POST(request: NextRequest) {
       last_name,
       email: normalizedEmail,
       company: company || null,
+      location: location || null,
       website: website || null,
       motivation: motivation || null,
+      sourcing_process: sourcing_process || null,
       referral_source: referral_source || null,
     });
 
@@ -76,6 +81,19 @@ export async function POST(request: NextRequest) {
         },
       });
     }
+
+    // Fire-and-forget application-received ack email. Send failures don't block
+    // the success response — the row is saved either way.
+    sendDesignerReceived({
+      email: normalizedEmail,
+      first_name,
+      last_name,
+    }).catch((err) => {
+      console.error(
+        "[DesignerApply] Ack email failed:",
+        err instanceof Error ? err.message : "Unknown error",
+      );
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {

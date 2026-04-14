@@ -67,6 +67,7 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
     description: "",
     portfolio: "",
     sustainabilityPractices: "",
+    tradeProgram: "",
     heardFrom: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -91,8 +92,11 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
           brand_name: formData.workshopName,
           contact_name: formData.contactName,
           email: formData.email,
+          location: formData.location || null,
           website: formData.website || formData.portfolio || null,
           description: formData.description,
+          materials: formData.specialty || null,
+          trade_program: formData.tradeProgram || null,
           referral_source: formData.heardFrom || null,
         }),
       });
@@ -437,6 +441,24 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
                         }
                         className="w-full px-4 py-3 bg-[var(--patina-soft-cream)] border border-[rgba(163,146,124,0.2)] rounded-[var(--radius-lg)] text-[var(--patina-charcoal)] placeholder-[var(--patina-clay-beige)] focus:outline-none focus:border-[var(--patina-clay-beige)] focus:ring-1 focus:ring-[var(--patina-clay-beige)] transition-colors resize-none"
                         placeholder="Describe how you source materials, reduce waste, or minimize environmental impact..."
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="tradeProgram"
+                        className="block text-sm font-medium text-[var(--patina-charcoal)] mb-2"
+                      >
+                        Existing trade program
+                      </label>
+                      <textarea
+                        id="tradeProgram"
+                        rows={2}
+                        value={formData.tradeProgram}
+                        onChange={(e) =>
+                          setFormData({ ...formData, tradeProgram: e.target.value })
+                        }
+                        className="w-full px-4 py-3 bg-[var(--patina-soft-cream)] border border-[rgba(163,146,124,0.2)] rounded-[var(--radius-lg)] text-[var(--patina-charcoal)] placeholder-[var(--patina-clay-beige)] focus:outline-none focus:border-[var(--patina-clay-beige)] focus:ring-1 focus:ring-[var(--patina-clay-beige)] transition-colors resize-none"
+                        placeholder="Do you offer trade pricing today? Terms, thresholds, who qualifies..."
                       />
                     </div>
                     <div>

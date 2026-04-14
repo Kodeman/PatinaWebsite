@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getServerPostHog } from "@/lib/posthog-server";
+import { sendMakerReceived } from "@/lib/emails/application-received";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,8 +12,11 @@ export async function POST(request: NextRequest) {
       brand_name,
       contact_name,
       email,
+      location,
       website,
       description,
+      materials,
+      trade_program,
       referral_source,
     } = body;
 
@@ -39,8 +43,11 @@ export async function POST(request: NextRequest) {
       brand_name,
       contact_name,
       email: normalizedEmail,
+      location: location || null,
       website: website || null,
       description: description || null,
+      materials: materials || null,
+      trade_program: trade_program || null,
       referral_source: referral_source || null,
     });
 
@@ -62,6 +69,19 @@ export async function POST(request: NextRequest) {
         properties: { brand_name, referral_source },
       });
     }
+
+    // Fire-and-forget application-received ack email. Send failures don't block
+    // the success response — the row is saved either way.
+    sendMakerReceived({
+      email: normalizedEmail,
+      brand_name,
+      contact_name,
+    }).catch((err) => {
+      console.error(
+        "[MakerApply] Ack email failed:",
+        err instanceof Error ? err.message : "Unknown error",
+      );
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {
