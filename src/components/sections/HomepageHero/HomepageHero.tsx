@@ -6,6 +6,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { AnimatedStrataMark } from "@/components/ui/AnimatedStrataMark";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { useFoundingModal } from "@/components/ui/FoundingCircleModal";
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v));
@@ -17,16 +18,17 @@ function lerp(a: number, b: number, t: number) {
 
 interface HomepageHeroProps {
   ctaLabel?: string;
-  ctaHref?: string;
   description?: string;
 }
 
 export function HomepageHero({
   ctaLabel = "Join the Founding Circle",
-  ctaHref = "/founding",
   description = "Learn what works in your space. Find furniture you can trust. And when you're ready for more, a designer continues right where you left off.",
 }: HomepageHeroProps) {
   const prefersReducedMotion = useReducedMotion();
+  const { open } = useFoundingModal();
+  const openModal = (source: string) =>
+    open({ source, ctaText: ctaLabel });
 
   // Refs for scroll-driven DOM manipulation (no state updates = 60fps)
   const bgRef = useRef<HTMLImageElement>(null);
@@ -216,7 +218,7 @@ export function HomepageHero({
         className="absolute top-0 left-0 right-0 z-20 flex items-center justify-end px-4 sm:px-6 lg:px-12 h-[60px] lg:h-[80px] will-change-transform hero-reveal"
         style={{ animationDelay: "0.05s" }}
       >
-        <MagneticButton href={ctaHref} variant="dark">
+        <MagneticButton variant="dark" onClick={() => openModal("hero_top_bar")}>
           {ctaLabel}
         </MagneticButton>
       </div>
@@ -264,7 +266,7 @@ export function HomepageHero({
 
         {/* CTA — animates out on scroll */}
         <div ref={ctaRef} className="hero-reveal will-change-transform" style={{ animationDelay: "0.5s" }}>
-          <MagneticButton href={ctaHref} variant="dark">
+          <MagneticButton variant="dark" onClick={() => openModal("hero_primary")}>
             {ctaLabel}
           </MagneticButton>
           <p className="text-xs font-light text-[var(--patina-off-white)] opacity-50 mt-3.5 tracking-[0.02em]">

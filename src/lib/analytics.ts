@@ -105,6 +105,19 @@ type AnalyticsEvents = {
     element_location: 'hero' | 'nav' | 'footer' | 'inline' | 'mobile_menu';
   };
 
+  founding_modal_opened: {
+    source: string;
+    cta_text?: string;
+  };
+
+  founding_modal_closed: {
+    reason: 'x' | 'esc' | 'outside' | 'success';
+  };
+
+  founding_modal_social_click: {
+    provider: 'apple' | 'google';
+  };
+
   // Style selection
   style_card_selected: {
     style_name: string;
@@ -194,19 +207,20 @@ class Analytics {
 
   /**
    * Track an analytics event
+   *
+   * Always sends to PostHog when initialized (regardless of NODE_ENV) so dev
+   * environments can verify event wiring before production. Also logs to
+   * console in dev for local debugging visibility.
    */
   track<T extends EventName>(eventName: T, data: EventData<T>): void {
     if (typeof window === "undefined") return;
 
-    // Log in development
     if (!this.isProduction) {
       console.log(`[Analytics] ${eventName}`, data);
     }
 
-    if (this.isProduction) {
-      const posthog = getPostHogClient();
-      posthog?.capture(eventName, data);
-    }
+    const posthog = getPostHogClient();
+    posthog?.capture(eventName, data);
   }
 
   /**
@@ -226,10 +240,8 @@ class Analytics {
       console.log(`[Analytics] identify`, { userId, traits });
     }
 
-    if (this.isProduction) {
-      const posthog = getPostHogClient();
-      posthog?.identify(userId, traits);
-    }
+    const posthog = getPostHogClient();
+    posthog?.identify(userId, traits);
   }
 }
 

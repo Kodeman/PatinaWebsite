@@ -4,6 +4,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { defaultMetadata, generateOrganizationJsonLd, generateWebsiteJsonLd } from "@/lib/seo";
 import { SkipLink } from "@/components/ui/SkipLink";
 import { CookieConsent } from "@/components/ui/CookieConsent";
+import {
+  FoundingCircleModal,
+  FoundingModalProvider,
+} from "@/components/ui/FoundingCircleModal";
 import { PostHogProviders } from "./providers";
 import "./globals.css";
 
@@ -60,7 +64,10 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${inter.variable} ${dmMono.variable} antialiased`}>
         <SkipLink />
         <PostHogProviders>
-          {children}
+          <FoundingModalProvider>
+            {children}
+            <FoundingCircleModal />
+          </FoundingModalProvider>
         </PostHogProviders>
         <CookieConsent />
         <Analytics />

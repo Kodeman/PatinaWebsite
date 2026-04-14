@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { useFoundingModal } from "@/components/ui/FoundingCircleModal";
 
 interface NavLink {
   href: string;
@@ -17,6 +18,7 @@ export interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
+  const { open: openFoundingModal } = useFoundingModal();
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
@@ -137,13 +139,19 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
             <p className="text-sm text-[rgba(237,233,228,0.6)] mb-3 text-center">
               We&apos;re building something different. Come see how.
             </p>
-            <Link
-              href="/founding"
-              onClick={onClose}
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                openFoundingModal({
+                  source: "mobile_menu",
+                  ctaText: "Join the Founding Circle",
+                });
+              }}
               className="block w-full text-center px-6 py-3 text-sm font-medium bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] hover:bg-[var(--patina-off-white)] transition-colors duration-300"
             >
               Join the Founding Circle →
-            </Link>
+            </button>
           </div>
         </div>
       </div>

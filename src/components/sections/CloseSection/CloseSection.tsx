@@ -2,8 +2,10 @@
 
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { FadeIn } from "@/components/motion/FadeIn";
+import { useFoundingModal } from "@/components/ui/FoundingCircleModal";
 
 export function CloseSection() {
+  const { open } = useFoundingModal();
   return (
     <section data-bg="dark" className="bg-[var(--patina-ink)] text-[var(--patina-off-white)] text-center py-[clamp(120px,18vh,240px)] relative overflow-hidden">
       {/* Ambient light */}
@@ -41,7 +43,10 @@ export function CloseSection() {
         </FadeIn>
 
         <FadeIn delay={0.3}>
-          <MagneticButton href="/founding" variant="white">
+          <MagneticButton
+            variant="white"
+            onClick={() => open({ source: "close_section", ctaText: "Join the Founding Circle" })}
+          >
             Join the Founding Circle
           </MagneticButton>
         </FadeIn>
