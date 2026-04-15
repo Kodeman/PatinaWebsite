@@ -4,7 +4,7 @@
  */
 
 const RESEND_API = 'https://api.resend.com/emails';
-const DEFAULT_FROM = 'Patina <hello@notify.patina.com>';
+const DEFAULT_FROM = 'Patina <hello@patina.cloud>';
 
 export interface SendOptions {
   to: string;
