@@ -7,7 +7,6 @@ const footerLinks = {
     { href: "/makers", label: "Makers" },
     { href: "/app", label: "The App" },
     { href: "/materials", label: "Materials" },
-    { href: "/#journey", label: "How It Works" },
     { href: "/journal", label: "Journal" },
   ],
   workWithUs: [
