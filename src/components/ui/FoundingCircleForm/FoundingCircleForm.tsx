@@ -3,8 +3,8 @@
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
-import { getAttribution } from "@/lib/attribution";
 import { getPostHogClient } from "@/lib/posthog";
+import { buildLeadPayload, inferRole, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
 
 interface FoundingCircleFormProps {
   source: string;
@@ -15,6 +15,8 @@ interface FoundingCircleFormProps {
 
 type FormState = "idle" | "loading" | "success" | "error";
 
+type SelectedRole = "designer" | "consumer" | null;
+
 export function FoundingCircleForm({
   source,
   ctaText = "Join the Founding Circle",
@@ -24,7 +26,9 @@ export function FoundingCircleForm({
   const [email, setEmail] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedRole, setSelectedRole] = useState<SelectedRole>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const isCompact = variant === "compact";
   const isDark = variant === "dark";
@@ -44,8 +48,10 @@ export function FoundingCircleForm({
     setErrorMessage("");
 
     try {
-      const attribution = getAttribution();
       const posthog = getPostHogClient();
+      const signupPage =
+        typeof window !== "undefined" ? window.location.pathname : "";
+      const role = selectedRole || inferRole(source, signupPage);
 
       // Read style preferences from localStorage if available
       let preferredStyles: string[] | null = null;
@@ -56,20 +62,23 @@ export function FoundingCircleForm({
         // localStorage unavailable
       }
 
+      const payload = buildLeadPayload({
+        source,
+        signupPage,
+        ctaText,
+        posthogDistinctId: posthog?.get_distinct_id?.() || null,
+        extra: {
+          email: trimmed,
+          role,
+          preferred_styles: preferredStyles,
+          [LEAD_HONEYPOT_FIELD]: honeypotRef.current?.value || "",
+        },
+      });
+
       const res = await fetch("/api/founding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: trimmed,
-          source,
-          signup_page: typeof window !== "undefined" ? window.location.pathname : "",
-          cta_text: ctaText,
-          utm: attribution?.last_touch,
-          posthog_distinct_id: posthog?.get_distinct_id?.() || null,
-          preferred_styles: preferredStyles,
-          first_touch_attribution: attribution?.first_touch || null,
-          last_touch_attribution: attribution?.last_touch || null,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -83,10 +92,12 @@ export function FoundingCircleForm({
       track("founding_circle_signup", {
         email_domain: emailDomain,
         source,
-        signup_page: typeof window !== "undefined" ? window.location.pathname : "",
+        signup_page: signupPage,
         cta_text: ctaText,
-        has_utm: !!attribution?.last_touch?.utm_source,
+        has_utm: !!payload.utm_source,
         preferred_styles: preferredStyles || undefined,
+        role,
+        channel: payload.channel,
       });
 
       // Identify in PostHog
@@ -123,11 +134,21 @@ export function FoundingCircleForm({
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "flex gap-2",
+        "flex gap-2 flex-wrap",
         isCompact ? "flex-row" : "flex-col sm:flex-row",
         className
       )}
     >
+      {/* Honeypot — hidden from users, catches bots that auto-fill every field. */}
+      <input
+        ref={honeypotRef}
+        type="text"
+        name={LEAD_HONEYPOT_FIELD}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] top-[-9999px] h-0 w-0 opacity-0"
+      />
       <input
         ref={inputRef}
         type="email"
@@ -173,9 +194,54 @@ export function FoundingCircleForm({
           ctaText
         )}
       </button>
+      {!isCompact && (
+        <fieldset className="basis-full flex flex-wrap items-center gap-2 border-0 p-0 m-0">
+          <legend
+            className={cn(
+              "text-xs mb-1 basis-full",
+              isDark
+                ? "text-[rgba(237,233,228,0.6)]"
+                : "text-[var(--patina-mocha-brown)]/70"
+            )}
+          >
+            I&apos;m a… (optional)
+          </legend>
+          {([
+            { value: "designer", label: "Designer" },
+            { value: "consumer", label: "Homeowner" },
+          ] as const).map((option) => {
+            const isActive = selectedRole === option.value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() =>
+                  setSelectedRole((prev) =>
+                    prev === option.value ? null : option.value
+                  )
+                }
+                className={cn(
+                  "rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 outline-none",
+                  "focus-visible:ring-2 focus-visible:ring-[var(--patina-clay-beige)]",
+                  isDark
+                    ? isActive
+                      ? "bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] border border-[var(--patina-clay-beige)]"
+                      : "bg-transparent text-[var(--patina-off-white)] border border-[rgba(237,233,228,0.25)] hover:border-[var(--patina-clay-beige)]"
+                    : isActive
+                      ? "bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] border border-[var(--patina-charcoal)]"
+                      : "bg-transparent text-[var(--patina-mocha-brown)] border border-[rgba(163,146,124,0.3)] hover:border-[var(--patina-clay-beige)]"
+                )}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </fieldset>
+      )}
       {state === "error" && errorMessage && (
         <p className={cn(
-          "text-sm text-red-400 sm:col-span-2",
+          "text-red-400 basis-full",
           isCompact ? "text-xs" : "text-sm"
         )}>
           {errorMessage}

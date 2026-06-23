@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { track } from "@/lib/analytics";
+import { buildLeadPayload, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
+import { getPostHogClient } from "@/lib/posthog";
 
 interface MakersApplyContentProps {
   heroEyebrow?: string;
@@ -70,6 +73,7 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
     tradeProgram: "",
     heardFrom: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -85,25 +89,45 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
     setSubmitError("");
 
     try {
-      const res = await fetch("/api/makers-apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const posthog = getPostHogClient();
+      const email = formData.email.trim();
+      const website = formData.website || formData.portfolio || null;
+
+      const payload = buildLeadPayload({
+        source: "makers_apply",
+        signupPage: typeof window !== "undefined" ? window.location.pathname : "",
+        posthogDistinctId: posthog?.get_distinct_id?.() || null,
+        extra: {
           brand_name: formData.workshopName,
           contact_name: formData.contactName,
-          email: formData.email,
+          email,
           location: formData.location || null,
-          website: formData.website || formData.portfolio || null,
+          website,
           description: formData.description,
           materials: formData.specialty || null,
           trade_program: formData.tradeProgram || null,
           referral_source: formData.heardFrom || null,
-        }),
+          [LEAD_HONEYPOT_FIELD]: honeypot,
+        },
+      });
+
+      const res = await fetch("/api/makers-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error("Failed to submit");
 
       setSubmitted(true);
+
+      posthog?.identify(email, { email, role: "maker" });
+      track("maker_application_submitted", {
+        email_domain: email.split("@")[1] || "",
+        has_company: !!formData.workshopName.trim(),
+        has_website: !!website,
+        has_motivation: !!formData.description.trim(),
+      });
     } catch {
       setSubmitError("Something went wrong. Please try again.");
     } finally {
@@ -221,6 +245,20 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
+                  {/* Honeypot — hidden from real users, bots will fill it */}
+                  <div className="absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+                    <label htmlFor={LEAD_HONEYPOT_FIELD}>Company URL</label>
+                    <input
+                      type="text"
+                      id={LEAD_HONEYPOT_FIELD}
+                      name={LEAD_HONEYPOT_FIELD}
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </div>
+
                   {/* Workshop Info */}
                   <div className="space-y-6">
                     <h3 className="text-lg font-medium text-[var(--patina-charcoal)] pb-2 border-b border-[rgba(163,146,124,0.15)]">

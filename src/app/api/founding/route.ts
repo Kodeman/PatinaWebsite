@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { getServerPostHog } from "@/lib/posthog-server";
+import { isHoneypotTripped, checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { captureLeadEvent } from "@/lib/lead-capture";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Silently drop bots that filled the hidden honeypot field — return a
+    // success-shaped response so they can't detect the trap.
+    if (isHoneypotTripped(body)) {
+      return NextResponse.json({ success: true });
+    }
+
+    if (!checkRateLimit(getClientIp(request)).ok) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
     const {
       email,
       source,
@@ -17,6 +30,10 @@ export async function POST(request: NextRequest) {
       preferred_styles,
       first_touch_attribution,
       last_touch_attribution,
+      role,
+      gclid,
+      fbclid,
+      channel,
     } = body;
 
     if (!email || !EMAIL_REGEX.test(email)) {
@@ -51,6 +68,10 @@ export async function POST(request: NextRequest) {
         utm_content: utm?.utm_content || null,
         utm_term: utm?.utm_term || null,
         referrer: utm?.referrer || null,
+        role: role || "unknown",
+        gclid: gclid || null,
+        fbclid: fbclid || null,
+        channel: channel || null,
         posthog_distinct_id: posthog_distinct_id || null,
         first_touch_attribution: {
           ...(first_touch_attribution || {}),
@@ -88,6 +109,24 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ error: "Failed to save signup" }, { status: 500 });
     }
+
+    // Mirror the successful signup to PostHog server-side.
+    captureLeadEvent({
+      event: "founding_circle_signup",
+      email: normalizedEmail,
+      posthogDistinctId: posthog_distinct_id,
+      properties: {
+        source,
+        signup_page,
+        has_utm: !!utm?.utm_source,
+        channel,
+      },
+      personProps: {
+        email: normalizedEmail,
+        role: role || "unknown",
+        founding_source: source,
+      },
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {

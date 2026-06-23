@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { track } from "@/lib/analytics";
-import { getAttribution } from "@/lib/attribution";
+import { buildLeadPayload, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
+import { getPostHogClient } from "@/lib/posthog";
 
 const inputClasses =
   "w-full px-4 py-3 bg-[rgba(255,255,255,0.05)] border border-[rgba(163,146,124,0.3)] rounded-[var(--radius-md)] text-[var(--patina-off-white)] placeholder-[rgba(237,233,228,0.4)] focus:outline-none focus:border-[var(--patina-clay-beige)] transition-colors";
@@ -20,6 +21,7 @@ export function DesignerApplicationForm() {
     motivation: "",
     sourcingProcess: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [error, setError] = useState<string>("");
 
@@ -43,11 +45,13 @@ export function DesignerApplicationForm() {
     setError("");
 
     try {
-      const attribution = getAttribution();
-      const res = await fetch("/api/designers-apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const posthog = getPostHogClient();
+      const payload = buildLeadPayload({
+        source: "designers_page",
+        signupPage:
+          typeof window !== "undefined" ? window.location.pathname : "",
+        posthogDistinctId: posthog?.get_distinct_id?.() || null,
+        extra: {
           first_name: fields.firstName.trim(),
           last_name: fields.lastName.trim(),
           email,
@@ -56,8 +60,15 @@ export function DesignerApplicationForm() {
           website: fields.website.trim(),
           motivation: fields.motivation.trim(),
           sourcing_process: fields.sourcingProcess.trim(),
-          referral_source: attribution?.last_touch?.utm_source || null,
-        }),
+          [LEAD_HONEYPOT_FIELD]: honeypot,
+        },
+      });
+      payload.referral_source = payload.utm_source || null;
+
+      const res = await fetch("/api/designers-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -72,6 +83,9 @@ export function DesignerApplicationForm() {
         has_website: !!fields.website.trim(),
         has_motivation: !!fields.motivation.trim(),
       });
+
+      // Identify in PostHog as a designer lead.
+      posthog?.identify(email, { email, role: "designer" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setState("error");
@@ -105,6 +119,20 @@ export function DesignerApplicationForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      {/* Honeypot — hidden from real users, catches bots. */}
+      <div aria-hidden="true" className="hidden">
+        <label htmlFor={LEAD_HONEYPOT_FIELD}>Company URL</label>
+        <input
+          type="text"
+          id={LEAD_HONEYPOT_FIELD}
+          name={LEAD_HONEYPOT_FIELD}
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div className="grid sm:grid-cols-2 gap-6">
         <div>
           <label

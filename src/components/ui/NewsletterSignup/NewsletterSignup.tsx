@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
 import { getPostHogClient } from "@/lib/posthog";
+import {
+  buildLeadPayload,
+  inferRole,
+  LEAD_HONEYPOT_FIELD,
+} from "@/lib/lead-payload";
 
 interface NewsletterSignupProps {
   variant?: "inline" | "footer";
@@ -22,6 +27,7 @@ export function NewsletterSignup({
   const [email, setEmail] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isFooter = variant === "footer";
@@ -43,21 +49,25 @@ export function NewsletterSignup({
     try {
       const attribution = getAttribution();
       const posthog = getPostHogClient();
+      const signupPage = window.location.pathname;
+      const role = inferRole(source, signupPage);
+
+      const payload = buildLeadPayload({
+        source,
+        signupPage,
+        posthogDistinctId: posthog?.get_distinct_id?.() || null,
+        extra: {
+          email: trimmed,
+          source,
+          role,
+          [LEAD_HONEYPOT_FIELD]: honeypot,
+        },
+      });
 
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: trimmed,
-          source,
-          signup_page: window.location.pathname,
-          posthog_distinct_id: posthog?.get_distinct_id?.() || null,
-          utm: {
-            utm_source: attribution?.last_touch?.utm_source,
-            utm_medium: attribution?.last_touch?.utm_medium,
-            utm_campaign: attribution?.last_touch?.utm_campaign,
-          },
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error("Failed");
@@ -72,8 +82,10 @@ export function NewsletterSignup({
       track("newsletter_signup", {
         email_domain: emailDomain,
         source,
-        signup_page: window.location.pathname,
+        signup_page: signupPage,
         has_utm: !!attribution?.last_touch?.utm_source,
+        role,
+        channel: payload.channel,
       });
     } catch {
       setErrorMessage("Something went wrong. Try again?");
@@ -108,6 +120,16 @@ export function NewsletterSignup({
           A biweekly letter about design decisions and what we&apos;re building.
         </p>
         <form onSubmit={handleSubmit} className="flex gap-2">
+          <input
+            type="text"
+            name={LEAD_HONEYPOT_FIELD}
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute -left-[9999px] h-0 w-0 opacity-0"
+          />
           <input
             ref={inputRef}
             type="email"
@@ -155,6 +177,16 @@ export function NewsletterSignup({
         onSubmit={handleSubmit}
         className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
       >
+        <input
+          type="text"
+          name={LEAD_HONEYPOT_FIELD}
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute -left-[9999px] h-0 w-0 opacity-0"
+        />
         <input
           ref={inputRef}
           type="email"

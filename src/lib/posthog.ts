@@ -42,7 +42,8 @@ export function getPostHogClient() {
     const dnt = navigator.doNotTrack === "1";
 
     posthog.init(key, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+      api_host: "/ingest",
+      ui_host: "https://us.posthog.com",
       autocapture: false,
       capture_pageview: false,
       capture_pageleave: true,

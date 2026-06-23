@@ -7,6 +7,7 @@ import { useFoundingModal } from "./FoundingModalContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { track } from "@/lib/analytics";
 import { getAttribution } from "@/lib/attribution";
+import { buildLeadPayload, inferRole, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
 import { getPostHogClient } from "@/lib/posthog";
 import styles from "./FoundingCircleModal.module.css";
 
@@ -70,18 +71,21 @@ export function FoundingCircleModal() {
 interface ModalChromeProps {
   source: string;
   ctaText?: string;
+  /** Optional role override; falls back to inferRole() when omitted. */
+  selectedRole?: "designer" | "consumer" | "unknown";
   phase: "enter" | "exit";
   onClose: (reason: "x" | "esc" | "outside" | "success") => void;
   prefersReducedMotion: boolean;
 }
 
-function ModalChrome({ source, ctaText, phase, onClose, prefersReducedMotion }: ModalChromeProps) {
+function ModalChrome({ source, ctaText, selectedRole, phase, onClose, prefersReducedMotion }: ModalChromeProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
   const [spotsRemaining, setSpotsRemaining] = useState<number | null>(null);
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [socialHint, setSocialHint] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
   const [fields, setFields] = useState<FormFields>({
     firstName: "",
     lastName: "",
@@ -182,25 +186,36 @@ function ModalChrome({ source, ctaText, phase, onClose, prefersReducedMotion }: 
     try {
       const attribution = getAttribution();
       const posthog = getPostHogClient();
+      const signupPage = typeof window !== "undefined" ? window.location.pathname : "";
+      const resolvedCtaText = ctaText ?? "Join the Founding Circle";
+      const role = selectedRole || inferRole(source, signupPage);
+
+      const payload = buildLeadPayload({
+        source,
+        signupPage,
+        ctaText: resolvedCtaText,
+        posthogDistinctId: posthog?.get_distinct_id?.() || null,
+        extra: {
+          email,
+          source,
+          role,
+          [LEAD_HONEYPOT_FIELD]: honeypot,
+        },
+      });
+
+      // Preserve the firstName/lastName/reason that this modal historically
+      // nests inside first_touch_attribution so no data is lost.
+      payload.first_touch_attribution = {
+        ...(attribution?.first_touch || {}),
+        first_name: fields.firstName.trim() || null,
+        last_name: fields.lastName.trim() || null,
+        reason: fields.reason.trim() || null,
+      } as typeof payload.first_touch_attribution;
 
       const res = await fetch("/api/founding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          source,
-          signup_page: typeof window !== "undefined" ? window.location.pathname : "",
-          cta_text: ctaText ?? "Join the Founding Circle",
-          utm: attribution?.last_touch,
-          posthog_distinct_id: posthog?.get_distinct_id?.() || null,
-          first_touch_attribution: {
-            ...(attribution?.first_touch || {}),
-            first_name: fields.firstName.trim() || null,
-            last_name: fields.lastName.trim() || null,
-            reason: fields.reason.trim() || null,
-          },
-          last_touch_attribution: attribution?.last_touch || null,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -212,9 +227,11 @@ function ModalChrome({ source, ctaText, phase, onClose, prefersReducedMotion }: 
       track("founding_circle_signup", {
         email_domain: emailDomain,
         source,
-        signup_page: typeof window !== "undefined" ? window.location.pathname : "",
-        cta_text: ctaText ?? "Join the Founding Circle",
+        signup_page: signupPage,
+        cta_text: resolvedCtaText,
         has_utm: !!attribution?.last_touch?.utm_source,
+        role,
+        channel: payload.channel,
       });
       posthog?.identify(email, { email, founding_source: source });
 
@@ -437,6 +454,17 @@ function ModalChrome({ source, ctaText, phase, onClose, prefersReducedMotion }: 
                   animate="visible"
                   noValidate
                 >
+                  {/* Honeypot — hidden from users; bots that fill it are dropped server-side */}
+                  <input
+                    type="text"
+                    name={LEAD_HONEYPOT_FIELD}
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                  />
                   <div className={styles.nameRow}>
                     <div className={styles.field}>
                       <label htmlFor="founding-first">First Name</label>

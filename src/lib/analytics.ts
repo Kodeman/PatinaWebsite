@@ -68,14 +68,22 @@ type AnalyticsEvents = {
     reason: string;
   };
   maker_application_submitted: {
-    specialty: string;
-    location: string;
+    email_domain: string;
+    has_company: boolean;
+    has_website: boolean;
+    has_motivation: boolean;
   };
   designer_application_submitted: {
     email_domain: string;
     has_company: boolean;
     has_website: boolean;
     has_motivation: boolean;
+  };
+
+  // Cross-platform identity
+  user_identified: {
+    platform: string;
+    identification_method: string;
   };
 
   // Navigation
@@ -104,6 +112,8 @@ type AnalyticsEvents = {
     has_utm: boolean;
     preferred_styles?: string[];
     referrer?: string;
+    role?: string;
+    channel?: string;
   };
 
   founding_cta_click: {
@@ -151,6 +161,8 @@ type AnalyticsEvents = {
     source: string;
     signup_page: string;
     has_utm: boolean;
+    role?: string;
+    channel?: string;
   };
 
   // Consent
