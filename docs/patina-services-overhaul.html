@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patina — Designer Services Page Overhaul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --off-white: #EDE9E4;
+            --pearl: #F5F2EE;
+            --clay: #A3927C;
+            --aged-oak: #8B7D6B;
+            --mocha: #655B52;
+            --charcoal: #3F3B37;
+            --sage: #8B9E8B;
+            --dusty-blue: #7B8FA2;
+            --terracotta: #C4775A;
+            --golden-hour: #D4A853;
+            --red-flag: #B85450;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--charcoal);
+            color: var(--off-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ═══════════════════════════════════════════
+           PRESENTATION SHELL
+           ═══════════════════════════════════════════ */
+
+        .presentation-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(63, 59, 55, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(163, 146, 124, 0.15);
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .presentation-nav .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+        .presentation-nav .meta {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--clay);
+        }
+
+        /* ── Slide ── */
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 100px 80px 80px;
+            position: relative;
+            border-bottom: 1px solid rgba(163, 146, 124, 0.1);
+        }
+        .slide.compact { min-height: auto; padding: 80px; }
+
+        .slide-number {
+            position: absolute;
+            top: 80px;
+            right: 80px;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--clay);
+            opacity: 0.5;
+        }
+
+        /* ── Title Slide ── */
+        .slide.title-slide {
+            background: linear-gradient(165deg, var(--charcoal) 0%, #2C2926 50%, #1E1C1A 100%);
+            text-align: left;
+        }
+        .title-slide .overline {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 24px;
+        }
+        .title-slide h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 400;
+            line-height: 1.05;
+            max-width: 800px;
+            margin-bottom: 32px;
+        }
+        .title-slide h1 em {
+            font-style: italic;
+            color: var(--clay);
+        }
+        .title-slide .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--aged-oak);
+            max-width: 560px;
+        }
+        .title-slide .strata-mark {
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .title-slide .strata-mark span {
+            height: 2px;
+            background: var(--clay);
+            opacity: 0.3;
+        }
+        .title-slide .strata-mark span:nth-child(1) { width: 120px; }
+        .title-slide .strata-mark span:nth-child(2) { width: 96px; }
+        .title-slide .strata-mark span:nth-child(3) { width: 72px; }
+
+        /* ── Section Headers ── */
+        .slide h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        .slide h2 em { font-style: italic; color: var(--clay); }
+        .slide h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+        .slide h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 16px;
+        }
+        .slide p {
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--aged-oak);
+            max-width: 640px;
+        }
+        .slide .mono {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--clay);
+        }
+
+        /* ── Audit Grid ── */
+        .audit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 40px;
+        }
+        .audit-card {
+            background: rgba(237, 233, 228, 0.04);
+            border: 1px solid rgba(163, 146, 124, 0.12);
+            border-radius: 2px;
+            padding: 32px;
+        }
+        .audit-card.problem {
+            border-left: 3px solid var(--red-flag);
+        }
+        .audit-card .label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .audit-card .label.red { color: var(--red-flag); }
+        .audit-card .label.green { color: var(--sage); }
+        .audit-card h3 { font-size: 20px; margin-bottom: 10px; }
+        .audit-card p { font-size: 14px; max-width: none; }
+        .audit-card .quote {
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--clay);
+            border-left: 2px solid rgba(163, 146, 124, 0.2);
+            padding-left: 16px;
+            margin-top: 12px;
+        }
+
+        /* ── Comparison Strip ── */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 40px 1fr;
+            gap: 0;
+            margin-top: 40px;
+            align-items: start;
+        }
+        .comparison .col {
+            padding: 32px;
+            border-radius: 2px;
+        }
+        .comparison .before {
+            background: rgba(184, 84, 80, 0.06);
+            border: 1px solid rgba(184, 84, 80, 0.15);
+        }
+        .comparison .after {
+            background: rgba(139, 158, 139, 0.06);
+            border: 1px solid rgba(139, 158, 139, 0.2);
+        }
+        .comparison .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 18px;
+            color: var(--clay);
+            opacity: 0.4;
+            padding-top: 32px;
+        }
+
+        /* ── Page Preview (light mode) ── */
+        .page-preview {
+            background: var(--off-white);
+            color: var(--charcoal);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 40px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+        }
+        .page-preview .browser-bar {
+            background: var(--pearl);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(163, 146, 124, 0.15);
+        }
+        .page-preview .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--clay);
+            opacity: 0.3;
+        }
+        .page-preview .url-bar {
+            flex: 1;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--mocha);
+            letter-spacing: 0.04em;
+        }
+        .page-preview .page-body {
+            padding: 0;
+        }
+
+        /* ── Page Sections (inside preview) ── */
+        .page-section {
+            padding: 64px 56px;
+            position: relative;
+        }
+        .page-section + .page-section {
+            border-top: 1px solid rgba(163, 146, 124, 0.12);
+        }
+        .page-section.hero-section {
+            padding: 80px 56px 72px;
+            text-align: center;
+        }
+        .page-section.alt-bg {
+            background: var(--pearl);
+        }
+        .page-section.dark-section {
+            background: var(--charcoal);
+            color: var(--off-white);
+        }
+        .section-tag {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--clay);
+            opacity: 0.5;
+        }
+        .new-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: var(--sage);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 1px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        /* ── Preview Typography ── */
+        .p-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 16px;
+        }
+        .p-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--charcoal);
+            margin-bottom: 24px;
+        }
+        .p-headline em { font-style: italic; }
+        .p-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--mocha);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .p-h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--charcoal);
+            margin-bottom: 16px;
+        }
+        .p-h2 em { font-style: italic; }
+        .p-h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+        }
+        .p-body {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--mocha);
+        }
+        .p-body.dark { color: var(--aged-oak); }
+        .p-mono {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--clay);
+        }
+
+        /* ── Preview Strata Rule ── */
+        .p-strata {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin: 40px 0;
+        }
+        .p-strata span { height: 1.5px; background: var(--clay); opacity: 0.25; }
+        .p-strata span:nth-child(1) { width: 100%; }
+        .p-strata span:nth-child(2) { width: 80%; }
+        .p-strata span:nth-child(3) { width: 60%; }
+
+        /* ── Advantage Cards ── */
+        .advantage-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 32px;
+        }
+        .advantage-card {
+            text-align: left;
+        }
+        .advantage-card .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 300;
+            color: var(--clay);
+            opacity: 0.4;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        /* ── Data Package Visual ── */
+        .data-package {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .data-item {
+            background: white;
+            border: 1px solid rgba(163, 146, 124, 0.15);
+            border-radius: 2px;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .data-item .icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+        .data-item .data-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 6px;
+        }
+        .data-item .data-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--mocha);
+            line-height: 1.5;
+        }
+
+        /* ── Process Steps ── */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 40px;
+            position: relative;
+        }
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--clay), var(--clay), transparent);
+            opacity: 0.2;
+        }
+        .process-step {
+            text-align: center;
+            position: relative;
+            padding: 0 16px;
+        }
+        .process-step .step-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: 300;
+            color: var(--clay);
+            opacity: 0.35;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        /* ── Match Preview ── */
+        .match-card {
+            background: white;
+            border: 1px solid rgba(163, 146, 124, 0.15);
+            border-radius: 2px;
+            padding: 32px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 24px;
+            align-items: center;
+            margin-top: 24px;
+            max-width: 560px;
+        }
+        .match-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--clay), var(--mocha));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: white;
+        }
+        .match-info .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--charcoal);
+        }
+        .match-info .firm {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--mocha);
+            font-weight: 300;
+        }
+        .match-score {
+            text-align: center;
+        }
+        .match-score .pct {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--sage);
+        }
+        .match-score .pct-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--clay);
+        }
+
+        /* ── Buttons ── */
+        .p-btn-primary {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--off-white);
+            background: var(--charcoal);
+            padding: 16px 36px;
+            border: none;
+            cursor: pointer;
+            margin-top: 28px;
+            transition: background 0.3s;
+        }
+        .p-btn-primary:hover { background: var(--mocha); }
+        .p-btn-secondary {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            background: transparent;
+            padding: 16px 36px;
+            border: 1px solid var(--clay);
+            cursor: pointer;
+            margin-top: 28px;
+            margin-left: 12px;
+            transition: all 0.3s;
+        }
+
+        /* ── Implementation Notes ── */
+        .impl-note {
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--aged-oak);
+            background: rgba(237, 233, 228, 0.04);
+            border-left: 2px solid var(--clay);
+            padding: 20px 24px;
+            margin-top: 32px;
+        }
+        .impl-note strong { color: var(--off-white); font-weight: 500; }
+
+        /* ── Dark section text overrides ── */
+        .dark-section .p-headline,
+        .dark-section .p-h2,
+        .dark-section .p-h3 { color: var(--off-white); }
+        .dark-section .p-sub,
+        .dark-section .p-body { color: var(--aged-oak); }
+        .dark-section .p-btn-primary {
+            background: var(--off-white);
+            color: var(--charcoal);
+        }
+
+        /* ═══ Responsive ═══ */
+        @media (max-width: 900px) {
+            .slide { padding: 80px 32px 60px; }
+            .title-slide h1 { font-size: 44px; }
+            .slide h2 { font-size: 32px; }
+            .audit-grid,
+            .comparison { grid-template-columns: 1fr; }
+            .comparison .divider { transform: rotate(90deg); padding: 0; }
+            .advantage-row,
+            .data-package,
+            .process-steps { grid-template-columns: 1fr 1fr; }
+            .page-section { padding: 40px 28px; }
+            .p-headline { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVIGATION BAR
+     ═══════════════════════════════════════════════════════════ -->
+<div class="presentation-nav">
+    <div class="brand">PATINA</div>
+    <div class="meta">Designer Services Page · Complete Overhaul · April 2026</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 1: TITLE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="slide title-slide">
+    <div class="overline">patina.cloud/services</div>
+    <h1>Designer Services<br>Page <em>Overhaul</em></h1>
+    <p class="subtitle">
+        The current page sells fixed packages from a fictional in-house team. 
+        The real model is different — and better. This deck walks through 
+        what's wrong, what should change, and exactly what the new page says.
+    </p>
+    <div class="strata-mark">
+        <span></span><span></span><span></span>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 2: THE AUDIT
+     ═══════════════════════════════════════════════════════════ -->
+<div class="slide">
+    <span class="slide-number">02</span>
+    <span class="mono" style="margin-bottom:32px; display:block;">The Audit — What's Wrong</span>
+    <h2>The current page sells a product<br>that <em>doesn't exist</em></h2>
+    <p>Four structural problems make the page incompatible with Patina's actual business model.</p>
+
+    <div class="audit-grid">
+        <div class="audit-card problem">
+            <div class="label red">Problem 01</div>
+            <h3>Fake Price Tiers</h3>
+            <p>Three rigid packages — Free / $450 / Custom — present Patina as a commoditized design service. This is a SaaS pricing page for something that isn't SaaS.</p>
+            <div class="quote">Current: "Room Design — $450 — 5-7 furniture recommendations, 3 revision rounds"</div>
+        </div>
+        <div class="audit-card problem">
+            <div class="label red">Problem 02</div>
+            <h3>Fictional In-House Team</h3>
+            <p>Copy says "our design team" and "our designers." Patina doesn't employ designers — it matches you with independent firms. This sets a false expectation from the first sentence.</p>
+            <div class="quote">Current: "Our design team is here to guide you through our collection"</div>
+        </div>
+        <div class="audit-card problem">
+            <div class="label red">Problem 03</div>
+            <h3>The App Advantage Is Invisible</h3>
+            <p>The page mentions "AR preview demo" as a bullet point. The massive competitive advantage — that your designer receives your style profile, room scans, saved products, and behavioral signals before they ever meet you — is completely absent.</p>
+        </div>
+        <div class="audit-card problem">
+            <div class="label red">Problem 04</div>
+            <h3>Generic "How It Works"</h3>
+            <p>Discovery → Curation → Visualization → Delivery. Any design platform could put this on their page. Nothing here communicates what makes Patina different from Havenly, Decorilla, or a local designer's website.</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 3: THE SHIFT
+     ═══════════════════════════════════════════════════════════ -->
+<div class="slide">
+    <span class="slide-number">03</span>
+    <span class="mono" style="margin-bottom:32px; display:block;">Strategic Reframe</span>
+    <h2>From price menu<br>to <em>matchmaking</em></h2>
+    <p style="margin-bottom:48px;">The page needs to communicate three things the current version doesn't:</p>
+
+    <div class="comparison">
+        <div class="col before">
+            <div class="label red" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;">Current Positioning</div>
+            <h3 style="color:var(--off-white);">Patina is the design firm.</h3>
+            <p style="max-width:none;font-size:14px;">Fixed packages. Standardized deliverables. "Our team" does the work. You pick a tier and pay a price. Technology is a line item in a bullet list.</p>
+        </div>
+        <div class="divider">→</div>
+        <div class="col after">
+            <div class="label green" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;">New Positioning</div>
+            <h3 style="color:var(--off-white);">Patina is the bridge.</h3>
+            <p style="max-width:none;font-size:14px;">You're matched with a real designer at a real firm who already understands your space, your taste, and your constraints — because the app told them. They craft a custom proposal. No tiers, no fixed prices.</p>
+        </div>
+    </div>
+
+    <div class="impl-note" style="margin-top:48px;">
+        <strong>Three truths the new page must land:</strong><br>
+        1. You're connecting with a real, independent design firm — not a Patina employee.<br>
+        2. The app captures enough intelligence to give your designer a massive head start.<br>
+        3. Every project gets a custom proposal. No tiers. No cookie cutters.
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4: THE PROPOSED PAGE (FULL PREVIEW)
+     ═══════════════════════════════════════════════════════════ -->
+<div class="slide compact" style="padding-bottom: 40px;">
+    <span class="slide-number">04</span>
+    <span class="mono" style="margin-bottom:32px; display:block;">The New Page — Complete Preview</span>
+    <h2>Proposed <em>patina.cloud/services</em></h2>
+    <p>Full copy and layout spec. Each section tagged for Sanity CMS field mapping.</p>
+</div>
+
+<div style="padding: 0 80px 80px;">
+    <div class="page-preview">
+        <div class="browser-bar">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="url-bar">patina.cloud/services</div>
+        </div>
+        <div class="page-body">
+
+            <!-- ── HERO ── -->
+            <div class="page-section hero-section">
+                <span class="section-tag">Section 01 · Hero</span>
+                <div class="p-eyebrow">Design Services</div>
+                <div class="p-headline">Your designer already<br>knows your <em>space</em></div>
+                <p class="p-sub">
+                    Patina connects you with independent designers and design firms who 
+                    share your aesthetic — and starts them off with everything they need to 
+                    craft a proposal that actually fits your life. No packages. No guesswork. 
+                    Just the right designer with the right head start.
+                </p>
+                <button class="p-btn-primary" style="margin-top:32px;">Find Your Designer</button>
+            </div>
+
+            <!-- ── THE HEAD START ── -->
+            <div class="page-section alt-bg">
+                <span class="section-tag">Section 02 · The Advantage</span>
+                <div style="text-align:center; margin-bottom:8px;">
+                    <span class="new-tag">New</span>
+                </div>
+                <div style="text-align:center;">
+                    <div class="p-mono" style="margin-bottom:12px;">The Patina Advantage</div>
+                    <div class="p-h2">What your designer receives<br>before <em>saying hello</em></div>
+                    <p class="p-body" style="max-width:540px; margin:0 auto;">
+                        Most design relationships start with a blank page. Yours starts 
+                        with a briefing package — assembled by you, just by using the app.
+                    </p>
+                </div>
+
+                <div class="data-package">
+                    <div class="data-item">
+                        <div class="icon">◎</div>
+                        <div class="data-label">Style Profile</div>
+                        <div class="data-desc">Your taste, decoded. Built from the style quiz, your saves, your skips, and the patterns between them.</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="icon">⊞</div>
+                        <div class="data-label">Room Scans</div>
+                        <div class="data-desc">Precise 3D models of your rooms with measurements, existing furniture, and architectural features.</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="icon">♡</div>
+                        <div class="data-label">Saved Pieces</div>
+                        <div class="data-desc">Every product you've saved, tried in AR, or lingered on — organized by room and category.</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="icon">$</div>
+                        <div class="data-label">Budget & Timeline</div>
+                        <div class="data-desc">Your investment range and when you'd like to start, so proposals are grounded from day one.</div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top:32px;">
+                    <p class="p-body" style="max-width:480px; margin:0 auto; font-style:italic;">
+                        "The first meeting used to be 90 minutes of getting-to-know-you. 
+                        Now I walk in with a running start."
+                    </p>
+                    <p class="p-mono" style="margin-top:8px;">— Patina Designer</p>
+                </div>
+            </div>
+
+            <!-- ── STRATA RULE ── -->
+            <div style="padding: 0 56px;">
+                <div class="p-strata">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <!-- ── HOW IT WORKS ── -->
+            <div class="page-section">
+                <span class="section-tag">Section 03 · Process</span>
+                <div style="text-align:center;">
+                    <div class="p-mono" style="margin-bottom:12px;">How It Works</div>
+                    <div class="p-h2">Four steps from app<br>to <em>custom proposal</em></div>
+                </div>
+
+                <div class="process-steps">
+                    <div class="process-step">
+                        <div class="step-num">01</div>
+                        <div class="p-h3" style="color:var(--charcoal);">Use the App</div>
+                        <p class="p-body">Take the style quiz. Scan your rooms. Save pieces you love. The more you explore, the sharper your briefing package becomes.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">02</div>
+                        <div class="p-h3" style="color:var(--charcoal);">Get Matched</div>
+                        <p class="p-body">Patina pairs you with a designer whose aesthetic, expertise, and working style align with yours. Not random — intentional.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">03</div>
+                        <div class="p-h3" style="color:var(--charcoal);">Meet &amp; Consult</div>
+                        <p class="p-body">Your designer already has your briefing package. The first conversation is about vision and priorities — not measurements and logistics.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">04</div>
+                        <div class="p-h3" style="color:var(--charcoal);">Receive a Proposal</div>
+                        <p class="p-body">A custom proposal scoped to your rooms, your budget, and your goals. Not a template — a plan built for you by someone who understands your style.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── THE MATCH ── -->
+            <div class="page-section alt-bg">
+                <span class="section-tag">Section 04 · Matching</span>
+                <div style="text-align:center; margin-bottom:8px;">
+                    <span class="new-tag">New</span>
+                </div>
+                <div style="max-width:560px;">
+                    <div class="p-mono" style="margin-bottom:12px;">Designer Matching</div>
+                    <div class="p-h2">The right designer,<br>not the <em>next available</em></div>
+                    <p class="p-body">
+                        Patina's matching considers your style profile, project scope, budget range, 
+                        location, and personality — then pairs you with a designer who's genuinely 
+                        the right fit. These are independent professionals running their own firms, 
+                        not interchangeable names on a roster.
+                    </p>
+
+                    <div class="match-card">
+                        <div class="match-avatar">LK</div>
+                        <div class="match-info">
+                            <div class="name">Leah Kirkland</div>
+                            <div class="firm">Middlewest Studio · Madison, WI</div>
+                        </div>
+                        <div class="match-score">
+                            <div class="pct">94%</div>
+                            <div class="pct-label">Style Match</div>
+                        </div>
+                    </div>
+                    <p class="p-body" style="margin-top:16px; font-size:13px;">
+                        Matched on: warm modern aesthetic, Midwestern craft values, residential focus, 
+                        experience with open floor plans.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ── WHAT TO EXPECT ── -->
+            <div class="page-section">
+                <span class="section-tag">Section 05 · Expectations</span>
+                <div style="text-align:center;">
+                    <div class="p-mono" style="margin-bottom:12px;">What to Expect</div>
+                    <div class="p-h2">Every project is <em>different</em></div>
+                    <p class="p-body" style="max-width:540px; margin:0 auto;">
+                        We don't offer fixed packages because no two homes — or homeowners — 
+                        are the same. Your designer will craft a proposal around your specific 
+                        needs. Here's what that typically looks like.
+                    </p>
+                </div>
+
+                <div class="advantage-row" style="margin-top:40px;">
+                    <div class="advantage-card">
+                        <div class="p-h3" style="color:var(--charcoal);">A Single Room</div>
+                        <p class="p-body">Focused guidance for one space — a living room that needs direction, a bedroom that's never felt finished, a home office that actually works.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="p-h3" style="color:var(--charcoal);">A Connected Floor</div>
+                        <p class="p-body">When your living room, dining area, and kitchen need to feel like one cohesive story. Your designer coordinates flow, palette, and proportion across the whole space.</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="p-h3" style="color:var(--charcoal);">A Whole Home</div>
+                        <p class="p-body">Comprehensive design across multiple rooms. Your designer builds a vision for how every space relates — from the entryway that sets the tone to the bedroom that closes the day.</p>
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top:40px;">
+                    <p class="p-body" style="max-width:460px; margin:0 auto; font-size:14px;">
+                        Scope, timeline, investment, and deliverables are all defined in your custom proposal. 
+                        No surprises. No fine print.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ── CLOSING CTA ── -->
+            <div class="page-section dark-section" style="text-align:center;">
+                <span class="section-tag" style="color:var(--aged-oak);">Section 06 · CTA</span>
+                <div class="p-h2" style="color:var(--off-white);">Ready to meet <em>your designer?</em></div>
+                <p class="p-body dark" style="max-width:480px; margin:0 auto;">
+                    Start with the app. Build your style profile. Scan the rooms that matter most. 
+                    When you're ready, we'll introduce you to a designer who gets it.
+                </p>
+                <div style="margin-top:32px;">
+                    <button class="p-btn-primary" style="background:var(--off-white); color:var(--charcoal);">
+                        Download the App
+                    </button>
+                    <button class="p-btn-secondary" style="color:var(--off-white); border-color:var(--aged-oak); margin-left:12px;">
+                        Already Have a Profile? Connect Now
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /page-body -->
+    </div><!-- /page-preview -->
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 5: WHAT WE KILLED
+     ═══════════════════════════════════════════════════════════ -->
+<div class="slide">
+    <span class="slide-number">05</span>
+    <span class="mono" style="margin-bottom:32px; display:block;">What Changed — Summary</span>
+    <h2>What we <em>killed</em>,<br>what we <em>built</em></h2>
+
+    <div class="audit-grid" style="margin-top:40px;">
+        <div class="audit-card" style="border-left:3px solid var(--red-flag);">
+            <div class="label red">Killed</div>
+            <h3>Three-Tier Pricing Grid</h3>
+            <p>Free / $450 / Custom tiers are gone. They contradict the custom-proposal model and commoditize the designer relationship. Replaced with "What to Expect" scoping examples.</p>
+        </div>
+        <div class="audit-card" style="border-left:3px solid var(--sage);">
+            <div class="label green">Built</div>
+            <h3>The Briefing Package</h3>
+            <p>New Section 02 shows exactly what data the app captures and how it reaches the designer. This is the competitive moat — now it's visible.</p>
+        </div>
+        <div class="audit-card" style="border-left:3px solid var(--red-flag);">
+            <div class="label red">Killed</div>
+            <h3>"Our Design Team" Language</h3>
+            <p>Every reference to an in-house team is replaced with "independent designers," "your designer," and "real firms." Patina is the bridge, not the firm.</p>
+        </div>
+        <div class="audit-card" style="border-left:3px solid var(--sage);">
+            <div class="label green">Built</div>
+            <h3>Designer Match Card</h3>
+            <p>New Section 04 shows a real match preview with style compatibility score. Makes the matching algorithm tangible and the designer human.</p>
+        </div>
+        <div class="audit-card" style="border-left:3px solid var(--red-flag);">
+            <div class="label red">Killed</div>
+            <h3>Generic 4-Step Process</h3>
+            <p>Discovery → Curation → Visualization → Delivery was interchangeable with any competitor. Replaced with app-first flow that highlights the data advantage.</p>
+        </div>
+        <div class="audit-card" style="border-left:3px solid var(--sage);">
+            <div class="label green">Built</div>
+            <h3>Dual CTA Strategy</h3>
+            <p>"Download the App" for new users, "Connect Now" for users who already have a profile. The current page has a single dead-end mailto link.</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SLIDE 6: IMPLEMENTATION NOTES
+     ═══════════════════════════════════════════════════════════ -->
+<div class="slide compact">
+    <span class="slide-number">06</span>
+    <span class="mono" style="margin-bottom:32px; display:block;">Implementation Notes</span>
+    <h2>Build <em>guidance</em></h2>
+
+    <div class="impl-note" style="margin-top:32px;">
+        <strong>Routes</strong><br>
+        · "Find Your Designer" → /services/match (new — triggers matching flow or app download prompt)<br>
+        · "Download the App" → App Store link or /app<br>
+        · "Connect Now" → /services/connect (authenticated flow for users with existing style profiles)<br><br>
+
+        <strong>Sanity CMS Fields</strong><br>
+        · Hero: eyebrow, headline, sub, cta_label, cta_link<br>
+        · Briefing Package: section_title, section_sub, data_items[] (icon, label, description)<br>
+        · Process Steps: steps[] (number, title, body)<br>
+        · Match Preview: editable example data or pull from real designer profiles (Phase 2+)<br>
+        · Scoping Examples: examples[] (title, body) — repeatable array, start with 3<br>
+        · Closing CTA: headline, sub, primary_cta, secondary_cta<br><br>
+
+        <strong>Design Notes</strong><br>
+        · Briefing Package section uses Pearl (#F5F2EE) background for visual break<br>
+        · Match Card component should become reusable — it appears in the iOS app lead flow too<br>
+        · Process step connector line uses IntersectionObserver to draw left→right on scroll<br>
+        · Closing section uses Charcoal background — same pattern as homepage footer CTA<br>
+        · Designer quote is placeholder; replace with real testimonial before launch<br>
+        · The Leah Kirkland match card is an illustrative example for the spec; production version should use a generic or rotate through real designer profiles<br><br>
+
+        <strong>What This Page Does NOT Handle</strong><br>
+        · Pricing details — those live in the custom proposal, not on a marketing page<br>
+        · Designer portfolio browsing — that's a future /designers/[slug] feature<br>
+        · Scheduling — handled in the matching/connect flow, not the services overview<br>
+        · The actual matching algorithm — this page communicates it; the app executes it
+    </div>
+</div>
+
+
+</body>
+</html>

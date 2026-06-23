@@ -561,23 +561,38 @@ export const servicesPageQuery = groq`
     heroHeadline,
     heroHeadlineEmphasis,
     heroDescription,
-    packagesHeader,
-    packages[]-> {
-      _id,
-      name,
-      price,
-      description,
-      features,
-      cta,
-      featured
+    heroCta,
+    briefingHeader,
+    briefingIntro,
+    briefingItems[] {
+      icon,
+      label,
+      description
     },
+    briefingQuote,
+    briefingQuoteAttribution,
     processHeader,
     processSteps[] {
       number,
       title,
       description
     },
-    ctaHeader,
+    matchingHeader,
+    matchingBody,
+    matchExampleInitials,
+    matchExampleName,
+    matchExampleFirm,
+    matchExampleScore,
+    matchExampleCriteria,
+    expectationsHeader,
+    expectationsIntro,
+    scopingExamples[] {
+      title,
+      description
+    },
+    expectationsClosing,
+    ctaHeadline,
+    ctaHeadlineEmphasis,
     ctaDescription,
     ctaPrimary,
     ctaSecondary
@@ -852,5 +867,22 @@ export const journalPostBySlugQuery = groq`
     featured,
     "coverImageUrl": coverImage.asset->url,
     "coverImageAlt": coverImage.alt
+  }
+`;
+
+// Lightweight journal feed for sitemap
+export const journalSitemapQuery = groq`
+  *[_type == "journalPost" && defined(slug.current)] | order(publishedAt desc) {
+    "slug": slug.current,
+    publishedAt,
+    _updatedAt
+  }
+`;
+
+// Lightweight product feed for sitemap
+export const productSitemapQuery = groq`
+  *[_type == "product" && defined(slug.current)] | order(_updatedAt desc) {
+    "slug": slug.current,
+    _updatedAt
   }
 `;

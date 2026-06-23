@@ -3,10 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { PortableText } from "@portabletext/react";
+import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
+import { generateArticleJsonLd, generateBreadcrumbJsonLd } from "@/lib/seo";
+import { SITE_URL as siteUrl } from "@/lib/site-url";
 import { sanityFetch } from "../../../../sanity/lib/client";
 import { journalPostBySlugQuery, journalPostsQuery } from "../../../../sanity/lib/queries";
 
@@ -15,7 +17,7 @@ interface JournalPost {
   title: string;
   slug: string;
   excerpt: string;
-  body: any[];
+  body: PortableTextBlock[];
   category: string;
   publishedAt: string;
   author: string;
@@ -161,8 +163,31 @@ export default async function JournalPostPage({
 
   if (!post) notFound();
 
+  const articleUrl = `${siteUrl}/journal/${post.slug}`;
+  const articleJsonLd = generateArticleJsonLd({
+    title: post.title,
+    description: post.excerpt,
+    url: articleUrl,
+    datePublished: post.publishedAt,
+    authorName: post.author,
+    imageUrl: post.coverImageUrl,
+  });
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: "Home", url: siteUrl },
+    { name: "Journal", url: `${siteUrl}/journal` },
+    { name: post.title, url: articleUrl },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Navigation />
 
       <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">

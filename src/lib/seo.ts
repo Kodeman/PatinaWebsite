@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { Product } from "@/types/sanity";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://patina.design";
+import { SITE_URL as siteUrl } from "@/lib/site-url";
 const siteName = "Patina";
 const siteDescription = "The complete room, designer-curated. Handcrafted anchor pieces from heritage makers, surrounded by designer-selected brands and every finishing detail.";
 
@@ -221,15 +220,15 @@ export function generateServiceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Patina Design Services",
+    name: "Patina Designer Matching",
     provider: {
       "@type": "Organization",
       name: "Patina",
       url: siteUrl,
     },
-    serviceType: "Interior Design",
+    serviceType: "Interior Design Matching",
     description:
-      "Professional interior design services powered by the Patina platform. From single-room refreshes to complete home transformations, guided by designers who use the Aesthete Engine.",
+      "Patina matches you with an independent interior designer who shares your aesthetic. The app captures your style profile, room scans, saved pieces, and budget — so your designer starts with a briefing package instead of a blank page. No fixed packages. Every project gets a custom proposal.",
     areaServed: {
       "@type": "Country",
       name: "United States",

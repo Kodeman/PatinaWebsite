@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://patina.design";
+import { SITE_URL as baseUrl } from "@/lib/site-url";
 
 export default function robots(): MetadataRoute.Robots {
   return {

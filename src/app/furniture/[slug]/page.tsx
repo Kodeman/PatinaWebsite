@@ -10,9 +10,8 @@ import { ProductCard } from "@/components/features/ProductCard";
 import { MaterialTag } from "@/components/ui/MaterialTag";
 import { formatPrice } from "@/lib/utils";
 import { generateProductJsonLd, generateBreadcrumbJsonLd } from "@/lib/seo";
+import { SITE_URL as siteUrl } from "@/lib/site-url";
 import { sanityFetch } from "../../../../sanity/lib/client";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://patina.cloud";
 import { productBySlugQuery, relatedProductsQuery } from "../../../../sanity/lib/queries";
 import type { Product, ProductCard as ProductCardType } from "@/types/sanity";
 
