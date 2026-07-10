@@ -37,6 +37,15 @@ export function getPostHogClient() {
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
   if (!key) return null;
 
+  // Skip in dev unless explicitly opted in — PostHog network failures pollute
+  // the Next.js dev error overlay and mask real application errors.
+  if (
+    process.env.NODE_ENV === "development" &&
+    process.env.NEXT_PUBLIC_POSTHOG_ENABLE_IN_DEV !== "true"
+  ) {
+    return null;
+  }
+
   if (!posthog.__loaded) {
     const consent = getConsent();
     const dnt = navigator.doNotTrack === "1";
@@ -51,6 +60,13 @@ export function getPostHogClient() {
       enable_recording_console_log: false,
       opt_out_capturing_by_default: dnt || consent !== "granted",
     });
+
+    // `surface` super-property — rides on every event from this app
+    // (custom captures, autocapture, $pageview). Primary segmentation key
+    // across all Patina surfaces (designer-web, client-web, admin-web,
+    // extension, patina-ios, field-ios, marketing-web). See
+    // patina-merged/docs/analytics/event-conventions.md.
+    posthog.register({ surface: "marketing-web" });
 
     // If user previously granted consent (and no DNT), opt back in
     if (consent === "granted" && !dnt) {
