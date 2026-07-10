@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
-import { track } from "@/lib/analytics";
+import { systemMessages } from "@/lib/copy/system-messages";
 
 interface ContactContentProps {
   heroEyebrow?: string;
@@ -33,8 +33,8 @@ const defaultContactReasons = [
 
 const defaultQuickLinks = [
   { label: "Work with a Designer", href: "/services" },
-  { label: "Apply as a Maker", href: "/makers" },
-  { label: "Download the App", href: "/app" },
+  { label: "Apply as a Maker", href: "/makers/apply" },
+  { label: "See the App", href: "/app" },
 ];
 
 export default function ContactContent(props: ContactContentProps) {
@@ -43,18 +43,34 @@ export default function ContactContent(props: ContactContentProps) {
     email: "",
     reason: "general",
     message: "",
+    company_url: "", // honeypot — real users never fill this
   });
   const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const contactReasons = props.contactReasons?.length ? props.contactReasons : defaultContactReasons;
   const quickLinks = props.quickLinks?.length ? props.quickLinks : defaultQuickLinks;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    track("contact_form_submitted", {
-      reason: formData.reason,
-    });
-    setSubmitted(true);
+    setStatus("loading");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(data.error || systemMessages.errors.generic);
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : systemMessages.errors.generic);
+    }
   };
 
   return (
@@ -102,39 +118,41 @@ export default function ContactContent(props: ContactContentProps) {
                       Email
                     </h3>
                     <a
-                      href={`mailto:${props.email || "hello@patina.com"}`}
+                      href={`mailto:${props.email || "hello@patina.cloud"}`}
                       className="text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"
                     >
-                      {props.email || "hello@patina.com"}
-                    </a>
-                  </div>
-
-                  <div>
-                    <h3 className="text-sm font-medium text-[var(--patina-charcoal)] mb-2">
-                      Phone
-                    </h3>
-                    <a
-                      href={`tel:${(props.phone || "1-800-555-1234").replace(/[^0-9+]/g, "")}`}
-                      className="text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"
-                    >
-                      {props.phone || "1-800-555-1234"}
+                      {props.email || "hello@patina.cloud"}
                     </a>
                     <p className="text-sm text-[var(--patina-clay-beige)] mt-1">
-                      {props.phoneHours || "Mon-Fri, 9am-6pm EST"}
+                      {props.phoneHours || "We read every message and reply within two business days."}
                     </p>
                   </div>
 
                   <div>
                     <h3 className="text-sm font-medium text-[var(--patina-charcoal)] mb-2">
-                      Showroom
+                      Where we are
                     </h3>
                     <address className="text-[var(--patina-mocha-brown)] not-italic whitespace-pre-line">
-                      {props.showroomAddress || "123 Craft District\nBrooklyn, NY 11201"}
+                      {props.showroomAddress || "Madison, Wisconsin"}
                     </address>
                     <p className="text-sm text-[var(--patina-clay-beige)] mt-1">
-                      {props.showroomNote || "By appointment only"}
+                      {props.showroomNote || "Home of Middlewest Studio"}
                     </p>
                   </div>
+
+                  {props.phone && (
+                    <div>
+                      <h3 className="text-sm font-medium text-[var(--patina-charcoal)] mb-2">
+                        Phone
+                      </h3>
+                      <a
+                        href={`tel:${props.phone.replace(/[^0-9+]/g, "")}`}
+                        className="text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)] transition-colors"
+                      >
+                        {props.phone}
+                      </a>
+                    </div>
+                  )}
 
                   <div className="pt-4 border-t border-[rgba(163,146,124,0.15)]">
                     <h3 className="text-sm font-medium text-[var(--patina-charcoal)] mb-3">
@@ -178,12 +196,14 @@ export default function ContactContent(props: ContactContentProps) {
                       Message Sent
                     </h3>
                     <p className="text-[var(--patina-mocha-brown)] mb-6">
-                      {props.successMessage || "Thank you for reaching out. We typically respond within 24 hours."}
+                      {props.successMessage || "Thank you for reaching out. We read every message ourselves and usually reply within two business days."}
                     </p>
                     <button
                       onClick={() => {
                         setSubmitted(false);
-                        setFormData({ name: "", email: "", reason: "general", message: "" });
+                        setStatus("idle");
+                        setErrorMsg("");
+                        setFormData({ name: "", email: "", reason: "general", message: "", company_url: "" });
                       }}
                       className="text-sm text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] transition-colors"
                     >
@@ -192,6 +212,17 @@ export default function ContactContent(props: ContactContentProps) {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Honeypot — hidden from real users, catches bots */}
+                    <input
+                      type="text"
+                      name="company_url"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      value={formData.company_url}
+                      onChange={(e) => setFormData({ ...formData, company_url: e.target.value })}
+                      className="absolute left-[-9999px] w-px h-px opacity-0"
+                    />
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div>
                         <label
@@ -269,11 +300,18 @@ export default function ContactContent(props: ContactContentProps) {
                       />
                     </div>
 
+                    {status === "error" && (
+                      <p className="text-sm text-[#A14434]" role="alert">
+                        {errorMsg}
+                      </p>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-mocha-brown)] shadow-lg"
+                      disabled={status === "loading"}
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-mocha-brown)] shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {status === "loading" ? "Sending…" : "Send Message"}
                     </button>
                   </form>
                 )}

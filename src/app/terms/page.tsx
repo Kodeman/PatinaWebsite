@@ -4,7 +4,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Patina",
+  title: "Terms of Service",
   description:
     "Terms and conditions for using Patina's website and services. Understand your rights and responsibilities.",
 };
@@ -207,7 +207,7 @@ export default function TermsPage() {
                 <div className="space-y-4 text-[var(--patina-mocha-brown)]">
                   <p>
                     These Terms of Service shall be governed by and construed in
-                    accordance with the laws of the State of New York, without
+                    accordance with the laws of the State of Wisconsin, without
                     regard to its conflict of law provisions.
                   </p>
                 </div>
@@ -244,14 +244,14 @@ export default function TermsPage() {
                   <p className="text-[var(--patina-mocha-brown)]">
                     Email:{" "}
                     <a
-                      href="mailto:legal@patina.com"
+                      href="mailto:legal@patina.cloud"
                       className="text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)]"
                     >
-                      legal@patina.com
+                      legal@patina.cloud
                     </a>
                   </p>
                   <p className="text-[var(--patina-mocha-brown)]">
-                    Address: 123 Craft District, Brooklyn, NY 11201
+                    Madison, Wisconsin, USA
                   </p>
                 </div>
               </div>

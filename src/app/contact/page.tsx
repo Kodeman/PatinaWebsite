@@ -5,7 +5,7 @@ import { contactPageQuery } from "../../../sanity/lib/queries";
 import ContactContent from "./ContactContent";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Patina",
+  title: "Contact Us",
   description:
     "Get in touch with the Patina team. We're here to help with product questions, designer partnerships, and everything in between.",
 };

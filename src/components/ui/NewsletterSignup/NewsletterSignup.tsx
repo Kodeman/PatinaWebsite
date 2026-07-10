@@ -104,7 +104,7 @@ export function NewsletterSignup({
               : "text-[var(--patina-charcoal)] text-center"
           )}
         >
-          Welcome. Your first letter is on its way.
+          Almost there — check your inbox to confirm.
         </p>
       </div>
     );

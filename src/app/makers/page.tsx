@@ -8,7 +8,7 @@ import { sanityFetch } from "../../../sanity/lib/client";
 import { makersQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
-  title: "Our Makers | Patina",
+  title: "Our Makers",
   description:
     "Meet the artisan workshops, heritage manufacturers, and emerging brands behind Patina furniture. Every partner shares the same belief: furniture should outlast the room it's in.",
 };

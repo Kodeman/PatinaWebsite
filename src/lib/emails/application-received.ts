@@ -1,13 +1,5 @@
 import { sendHtmlEmail, type SendResult } from './send';
-
-const signOff = `<p style="margin-top:24px">Warmly,<br/>Kody &amp; Leah<br/>Patina</p>`;
-
-const frame = (body: string) => `<!DOCTYPE html>
-<html><body style="font-family:-apple-system,'Inter',system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;color:#2C2926;line-height:1.6;background:#FAF7F2">
-${body}
-<hr style="margin:32px 0;border:none;border-top:1px solid #E5E2DD"/>
-<p style="font-size:12px;color:#8B7355">Patina · hello@patina.cloud</p>
-</body></html>`;
+import { frame, signOff, escapeHtml } from './template';
 
 export function designerReceivedEmail(app: { first_name: string; last_name?: string }) {
   const name = app.first_name?.trim() || 'there';
@@ -26,12 +18,6 @@ export function makerReceivedEmail(app: { contact_name: string; brand_name: stri
 <p>Leah personally reviews every maker application. Expect to hear from our team within two weeks with next steps. If something important comes up about your work in the meantime, just reply to this email.</p>
 <p>We're being very selective about the first 15 makers. Grateful you put ${escapeHtml(brand)} forward.</p>
 ${signOff}`);
-}
-
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, (c) =>
-    c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '"' ? '&quot;' : '&#39;',
-  );
 }
 
 export async function sendDesignerReceived(app: {

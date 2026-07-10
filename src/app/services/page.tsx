@@ -8,7 +8,7 @@ import { servicesPageQuery } from "../../../sanity/lib/queries";
 import { ServicesCTA } from "./ServicesCTA";
 
 export const metadata: Metadata = {
-  title: "Design Services | Patina",
+  title: "Design Services",
   description:
     "Patina matches you with an independent designer who already knows your space. The app captures your style, rooms, and saves — so your designer arrives with a running start.",
 };
@@ -211,10 +211,10 @@ export default async function ServicesPage() {
 
   const heroCtaLabel = pageData?.heroCta?.label || "Find Your Designer";
   const heroCtaHref = pageData?.heroCta?.href || "/app";
-  const ctaPrimaryLabel = pageData?.ctaPrimary?.label || "Download the App";
-  const ctaPrimaryHref = pageData?.ctaPrimary?.href || "/app";
+  const ctaPrimaryLabel = pageData?.ctaPrimary?.label || "Join the Founding Circle";
+  const ctaPrimaryHref = pageData?.ctaPrimary?.href || "/founding";
   const ctaSecondaryLabel =
-    pageData?.ctaSecondary?.label || "Already Have a Profile? Connect Now";
+    pageData?.ctaSecondary?.label || "See How the App Works";
   const ctaSecondaryHref = pageData?.ctaSecondary?.href || "/app";
 
   const serviceJsonLd = generateServiceJsonLd();

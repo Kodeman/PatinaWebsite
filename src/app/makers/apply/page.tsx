@@ -5,7 +5,7 @@ import { makersApplyPageQuery } from "../../../../sanity/lib/queries";
 import MakersApplyContent from "./MakersApplyContent";
 
 export const metadata: Metadata = {
-  title: "Become a Maker | Patina",
+  title: "Become a Maker",
   description:
     "Join Patina's network of artisan furniture makers. We partner with exceptional craftspeople who share our commitment to quality, sustainability, and transparency.",
 };

@@ -9,7 +9,7 @@ import { sanityFetch } from "../../../sanity/lib/client";
 import { journalPostsQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
-  title: "The Designer's Eye — Journal | Patina",
+  title: "The Designer's Eye — Journal",
   description:
     "Notes on design, craft, and building something new. From Leah's desk at Middlewest Studio.",
   openGraph: {

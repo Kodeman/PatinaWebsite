@@ -103,40 +103,17 @@ Tests are in `e2e/` directory. Each page has a corresponding spec file testing c
 
 The website is the **top of the funnel**. Users land here → browse → sign up for waitlist → eventually convert to authenticated users on portal/extension/iOS. PostHog tracks them across all surfaces with a unified identity.
 
-### Current State
-- `src/lib/analytics.ts` — Fully typed analytics abstraction with 15+ event types. Currently logs to console in dev, no-op in prod. **PostHog is a backend swap into this existing layer.**
-- `@vercel/analytics` — Already installed (basic pageviews/Web Vitals). Keep alongside PostHog.
-- No signup/waitlist form exists yet — **this needs to be built**.
+### Current State (SHIPPED — this section was previously a to-do list; it is now built)
+- `src/lib/analytics.ts` — typed analytics abstraction; PostHog is wired for prod via `src/lib/posthog.ts` (autocapture off, session recording on, `respect_dnt`, consent-gated). `@vercel/analytics` runs alongside.
+- **Lead capture is built.** The waitlist is now the **Founding Circle**: `FoundingCircleForm`, `FoundingCircleModal`, and the nav `FoundingPopover` → `POST /api/founding` → Supabase `waitlist`, with UTM + first/last-touch attribution and PostHog identity (`src/lib/lead-payload.ts`, `lead-capture.ts`, `attribution.ts`, `identity.ts`). `WaitlistForm`/`WaitlistPopover` are back-compat shims; `/waitlist` redirects to `/founding`.
+- **Newsletter** ("The Designer's Eye") uses double opt-in → `/api/newsletter` + `/api/newsletter/confirm`. Designer (`/api/designers-apply`), maker (`/api/makers-apply`), and contact (`/api/contact`) all persist to Supabase and send email.
+- **Transactional/lifecycle email** via Resend, one shared visual frame in `src/lib/emails/template.ts`: Founding welcome ("first letter from Leah"), newsletter confirm + welcome, designer/maker acks, contact auto-reply + founder notification. Every marketing email carries an unsubscribe line.
+- **Cookie consent** banner wired to PostHog opt-in/out; fires `consent_updated`.
 
-### Phase 1 Deliverables (This Website)
-
-1. **PostHog Cloud integration:**
-   - `npm install posthog-js posthog-node`
-   - Create `src/lib/posthog.ts` — init with `NEXT_PUBLIC_POSTHOG_KEY` + `NEXT_PUBLIC_POSTHOG_HOST`
-   - Add `PostHogProvider` wrapper component in layout (client component)
-   - Wire `analytics.ts` → PostHog: replace production placeholder in `track()` with `posthog.capture()`
-   - Autocapture OFF, session recording ON
-   - `capture_pageview: false` (we handle manually for SPA navigation)
-
-2. **Waitlist signup form:**
-   - Add signup form component — appears on hero, designers page, footer, maybe a dedicated `/waitlist` route
-   - Capture: email, role (designer/consumer/unknown), signup page, CTA text
-   - UTM parameters auto-captured from URL and stored with signup
-   - Attribution: first-touch and last-touch stored in localStorage, sent with signup
-   - Server action or API route → Supabase `waitlist` table (on self-hosted `api.patina.cloud`)
-   - On signup: `posthog.identify()` with email + `posthog.capture('waitlist_signup', {...})`
-   - PostHog `distinct_id` stored in waitlist row for later cross-platform identity merge
-
-3. **UTM attribution capture:**
-   - `AttributionManager` class (see plan) — captures UTM params from URL on landing
-   - Stores first-touch + last-touch in localStorage with 30-day window
-   - Registers UTM params with PostHog via `posthog.register()` for session persistence
-   - Attribution data sent with every waitlist signup
-
-4. **Cookie consent:**
-   - Minimal consent banner (GDPR/CCPA)
-   - PostHog only initializes after analytics consent
-   - `respect_dnt: true`, IP anonymization via `sanitize_properties`
+### Messaging & Voice — source of truth
+- **`docs/messaging/patina-messaging-system.md`** governs ALL customer-facing copy: positioning, the dual-track (trade + consumer) audience map, voice/tone, lexicon, the restrained-AI rule (designers lead; no accuracy %, no "invisible signals"), CTA hierarchy, and proof/honesty rules. Read it before writing any headline, button, email, or system string.
+- System/UI strings (errors, success, consent, newsletter-confirm) live in `src/lib/copy/system-messages.ts`.
+- Canonical brand facts: email `hello@patina.cloud`, location Madison WI, domain `patina.cloud`. The app/marketplace are **pre-launch** — never imply the app is downloadable today.
 
 ### Key Architecture Decisions
 - **PostHog Cloud** (not self-hosted) — zero ops, free tier 1M events/month

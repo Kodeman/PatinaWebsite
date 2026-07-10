@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { getConsent, setConsent } from "@/lib/posthog";
 import { track } from "@/lib/analytics";
+import { systemMessages } from "@/lib/copy/system-messages";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -47,20 +49,27 @@ export function CookieConsent() {
     >
       <div className="mx-auto max-w-lg rounded-[var(--radius-lg)] bg-[var(--patina-charcoal)] text-[var(--patina-off-white)] px-5 py-4 shadow-xl flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <p className="text-sm leading-relaxed flex-1">
-          We use cookies to understand how you interact with Patina and improve your experience.
+          {systemMessages.consent.body}{" "}
+          <Link
+            href="/privacy"
+            className="underline underline-offset-2 hover:text-[var(--patina-clay-light)] transition-colors"
+          >
+            {systemMessages.consent.privacyLabel}
+          </Link>
+          .
         </p>
         <div className="flex gap-2 shrink-0">
           <button
             onClick={handleDecline}
             className="px-3 py-1.5 text-sm rounded-[var(--radius-lg)] border border-[rgba(237,233,228,0.2)] hover:border-[rgba(237,233,228,0.4)] transition-colors"
           >
-            Decline
+            {systemMessages.consent.decline}
           </button>
           <button
             onClick={handleAccept}
             className="px-3 py-1.5 text-sm rounded-[var(--radius-lg)] bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] font-medium hover:bg-[var(--patina-off-white)] transition-colors"
           >
-            Accept
+            {systemMessages.consent.accept}
           </button>
         </div>
       </div>

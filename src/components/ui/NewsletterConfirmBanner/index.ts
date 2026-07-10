@@ -1,0 +1,1 @@
+export { NewsletterConfirmBanner } from "./NewsletterConfirmBanner";
