@@ -16,7 +16,7 @@ import { sanityFetch } from '../../../sanity/lib/client';
 import { aboutPageQuery, foundersQuery } from '../../../sanity/lib/queries';
 
 export const metadata: Metadata = {
-  title: 'Our Story | Patina',
+  title: 'Our Story',
   description:
     'Meet Kody and Leah Kochaver, the husband and wife team behind Patina. Born from real interior design work in Madison, Wisconsin.',
   openGraph: {

@@ -8,7 +8,7 @@ import { productsQuery } from "../../../sanity/lib/queries";
 import type { ProductCard } from "@/types/sanity";
 
 export const metadata: Metadata = {
-  title: "Furniture Collection | Patina",
+  title: "Furniture Collection",
   description:
     "Discover handcrafted furniture from artisans around the world. Each piece tells a story of craftsmanship, materials, and the makers who bring them to life.",
 };

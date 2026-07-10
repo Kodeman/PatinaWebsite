@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { FoundingPageContent } from './FoundingPageContent';
 
 export const metadata: Metadata = {
-  title: 'Join the Founding Circle — Patina',
+  title: 'Join the Founding Circle',
   description:
     'Be part of building a new kind of furniture platform. Founding Circle members get first access, real influence, and behind-the-scenes updates from the team.',
   openGraph: {

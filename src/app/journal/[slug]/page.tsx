@@ -68,7 +68,7 @@ export async function generateMetadata({
   if (!post) return { title: "Post Not Found | Patina" };
 
   return {
-    title: `${post.title} — The Designer's Eye | Patina`,
+    title: `${post.title} — The Designer's Eye`,
     description: post.excerpt,
     openGraph: {
       title: post.title,

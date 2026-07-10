@@ -14,7 +14,7 @@ import { sanityFetch } from '../../../sanity/lib/client';
 import { appPageQuery } from '../../../sanity/lib/queries';
 
 export const metadata: Metadata = {
-  title: 'The Patina App | Patina',
+  title: 'The Patina App',
   description:
     "See your room the way a designer would. The Patina app brings AR room visualization, designer-taught recommendations, and heritage makers together in one experience. Founding members get first access.",
   openGraph: {

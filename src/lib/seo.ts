@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { Product } from "@/types/sanity";
 import { SITE_URL as siteUrl } from "@/lib/site-url";
 const siteName = "Patina";
-const siteDescription = "The complete room, designer-curated. Handcrafted anchor pieces from heritage makers, surrounded by designer-selected brands and every finishing detail.";
+const siteDescription = "Designer-curated furniture for real rooms. Find pieces that belong in your space, guided by working designers — with a full designer engagement ready when you want more.";
 
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),

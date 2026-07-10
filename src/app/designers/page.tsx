@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { DesignerApplicationForm } from "./DesignerApplicationForm";
 
 export const metadata: Metadata = {
-  title: "The Founding 50 | Patina",
+  title: "The Founding 50",
   description:
     "We're looking for 50 designers to co-create the future of design technology. Not as beta testers — as co-creators who shape the taxonomy, test the tools, and own the narrative.",
   openGraph: {
@@ -22,7 +22,7 @@ const founding50Benefits = [
   {
     title: "Shape the Taxonomy",
     description:
-      "The Aesthete Engine learns from your vocabulary — not generic categories. You define how products are classified, matched, and recommended.",
+      "Patina learns from your vocabulary — not generic categories. You define how products are classified, matched, and recommended.",
   },
   {
     title: "Test the Portal",
@@ -145,12 +145,13 @@ export default function DesignersPage() {
               </em>
             </h2>
             <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed max-w-[700px] mx-auto">
-              We&apos;re looking for working interior designers — solo
-              practitioners and small firms — who are actively sourcing products
-              for real clients. You don&apos;t need to be famous. You need to
-              have taste, opinions, and a willingness to teach a system what
-              &ldquo;good&rdquo; looks like. A mix of experience levels, style
-              perspectives, and regional markets makes the cohort stronger.
+              We&apos;re looking for working interior designers and architects —
+              solo practitioners and small firms — who are actively sourcing and
+              specifying for real clients. You don&apos;t need to be famous. You
+              need to have taste, opinions, and a willingness to teach a system
+              what &ldquo;good&rdquo; looks like. A mix of experience levels, style
+              perspectives, project scales, and regional markets makes the cohort
+              stronger.
             </p>
           </div>
         </section>
@@ -189,8 +190,8 @@ export default function DesignersPage() {
             </h2>
             <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-4 max-w-[650px] mx-auto">
               Leah runs Middlewest Studio, an interior design practice in
-              Madison, Wisconsin. Her clients trust her taste — and her taste is
-              what teaches the Aesthete Engine.
+              Madison, Wisconsin. Her clients trust her taste — and that taste is
+              what teaches Patina what &ldquo;good&rdquo; looks like.
             </p>
             <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-8 max-w-[650px] mx-auto">
               Kody builds the technology. Together, they&apos;re creating what

@@ -1,1 +1,0 @@
-export { StickyNav } from "./StickyNav";

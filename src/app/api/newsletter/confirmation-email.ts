@@ -1,20 +1,6 @@
 import { sendHtmlEmail, type SendResult } from "@/lib/emails/send";
+import { frame, escapeHtml } from "@/lib/emails/template";
 import { SITE_URL } from "@/lib/site-url";
-
-// Mirrors the framing in src/lib/emails/application-received.ts so every
-// transactional mail from the marketing site shares one visual voice.
-const frame = (body: string) => `<!DOCTYPE html>
-<html><body style="font-family:-apple-system,'Inter',system-ui,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;color:#2C2926;line-height:1.6;background:#FAF7F2">
-${body}
-<hr style="margin:32px 0;border:none;border-top:1px solid #E5E2DD"/>
-<p style="font-size:12px;color:#8B7355">Patina · hello@patina.cloud</p>
-</body></html>`;
-
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, (c) =>
-    c === "&" ? "&amp;" : c === "<" ? "&lt;" : c === ">" ? "&gt;" : c === '"' ? "&quot;" : "&#39;",
-  );
-}
 
 /**
  * Builds the double opt-in confirmation link. Both token and email are

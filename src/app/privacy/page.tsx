@@ -4,7 +4,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Patina",
+  title: "Privacy Policy",
   description:
     "Learn how Patina collects, uses, and protects your personal information. Our commitment to your privacy.",
 };
@@ -150,10 +150,10 @@ export default function PrivacyPage() {
                   <p>
                     To exercise these rights, please contact us at{" "}
                     <a
-                      href="mailto:privacy@patina.com"
+                      href="mailto:privacy@patina.cloud"
                       className="text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] underline"
                     >
-                      privacy@patina.com
+                      privacy@patina.cloud
                     </a>
                     .
                   </p>
@@ -203,14 +203,14 @@ export default function PrivacyPage() {
                   <p className="text-[var(--patina-mocha-brown)]">
                     Email:{" "}
                     <a
-                      href="mailto:privacy@patina.com"
+                      href="mailto:privacy@patina.cloud"
                       className="text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)]"
                     >
-                      privacy@patina.com
+                      privacy@patina.cloud
                     </a>
                   </p>
                   <p className="text-[var(--patina-mocha-brown)]">
-                    Address: 123 Craft District, Brooklyn, NY 11201
+                    Madison, Wisconsin, USA
                   </p>
                 </div>
               </div>

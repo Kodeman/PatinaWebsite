@@ -8,7 +8,7 @@ import { sanityFetch } from "../../../sanity/lib/client";
 import { materialsFullQuery } from "../../../sanity/lib/queries";
 
 export const metadata: Metadata = {
-  title: "Materials | Patina",
+  title: "Materials",
   description:
     "Discover the premium materials behind Patina furniture. From sustainably sourced hardwoods to hand-selected leathers, learn about our commitment to quality.",
 };

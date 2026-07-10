@@ -179,8 +179,8 @@ export function ARPreviewButton({
                   </h3>
                   <p className="text-[var(--patina-mocha-brown)] mb-6">
                     We&apos;re working on bringing {productName} to life in augmented
-                    reality. Download the Patina app to be notified when this
-                    feature launches.
+                    reality. Join the Founding Circle to be first to try it when the
+                    app launches.
                   </p>
 
                   <div className="flex flex-col gap-3">
@@ -188,7 +188,7 @@ export function ARPreviewButton({
                       href="/founding"
                       className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--patina-clay-beige)] text-white rounded-[var(--radius-lg)] font-medium hover:bg-[var(--patina-mocha-brown)] transition-colors"
                     >
-                      Become a Founding Member
+                      Join the Founding Circle
                     </a>
                     <button
                       onClick={() => setShowModal(false)}

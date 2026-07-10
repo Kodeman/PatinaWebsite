@@ -18,7 +18,7 @@ const benefits = [
   {
     icon: '◈',
     title: 'Behind the Curtain',
-    body: "Exclusive updates from Kody & Leah as the catalog grows, makers sign on, and the AI learns. The real, unpolished building story.",
+    body: "Exclusive updates from Kody & Leah as the catalog grows, makers sign on, and the platform takes shape. The real, unpolished building story.",
   },
   {
     icon: '⟡',
@@ -58,7 +58,7 @@ export function FoundingPageContent() {
 
             <FadeIn delay={0.1}>
               <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-4">
-                We&apos;re building a furniture platform where real designers teach the AI,
+                We&apos;re building a furniture platform where real designers teach it what belongs,
                 real makers craft the pieces, and your room gets the attention it deserves.
               </p>
               <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-10">
@@ -135,13 +135,13 @@ export function FoundingPageContent() {
                   in complete rooms, not isolated products.
                 </p>
                 <p>
-                  Our Aesthete Engine is an AI recommendation system taught by professional
-                  interior designers. Not trained on click data or ad revenue — trained on
-                  the instincts that make a room feel right.
+                  At its heart is a designer-taught recommendation system — the one we quietly
+                  call the Aesthete Engine. Not trained on click data or ad revenue, but on the
+                  instincts of professional interior designers who know what makes a room feel right.
                 </p>
                 <p>
-                  We&apos;re curating a catalog of heritage makers and trusted brands, building
-                  AR room visualization tools, and developing style profiles that actually
+                  We&apos;re building a catalog of heritage makers and trusted brands, developing
+                  AR room visualization tools, and shaping style profiles that actually
                   understand your taste.
                 </p>
                 <p className="text-[var(--patina-charcoal)] font-medium">
@@ -179,8 +179,7 @@ export function FoundingPageContent() {
                 </h3>
                 <p>
                   Leah runs Middlewest Studio, an interior design practice in Madison, Wisconsin.
-                  Her clients trust her taste — and her taste is what teaches the
-                  Aesthete Engine.
+                  Her clients trust her taste — and that taste is what Patina learns from.
                 </p>
                 <p>
                   Kody builds the technology. His background is in enterprise software

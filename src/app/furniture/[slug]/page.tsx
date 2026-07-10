@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!product) {
     return {
-      title: "Product Not Found | Patina",
+      title: "Product Not Found",
     };
   }
 
   return {
-    title: `${product.name} | Patina`,
+    title: `${product.name}`,
     description: product.description,
   };
 }

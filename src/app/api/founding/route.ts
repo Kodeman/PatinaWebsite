@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { getServerPostHog } from "@/lib/posthog-server";
 import { isHoneypotTripped, checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { captureLeadEvent } from "@/lib/lead-capture";
+import { sendFoundingWelcome } from "@/lib/emails/founding-welcome";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -22,6 +23,7 @@ export async function POST(request: NextRequest) {
 
     const {
       email,
+      first_name,
       source,
       signup_page,
       cta_text,
@@ -55,6 +57,16 @@ export async function POST(request: NextRequest) {
       });
       return NextResponse.json({ success: true });
     }
+
+    // Only send the welcome letter on a member's first signup — the upsert below
+    // is idempotent on email, so a re-submit must not re-trigger the "first
+    // letter from Leah."
+    const { data: existingRow } = await supabaseAdmin
+      .from("waitlist")
+      .select("email")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
+    const isNewSignup = !existingRow;
 
     const { error } = await supabaseAdmin.from("waitlist").upsert(
       {
@@ -127,6 +139,17 @@ export async function POST(request: NextRequest) {
         founding_source: source,
       },
     });
+
+    // Fire-and-forget welcome — the "first letter from Leah" the modal promises.
+    // New members only; send failures don't block the success response.
+    if (isNewSignup) {
+      sendFoundingWelcome({ email: normalizedEmail, first_name }).catch((err) => {
+        console.error(
+          "[Founding] Welcome email failed:",
+          err instanceof Error ? err.message : "Unknown error",
+        );
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {

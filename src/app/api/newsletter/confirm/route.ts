@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { captureLeadEvent } from "@/lib/lead-capture";
+import { sendNewsletterWelcome } from "@/lib/emails/newsletter-welcome";
 import { SITE_URL } from "@/lib/site-url";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -88,6 +89,16 @@ export async function GET(request: NextRequest) {
         source: row.source,
       },
       personProps: { email, newsletter_confirmed: true },
+    });
+
+    // Fire-and-forget the genuine "first letter" the signup success promised.
+    // Only on this fresh confirm — the already-confirmed path above returns
+    // earlier, so a second click won't re-send it. Failures don't block landing.
+    sendNewsletterWelcome({ email }).catch((emailErr) => {
+      console.error(
+        "[NewsletterConfirm] Welcome email failed:",
+        emailErr instanceof Error ? emailErr.message : "Unknown error",
+      );
     });
 
     return landing("confirmed");

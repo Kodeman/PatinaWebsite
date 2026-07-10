@@ -19,9 +19,9 @@ export const appHeroContent = {
   subheadline:
     "Scan your space. Uncover your style. Find furniture that fits—not just the room, but the life you're building. Founding members will be the first to test it.",
   secondaryLine:
-    'Designer-taught AI delivers focused recommendations, not endless scrolling.',
+    'Designer-taught recommendations — a focused selection, not endless scrolling.',
   primaryCTA: {
-    label: 'Become a Founding Member',
+    label: 'Join the Founding Circle',
     href: '/founding',
   } satisfies CTALink,
   secondaryCTA: {
@@ -47,7 +47,7 @@ export const problemBridgeContent = {
   paragraphs: [
     "You've scrolled through thousands of options. Measured twice. Second-guessed every decision. And still, something doesn't feel right.",
     "That's because algorithms show you what others bought—not what belongs in your home.",
-    "Patina is different. Professional interior designers actively teach our AI what works. The Aesthete Engine learns your style through invisible signals—then surfaces only the furniture that truly fits.",
+    "Patina is different. Real interior designers teach it what belongs in a room like yours — so you see a focused handful of pieces that fit, not a thousand that don't.",
   ],
   comparison: {
     left: {
@@ -109,8 +109,8 @@ export const journeySteps: JourneyStep[] = [
     stepNumber: 2,
     title: 'Style That Emerges Naturally',
     description:
-      "Forget lengthy questionnaires. Style questions appear naturally during scanning—moments where material samples float in space and you tap what draws your eye. The Aesthete Engine also notices what you don't realize you're telling us. Quick taps reveal confidence. Slow swipes show thoughtfulness.",
-    tagline: 'Your actions speak louder than survey answers.',
+      "Forget lengthy questionnaires. Style questions surface naturally as you scan—material samples float into view, and you tap what draws your eye. The more you explore, the clearer your taste becomes.",
+    tagline: 'No forms. Just what catches your eye.',
     icon: 'style',
     imagePlaceholder: {
       id: 'step-style-discovery',
@@ -159,10 +159,10 @@ export const journeySteps: JourneyStep[] = [
 
 // Aesthete Engine Explainer Content
 export const aestheteEngineContent = {
-  eyebrow: 'THE AESTHETE ENGINE',
-  headline: 'The intelligence behind the intuition.',
+  eyebrow: 'DESIGNER-TAUGHT',
+  headline: 'Taught by designers, not trained on clicks.',
   subheadline:
-    'Professional designers actively teach our AI—so recommendations feel curated by someone who actually knows you.',
+    "Working interior designers teach Patina what belongs — so every recommendation feels like it came from someone with a great eye. We call it the Aesthete Engine, but really, it's just designers.",
   diagramPlaceholder: {
     id: 'engine-diagram',
     label: 'Learning Loop Diagram',
@@ -176,26 +176,26 @@ export const aestheteEngineContent = {
 export const enginePillars: EnginePillar[] = [
   {
     id: 'designer-taught',
-    title: 'Designer-Taught Intelligence',
-    description: 'Real interior designers encode what no algorithm could discover:',
+    title: 'Real designers, real judgment',
+    description: 'Working designers encode the things a generic catalog never could:',
     examples: [
       '"This fabric pills with cats"',
       '"Perfect for entertainers who hate maintenance"',
     ],
   },
   {
-    id: 'invisible-learning',
-    title: 'Invisible Learning',
+    id: 'focused-selection',
+    title: 'Focused, not endless',
     description:
-      'Your actions reveal authentic preferences—tap speed, zoom behavior, time spent viewing.',
-    examples: ["We notice what you don't realize you're telling us."],
+      'You see a short, considered selection that fits your room and your taste — not a thousand options to sort through.',
+    examples: ['Eight pieces that belong, not eight hundred that might.'],
   },
   {
     id: 'profile-evolves',
-    title: 'A Profile That Evolves',
-    description: 'Start at 75% accuracy. Reach 90%+ over time.',
-    highlight: '75% → 90%+',
-    examples: ['The longer you use it, the better it knows you.'],
+    title: 'Sharper over time',
+    description:
+      "Save what you love, skip what you don't. Your recommendations refine the way a designer sharpens a direction as they get to know you.",
+    examples: ['The more you explore, the better it fits.'],
   },
 ];
 
@@ -215,10 +215,10 @@ export const handoffContent = {
 };
 
 export const handoffItems: HandoffItem[] = [
-  { id: 'dimensions', text: 'Complete room dimensions and 3D model' },
-  { id: 'style-profile', text: 'Your full style profile with confidence scores' },
-  { id: 'behavioral', text: 'Behavioral signals revealing hidden preferences' },
-  { id: 'saved-pieces', text: 'Saved pieces showing your direction' },
+  { id: 'dimensions', text: 'Complete room dimensions and a 3D model' },
+  { id: 'style-profile', text: "Your style profile — what you're drawn to, and why" },
+  { id: 'saved-pieces', text: "Every piece you've saved, tried in AR, or passed on" },
+  { id: 'budget', text: 'Your budget and the rooms that matter most' },
 ];
 
 // Trust Section Content
@@ -231,12 +231,12 @@ export const trustIndicators: TrustIndicator[] = [
     id: 'designer-taught',
     icon: 'designer',
     title: 'Designer-Taught',
-    description: 'Every piece carries professional expertise. Real designers teach our AI.',
+    description: "Every recommendation carries a working designer's expertise — not an algorithm chasing clicks.",
   },
   {
-    id: 'quality-curated',
+    id: 'quality-vetted',
     icon: 'quality',
-    title: 'Quality Curated',
+    title: 'Quality, Vetted',
     description:
       'Every item meets standards for material integrity and longevity. Built to last decades.',
   },
