@@ -56,6 +56,11 @@ export function captureLeadEvent({
       distinctId,
       event,
       properties: {
+        // posthog-node has no register()/super-properties, so the cross-surface
+        // `surface` key must ride on each event's properties explicitly. The
+        // client-side copy of these events is consent-gated (opt-out by
+        // default), so this server emission is frequently the only one.
+        surface: "marketing-web",
         ...properties,
         ...(personProps ? { $set: personProps } : {}),
       },
