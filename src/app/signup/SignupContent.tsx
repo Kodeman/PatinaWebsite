@@ -7,7 +7,7 @@ import { FadeIn } from '@/components/motion';
 import { cn } from '@/lib/utils';
 import { track } from '@/lib/analytics';
 import { getPostHogClient } from '@/lib/posthog';
-import { buildLeadPayload, LEAD_HONEYPOT_FIELD } from '@/lib/lead-payload';
+import { buildLeadPayload, inferRole, LEAD_HONEYPOT_FIELD } from '@/lib/lead-payload';
 import { SMS_CONSENT_TEXT, systemMessages } from '@/lib/copy/system-messages';
 
 type FormState = 'idle' | 'loading' | 'success' | 'error';
@@ -16,8 +16,13 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Split the frozen compliance copy around the two phrases that need to become
 // links. Never retype SMS_CONSENT_TEXT — always derive from the constant.
-const [consentBeforePrivacy, consentAfterPrivacy] = SMS_CONSENT_TEXT.split('Privacy Policy');
-const [consentBetween, consentAfterTerms] = consentAfterPrivacy.split('SMS Terms');
+// The split keys ("Privacy Policy", "SMS Terms") are the literal phrases in
+// SMS_CONSENT_TEXT's closing sentence: "See our Privacy Policy and SMS Terms."
+// If that sentence is ever reworded, these keys must move with it; the `?? ''`
+// fallbacks keep the label rendering (minus a link) instead of crashing.
+const [consentBeforePrivacy, consentAfterPrivacy = ''] =
+  SMS_CONSENT_TEXT.split('Privacy Policy');
+const [consentBetween, consentAfterTerms = ''] = consentAfterPrivacy.split('SMS Terms');
 
 export function SignupContent() {
   const [firstName, setFirstName] = useState('');
@@ -68,6 +73,7 @@ export function SignupContent() {
       const extra: Record<string, unknown> = {
         email: trimmedEmail,
         first_name: trimmedFirstName,
+        role: inferRole('signup_page', signupPage),
         sms_consent: smsConsentGranted,
         [LEAD_HONEYPOT_FIELD]: honeypotRef.current?.value || '',
       };
@@ -147,6 +153,14 @@ export function SignupContent() {
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
+                  {/*
+                    Intentionally not sourced from systemMessages.founding: this
+                    single-line confirmation differs in wording from
+                    successTitle + successBody ("Watch your inbox for a first
+                    letter from Leah. We build in public…"), which is written for
+                    the modal's two-line success panel. Changing either would
+                    change shipped copy, so the two stay separate.
+                  */}
                   <p className="text-base font-medium text-[var(--patina-mocha-brown)]">
                     Welcome to the Founding Circle. Leah&apos;s first letter is on its way.
                   </p>
@@ -271,7 +285,7 @@ export function SignupContent() {
                   </div>
 
                   {state === 'error' && errorMessage && (
-                    <p className="text-sm text-red-500">{errorMessage}</p>
+                    <p className="text-sm text-red-400">{errorMessage}</p>
                   )}
 
                   <button
