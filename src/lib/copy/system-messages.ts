@@ -8,6 +8,14 @@
  * strings for now and should migrate to these over time.
  */
 
+/**
+ * SMS consent checkbox copy, quoted verbatim in Patina's Twilio A2P 10DLC
+ * campaign registration. This is a frozen compliance artifact — do not
+ * reword, even for style consistency with the rest of this file.
+ */
+export const SMS_CONSENT_TEXT =
+  "I agree to receive account and order notification text messages and login verification codes from Patina at the mobile number provided. Message frequency varies. Message and data rates may apply. Reply HELP for help or STOP to cancel at any time. See our Privacy Policy and SMS Terms.";
+
 export const systemMessages = {
   errors: {
     /** Catch-all failure. Human, never blames the user. */
@@ -36,6 +44,17 @@ export const systemMessages = {
     successTitle: "Message sent",
     successBody:
       "Thank you for reaching out. We read every message ourselves and usually reply within two business days.",
+  },
+
+  signup: {
+    labels: {
+      firstName: "First name (optional)",
+      email: "Email",
+      phone: "Mobile number (optional)",
+    },
+    /** Shown when the SMS consent checkbox is checked but no phone was entered. Asserted verbatim in e2e tests. */
+    consentPhoneMissing: "Add a mobile number, or uncheck the texts option.",
+    invalidPhone: "That mobile number doesn't look right — mind checking it?",
   },
 
   consent: {

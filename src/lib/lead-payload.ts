@@ -92,7 +92,7 @@ export function inferRole(
     return "designer";
   }
 
-  if (/founding|waitlist|newsletter|furniture|shop|consumer|home/.test(haystack)) {
+  if (/founding|waitlist|newsletter|furniture|shop|consumer|home|signup/.test(haystack)) {
     return "consumer";
   }
 
