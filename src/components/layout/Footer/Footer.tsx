@@ -132,6 +132,12 @@ export function Footer() {
             >
               Terms
             </Link>
+            <Link
+              href="/signup"
+              className="text-[0.8125rem] text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
       </div>

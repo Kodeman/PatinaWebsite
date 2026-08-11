@@ -1,0 +1,1964 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#2c2926">
+  <title>Patina — Brand Alignment &amp; Traction Brief</title>
+  <style>
+    :root {
+      --paper: #f2eee8;
+      --paper-bright: #faf7f2;
+      --paper-deep: #e3ddd4;
+      --ink: #2c2926;
+      --graphite: #514b45;
+      --clay: #a3927c;
+      --clay-pale: #c9bdad;
+      --sage: #687268;
+      --archive-red: #7d3e35;
+      --line: rgba(44, 41, 38, 0.18);
+      --line-strong: rgba(44, 41, 38, 0.42);
+      --display: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+      --body: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+      --mono: "SFMono-Regular", "Cascadia Mono", "Roboto Mono", monospace;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --slide-x: clamp(1.4rem, 6vw, 7rem);
+      --slide-y: clamp(4.5rem, 9vh, 7.5rem);
+      --rail: clamp(2.7rem, 4vw, 4.25rem);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      background: var(--ink);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      overflow: hidden;
+      text-rendering: optimizeLegibility;
+    }
+
+    button,
+    a { font: inherit; }
+
+    a {
+      color: inherit;
+      text-decoration-color: var(--clay);
+      text-decoration-thickness: 1px;
+      text-underline-offset: .2em;
+    }
+
+    a:hover { text-decoration-color: currentColor; }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--archive-red);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      left: 1rem;
+      top: 1rem;
+      padding: .65rem .9rem;
+      background: var(--paper-bright);
+      color: var(--ink);
+      transform: translateY(-180%);
+      transition: transform .2s ease;
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      min-height: 560px;
+      background:
+        linear-gradient(90deg, rgba(44, 41, 38, .025) 1px, transparent 1px) 0 0 / 9.2vw 100%,
+        var(--paper);
+    }
+
+    .deck::after {
+      content: "";
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      opacity: .13;
+      mix-blend-mode: multiply;
+      background-image:
+        repeating-radial-gradient(circle at 17% 31%, rgba(44, 41, 38, .12) 0 .45px, transparent .55px 3px);
+      background-size: 11px 11px;
+    }
+
+    .chapter-rail {
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 30;
+      width: var(--rail);
+      background: var(--ink);
+      color: var(--paper);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      justify-items: center;
+      padding: 1.25rem 0;
+    }
+
+    .rail-mark {
+      width: 1.35rem;
+      display: grid;
+      gap: 3px;
+      margin-top: .25rem;
+    }
+
+    .rail-mark i {
+      display: block;
+      height: 2px;
+      background: var(--paper);
+      transform-origin: left center;
+    }
+
+    .rail-mark i:nth-child(2) { transform: scaleX(.72); opacity: .72; }
+    .rail-mark i:nth-child(3) { transform: scaleX(.43); opacity: .4; }
+
+    .rail-label {
+      align-self: center;
+      font-family: var(--mono);
+      font-size: .58rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      opacity: .68;
+    }
+
+    .rail-progress {
+      width: 1px;
+      height: 7.5rem;
+      background: rgba(250, 247, 242, .18);
+      position: relative;
+    }
+
+    .rail-progress span {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1px;
+      background: var(--clay-pale);
+      height: 4.54%;
+      transition: height .55s var(--ease);
+    }
+
+    .slides {
+      position: absolute;
+      inset: 0 0 0 var(--rail);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      padding: var(--slide-y) var(--slide-x) 6rem;
+      display: grid;
+      align-content: center;
+      background: transparent;
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity .45s ease,
+        transform .55s var(--ease);
+    }
+
+    .slide[hidden] {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .slide.dark {
+      color: var(--paper-bright);
+      background: var(--ink);
+    }
+
+    .slide.clay {
+      background: var(--clay);
+      color: #211f1c;
+    }
+
+    .slide.paper-bright { background: var(--paper-bright); }
+
+    .slide-inner {
+      width: min(100%, 1380px);
+      min-width: 0;
+      margin: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .table-scroll {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .slide-meta {
+      position: absolute;
+      top: 1.75rem;
+      left: var(--slide-x);
+      right: var(--slide-x);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--mono);
+      font-size: .62rem;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      opacity: .62;
+    }
+
+    .eyebrow,
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      font-family: var(--mono);
+      font-size: .68rem;
+      line-height: 1.3;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 2.8rem;
+      height: 1px;
+      background: currentColor;
+      opacity: .45;
+    }
+
+    .kicker {
+      padding: .35rem .55rem .3rem;
+      border: 1px solid currentColor;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1,
+    h2 {
+      font-family: var(--display);
+      font-weight: 400;
+      letter-spacing: -.035em;
+      line-height: .98;
+      text-wrap: balance;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 9vw, 9.8rem);
+      max-width: 11ch;
+      margin-bottom: clamp(1.5rem, 4vw, 3.5rem);
+    }
+
+    h2 {
+      font-size: clamp(2.7rem, 6.2vw, 6.8rem);
+      max-width: 13ch;
+      margin-bottom: clamp(1.4rem, 3vw, 2.6rem);
+    }
+
+    h3 {
+      font-family: var(--display);
+      font-size: clamp(1.35rem, 2.1vw, 2.1rem);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -.02em;
+      margin-bottom: .65rem;
+    }
+
+    em {
+      color: var(--clay);
+      font-weight: inherit;
+    }
+
+    .clay em { color: var(--paper-bright); }
+
+    .lede {
+      max-width: 48rem;
+      font-family: var(--display);
+      font-size: clamp(1.35rem, 2.35vw, 2.3rem);
+      line-height: 1.38;
+      letter-spacing: -.012em;
+      text-wrap: pretty;
+    }
+
+    .body-large {
+      max-width: 50rem;
+      font-size: clamp(1.05rem, 1.55vw, 1.45rem);
+      line-height: 1.65;
+      color: var(--graphite);
+      text-wrap: pretty;
+    }
+
+    .dark .body-large { color: rgba(250, 247, 242, .72); }
+
+    .caption {
+      font-family: var(--mono);
+      font-size: .64rem;
+      line-height: 1.55;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .64;
+    }
+
+    .source-note {
+      margin-top: 1.2rem;
+      font-family: var(--mono);
+      font-size: .6rem;
+      line-height: 1.55;
+      color: var(--graphite);
+      opacity: .75;
+    }
+
+    .dark .source-note { color: rgba(250, 247, 242, .68); }
+
+    .rule {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+      margin: 2rem 0;
+    }
+
+    .strata {
+      display: grid;
+      gap: 5px;
+      width: min(17rem, 45vw);
+    }
+
+    .strata span {
+      display: block;
+      height: 2px;
+      background: currentColor;
+      transform-origin: left;
+    }
+
+    .strata span:nth-child(2) { width: 72%; opacity: .66; }
+    .strata span:nth-child(3) { width: 43%; opacity: .35; }
+
+    .title-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(15rem, .48fr);
+      gap: clamp(2rem, 8vw, 9rem);
+      align-items: end;
+    }
+
+    .title-aside {
+      padding: 1.25rem 0 0 1.5rem;
+      border-left: 1px solid var(--line-strong);
+    }
+
+    .title-aside dl { margin: 0; }
+    .title-aside div { margin-bottom: 1.3rem; }
+    .title-aside dt {
+      font-family: var(--mono);
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .58;
+      margin-bottom: .2rem;
+    }
+    .title-aside dd {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 1.15rem;
+    }
+
+    .verdict {
+      display: grid;
+      grid-template-columns: .72fr 1.28fr;
+      gap: clamp(2rem, 7vw, 8rem);
+      align-items: start;
+    }
+
+    .verdict-line {
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 5.2vw, 5.7rem);
+      line-height: 1;
+      letter-spacing: -.04em;
+      padding-left: 1.5rem;
+      border-left: .38rem solid var(--archive-red);
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      margin-top: 2.4rem;
+    }
+
+    .score {
+      min-height: 7.2rem;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 1rem;
+      display: grid;
+      align-content: space-between;
+      gap: .8rem;
+    }
+
+    .score b {
+      font-family: var(--display);
+      font-size: 2.15rem;
+      font-weight: 400;
+    }
+
+    .score span {
+      font-family: var(--mono);
+      font-size: .59rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .data-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: clamp(2rem, 5vw, 4rem);
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .datum {
+      padding: clamp(1.2rem, 2.5vw, 2.3rem);
+      border-right: 1px solid var(--line);
+    }
+
+    .datum:last-child { border-right: 0; }
+
+    .datum strong {
+      display: block;
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 5vw, 5.5rem);
+      font-weight: 400;
+      line-height: .95;
+      letter-spacing: -.04em;
+      color: var(--archive-red);
+    }
+
+    .datum span {
+      display: block;
+      margin-top: .7rem;
+      max-width: 15rem;
+      font-size: .78rem;
+      line-height: 1.45;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(2rem, 6vw, 7rem);
+      align-items: start;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(1.2rem, 2.6vw, 2.8rem);
+      align-items: start;
+    }
+
+    .four-col {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .dossier {
+      position: relative;
+      padding: 1.35rem;
+      border-top: 3px solid var(--ink);
+      background: rgba(250, 247, 242, .48);
+      min-height: 13rem;
+    }
+
+    .dossier.good { border-top-color: var(--sage); }
+    .dossier.risk { border-top-color: var(--archive-red); }
+    .dossier.opportunity { border-top-color: var(--clay); }
+
+    .dossier .label {
+      font-family: var(--mono);
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .58;
+      margin-bottom: 1rem;
+    }
+
+    .dossier p {
+      font-size: .86rem;
+      line-height: 1.6;
+      color: var(--graphite);
+    }
+
+    .audit-table,
+    .comparison-table,
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(.7rem, .88vw, .84rem);
+      line-height: 1.4;
+    }
+
+    .audit-table th,
+    .comparison-table th,
+    .action-table th {
+      font-family: var(--mono);
+      font-size: .57rem;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      text-align: left;
+      vertical-align: bottom;
+      padding: .7rem .65rem;
+      border-bottom: 1px solid var(--line-strong);
+      color: var(--graphite);
+    }
+
+    .audit-table td,
+    .comparison-table td,
+    .action-table td {
+      padding: .8rem .65rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .audit-table td:first-child,
+    .comparison-table td:first-child,
+    .action-table td:first-child {
+      font-weight: 600;
+    }
+
+    .flag {
+      display: inline-block;
+      padding: .22rem .42rem;
+      font-family: var(--mono);
+      font-size: .53rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      white-space: nowrap;
+    }
+
+    .flag.keep { color: var(--sage); }
+    .flag.fix { color: var(--archive-red); }
+    .flag.build { color: #806a4e; }
+    .flag.proposal { color: #5a6474; }
+
+    .trust-flow {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line-strong);
+      border: 1px solid var(--line-strong);
+    }
+
+    .trust-node {
+      position: relative;
+      min-height: 13rem;
+      background: var(--paper-bright);
+      padding: 1.5rem;
+    }
+
+    .trust-node::after {
+      content: "→";
+      position: absolute;
+      right: -1.02rem;
+      top: 50%;
+      z-index: 3;
+      transform: translateY(-50%);
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 50%;
+      font-size: .8rem;
+    }
+
+    .trust-node:last-child::after { display: none; }
+
+    .trust-node .num {
+      font-family: var(--mono);
+      font-size: .62rem;
+      color: var(--archive-red);
+      margin-bottom: 2rem;
+    }
+
+    .trust-node p {
+      font-size: .82rem;
+      color: var(--graphite);
+      margin-bottom: 0;
+    }
+
+    .audience-card {
+      min-height: 24rem;
+      padding: clamp(1.2rem, 2.3vw, 2.2rem);
+      border: 1px solid var(--line-strong);
+      background: rgba(250, 247, 242, .55);
+      display: grid;
+      align-content: start;
+    }
+
+    .audience-card.primary {
+      color: var(--paper-bright);
+      background: var(--ink);
+      transform: translateY(-1rem);
+      box-shadow: 0 1.3rem 2.8rem rgba(44, 41, 38, .16);
+    }
+
+    .audience-card ul,
+    .priority-list,
+    .stop-list {
+      margin: .8rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .audience-card li,
+    .priority-list li,
+    .stop-list li {
+      position: relative;
+      padding: .62rem 0 .62rem 1.15rem;
+      border-top: 1px solid currentColor;
+      border-color: var(--line);
+      font-size: .82rem;
+    }
+
+    .audience-card li::before,
+    .priority-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--clay);
+    }
+
+    .audience-card.primary li { border-color: rgba(250, 247, 242, .16); }
+
+    .competitor-name {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      white-space: nowrap;
+    }
+
+    .market-map {
+      position: relative;
+      height: min(55vh, 35rem);
+      min-height: 22rem;
+      margin-top: 1.2rem;
+      border-left: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+      background:
+        linear-gradient(var(--line), var(--line)) 50% 0 / 1px 100% no-repeat,
+        linear-gradient(90deg, var(--line), var(--line)) 0 50% / 100% 1px no-repeat;
+    }
+
+    #slide-3 h2 {
+      font-size: clamp(2.7rem, 5.45vw, 5.8rem);
+    }
+
+    #slide-3 .data-strip {
+      margin-top: clamp(1.4rem, 3vw, 2.4rem);
+    }
+
+    #slide-12 .market-map {
+      height: min(44vh, 29rem);
+      min-height: 20rem;
+    }
+
+    #slide-13 h2 {
+      max-width: 18ch;
+      margin-bottom: 1.2rem;
+      font-size: clamp(2.7rem, 4.8vw, 5rem);
+    }
+
+    #slide-13 .positioning-statement {
+      margin-top: 1rem;
+      padding: clamp(1.25rem, 2.2vw, 2rem);
+      font-size: clamp(1.25rem, 2.05vw, 2.1rem);
+    }
+
+    #slide-13 .three-col {
+      margin-top: 1.25rem !important;
+    }
+
+    #slide-13 .three-col h3 {
+      font-size: clamp(1.2rem, 1.7vw, 1.65rem);
+    }
+
+    #slide-20 h2 {
+      max-width: 18ch;
+      margin-bottom: 1.2rem;
+      font-size: clamp(2.7rem, 4.8vw, 5rem);
+    }
+
+    .axis {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: .55rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--graphite);
+    }
+
+    .axis.top { top: -.2rem; left: .8rem; }
+    .axis.bottom { bottom: -1.4rem; left: .8rem; }
+    .axis.left { left: 0; bottom: -1.4rem; }
+    .axis.right { right: 0; bottom: -1.4rem; }
+
+    .market-dot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .38rem .65rem;
+      border: 1px solid var(--ink);
+      background: var(--paper-bright);
+      font-family: var(--mono);
+      font-size: .56rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 .3rem .7rem rgba(44, 41, 38, .08);
+    }
+
+    .market-dot.patina {
+      color: var(--paper-bright);
+      background: var(--archive-red);
+      border-color: var(--archive-red);
+      font-size: .67rem;
+      padding: .55rem .82rem;
+    }
+
+    .positioning-statement {
+      margin: 2rem 0 0;
+      padding: clamp(1.4rem, 3vw, 3rem);
+      border: 1px solid var(--line-strong);
+      background: var(--paper-bright);
+      font-family: var(--display);
+      font-size: clamp(1.4rem, 2.7vw, 2.7rem);
+      line-height: 1.35;
+      letter-spacing: -.02em;
+    }
+
+    .message-stack {
+      display: grid;
+      gap: .7rem;
+      margin-top: 2rem;
+    }
+
+    .message-layer {
+      display: grid;
+      grid-template-columns: 3rem 12rem 1fr;
+      gap: 1.2rem;
+      align-items: baseline;
+      padding: .85rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(250, 247, 242, .46);
+    }
+
+    .message-layer strong {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    .message-layer span:first-child {
+      font-family: var(--mono);
+      color: var(--archive-red);
+      font-size: .6rem;
+    }
+
+    .message-layer p {
+      margin: 0;
+      font-size: .82rem;
+      color: var(--graphite);
+    }
+
+    .copy-block {
+      padding: 1.15rem 1.3rem;
+      border: 1px solid var(--line);
+      background: var(--paper-bright);
+    }
+
+    .copy-block + .copy-block { margin-top: 1rem; }
+
+    .copy-block small {
+      display: block;
+      margin-bottom: .7rem;
+      font-family: var(--mono);
+      font-size: .56rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--archive-red);
+    }
+
+    .copy-block p {
+      font-family: var(--display);
+      font-size: clamp(1.15rem, 1.7vw, 1.65rem);
+      line-height: 1.32;
+      margin-bottom: .55rem;
+    }
+
+    .copy-block .microcopy {
+      font-family: var(--body);
+      font-size: .72rem;
+      color: var(--graphite);
+    }
+
+    .proof-pyramid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .proof-layer {
+      padding: 1.4rem;
+      border: 1px solid var(--line-strong);
+      min-height: 14rem;
+      background: var(--paper-bright);
+    }
+
+    .proof-layer .proof-num {
+      font-family: var(--display);
+      color: var(--clay);
+      font-size: 2.5rem;
+    }
+
+    .proof-layer ul {
+      padding-left: 1rem;
+      font-size: .78rem;
+      color: var(--graphite);
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 2rem;
+      background: var(--line-strong);
+      border: 1px solid var(--line-strong);
+    }
+
+    .phase {
+      background: var(--paper-bright);
+      padding: 1.2rem;
+      min-height: 20rem;
+    }
+
+    .phase .window {
+      font-family: var(--mono);
+      color: var(--archive-red);
+      font-size: .58rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .phase h3 { margin-top: 1rem; }
+    .phase ul {
+      padding-left: 1rem;
+      font-size: .72rem;
+      color: var(--graphite);
+    }
+
+    .channel-system {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr .8fr;
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .channel {
+      padding: 1.4rem;
+      min-height: 17rem;
+      border: 1px solid rgba(250, 247, 242, .2);
+    }
+
+    .channel h3 { color: var(--clay-pale); }
+    .channel p,
+    .channel li { color: rgba(250, 247, 242, .72); font-size: .78rem; }
+    .channel ul { padding-left: 1rem; }
+
+    .content-loop {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .content-step {
+      position: relative;
+      padding: 1.2rem;
+      min-height: 11rem;
+      border: 1px solid var(--line-strong);
+      background: var(--paper-bright);
+    }
+
+    .content-step::after {
+      content: "↗";
+      position: absolute;
+      right: .8rem;
+      bottom: .6rem;
+      font-size: 1.3rem;
+      color: var(--clay);
+    }
+
+    .budget-bar {
+      display: grid;
+      grid-template-columns: 26fr 23fr 18fr 13fr 12fr 8fr;
+      min-height: 5.5rem;
+      margin: 2rem 0 1.2rem;
+      overflow: hidden;
+    }
+
+    .budget-bar div {
+      display: grid;
+      place-items: center;
+      padding: .6rem;
+      color: var(--paper-bright);
+      font-family: var(--mono);
+      font-size: .55rem;
+      line-height: 1.35;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .budget-bar div:nth-child(1) { background: #2c2926; }
+    .budget-bar div:nth-child(2) { background: #514b45; }
+    .budget-bar div:nth-child(3) { background: #6c635a; }
+    .budget-bar div:nth-child(4) { background: #887968; }
+    .budget-bar div:nth-child(5) { background: #a3927c; color: #211f1c; }
+    .budget-bar div:nth-child(6) { background: #c9bdad; color: #211f1c; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .metric {
+      padding: 1.25rem;
+      border: 1px solid var(--line);
+      background: rgba(250, 247, 242, .55);
+      min-height: 11rem;
+    }
+
+    .metric strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.55rem;
+      font-weight: 400;
+      margin-bottom: .6rem;
+    }
+
+    .metric p {
+      font-size: .76rem;
+      color: var(--graphite);
+      margin-bottom: .7rem;
+    }
+
+    .metric .gate {
+      font-family: var(--mono);
+      font-size: .56rem;
+      color: var(--archive-red);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .decision {
+      min-height: 11.5rem;
+      padding: 1.3rem;
+      border: 1px solid var(--line-strong);
+      background:
+        linear-gradient(135deg, transparent 88%, rgba(163, 146, 124, .22) 88%);
+    }
+
+    .decision .decision-id {
+      font-family: var(--mono);
+      font-size: .57rem;
+      letter-spacing: .09em;
+      color: var(--archive-red);
+      text-transform: uppercase;
+    }
+
+    .decision p {
+      font-size: .78rem;
+      color: var(--graphite);
+    }
+
+    .commitment {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+
+    .commitment-list {
+      counter-reset: commitment;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .commitment-list li {
+      counter-increment: commitment;
+      display: grid;
+      grid-template-columns: 2rem 1fr auto;
+      gap: 1rem;
+      padding: .72rem 0;
+      border-bottom: 1px solid rgba(250, 247, 242, .18);
+      align-items: baseline;
+      font-size: .83rem;
+    }
+
+    .commitment-list li::before {
+      content: counter(commitment, decimal-leading-zero);
+      font-family: var(--mono);
+      color: var(--clay);
+      font-size: .56rem;
+    }
+
+    .commitment-list small {
+      font-family: var(--mono);
+      font-size: .54rem;
+      color: rgba(250, 247, 242, .55);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .final-thesis {
+      border-left: 1px solid var(--clay);
+      padding-left: 1.5rem;
+    }
+
+    .final-thesis p {
+      font-family: var(--display);
+      font-size: clamp(1.45rem, 2.5vw, 2.6rem);
+      line-height: 1.35;
+    }
+
+    .sources {
+      columns: 2;
+      column-gap: 3rem;
+      margin-top: 1.5rem;
+      padding: 0;
+      list-style: none;
+      font-size: .72rem;
+      color: var(--graphite);
+    }
+
+    .sources li {
+      break-inside: avoid;
+      margin-bottom: .8rem;
+      padding-bottom: .8rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .controls {
+      position: fixed;
+      z-index: 40;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .35rem;
+      background: rgba(44, 41, 38, .92);
+      color: var(--paper-bright);
+      box-shadow: 0 .8rem 2rem rgba(44, 41, 38, .18);
+      backdrop-filter: blur(12px);
+    }
+
+    .controls button {
+      width: 2.35rem;
+      height: 2.35rem;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(250, 247, 242, .18);
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .controls button:hover {
+      color: var(--ink);
+      background: var(--paper-bright);
+    }
+
+    .controls .counter {
+      min-width: 4rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .06em;
+    }
+
+    .help {
+      position: fixed;
+      z-index: 45;
+      right: 1rem;
+      bottom: 4.6rem;
+      width: min(21rem, calc(100vw - 2rem));
+      padding: 1rem;
+      background: var(--paper-bright);
+      color: var(--ink);
+      border: 1px solid var(--line-strong);
+      box-shadow: 0 1rem 3rem rgba(44, 41, 38, .2);
+      font-size: .76rem;
+    }
+
+    .help[hidden] { display: none; }
+    .help kbd {
+      padding: .1rem .35rem;
+      border: 1px solid var(--line-strong);
+      font-family: var(--mono);
+      font-size: .6rem;
+      background: var(--paper);
+    }
+
+    .deck.overview {
+      height: auto;
+      min-height: 100dvh;
+      overflow: visible;
+    }
+
+    .deck.overview .slides {
+      position: static;
+      margin-left: var(--rail);
+      padding: 4.5rem 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .deck.overview .slide,
+    .deck.overview .slide[hidden] {
+      position: relative;
+      display: grid;
+      inset: auto;
+      width: 100%;
+      height: auto;
+      min-height: 21rem;
+      padding: 2.1rem 1.5rem 1.5rem;
+      overflow: hidden;
+      opacity: 1;
+      transform: none;
+      border: 1px solid var(--line-strong);
+      cursor: pointer;
+    }
+
+    .deck.overview .slide-inner {
+      transform: scale(.44);
+      transform-origin: top left;
+      width: 220%;
+    }
+
+    .deck.overview .slide-meta {
+      top: .8rem;
+      left: .8rem;
+      right: .8rem;
+      font-size: .45rem;
+    }
+
+    .deck.overview .controls { position: fixed; }
+
+    @media (max-width: 980px) {
+      .title-layout,
+      .verdict,
+      .commitment { grid-template-columns: 1fr; }
+      .title-aside { max-width: 34rem; }
+      .score-grid { grid-template-columns: repeat(3, 1fr); }
+      .data-strip { grid-template-columns: repeat(2, 1fr); }
+      .datum:nth-child(2) { border-right: 0; }
+      .datum:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .three-col,
+      .metric-grid { grid-template-columns: 1fr; }
+      .four-col,
+      .proof-pyramid,
+      .content-loop { grid-template-columns: repeat(2, 1fr); }
+      .trust-flow,
+      .roadmap { grid-template-columns: 1fr; }
+      .trust-node::after { display: none; }
+      .phase { min-height: auto; }
+      .comparison-table { min-width: 920px; }
+      .table-scroll { overflow-x: auto; }
+      .channel-system { grid-template-columns: 1fr; }
+      .deck.overview .slides { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 680px) {
+      :root {
+        --rail: 2.35rem;
+        --slide-x: 1.2rem;
+        --slide-y: 4.2rem;
+      }
+      body { font-size: 14px; }
+      .slide {
+        align-content: start;
+        padding-bottom: 5.5rem;
+      }
+      .slide-meta { top: 1.2rem; }
+      h1 { font-size: clamp(3rem, 17vw, 5.4rem); }
+      h2 { font-size: clamp(2.45rem, 13vw, 4.2rem); }
+      .two-col,
+      .four-col,
+      .proof-pyramid,
+      .content-loop,
+      .decision-grid,
+      .metric-grid { grid-template-columns: 1fr; }
+      .score-grid { grid-template-columns: repeat(2, 1fr); }
+      .score:last-child { grid-column: 1 / -1; }
+      .message-layer {
+        grid-template-columns: 2rem 1fr;
+      }
+      .message-layer p { grid-column: 2; }
+      .budget-bar {
+        grid-template-columns: 1fr 1fr;
+        min-height: 13rem;
+      }
+      .sources { columns: 1; }
+      .market-dot { font-size: .46rem; padding: .25rem .4rem; }
+      .controls { right: .55rem; bottom: .55rem; }
+      .controls button { width: 2.15rem; height: 2.15rem; }
+      .deck.overview .slides { grid-template-columns: 1fr; margin-left: var(--rail); }
+      .deck.overview .slide,
+      .deck.overview .slide[hidden] { min-height: 17rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @media print {
+      @page {
+        size: 16in 9in;
+        margin: 0;
+      }
+      html,
+      body {
+        background: white;
+        overflow: visible;
+      }
+      .deck,
+      .deck.overview {
+        width: auto;
+        height: auto;
+        min-height: 0;
+      }
+      .chapter-rail,
+      .controls,
+      .help,
+      .skip-link,
+      .deck::after { display: none !important; }
+      .slides,
+      .deck.overview .slides {
+        position: static;
+        inset: auto;
+        margin: 0;
+        padding: 0;
+        display: block;
+      }
+      .slide,
+      .slide[hidden],
+      .deck.overview .slide,
+      .deck.overview .slide[hidden] {
+        position: relative;
+        inset: auto;
+        display: grid !important;
+        width: 16in;
+        height: 9in;
+        min-height: 9in;
+        padding: .85in 1in .65in;
+        opacity: 1;
+        transform: none;
+        overflow: hidden;
+        break-after: page;
+        page-break-after: always;
+        border: 0;
+      }
+      .deck.overview .slide-inner {
+        width: min(100%, 1380px);
+        transform: none;
+      }
+      .slide-meta { top: .35in; left: 1in; right: 1in; }
+      .source-note { font-size: 7pt; }
+      a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#slide-1">Skip to presentation</a>
+
+  <main class="deck" id="deck">
+    <aside class="chapter-rail" aria-label="Presentation progress">
+      <div class="rail-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="rail-label" id="railLabel">The verdict</div>
+      <div class="rail-progress" aria-hidden="true"><span id="railProgress"></span></div>
+    </aside>
+
+    <div class="slides" id="slides" aria-live="polite">
+      <section class="slide dark" id="slide-1" data-chapter="The verdict" aria-labelledby="title-1">
+        <div class="slide-meta"><span>Patina / Internal working brief</span><span>01 / 22</span></div>
+        <div class="slide-inner title-layout">
+          <div>
+            <div class="eyebrow">Brand alignment &amp; traction</div>
+            <h1 id="title-1">Earn the room.</h1>
+            <p class="lede">A designer-first plan for Patina to gain the trust of people who can spot borrowed authority from across the showroom.</p>
+            <div class="strata" aria-hidden="true"><span></span><span></span><span></span></div>
+          </div>
+          <aside class="title-aside">
+            <dl>
+              <div><dt>Prepared for</dt><dd>Kody &amp; Leah Kochaver</dd></div>
+              <div><dt>Workshop horizon</dt><dd>12 months</dd></div>
+              <div><dt>Operating constraint</dt><dd>Bootstrap / under $15,000</dd></div>
+              <div><dt>Priority audience</dt><dd>Working interior designers</dd></div>
+              <div><dt>Prepared</dt><dd>July 30, 2026</dd></div>
+            </dl>
+          </aside>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-2" data-chapter="The verdict" aria-labelledby="title-2" hidden>
+        <div class="slide-meta"><span>Executive verdict</span><span>02 / 22</span></div>
+        <div class="slide-inner">
+          <div class="verdict">
+            <div>
+              <span class="kicker">The short version</span>
+              <p class="verdict-line" id="title-2">Patina looks considered. It does not yet look <em>earned</em>.</p>
+            </div>
+            <div>
+              <p class="lede">The strategy is better than the evidence surrounding it. The handoff from self-directed discovery to a real designer is distinctive. The website, however, still asks selective audiences to believe the model before they can see the people, work, and relationships that make it credible.</p>
+              <p class="body-large">The next year is not primarily a reach problem. It is a proof-building problem followed by a focused distribution problem.</p>
+            </div>
+          </div>
+          <div class="score-grid" aria-label="Qualitative brand scorecard">
+            <div class="score"><b>B+</b><span>Visual restraint</span></div>
+            <div class="score"><b>A−</b><span>Core idea</span></div>
+            <div class="score"><b>C</b><span>Five-second clarity</span></div>
+            <div class="score"><b>D+</b><span>Visible proof</span></div>
+            <div class="score"><b>F</b><span>External traction</span></div>
+          </div>
+          <p class="source-note">Assessment combines the live website review, July 2026 messaging system, June performance report, July SEO audit, and July AI-citation report. Grades are strategic judgments, not measured scores.</p>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-3" data-chapter="The verdict" aria-labelledby="title-3" hidden>
+        <div class="slide-meta"><span>Current reality / evidence</span><span>03 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">The baseline</span>
+          <h2 id="title-3">The marketing site is not yet in the market.</h2>
+          <div class="data-strip">
+            <div class="datum"><strong>35</strong><span>June marketing pageviews—all internal and direct.</span></div>
+            <div class="datum"><strong>0</strong><span>Confirmed external Founding Circle signups in June.</span></div>
+            <div class="datum"><strong>3</strong><span>Journal posts live; all published in early April.</span></div>
+            <div class="datum"><strong>0/8</strong><span>Tracked AI-citation queries naming Patina for a third month.</span></div>
+          </div>
+          <div class="two-col" style="margin-top:2.5rem">
+            <p class="lede">This is liberating: Patina has almost no accumulated market confusion to undo.</p>
+            <p class="body-large">It is also urgent. Competitors are publishing, forming trade relationships, and teaching search systems how to describe the category while Patina’s strongest idea remains mostly private.</p>
+          </div>
+          <p class="source-note">Sources: <a href="../reports/perf-2026-06.md">June 2026 performance report</a>; <a href="../reports/weekly-content-2026-07-28.md">July 28 content check</a>; <a href="../reports/ai-citation-2026-07.md">July 2026 AI-citation report</a>.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-4" data-chapter="The verdict" aria-labelledby="title-4" hidden>
+        <div class="slide-meta"><span>Brand assets &amp; trust gaps</span><span>04 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">What is real</span>
+          <h2 id="title-4">A strong thesis is already here.</h2>
+          <div class="four-col">
+            <article class="dossier good">
+              <div class="label">Keep / amplify</div>
+              <h3>The handoff</h3>
+              <p>A self-directed journey that becomes a prepared designer relationship is the most defensible idea in the system.</p>
+            </article>
+            <article class="dossier good">
+              <div class="label">Keep / amplify</div>
+              <h3>Designer authority</h3>
+              <p>“Designer-taught” reframes technology as a vessel for professional judgment, not a replacement for it.</p>
+            </article>
+            <article class="dossier opportunity">
+              <div class="label">Build proof</div>
+              <h3>Middlewest roots</h3>
+              <p>Leah’s working practice and Madison provenance can make Patina feel lived-in, specific, and accountable.</p>
+            </article>
+            <article class="dossier risk">
+              <div class="label">Trust gap</div>
+              <h3>The evidence layer</h3>
+              <p>Generic photography, unnamed partners, and future-state language make a real story feel more conceptual than it is.</p>
+            </article>
+          </div>
+          <div class="rule"></div>
+          <p class="lede">The strategic task: make the evidence as particular as the taste.</p>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-5" data-chapter="The verdict" aria-labelledby="title-5" hidden>
+        <div class="slide-meta"><span>Website message audit</span><span>05 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Surface by surface</span>
+          <h2 id="title-5">The site says the right things unevenly.</h2>
+          <div class="table-scroll">
+            <table class="audit-table">
+              <thead><tr><th>Surface</th><th>What works</th><th>Trust friction</th><th>Decision</th></tr></thead>
+              <tbody>
+                <tr><td>Home</td><td>Handoff, no pay-to-play, founder origin</td><td>“Buy directly from the app” reads as present state; stock imagery does not prove taste</td><td><span class="flag fix">Clarify + prove</span></td></tr>
+                <tr><td>For designers</td><td>Co-creation, taxonomy ownership, named credit</td><td>“Future of design technology” is generic; no practitioner evidence or portal demonstration</td><td><span class="flag build">Make peer-led</span></td></tr>
+                <tr><td>Makers</td><td>Craft over volume, broad partner types</td><td>Values lead; commercial reason to participate is quieter than it should be</td><td><span class="flag build">Add value exchange</span></td></tr>
+                <tr><td>Services</td><td>Briefing-package advantage and custom matching</td><td>Must avoid claiming independent designer capacity before the network exists</td><td><span class="flag fix">Stage the promise</span></td></tr>
+                <tr><td>The app</td><td>Focused discovery and room understanding</td><td>Technology can outrun the human authority; pre-launch state must remain explicit</td><td><span class="flag keep">Restrain AI</span></td></tr>
+                <tr><td>Journal</td><td>Credible editorial premise</td><td>Three seed posts and a 16-week publishing gap undermine authority</td><td><span class="flag fix">Restart now</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="source-note">Live website reviewed July 30, 2026. Recommendations follow <a href="../messaging/patina-messaging-system.md">Patina’s messaging system</a>. Any capacity or launch claim must be updated when the operating reality changes.</p>
+        </div>
+      </section>
+
+      <section class="slide clay" id="slide-6" data-chapter="The verdict" aria-labelledby="title-6" hidden>
+        <div class="slide-meta"><span>Immediate correction</span><span>06 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Before promotion</span>
+          <h2 id="title-6">Six things must become true.</h2>
+          <div class="three-col">
+            <ol class="priority-list">
+              <li><strong>Every future-state sentence is dated or framed as intent.</strong></li>
+              <li><strong>Every primary CTA matches the audience track.</strong></li>
+            </ol>
+            <ol class="priority-list" start="3">
+              <li><strong>Real designers and makers appear by name, face, practice, and point of view.</strong></li>
+              <li><strong>The live portal is shown—not merely promised.</strong></li>
+            </ol>
+            <ol class="priority-list" start="5">
+              <li><strong>Owned imagery replaces generic category atmosphere.</strong></li>
+              <li><strong>The publishing calendar becomes an operating commitment.</strong></li>
+            </ol>
+          </div>
+          <div class="rule"></div>
+          <p class="lede">Promotion before these corrections would scale skepticism, not respect.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-7" data-chapter="Audience truth" aria-labelledby="title-7" hidden>
+        <div class="slide-meta"><span>Audience architecture</span><span>07 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">The trust sequence</span>
+          <h2 id="title-7">Designers are the credibility flywheel.</h2>
+          <p class="body-large">Patina should not market to three isolated audiences. It should build one sequence in which each audience makes the next one easier to win.</p>
+          <div class="trust-flow" aria-label="Designer-led trust sequence">
+            <article class="trust-node"><div class="num">01</div><h3>Designer participation</h3><p>Practitioners shape the language, demonstrate the tools, and put professional judgment behind the platform.</p></article>
+            <article class="trust-node"><div class="num">02</div><h3>Maker confidence</h3><p>Furniture lines see a credible path to specification and storytelling—not just another listing marketplace.</p></article>
+            <article class="trust-node"><div class="num">03</div><h3>Homeowner trust</h3><p>Consumers see a focused selection backed by named people with taste, standards, and accountability.</p></article>
+            <article class="trust-node"><div class="num">04</div><h3>Better designer demand</h3><p>Prepared homeowners create qualified opportunities, making the platform more valuable to designers.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark" id="slide-8" data-chapter="Audience truth" aria-labelledby="title-8" hidden>
+        <div class="slide-meta"><span>Priority audience / designers</span><span>08 / 22</span></div>
+        <div class="slide-inner">
+          <div class="two-col">
+            <div>
+              <span class="kicker">They are the authority</span>
+              <h2 id="title-8">Respect starts by giving up the hero role.</h2>
+            </div>
+            <div>
+              <p class="lede">A selective designer does not need another brand telling them the industry is broken. They need evidence that Patina understands the practice and will strengthen—not flatten—their expertise.</p>
+              <div class="two-col" style="gap:1rem;margin-top:2rem">
+                <article class="channel">
+                  <h3>They must hear</h3>
+                  <ul><li>You shape the vocabulary.</li><li>You receive a running start.</li><li>Your expertise is named.</li><li>The client relationship remains yours.</li></ul>
+                </article>
+                <article class="channel">
+                  <h3>They must see</h3>
+                  <ul><li>A working portal.</li><li>A real practice behind it.</li><li>Clear ownership and economics.</li><li>Other credible practitioners participating.</li></ul>
+                </article>
+              </div>
+            </div>
+          </div>
+          <p class="source-note">Primary CTA: “Apply to the Founding 50.” Applications are read personally, with a documented seven-day response expectation.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-9" data-chapter="Audience truth" aria-labelledby="title-9" hidden>
+        <div class="slide-meta"><span>Supply audience / makers &amp; furniture lines</span><span>09 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">More than placement</span>
+          <h2 id="title-9">Sell the path to specification.</h2>
+          <div class="three-col">
+            <article class="audience-card">
+              <span class="caption">Their concern</span>
+              <h3>“Is this another marketplace asking for inventory and margin?”</h3>
+              <ul><li>Loss of brand context</li><li>Unqualified traffic</li><li>Price-led comparison</li><li>Pay-to-play visibility</li></ul>
+            </article>
+            <article class="audience-card primary">
+              <span class="caption">Patina’s answer</span>
+              <h3>Earned placement in a designer-taught discovery system.</h3>
+              <ul><li>Story and material provenance stay attached</li><li>Designer context shapes discovery</li><li>No sponsored ranking</li><li>Qualified handoff into real projects</li></ul>
+            </article>
+            <article class="audience-card">
+              <span class="caption">Proof required</span>
+              <h3>Show the commercial mechanism without becoming transactional.</h3>
+              <ul><li>Example product record</li><li>Specification workflow</li><li>Partner criteria</li><li>Named designer–maker story</li></ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-10" data-chapter="Audience truth" aria-labelledby="title-10" hidden>
+        <div class="slide-meta"><span>Demand audience / homeowners</span><span>10 / 22</span></div>
+        <div class="slide-inner">
+          <div class="two-col">
+            <div>
+              <span class="kicker">Consumer promise</span>
+              <h2 id="title-10">Confidence without the theater.</h2>
+              <p class="lede">The homeowner does not need to become a designer. They need fewer choices, a clear reason each one belongs, and a dignified way to ask for more help.</p>
+            </div>
+            <div>
+              <div class="message-stack">
+                <div class="message-layer"><span>01</span><strong>Judgment</strong><p>A designer’s eye, without intimidation or a full-service commitment.</p></div>
+                <div class="message-layer"><span>02</span><strong>Fit</strong><p>Pieces considered in the context of a real room, not a generic feed.</p></div>
+                <div class="message-layer"><span>03</span><strong>Restraint</strong><p>A focused selection instead of endless-scroll indecision.</p></div>
+                <div class="message-layer"><span>04</span><strong>Continuity</strong><p>A professional designer can continue from what the homeowner has already learned.</p></div>
+              </div>
+              <p class="source-note">Primary CTA: “Join the Founding Circle.” Microcopy must say first access comes when the app launches.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-11" data-chapter="Competitive whitespace" aria-labelledby="title-11" hidden>
+        <div class="slide-meta"><span>Cross-category comparison / July 2026</span><span>11 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">What buyers already understand</span>
+          <h2 id="title-11">No single competitor is the model.</h2>
+          <div class="table-scroll">
+            <table class="comparison-table">
+              <thead><tr><th>Platform</th><th>Primary promise</th><th>Hero</th><th>Proof pattern</th><th>Lesson for Patina</th></tr></thead>
+              <tbody>
+                <tr><td><span class="competitor-name">SideDoor</span></td><td>Source and sell trade furniture more efficiently</td><td>Designer’s business</td><td>Vendor breadth, workflow, adoption claims</td><td>Make practice utility concrete</td></tr>
+                <tr><td><span class="competitor-name">The Expert</span></td><td>Access recognized designers and shop what they trust</td><td>Named expert</td><td>Prestige roster, portfolios, verified reviews</td><td>People are the premium interface</td></tr>
+                <tr><td><span class="competitor-name">Havenly</span></td><td>Accessible online or in-person design help</td><td>Homeowner outcome</td><td>Pricing, scale, process, completed designs</td><td>Clarity converts—even when taste is broader</td></tr>
+                <tr><td><span class="competitor-name">Material Bank</span></td><td>Fast, consolidated material discovery and sampling</td><td>Specifier efficiency</td><td>Brand count, delivery promise, member scale</td><td>Two-sided value must be explicit</td></tr>
+                <tr><td><span class="competitor-name">1stDibs / Chairish</span></td><td>Distinctive inventory with trade access and confidence</td><td>Object + provenance</td><td>Vetting, protection, editorial authority</td><td>Trust must travel with the piece</td></tr>
+                <tr><td><span class="competitor-name">Patina</span></td><td>Designer-taught furniture judgment with a continuous handoff</td><td>Designer + homeowner relationship</td><td><strong>Not yet sufficient</strong></td><td>Own continuity; build visible proof</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="source-note">Primary sources: <a href="https://onsidedoor.com">SideDoor</a>, <a href="https://www.theexpert.com">The Expert</a>, <a href="https://havenly.com">Havenly</a>, <a href="https://www.materialbank.com">Material Bank</a>, <a href="https://www.1stdibs.com">1stDibs</a>, and <a href="https://www.chairish.com">Chairish</a>. Competitive claims should be refreshed quarterly.</p>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-12" data-chapter="Competitive whitespace" aria-labelledby="title-12" hidden>
+        <div class="slide-meta"><span>Positioning map / strategic inference</span><span>12 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">The open territory</span>
+          <h2 id="title-12">Move toward relationship, not more catalog.</h2>
+          <div class="market-map" role="img" aria-label="Market map from commerce to relationship and consumer-led to trade-led">
+            <span class="axis top">Trade-led</span>
+            <span class="axis left">Commerce &amp; volume</span>
+            <span class="axis right">Judgment &amp; relationship</span>
+            <span class="market-dot" style="left:22%;top:18%">Material Bank</span>
+            <span class="market-dot" style="left:35%;top:31%">SideDoor</span>
+            <span class="market-dot" style="left:18%;top:68%">1stDibs</span>
+            <span class="market-dot" style="left:26%;top:81%">Chairish</span>
+            <span class="market-dot" style="left:76%;top:73%">Havenly</span>
+            <span class="market-dot" style="left:81%;top:37%">The Expert</span>
+            <span class="market-dot patina" style="left:72%;top:24%">Patina / intended</span>
+          </div>
+          <p class="source-note">Map placement is an inference from public positioning, not a market-share or product-capability measurement.</p>
+        </div>
+      </section>
+
+      <section class="slide dark" id="slide-13" data-chapter="Competitive whitespace" aria-labelledby="title-13" hidden>
+        <div class="slide-meta"><span>Recommended market stance</span><span>13 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Category strategy</span>
+          <h2 id="title-13">Reframe furniture discovery around judgment.</h2>
+          <div class="positioning-statement" style="color:var(--ink)">
+            For design-conscious homeowners who want fewer, better furniture choices—and for the designers who guide them—Patina is the designer-taught furniture platform that understands the room, explains what belongs, and carries that context into a real designer relationship.
+          </div>
+          <div class="three-col" style="margin-top:2rem">
+            <div><span class="caption">Category</span><h3>Designer-taught furniture platform</h3></div>
+            <div><span class="caption">Differentiator</span><h3>The continuous handoff</h3></div>
+            <div><span class="caption">Reason to believe</span><h3>Working designers teach the system</h3></div>
+          </div>
+          <p class="source-note">This is the recommended external stance. “Where Time Adds Value” remains the protected emotional signature, not the product explainer.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-14" data-chapter="Message alignment" aria-labelledby="title-14" hidden>
+        <div class="slide-meta"><span>Message hierarchy</span><span>14 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">One spine, two tracks</span>
+          <h2 id="title-14">Say less. Land it in order.</h2>
+          <div class="message-stack">
+            <div class="message-layer"><span>01</span><strong>Designer judgment</strong><p>A great designer’s eye, put within reach. This is the lead—not the app, AR, or AI.</p></div>
+            <div class="message-layer"><span>02</span><strong>Furniture that belongs</strong><p>Fewer, more considered choices grounded in a person’s actual space.</p></div>
+            <div class="message-layer"><span>03</span><strong>The handoff</strong><p>When the project grows, a real designer continues with the context already assembled.</p></div>
+            <div class="message-layer"><span>04</span><strong>Craft over volume</strong><p>Makers earn placement through materials, construction, and story—not media spend.</p></div>
+            <div class="message-layer"><span>05</span><strong>Technology, quietly</strong><p>A designer-taught recommendation system supports the experience without becoming the authority.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-15" data-chapter="Message alignment" aria-labelledby="title-15" hidden>
+        <div class="slide-meta"><span>Copy direction / workshop draft</span><span>15 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Recommended language</span>
+          <h2 id="title-15">Make the promise human—and true.</h2>
+          <div class="three-col">
+            <div>
+              <div class="copy-block"><small>Home / hero support</small><p>Learn what belongs in your space—with a designer ready to continue when the time is right.</p><span class="microcopy">Join the Founding Circle · First access when the app launches.</span></div>
+              <div class="copy-block"><small>Home / proof strip</small><p>Taught by working designers. Built around honest materials. No sponsored placements.</p></div>
+            </div>
+            <div>
+              <div class="copy-block"><small>Designers / hero</small><p>You know what belongs. Help build the system that finally works the way designers do.</p><span class="microcopy">Apply to the Founding 50.</span></div>
+              <div class="copy-block"><small>Designers / benefit</small><p>Meet the client after the brief is already taking shape—not before.</p></div>
+            </div>
+            <div>
+              <div class="copy-block"><small>Makers / hero</small><p>Your furniture carries a point of view. Patina helps the right designer and homeowner understand it.</p><span class="microcopy">Apply to Partner.</span></div>
+              <div class="copy-block"><small>Pre-launch honesty</small><p>We are building the first cohort now. The marketplace is not open yet.</p></div>
+            </div>
+          </div>
+          <p class="source-note">Workshop copy follows the current messaging system and uses only documented proof. Final copy should be validated against the live operating state before publication.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-16" data-chapter="Message alignment" aria-labelledby="title-16" hidden>
+        <div class="slide-meta"><span>Proof architecture</span><span>16 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">How respect is earned</span>
+          <h2 id="title-16">Build proof in four layers.</h2>
+          <div class="proof-pyramid">
+            <article class="proof-layer"><div class="proof-num">I</div><h3>People</h3><ul><li>Founders in their real work</li><li>Named designer council</li><li>Named maker partners</li><li>Credentials and project context</li></ul></article>
+            <article class="proof-layer"><div class="proof-num">II</div><h3>Practice</h3><ul><li>Portal walkthrough</li><li>Taxonomy working session</li><li>Real intake artifact</li><li>Before/after workflow</li></ul></article>
+            <article class="proof-layer"><div class="proof-num">III</div><h3>Objects</h3><ul><li>Product record</li><li>Material rationale</li><li>Construction detail</li><li>Maker provenance</li></ul></article>
+            <article class="proof-layer"><div class="proof-num">IV</div><h3>Outcomes</h3><ul><li>Qualified introductions</li><li>Time saved</li><li>Selections understood</li><li>Published partner stories</li></ul></article>
+          </div>
+          <p class="lede" style="margin-top:2rem">Until outcome proof exists, lead with people, practice, and objects. Do not manufacture the fourth layer.</p>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-17" data-chapter="12-month plan" aria-labelledby="title-17" hidden>
+        <div class="slide-meta"><span>12-month operating roadmap</span><span>17 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Sequence matters</span>
+          <h2 id="title-17">Proof first. Relationships second. Reach third.</h2>
+          <div class="roadmap">
+            <article class="phase"><span class="window">Days 0–30</span><h3>Earn the right to promote</h3><ul><li>Correct trust and SEO defects</li><li>Normalize claims and CTAs</li><li>Capture founder and portal proof</li><li>Build target relationship list</li></ul></article>
+            <article class="phase"><span class="window">Days 31–90</span><h3>Recruit the nucleus</h3><ul><li>15 designer conversations</li><li>Maker discovery interviews</li><li>First profiles and working sessions</li><li>Restart editorial cadence</li></ul></article>
+            <article class="phase"><span class="window">Quarter 2</span><h3>Publish authority</h3><ul><li>Two useful pieces per month</li><li>Designer-practice series</li><li>Furniture-quality references</li><li>Trade/editorial outreach</li></ul></article>
+            <article class="phase"><span class="window">Quarter 3</span><h3>Demonstrate the network</h3><ul><li>Small roundtables</li><li>Designer–maker conversations</li><li>Referral loop</li><li>Briefing-package demo</li></ul></article>
+            <article class="phase"><span class="window">Quarter 4</span><h3>Convert credibility</h3><ul><li>Name the founding cohort</li><li>Partner story campaign</li><li>Earned-media push</li><li>Segment launch demand</li></ul></article>
+          </div>
+          <p class="source-note">The 15-conversation figure is an operating target, not a demand forecast. Replan after the first 30 qualified conversations and 100 external marketing sessions.</p>
+        </div>
+      </section>
+
+      <section class="slide dark" id="slide-18" data-chapter="12-month plan" aria-labelledby="title-18" hidden>
+        <div class="slide-meta"><span>Bootstrap channel strategy</span><span>18 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Under $15,000</span>
+          <h2 id="title-18">Relationships are the media plan.</h2>
+          <div class="channel-system">
+            <article class="channel">
+              <span class="caption">Owned / weekly</span>
+              <h3>Show the work</h3>
+              <ul><li>The Designer’s Eye</li><li>Designer and maker profiles</li><li>Portal demonstrations</li><li>Material and sourcing references</li><li>Founder build notes</li></ul>
+            </article>
+            <article class="channel">
+              <span class="caption">Earned / monthly</span>
+              <h3>Borrow the right rooms</h3>
+              <ul><li>Personal trade introductions</li><li>Guest expert contributions</li><li>Regional design communities</li><li>Relevant roundup inclusion</li><li>Small, useful gatherings</li></ul>
+            </article>
+            <article class="channel">
+              <span class="caption">Paid / only after proof</span>
+              <h3>Retarget attention</h3>
+              <ul><li>Founder-content amplification</li><li>Event or application retargeting</li><li>No broad awareness buy</li><li>No cold conversion campaign before external baseline</li></ul>
+            </article>
+          </div>
+          <p class="lede" style="margin-top:2rem">Selective audiences notice who introduces you. Spend founder time before media dollars.</p>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-19" data-chapter="12-month plan" aria-labelledby="title-19" hidden>
+        <div class="slide-meta"><span>Content authority engine</span><span>19 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">A sustainable cadence</span>
+          <h2 id="title-19">One interview should do four jobs.</h2>
+          <div class="content-loop">
+            <article class="content-step"><span class="caption">01 / Capture</span><h3>One 60-minute expert conversation</h3><p>Leah, a founding designer, or a maker speaks from active practice.</p></article>
+            <article class="content-step"><span class="caption">02 / Publish</span><h3>One definitive article</h3><p>Answer a real question with specifics, objects, and documented judgment.</p></article>
+            <article class="content-step"><span class="caption">03 / Distribute</span><h3>Newsletter + three field notes</h3><p>Translate the argument for email, LinkedIn, Instagram, and direct outreach.</p></article>
+            <article class="content-step"><span class="caption">04 / Compound</span><h3>Pitch + reference asset</h3><p>Offer the expert to relevant editors and link the piece from partner profiles.</p></article>
+          </div>
+          <div class="two-col">
+            <div>
+              <h3>Minimum monthly rhythm</h3>
+              <p class="body-large">Two expert pieces. Two letters. Four short field notes. One partner conversation.</p>
+            </div>
+            <div>
+              <h3>First four topics</h3>
+              <ol style="font-size:.82rem;color:var(--graphite)">
+                <li>How to tell if furniture will last 20 years</li>
+                <li>What designers notice before recommending a piece</li>
+                <li>What to ask a furniture maker before buying</li>
+                <li>What a designer needs before the first client meeting</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide paper-bright" id="slide-20" data-chapter="12-month plan" aria-labelledby="title-20" hidden>
+        <div class="slide-meta"><span>First 90 days / action board</span><span>20 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">What ships</span>
+          <h2 id="title-20">The first quarter is a credibility sprint.</h2>
+          <div class="table-scroll">
+            <table class="action-table">
+              <thead><tr><th>When</th><th>Action</th><th>Owner</th><th>Evidence of done</th></tr></thead>
+              <tbody>
+                <tr><td>Week 1</td><td>Fix canonical host, social assets, title duplication, and empty catalog signals</td><td>Kody</td><td>Validated live URLs and share cards</td></tr>
+                <tr><td>Week 1</td><td>Normalize CTA and pre-launch language across priority pages</td><td>Kody + Leah</td><td>Messaging QA checklist passes</td></tr>
+                <tr><td>Week 2</td><td>Photograph founders, studio, portal, and four proof objects</td><td>Leah</td><td>Owned image library with captions</td></tr>
+                <tr><td>Week 2</td><td>Build 40-name designer target list and 20-name maker list</td><td>Both</td><td>Named relationship sheet with warm paths</td></tr>
+                <tr><td>Week 3</td><td>Record the first Leah expertise interview</td><td>Leah</td><td>Transcript + two article briefs</td></tr>
+                <tr><td>Week 3</td><td>Create 8-minute portal demonstration and one-page designer brief</td><td>Kody</td><td>Shareable, honest working demo</td></tr>
+                <tr><td>Weeks 4–6</td><td>Conduct first 8 designer and 5 maker conversations</td><td>Both</td><td>Notes, objections, referrals, next steps</td></tr>
+                <tr><td>Weeks 4–8</td><td>Publish two expert pieces and two partner/founder notes</td><td>Leah + Kody</td><td>Four indexed, distributed assets</td></tr>
+                <tr><td>Weeks 7–10</td><td>Host a six-person working session</td><td>Leah</td><td>Decisions, quotes with permission, follow-ups</td></tr>
+                <tr><td>Weeks 9–12</td><td>Publish first named designer or maker profiles</td><td>Kody</td><td>Live profile pages and partner distribution</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-21" data-chapter="Commitments" aria-labelledby="title-21" hidden>
+        <div class="slide-meta"><span>Investment &amp; measurement</span><span>21 / 22</span></div>
+        <div class="slide-inner">
+          <span class="kicker">Bootstrap allocation</span>
+          <h2 id="title-21">Buy evidence, access, and learning.</h2>
+          <div class="budget-bar" aria-label="Recommended budget allocation">
+            <div>26%<br>Owned photography &amp; proof</div>
+            <div>23%<br>Small gatherings &amp; hospitality</div>
+            <div>18%<br>Editorial production</div>
+            <div>13%<br>Trade travel &amp; access</div>
+            <div>12%<br>Tools &amp; measurement</div>
+            <div>8%<br>Paid tests</div>
+          </div>
+          <div class="metric-grid">
+            <article class="metric"><strong>Designer health</strong><p>Qualified conversations, completed applications, accepted participants, referrals, and working-session attendance.</p><span class="gate">First gate: 15 conversations</span></article>
+            <article class="metric"><strong>Maker health</strong><p>Qualified conversations, accepted partners, complete product records, and introductions into designer workflows.</p><span class="gate">First gate: 5 discovery interviews</span></article>
+            <article class="metric"><strong>Homeowner health</strong><p>External sessions, Founding Circle signups, newsletter engagement, return visits, and designer-handoff intent.</p><span class="gate">Set conversion benchmark after 100 external sessions</span></article>
+          </div>
+          <p class="source-note">Use Vercel Analytics for raw traffic and PostHog for consented product behavior until the analytics source-of-truth decision changes. Exclude internal traffic from acquisition reporting.</p>
+        </div>
+      </section>
+
+      <section class="slide dark" id="slide-22" data-chapter="Commitments" aria-labelledby="title-22" hidden>
+        <div class="slide-meta"><span>Workshop close / decisions</span><span>22 / 22</span></div>
+        <div class="slide-inner commitment">
+          <div>
+            <span class="kicker">Leave with owners</span>
+            <h2 id="title-22">The next ten commitments.</h2>
+            <ol class="commitment-list">
+              <li><span>Approve the category language</span><small>Both / today</small></li>
+              <li><span>Name the first designer proof candidate</span><small>Leah / 48h</small></li>
+              <li><span>Name the first maker proof candidate</span><small>Leah / 48h</small></li>
+              <li><span>Schedule the founder proof shoot</span><small>Leah / week 1</small></li>
+              <li><span>Correct the live trust defects</span><small>Kody / week 1</small></li>
+              <li><span>Build the 60-name relationship list</span><small>Both / week 2</small></li>
+              <li><span>Record the first expertise interview</span><small>Leah / week 3</small></li>
+              <li><span>Ship the portal demonstration</span><small>Kody / week 3</small></li>
+              <li><span>Hold the first eight conversations</span><small>Both / week 6</small></li>
+              <li><span>Review evidence and replan</span><small>Both / day 45</small></li>
+            </ol>
+          </div>
+          <aside class="final-thesis">
+            <div class="eyebrow">The proposition</div>
+            <p>Patina does not need to look bigger. It needs to look closer to the work.</p>
+            <p style="color:var(--clay)">Let designers teach it. Let makers substantiate it. Let homeowners feel the difference.</p>
+            <div class="strata" aria-hidden="true"><span></span><span></span><span></span></div>
+            <p class="caption" style="margin-top:2rem">Where Time Adds Value.</p>
+          </aside>
+        </div>
+      </section>
+    </div>
+
+    <nav class="controls" aria-label="Presentation controls">
+      <button type="button" id="prevButton" aria-label="Previous slide">←</button>
+      <span class="counter" id="counter" aria-live="off">01 / 22</span>
+      <button type="button" id="nextButton" aria-label="Next slide">→</button>
+      <button type="button" id="overviewButton" aria-label="Toggle slide overview" aria-pressed="false" title="Overview (O)">▦</button>
+      <button type="button" id="helpButton" aria-label="Show keyboard shortcuts" aria-expanded="false" aria-controls="helpPanel" title="Keyboard help (?)">?</button>
+    </nav>
+
+    <aside class="help" id="helpPanel" hidden>
+      <strong>Presentation controls</strong>
+      <p><kbd>←</kbd> <kbd>→</kbd> move between slides · <kbd>Home</kbd> and <kbd>End</kbd> jump · <kbd>O</kbd> toggles overview · <kbd>?</kbd> toggles this guide · print from the browser for a 16:9 PDF.</p>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      const deck = document.getElementById("deck");
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.getElementById("counter");
+      const railLabel = document.getElementById("railLabel");
+      const railProgress = document.getElementById("railProgress");
+      const helpPanel = document.getElementById("helpPanel");
+      const prevButton = document.getElementById("prevButton");
+      const nextButton = document.getElementById("nextButton");
+      const overviewButton = document.getElementById("overviewButton");
+      const helpButton = document.getElementById("helpButton");
+      let activeIndex = 0;
+      let overview = false;
+
+      const indexFromHash = () => {
+        const match = window.location.hash.match(/^#slide-(\d+)$/);
+        if (!match) return 0;
+        return Math.min(slides.length - 1, Math.max(0, Number(match[1]) - 1));
+      };
+
+      const render = (index, updateHash = true) => {
+        activeIndex = Math.min(slides.length - 1, Math.max(0, index));
+
+        slides.forEach((slide, slideIndex) => {
+          slide.hidden = !overview && slideIndex !== activeIndex;
+          slide.setAttribute("aria-hidden", String(!overview && slideIndex !== activeIndex));
+          slide.tabIndex = overview ? 0 : slideIndex === activeIndex ? 0 : -1;
+        });
+
+        const current = slides[activeIndex];
+        const chapter = current.dataset.chapter || "Patina";
+        counter.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+        railLabel.textContent = chapter;
+        railProgress.style.height = `${((activeIndex + 1) / slides.length) * 100}%`;
+        prevButton.disabled = activeIndex === 0;
+        nextButton.disabled = activeIndex === slides.length - 1;
+
+        if (updateHash && !overview) {
+          history.replaceState(null, "", `#slide-${activeIndex + 1}`);
+        }
+      };
+
+      const move = (amount) => {
+        if (overview) return;
+        render(activeIndex + amount);
+      };
+
+      const toggleOverview = () => {
+        overview = !overview;
+        deck.classList.toggle("overview", overview);
+        document.body.style.overflow = overview ? "auto" : "hidden";
+        overviewButton.setAttribute("aria-pressed", String(overview));
+        render(activeIndex, !overview);
+        if (overview) {
+          slides[activeIndex].scrollIntoView({ block: "center", behavior: "smooth" });
+        }
+      };
+
+      prevButton.addEventListener("click", () => move(-1));
+      nextButton.addEventListener("click", () => move(1));
+      overviewButton.addEventListener("click", toggleOverview);
+      helpButton.addEventListener("click", () => {
+        helpPanel.hidden = !helpPanel.hidden;
+        helpButton.setAttribute("aria-expanded", String(!helpPanel.hidden));
+      });
+
+      slides.forEach((slide, index) => {
+        slide.addEventListener("click", (event) => {
+          if (!overview) return;
+          if (event.target instanceof Element && event.target.closest("a, button")) return;
+          activeIndex = index;
+          toggleOverview();
+        });
+        slide.addEventListener("keydown", (event) => {
+          if (event.target !== slide) return;
+          if (overview && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            activeIndex = index;
+            toggleOverview();
+          }
+        });
+      });
+
+      window.addEventListener("hashchange", () => {
+        if (!overview) render(indexFromHash(), false);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        const target = event.target;
+        if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return;
+
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          move(1);
+        } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          move(-1);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          if (!overview) render(0);
+        } else if (event.key === "End") {
+          event.preventDefault();
+          if (!overview) render(slides.length - 1);
+        } else if (event.key.toLowerCase() === "o") {
+          event.preventDefault();
+          toggleOverview();
+        } else if (event.key === "?") {
+          event.preventDefault();
+          helpPanel.hidden = !helpPanel.hidden;
+          helpButton.setAttribute("aria-expanded", String(!helpPanel.hidden));
+        } else if (event.key === "Escape") {
+          helpPanel.hidden = true;
+          helpButton.setAttribute("aria-expanded", "false");
+          if (overview) toggleOverview();
+        }
+      });
+
+      render(indexFromHash(), false);
+    })();
+  </script>
+</body>
+</html>

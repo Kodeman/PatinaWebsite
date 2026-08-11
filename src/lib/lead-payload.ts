@@ -28,6 +28,7 @@ export interface BuildLeadPayloadOptions {
 }
 
 export interface LeadPayload {
+  source: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -53,6 +54,11 @@ export function buildLeadPayload(opts: BuildLeadPayloadOptions): LeadPayload {
   const last = attribution?.last_touch;
 
   const payload: LeadPayload = {
+    // Every lead API requires `source`; emit it here so no caller has to
+    // remember to repeat it in `extra`. Callers that still pass it in `extra`
+    // (FoundingCircleModal, NewsletterSignup) send the identical value, so the
+    // spread below is a no-op for them.
+    source: opts.source,
     utm_source: last?.utm_source,
     utm_medium: last?.utm_medium,
     utm_campaign: last?.utm_campaign,
@@ -92,7 +98,7 @@ export function inferRole(
     return "designer";
   }
 
-  if (/founding|waitlist|newsletter|furniture|shop|consumer|home/.test(haystack)) {
+  if (/founding|waitlist|newsletter|furniture|shop|consumer|home|signup/.test(haystack)) {
     return "consumer";
   }
 

@@ -25,7 +25,7 @@ export default function PrivacyPage() {
               Privacy Policy
             </h1>
             <p className="text-[var(--patina-mocha-brown)]">
-              Last updated: December 27, 2025
+              Last updated: August 11, 2026
             </p>
           </div>
         </section>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
                 <div className="space-y-4 text-[var(--patina-mocha-brown)]">
                   <p>We collect information you provide directly to us, including:</p>
                   <ul className="list-disc pl-6 space-y-2">
-                    <li>Name, email address, and phone number when you contact us or create an account</li>
+                    <li>Name, email address, and phone number when you contact us or create an account (your mobile number is collected only if you choose to provide it at sign-up, for text notifications)</li>
                     <li>Shipping and billing addresses for order fulfillment</li>
                     <li>Payment information (processed securely through our payment providers)</li>
                     <li>Communication preferences and feedback you provide</li>
@@ -183,6 +183,44 @@ export default function PrivacyPage() {
                     We may update this Privacy Policy from time to time. We will notify
                     you of any material changes by posting the new policy on this page
                     and updating the &quot;Last updated&quot; date.
+                  </p>
+                </div>
+              </div>
+
+              {/* Section 9 */}
+              <div className="mb-10">
+                <h2 className="text-heading-2 text-[var(--patina-charcoal)] mb-4">
+                  9. Text Messages (SMS)
+                </h2>
+                <div className="space-y-4 text-[var(--patina-mocha-brown)]">
+                  <p>
+                    If you choose to share your mobile number, we may send you account and
+                    order notification text messages and login verification codes.
+                    These messages are transactional only — we do not send marketing texts.
+                  </p>
+                  <p>
+                    You opt in by providing your mobile number and checking an (unchecked
+                    by default) consent box on our sign-up form at patina.cloud/signup.
+                    Providing a number and consenting is optional and never a condition of
+                    creating an account.
+                  </p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>Message frequency varies. Message and data rates may apply.</li>
+                    <li>Reply STOP at any time to opt out.</li>
+                    <li>
+                      Reply HELP or email{" "}
+                      <a
+                        href="mailto:hello@patina.cloud"
+                        className="text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] underline"
+                      >
+                        hello@patina.cloud
+                      </a>{" "}
+                      for help.
+                    </li>
+                  </ul>
+                  <p>
+                    No mobile information will be shared with third parties or affiliates
+                    for marketing or promotional purposes.
                   </p>
                 </div>
               </div>

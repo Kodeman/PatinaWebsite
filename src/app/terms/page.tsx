@@ -25,7 +25,7 @@ export default function TermsPage() {
               Terms of Service
             </h1>
             <p className="text-[var(--patina-mocha-brown)]">
-              Last updated: December 27, 2025
+              Last updated: August 11, 2026
             </p>
           </div>
         </section>
@@ -225,6 +225,35 @@ export default function TermsPage() {
                     Continued use of our services after changes constitutes
                     acceptance of the new terms.
                   </p>
+                </div>
+              </div>
+
+              {/* Section 12 */}
+              <div id="sms" className="mb-10 scroll-mt-24">
+                <h2 className="text-heading-2 text-[var(--patina-charcoal)] mb-4">
+                  12. Text Messages (SMS)
+                </h2>
+                <div className="space-y-4 text-[var(--patina-mocha-brown)]">
+                  <p>
+                    When you create a Patina account, you can opt in to text
+                    messages for account and order notifications and login
+                    verification codes. These messages are transactional
+                    only — we do not send marketing texts.
+                  </p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>
+                      Opting in is optional: the consent checkbox on the
+                      sign-up form at patina.cloud/signup is unchecked by
+                      default, and consent is not a condition of creating an
+                      account
+                    </li>
+                    <li>Message frequency varies. Msg &amp; data rates may apply</li>
+                    <li>
+                      Reply STOP to cancel at any time, or reply HELP for
+                      help. You can also reach us at hello@patina.cloud
+                    </li>
+                    <li>Carriers are not liable for delayed or undelivered messages</li>
+                  </ul>
                 </div>
               </div>
 

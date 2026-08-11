@@ -31,9 +31,18 @@ test.describe("Privacy Policy Page", () => {
     await expect(page.getByText("6. Your Rights")).toBeVisible();
   });
 
+  test("should display SMS disclosure section", async ({ page }) => {
+    await expect(page.getByText("9. Text Messages (SMS)")).toBeVisible();
+    await expect(
+      page.getByText(
+        "No mobile information will be shared with third parties or affiliates for marketing or promotional purposes."
+      )
+    ).toBeVisible();
+  });
+
   test("should display contact information", async ({ page }) => {
-    await expect(page.getByText("privacy@patina.com").first()).toBeVisible();
-    await expect(page.getByText("123 Craft District").first()).toBeVisible();
+    await expect(page.getByText("privacy@patina.cloud").first()).toBeVisible();
+    await expect(page.getByText("Madison, Wisconsin").first()).toBeVisible();
   });
 
   test("should have link to Terms of Service", async ({ page }) => {
