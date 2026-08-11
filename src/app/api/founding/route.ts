@@ -104,10 +104,20 @@ export async function POST(request: NextRequest) {
     // letter from Leah."
     const { data: existingRow } = await supabaseAdmin
       .from("waitlist")
-      .select("email")
+      .select("email, phone")
       .eq("email", normalizedEmail)
       .maybeSingle();
     const isNewSignup = !existingRow;
+
+    // Consent is per-number (TCPA audit trail: the consent record must point at
+    // the number the member actually agreed for). A submission that carries no
+    // consent may fill an empty phone or restate the same number, but must never
+    // overwrite a different stored number — that stored number may be the one an
+    // earlier consent was granted for.
+    const storedPhone: string | null = existingRow?.phone ?? null;
+    const writePhone =
+      !!normalizedPhone &&
+      (recordSmsConsent || !existingRow || !storedPhone || storedPhone === normalizedPhone);
 
     // `phone` is only written when we have one — never null over an existing
     // number, since this row is upserted on every re-submit.
@@ -133,7 +143,7 @@ export async function POST(request: NextRequest) {
       },
       last_touch_attribution: last_touch_attribution || null,
       user_agent: request.headers.get("user-agent") || null,
-      ...(normalizedPhone ? { phone: normalizedPhone } : {}),
+      ...(writePhone ? { phone: normalizedPhone } : {}),
     };
 
     const smsConsentColumns = recordSmsConsent
@@ -144,6 +154,10 @@ export async function POST(request: NextRequest) {
         }
       : null;
 
+    // Tracks what actually landed in the database, so analytics can't claim a
+    // consent the retry below dropped.
+    let smsConsentPersisted = recordSmsConsent;
+
     let { error } = await supabaseAdmin
       .from("waitlist")
       .upsert(
@@ -151,12 +165,15 @@ export async function POST(request: NextRequest) {
         { onConflict: "email" }
       );
 
-    // 42703 = undefined_column. The consent columns are additive, so rather
-    // than lose the signup we record it without them — exactly one retry.
-    if (error?.code === "42703" && smsConsentColumns) {
+    // PGRST204 = PostgREST rejected a column the schema cache doesn't know
+    // (42703 is the Postgres-level equivalent, kept as a belt-and-braces check).
+    // The consent columns are additive, so rather than lose the signup we record
+    // it without them — exactly one retry.
+    if ((error?.code === "PGRST204" || error?.code === "42703") && smsConsentColumns) {
       console.warn(
-        "[Founding] waitlist SMS consent columns are missing — migration 00433_waitlist_sms_consent.sql is pending. Retrying the signup without consent columns; this submission's consent is NOT recorded.",
+        "[Founding] waitlist SMS consent columns are missing (PostgREST PGRST204 / Postgres 42703) — migration 00433_waitlist_sms_consent.sql is pending. Retrying the signup without consent columns; this submission's consent is NOT recorded.",
       );
+      smsConsentPersisted = false;
       ({ error } = await supabaseAdmin
         .from("waitlist")
         .upsert(baseRow, { onConflict: "email" }));
@@ -199,7 +216,7 @@ export async function POST(request: NextRequest) {
         signup_page,
         has_utm: !!utm?.utm_source,
         channel,
-        sms_consent: recordSmsConsent,
+        sms_consent: smsConsentPersisted,
       },
       personProps: {
         email: normalizedEmail,
