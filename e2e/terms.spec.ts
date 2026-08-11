@@ -43,8 +43,8 @@ test.describe("Terms of Service Page", () => {
   });
 
   test("should display contact information", async ({ page }) => {
-    await expect(page.getByText("legal@patina.com")).toBeVisible();
-    await expect(page.getByText("123 Craft District")).toBeVisible();
+    await expect(page.getByText("legal@patina.cloud")).toBeVisible();
+    await expect(page.getByText("Madison, Wisconsin")).toBeVisible();
   });
 
   test("should have link to Privacy Policy", async ({ page }) => {
