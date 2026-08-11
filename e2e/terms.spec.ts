@@ -35,6 +35,13 @@ test.describe("Terms of Service Page", () => {
     await expect(page.getByText("10 years")).toBeVisible();
   });
 
+  test("should display SMS terms section with anchor", async ({ page }) => {
+    await expect(
+      page.getByText("12. Text Messages (SMS)")
+    ).toBeVisible();
+    await expect(page.locator("#sms")).toHaveCount(1);
+  });
+
   test("should display contact information", async ({ page }) => {
     await expect(page.getByText("legal@patina.com")).toBeVisible();
     await expect(page.getByText("123 Craft District")).toBeVisible();
