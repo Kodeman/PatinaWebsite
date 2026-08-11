@@ -48,7 +48,7 @@ test.describe("Signup Page", () => {
 
   // The API is mocked here deliberately: this is the only test that exercises a
   // real submission, and it has to assert the exact request body the route
-  // requires (source/role/sms_consent/E.164 phone) without writing to Supabase.
+  // requires (source/role/sms_consent/phone) without writing to Supabase.
   test("should submit consented signup with the fields the founding API requires", async ({ page }) => {
     let requestBody: Record<string, unknown> | null = null;
 

@@ -18,8 +18,9 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // links. Never retype SMS_CONSENT_TEXT — always derive from the constant.
 // The split keys ("Privacy Policy", "SMS Terms") are the literal phrases in
 // SMS_CONSENT_TEXT's closing sentence: "See our Privacy Policy and SMS Terms."
-// If that sentence is ever reworded, these keys must move with it; the `?? ''`
-// fallbacks keep the label rendering (minus a link) instead of crashing.
+// If that sentence is ever reworded, these keys must move with it; the `= ''`
+// fallbacks keep the label rendering (minus a link) instead of crashing on an
+// undefined second half.
 const [consentBeforePrivacy, consentAfterPrivacy = ''] =
   SMS_CONSENT_TEXT.split('Privacy Policy');
 const [consentBetween, consentAfterTerms = ''] = consentAfterPrivacy.split('SMS Terms');
