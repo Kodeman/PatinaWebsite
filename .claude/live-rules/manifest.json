@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "path": "rules/e2e-verification.md",
+      "hash": "d48a35cc0ac7488fbae64e9a3b1a6094c1bc8bded4eb16cd7feb0d2723bdf7e6",
+      "description": "Verify page and component changes with the matching e2e spec",
+      "globs": [
+        "src/app/**",
+        "src/components/**",
+        "e2e/**"
+      ],
+      "dirs": [],
+      "prompt": [],
+      "priority": 55,
+      "enabled": true,
+      "include": []
+    },
+    {
+      "path": "rules/messaging-voice.md",
+      "hash": "e1a975b6d3fa6b6ac6e2d56493b13c64c93ab530370db443d93787bed76f43ee",
+      "description": "Customer-facing copy follows the messaging system",
+      "globs": [
+        "src/app/**/*.tsx",
+        "src/lib/copy/**",
+        "src/lib/emails/**",
+        "src/data/**",
+        "src/components/**/*.tsx"
+      ],
+      "dirs": [],
+      "prompt": [
+        "copy",
+        "headline",
+        "tagline",
+        "CTA",
+        "email",
+        "newsletter",
+        "voice",
+        "messaging",
+        "wording"
+      ],
+      "priority": 60,
+      "enabled": true,
+      "include": []
+    },
+    {
+      "path": "rules/reuse-first-implementation.md",
+      "hash": "c371244dd23d8a394a2cfee911be75efce918c076290734da59a9c982edfcbe8",
+      "description": "Reuse-first implementation",
+      "globs": [],
+      "dirs": [],
+      "prompt": [],
+      "priority": 90,
+      "enabled": true,
+      "include": []
+    },
+    {
+      "path": "rules/self-improvement.md",
+      "hash": "72c0c0d994af5adb1ff7ab2f9cdfb6d25e4058324ba86df1dcd369d34979d6d8",
+      "description": "Self-improvement: build the capability that makes the next goal cheaper",
+      "globs": [],
+      "dirs": [],
+      "prompt": [],
+      "priority": 40,
+      "enabled": true,
+      "include": []
+    }
+  ]
+}

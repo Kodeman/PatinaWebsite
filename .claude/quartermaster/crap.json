@@ -1,0 +1,8 @@
+{
+  "coverageCommand": "node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage/lcov.info tests/*.test.mjs",
+  "lcov": "coverage/lcov.info",
+  "sources": ["src"],
+  "exclude": ["e2e/**", "tests/**", "docs/**", "design-proposals/**", "sanity/**", "**/*.test.*", "**/*.spec.*"],
+  "max": 6,
+  "ratchet": "main"
+}
