@@ -60,6 +60,7 @@ function handlerHarness(route, { configured = true, existing = null, rejectEmail
       sendContactAutoReply: send('contact-reply'),
     },
     '@/lib/emails/newsletter-welcome': { sendNewsletterWelcome: send('newsletter-welcome') },
+    '@/lib/emails/lead-notification': { sendLeadNotification: send('lead-notification') },
     './confirmation-email': { sendNewsletterConfirmation: send('newsletter-confirmation') },
   };
   const handler = loadModule(`src/app/api/${route}/route.ts`, dependencies, { logs });
@@ -96,13 +97,16 @@ for (const route of ['founding', 'contact', 'designers-apply', 'makers-apply', '
     assert.deepEqual(await response.json(), { success: true });
     assert.equal(harness.writes.length, 1);
     assert.deepEqual(harness.sends, []);
-    const expectedSends = route === 'contact' ? 2 : 1;
+    // Contact: founders' notice + auto-reply. Every other lead: ack + kody@ notice.
+    const expectedSends = 2;
     assert.equal(harness.callbacks.length, expectedSends);
     let finished = false;
     const background = Promise.all(harness.callbacks.map((callback) => callback()))
       .then(() => { finished = true; });
     await new Promise((resolve) => setImmediate(resolve));
     assert.equal(harness.sends.length, expectedSends);
+    const notices = harness.sends.filter((send) => send.name === 'lead-notification');
+    assert.equal(notices.length, route === 'contact' ? 0 : 1, 'Exactly one internal notice per new lead');
     assert.equal(finished, false, 'The lifecycle promise must stay pending during delivery');
     harness.delivery.resolve();
     await background;
@@ -151,12 +155,95 @@ test('founding: repeat signup does not schedule another first letter', async () 
   assert.equal(harness.callbacks.length, 0);
 });
 
-test('founding: a delivery rejection does not reject the lifecycle callback or saved response', async () => {
+test('founding: a delivery rejection does not reject the lifecycle callbacks or saved response', async () => {
   const harness = handlerHarness('founding', { rejectEmail: true });
   const response = await harness.handler.POST(postRequest());
-  await assert.doesNotReject(harness.callbacks[0]());
+  await assert.doesNotReject(Promise.all(harness.callbacks.map((callback) => callback())));
   assert.equal(response.status, 200);
-  assert.equal(harness.logs.length, 1);
+  assert.deepEqual(harness.logs.map((log) => log[1]), [
+    '[Founding] Welcome email failed:', '[Founding] Lead notification failed:',
+  ]);
+});
+
+for (const route of ['founding', 'newsletter', 'designers-apply', 'makers-apply']) {
+  test(`${route}: a honeypot hit sends no notification and schedules nothing`, async () => {
+    const harness = handlerHarness(route);
+    assert.equal((await harness.handler.POST(postRequest({ ...validLead, honeypot: true }))).status, 200);
+    assert.equal(harness.callbacks.length, 0);
+    assert.deepEqual(harness.sends, []);
+    assert.deepEqual(harness.writes, []);
+  });
+}
+
+const attributedLead = {
+  ...validLead, posthog_distinct_id: 'anon-1', channel: 'paid', signup_page: '/founding',
+  cta_text: 'Join the circle', company: 'Studio', website: 'https://studio.example', motivation: 'Sourcing',
+  description: 'Walnut tables', role: 'consumer',
+  first_touch_attribution: { utm_source: 'first-src', referrer: 'https://first.example' },
+  last_touch_attribution: { utm_source: 'last-src', utm_campaign: 'spring' },
+};
+
+test('lead notifications carry kind, identity, fields and attribution for each route', async () => {
+  const expected = {
+    founding: { kind: 'Founding Circle', name: 'A', role: 'consumer' },
+    newsletter: { kind: 'newsletter (pending confirmation)', name: undefined, role: undefined },
+    'designers-apply': { kind: 'designer application', name: 'A Member', role: 'designer' },
+    'makers-apply': { kind: 'maker application', name: 'A Maker (Test Workshop)', role: 'maker' },
+  };
+  for (const [route, want] of Object.entries(expected)) {
+    const harness = handlerHarness(route);
+    await harness.handler.POST(postRequest(attributedLead));
+    harness.delivery.resolve();
+    await Promise.all(harness.callbacks.map((callback) => callback()));
+    const [notice] = harness.sends.filter((send) => send.name === 'lead-notification');
+    assert.equal(notice.payload.kind, want.kind, route);
+    assert.equal(notice.payload.email, validLead.email);
+    assert.equal(notice.payload.name, want.name, route);
+    assert.equal(notice.payload.distinctId, 'anon-1');
+    assert.equal(notice.payload.fields.role, want.role, route);
+    assert.equal(notice.payload.fields.channel, 'paid', route);
+    assert.equal(notice.payload.attribution.first_touch_attribution.utm_source, 'first-src');
+  }
+});
+
+test('server lead events carry the properties the client events used to', async () => {
+  const eventOf = async (route) => {
+    const harness = handlerHarness(route);
+    await harness.handler.POST(postRequest(attributedLead));
+    return harness.events[0];
+  };
+  const designer = await eventOf('designers-apply');
+  assert.equal(designer.event, 'designer_application_submitted');
+  assert.equal(designer.properties.has_company, true);
+  assert.equal(designer.properties.has_website, true);
+  assert.equal(designer.properties.has_motivation, true);
+  assert.equal(designer.properties.email_domain, 'example.test');
+  const maker = await eventOf('makers-apply');
+  assert.equal(maker.event, 'maker_application_submitted');
+  assert.equal(maker.properties.has_company, true);
+  assert.equal(maker.properties.has_website, true);
+  assert.equal(maker.properties.has_motivation, true);
+  assert.equal(maker.properties.email_domain, 'example.test');
+  const founding = await eventOf('founding');
+  assert.equal(founding.event, 'founding_circle_signup');
+  assert.equal(founding.properties.cta_text, 'Join the circle');
+  assert.equal(founding.properties.email_domain, 'example.test');
+  for (const event of [designer, maker, founding]) {
+    assert.equal(event.posthogDistinctId, 'anon-1');
+    assert.equal(event.attribution.last_touch_attribution.utm_source, 'last-src');
+  }
+  const bare = handlerHarness('designers-apply');
+  await bare.handler.POST(postRequest());
+  assert.equal(bare.events[0].properties.has_company, false);
+  assert.equal(bare.events[0].properties.has_website, false);
+});
+
+test('contact: the server event keys on the forwarded anonymous id and attribution', async () => {
+  const harness = handlerHarness('contact');
+  await harness.handler.POST(postRequest(attributedLead));
+  assert.equal(harness.events[0].event, 'contact_form_submitted');
+  assert.equal(harness.events[0].posthogDistinctId, 'anon-1');
+  assert.equal(harness.events[0].attribution.first_touch_attribution.utm_source, 'first-src');
 });
 
 test('honeypot and invalid submissions schedule no mail even with missing persistence', async () => {
@@ -277,4 +364,32 @@ test('lead analytics retains anonymous identity, attribution and person properti
   });
   captureLeadEvent({ event: 'signup', email: validLead.email });
   assert.equal(events[1].distinctId, validLead.email);
+  assert.equal(Object.hasOwn(events[1].properties, '$set'), false);
+  assert.equal(Object.hasOwn(events[1].properties, '$set_once'), false);
+});
+
+test('lead analytics keeps first touch once as initial_* and sets last-touch utm_*', () => {
+  const events = [];
+  const { captureLeadEvent } = loadModule('src/lib/lead-capture.ts', {
+    '@/lib/posthog-server': { captureServerEvent: (event) => events.push(event) },
+  });
+  captureLeadEvent({
+    event: 'signup', email: validLead.email, personProps: { role: 'designer' },
+    attribution: {
+      first_touch_attribution: {
+        utm_source: 'first', utm_medium: 'email', utm_campaign: 'launch', utm_content: 'hero',
+        utm_term: 'never-initial', referrer: 'https://first.example', timestamp: 1,
+      },
+      last_touch_attribution: { utm_source: 'last', utm_medium: '', utm_term: 'sofa', referrer: 'https://last.example' },
+    },
+  });
+  assert.deepEqual(JSON.parse(JSON.stringify(events[0].properties.$set_once)), {
+    initial_utm_source: 'first', initial_utm_medium: 'email', initial_utm_campaign: 'launch',
+    initial_utm_content: 'hero', initial_referrer: 'https://first.example',
+  });
+  assert.deepEqual(JSON.parse(JSON.stringify(events[0].properties.$set)), {
+    role: 'designer', utm_source: 'last', utm_term: 'sofa',
+  });
+  captureLeadEvent({ event: 'signup', email: validLead.email, attribution: { first_touch_attribution: null } });
+  assert.equal(Object.hasOwn(events[1].properties, '$set_once'), false);
 });

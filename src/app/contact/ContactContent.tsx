@@ -6,6 +6,8 @@ import { StudioPage } from "@/components/studio/StudioPage";
 import { StrataMark } from "@/components/ui/StrataMark";
 import styles from "@/components/studio/TradePages.module.css";
 import { systemMessages } from "@/lib/copy/system-messages";
+import { buildLeadPayload } from "@/lib/lead-payload";
+import { getPostHogClient } from "@/lib/posthog";
 
 interface ContactContentProps {
   heroEyebrow?: string;
@@ -64,7 +66,16 @@ export default function ContactContent(props: ContactContentProps) {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        // The lead payload carries the anonymous PostHog id and attribution, so
+        // the server's contact event merges with the visitor's browsing.
+        body: JSON.stringify(
+          buildLeadPayload({
+            source: "contact_page",
+            signupPage: window.location.pathname,
+            posthogDistinctId: getPostHogClient()?.get_distinct_id?.() || null,
+            extra: formData,
+          }),
+        ),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };

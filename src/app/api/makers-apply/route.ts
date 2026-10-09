@@ -4,6 +4,7 @@ import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
 import { sendMakerReceived } from "@/lib/emails/application-received";
+import { sendLeadNotification } from "@/lib/emails/lead-notification";
 import { errorMessage } from "@/lib/errors";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -112,8 +113,17 @@ export async function POST(request: NextRequest) {
       event: "maker_application_submitted",
       email: normalizedEmail,
       posthogDistinctId: posthog_distinct_id,
-      properties: { brand_name, referral_source },
+      properties: {
+        brand_name,
+        referral_source,
+        // The maker form's workshop name, site/portfolio, and description.
+        has_company: !!brand_name,
+        has_website: !!website,
+        has_motivation: !!description,
+        email_domain: normalizedEmail.split("@")[1],
+      },
       personProps: { email: normalizedEmail, role: "maker" },
+      attribution: body,
     });
 
     // Run the acknowledgement after the response. Send failures don't block
@@ -125,6 +135,18 @@ export async function POST(request: NextRequest) {
         contact_name,
       }).catch((err) => {
         console.error("[MakerApply] Ack email failed:", errorMessage(err));
+      }),
+    );
+    after(() =>
+      sendLeadNotification({
+        kind: "maker application",
+        email: normalizedEmail,
+        name: `${contact_name} (${brand_name})`,
+        distinctId: posthog_distinct_id,
+        fields: { role: "maker", source: body.source, signup_page: body.signup_page, channel },
+        attribution: body,
+      }).catch((err) => {
+        console.error("[MakerApply] Lead notification failed:", errorMessage(err));
       }),
     );
 

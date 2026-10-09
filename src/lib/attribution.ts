@@ -10,6 +10,12 @@ export interface UTMParams {
   gclid?: string;
   fbclid?: string;
   msclkid?: string;
+  /** TikTok ads click id. */
+  ttclid?: string;
+  /** LinkedIn ads click id. */
+  li_fat_id?: string;
+  /** Referral/partner code from a `?ref=` link. */
+  ref?: string;
 }
 
 export interface Attribution {
@@ -32,6 +38,9 @@ function getUTMFromURL(): UTMParams {
     "gclid",
     "fbclid",
     "msclkid",
+    "ttclid",
+    "li_fat_id",
+    "ref",
   ] as const;
   for (const key of keys) {
     const value = params.get(key);

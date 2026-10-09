@@ -1,5 +1,6 @@
 import { sendHtmlEmail, type SendResult } from "./send";
 import { frame, signOff, escapeHtml } from "./template";
+import { LEAD_NOTIFY_TO } from "./senders";
 
 const REASON_LABELS: Record<string, string> = {
   general: "General Inquiry",
@@ -63,7 +64,7 @@ export async function sendContactNotification(opts: {
   message: string;
 }): Promise<SendResult> {
   return sendHtmlEmail({
-    to: "hello@patina.cloud",
+    to: ["hello@patina.cloud", LEAD_NOTIFY_TO],
     replyTo: opts.email,
     subject: `Contact — ${reasonLabel(opts.reason)} — ${opts.name}`,
     html: contactNotificationEmail(opts),

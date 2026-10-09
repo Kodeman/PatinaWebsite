@@ -3,11 +3,13 @@
  * Uses native fetch — no package dependency on resend.
  */
 
+import { errorMessage } from "@/lib/errors";
+
 const RESEND_API = 'https://api.resend.com/emails';
 const DEFAULT_FROM = 'Patina <hello@patina.cloud>';
 
 export interface SendOptions {
-  to: string;
+  to: string | string[];
   subject: string;
   html: string;
   from?: string;
@@ -19,6 +21,15 @@ export interface SendResult {
   success: boolean;
   id?: string;
   error?: string;
+}
+
+/** Resend's reply as a SendResult: its id on success, its message (or the HTTP status) otherwise. */
+async function sendResult(res: Response): Promise<SendResult> {
+  const body = (await res.json().catch(() => ({}))) as { id?: string; message?: string };
+  if (!res.ok) {
+    return { success: false, error: body.message ?? `Resend HTTP ${res.status}` };
+  }
+  return { success: true, id: body.id };
 }
 
 export async function sendHtmlEmail(options: SendOptions): Promise<SendResult> {
@@ -37,22 +48,15 @@ export async function sendHtmlEmail(options: SendOptions): Promise<SendResult> {
       },
       body: JSON.stringify({
         from: options.from ?? DEFAULT_FROM,
-        to: [options.to],
+        to: [options.to].flat(),
         subject: options.subject,
         html: options.html,
         reply_to: options.replyTo,
         tags: options.tags,
       }),
     });
-    const body = (await res.json().catch(() => ({}))) as { id?: string; message?: string };
-    if (!res.ok) {
-      return { success: false, error: body.message ?? `Resend HTTP ${res.status}` };
-    }
-    return { success: true, id: body.id };
+    return await sendResult(res);
   } catch (err) {
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : 'Unknown send error',
-    };
+    return { success: false, error: errorMessage(err) };
   }
 }

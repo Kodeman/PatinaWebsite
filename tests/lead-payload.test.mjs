@@ -25,6 +25,47 @@ test('buildLeadPayload flattens last-touch attribution and keeps the legacy utm 
   assert.equal(payload.email, 'a@example.test');
 });
 
+test('buildLeadPayload forwards every click id and the first-touch campaign', () => {
+  const last = { ...touch, ttclid: 'tt-1', li_fat_id: 'li-1', ref: 'partner-7' };
+  const first = { utm_source: 'first-src', utm_medium: 'social', utm_campaign: 'launch', referrer: '', timestamp: 0 };
+  const { buildLeadPayload } = payloadModule({ first_touch: first, last_touch: last });
+  const payload = buildLeadPayload({ source: 'hero', signupPage: '/', posthogDistinctId: null });
+  assert.equal(payload.ttclid, 'tt-1');
+  assert.equal(payload.li_fat_id, 'li-1');
+  assert.equal(payload.ref, 'partner-7');
+  assert.equal(payload.first_touch_utm_source, 'first-src');
+  assert.equal(payload.first_touch_utm_medium, 'social');
+  assert.equal(payload.first_touch_utm_campaign, 'launch');
+  assert.equal(payload.first_touch_attribution, first);
+});
+
+test('captureAttribution records TikTok and LinkedIn click ids and a ref code', async () => {
+  const store = new Map();
+  const registered = [];
+  const { captureAttribution, getAttribution } = loadModule('src/lib/attribution.ts', {
+    './posthog': { getPostHogClient: () => ({ register: (props) => registered.push(props) }) },
+  }, {
+    globals: {
+      window: { location: { search: '?ttclid=tt-1&li_fat_id=li-1&ref=partner-7&utm_source=tiktok' } },
+      document: { referrer: '' },
+      localStorage: {
+        getItem: (key) => store.get(key) ?? null,
+        setItem: (key, value) => store.set(key, value),
+        removeItem: (key) => store.delete(key),
+      },
+      URLSearchParams,
+    },
+  });
+  captureAttribution();
+  const { first_touch } = getAttribution();
+  assert.equal(first_touch.ttclid, 'tt-1');
+  assert.equal(first_touch.li_fat_id, 'li-1');
+  assert.equal(first_touch.ref, 'partner-7');
+  assert.equal(first_touch.utm_source, 'tiktok');
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(registered[0].utm_source, 'tiktok');
+});
+
 test('buildLeadPayload without attribution sends nulls, not undefined strings', () => {
   const { buildLeadPayload } = payloadModule(null);
   const payload = buildLeadPayload({ source: 'footer', signupPage: '/about', posthogDistinctId: null });
@@ -35,6 +76,10 @@ test('buildLeadPayload without attribution sends nulls, not undefined strings', 
   assert.equal(payload.last_touch_attribution, null);
   assert.equal(payload.cta_text, null);
   assert.equal(payload.gclid, null);
+  assert.equal(payload.ttclid, null);
+  assert.equal(payload.li_fat_id, null);
+  assert.equal(payload.ref, null);
+  assert.equal(payload.first_touch_utm_source, undefined);
 });
 
 test('inferRole reads the surface and page', () => {

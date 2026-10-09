@@ -4,6 +4,7 @@ import { captureServerEvent } from "@/lib/posthog-server";
 import { isHoneypotTripped, checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { sendFoundingWelcome } from "@/lib/emails/founding-welcome";
+import { sendLeadNotification } from "@/lib/emails/lead-notification";
 import { SMS_CONSENT_TEXT, systemMessages } from "@/lib/copy/system-messages";
 import { errorMessage } from "@/lib/errors";
 
@@ -209,6 +210,8 @@ export async function POST(request: NextRequest) {
       properties: {
         source,
         signup_page,
+        cta_text,
+        email_domain: normalizedEmail.split("@")[1],
         has_utm: !!utm?.utm_source,
         channel,
         sms_consent: smsConsentPersisted,
@@ -218,14 +221,28 @@ export async function POST(request: NextRequest) {
         role: role || "unknown",
         founding_source: source,
       },
+      attribution: body,
     });
 
-    // Keep the welcome letter alive after the response on serverless hosts.
-    // New members only; send failures don't block the success response.
+    // Keep the welcome letter and the founders' notice alive after the response
+    // on serverless hosts. New members only; send failures don't block the
+    // success response.
     if (isNewSignup) {
       after(() =>
         sendFoundingWelcome({ email: normalizedEmail, first_name }).catch((err) => {
           console.error("[Founding] Welcome email failed:", errorMessage(err));
+        }),
+      );
+      after(() =>
+        sendLeadNotification({
+          kind: "Founding Circle",
+          email: normalizedEmail,
+          name: first_name,
+          distinctId: posthog_distinct_id,
+          fields: { role: role || "unknown", source, signup_page, channel },
+          attribution: body,
+        }).catch((err) => {
+          console.error("[Founding] Lead notification failed:", errorMessage(err));
         }),
       );
     }

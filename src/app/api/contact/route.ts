@@ -103,6 +103,7 @@ export async function POST(request: NextRequest) {
         email_domain: normalizedEmail.split("@")[1],
       },
       personProps: { email: normalizedEmail },
+      attribution: body,
     });
 
     return NextResponse.json({ success: true });

@@ -23,6 +23,30 @@ export interface CaptureLeadEventArgs {
    * person properties are merged in under the `$set` key inside `properties`.
    */
   personProps?: Record<string, unknown>;
+  /**
+   * The lead payload's attribution touches. The first touch is kept once on the
+   * person as `initial_*`; the last touch's utm_* are set on every lead. Plain
+   * names, so PostHog's own `$initial_*` person properties stay untouched.
+   */
+  attribution?: {
+    first_touch_attribution?: Touch | null;
+    last_touch_attribution?: Touch | null;
+  };
+}
+
+type Touch = Partial<Record<"utm_source" | "utm_medium" | "utm_campaign" | "utm_content" | "utm_term" | "referrer", unknown>>;
+
+const INITIAL_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "referrer"] as const;
+const LAST_TOUCH_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+
+/** The touch's non-empty `keys`, named `prefix` + key. Empty values never overwrite a person property. */
+function touchProps(touch: Touch | null | undefined, keys: readonly (keyof Touch)[], prefix: string) {
+  return Object.fromEntries(keys.filter((key) => touch?.[key]).map((key) => [prefix + key, touch?.[key]]));
+}
+
+/** `{ [key]: props }` when there is anything to send, else nothing. */
+function nonEmpty(key: string, props: Record<string, unknown>) {
+  return Object.keys(props).length ? { [key]: props } : {};
 }
 
 /**
@@ -43,6 +67,7 @@ export function captureLeadEvent({
   posthogDistinctId,
   properties,
   personProps,
+  attribution,
 }: CaptureLeadEventArgs): void {
   // Prefer the anonymous client distinct_id so pre-signup browsing merges
   // into the same person; fall back to email when none was forwarded.
@@ -59,7 +84,11 @@ export function captureLeadEvent({
         // default), so this server emission is frequently the only one.
         surface: "marketing-web",
         ...properties,
-        ...(personProps ? { $set: personProps } : {}),
+        ...nonEmpty("$set", {
+          ...personProps,
+          ...touchProps(attribution?.last_touch_attribution, LAST_TOUCH_KEYS, ""),
+        }),
+        ...nonEmpty("$set_once", touchProps(attribution?.first_touch_attribution, INITIAL_KEYS, "initial_")),
       },
     });
   } catch {

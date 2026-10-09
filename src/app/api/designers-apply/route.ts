@@ -4,6 +4,7 @@ import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
 import { sendDesignerReceived } from "@/lib/emails/application-received";
+import { sendLeadNotification } from "@/lib/emails/lead-notification";
 import { errorMessage } from "@/lib/errors";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -119,11 +120,14 @@ export async function POST(request: NextRequest) {
       posthogDistinctId: posthog_distinct_id,
       properties: {
         company: company || null,
+        has_company: !!company,
         has_website: !!website,
         has_motivation: !!motivation,
+        email_domain: normalizedEmail.split("@")[1],
         referral_source: referral_source || null,
       },
       personProps: { email: normalizedEmail, role: "designer" },
+      attribution: body,
     });
 
     // Run the acknowledgement after the response. Send failures don't block
@@ -135,6 +139,18 @@ export async function POST(request: NextRequest) {
         last_name,
       }).catch((err) => {
         console.error("[DesignerApply] Ack email failed:", errorMessage(err));
+      }),
+    );
+    after(() =>
+      sendLeadNotification({
+        kind: "designer application",
+        email: normalizedEmail,
+        name: `${first_name} ${last_name}`,
+        distinctId: posthog_distinct_id,
+        fields: { role: "designer", source: body.source, signup_page: body.signup_page, channel },
+        attribution: body,
+      }).catch((err) => {
+        console.error("[DesignerApply] Lead notification failed:", errorMessage(err));
       }),
     );
 

@@ -5,6 +5,7 @@ import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
 import { errorMessage } from "@/lib/errors";
+import { sendLeadNotification } from "@/lib/emails/lead-notification";
 import { sendNewsletterConfirmation } from "./confirmation-email";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -113,6 +114,17 @@ export async function POST(request: NextRequest) {
         console.error("[Newsletter] Confirmation email failed:", errorMessage(err));
       }),
     );
+    after(() =>
+      sendLeadNotification({
+        kind: "newsletter (pending confirmation)",
+        email: normalizedEmail,
+        distinctId: posthog_distinct_id,
+        fields: { source, signup_page, channel: body.channel },
+        attribution: body,
+      }).catch((err) => {
+        console.error("[Newsletter] Lead notification failed:", errorMessage(err));
+      }),
+    );
 
     // Track server-side with proper identity merge. Prefers the anonymous
     // client distinct_id so pre-signup browsing links to the same person.
@@ -129,6 +141,7 @@ export async function POST(request: NextRequest) {
         utm_campaign: resolvedUtmCampaign,
       },
       personProps: { email: normalizedEmail, newsletter_source: source },
+      attribution: body,
     });
 
     return NextResponse.json({ success: true });

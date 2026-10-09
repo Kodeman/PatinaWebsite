@@ -44,14 +44,23 @@ export interface LeadPayload {
   cta_text: string | null;
   gclid: string | null;
   fbclid: string | null;
+  ttclid: string | null;
+  li_fat_id: string | null;
+  ref: string | null;
+  first_touch_utm_source?: string;
+  first_touch_utm_medium?: string;
+  first_touch_utm_campaign?: string;
   channel: Channel;
   [key: string]: unknown;
 }
 
-type LastTouch = Attribution["last_touch"];
+type Touch = Attribution["last_touch"];
+
+const CLICK_IDS = ["gclid", "fbclid", "ttclid", "li_fat_id", "ref"] as const;
 
 /** Flat attribution fields every lead API accepts, derived from the last touch. */
-function lastTouchFields(last: LastTouch | null) {
+function lastTouchFields(last: Touch | null) {
+  const clickIds = Object.fromEntries(CLICK_IDS.map((key) => [key, last?.[key] || null]));
   return {
     utm_source: last?.utm_source,
     utm_medium: last?.utm_medium,
@@ -59,17 +68,27 @@ function lastTouchFields(last: LastTouch | null) {
     utm_content: last?.utm_content,
     utm_term: last?.utm_term,
     referrer: last?.referrer || "",
-    gclid: last?.gclid || null,
-    fbclid: last?.fbclid || null,
+    ...(clickIds as Record<(typeof CLICK_IDS)[number], string | null>),
   };
 }
+
+/** The first touch's campaign, flat, so a lead keeps how it first arrived. */
+function firstTouchFields(first: Touch | null) {
+  return {
+    first_touch_utm_source: first?.utm_source,
+    first_touch_utm_medium: first?.utm_medium,
+    first_touch_utm_campaign: first?.utm_campaign,
+  };
+}
+
+const NO_ATTRIBUTION = { first_touch: null, last_touch: null };
 
 /**
  * Build the unified lead payload shared by all signup forms.
  */
 export function buildLeadPayload(opts: BuildLeadPayloadOptions): LeadPayload {
   const attribution = getAttribution();
-  const last = attribution?.last_touch ?? null;
+  const { first_touch: first, last_touch: last } = attribution ?? NO_ATTRIBUTION;
 
   return {
     // Every lead API requires `source`; emit it here so no caller has to
@@ -80,7 +99,8 @@ export function buildLeadPayload(opts: BuildLeadPayloadOptions): LeadPayload {
     // Keep the legacy Founding Circle contract alongside unified flat fields.
     utm: last,
     ...lastTouchFields(last),
-    first_touch_attribution: attribution?.first_touch ?? null,
+    ...firstTouchFields(first),
+    first_touch_attribution: first,
     last_touch_attribution: last,
     posthog_distinct_id: opts.posthogDistinctId,
     signup_page: opts.signupPage,
