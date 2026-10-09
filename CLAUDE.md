@@ -109,6 +109,7 @@ src/
 ### Tests
 
 - `e2e/` - one Playwright spec per page; run the matching spec after touching a page. Needs network to the Sanity CDN for CMS pages.
+- `e2e/tracking-coverage.spec.ts` guards analytics: every sitemap route must send a `$pageview` (with and without consent) and every nav/footer/main link or button must produce an event. A new CTA must pass it; use `TrackedLink` or a typed `analytics.ts` event. Playwright's webServer runs PostHog with the dummy key `phc_test`, so every e2e spec loads it.
 - `tests/` - `node --test`. Route handlers load through `tests/helpers/load-module.mjs` (TypeScript transpiled with inline source maps, run in a `vm` context, every import mocked). Coverage maps back to `src/`, which the CRAP gate consumes.
 - Gotchas: a new `src/lib` import in a route must be added to `handlerHarness` dependencies (see `errors`), or the loader throws `Unmocked import`. Objects created inside the VM have a different prototype, so use `assert.equal` per field or JSON round-trips, not strict `deepEqual`.
 - Route catch blocks log with `errorMessage(err)` from `src/lib/errors.ts`; do not inline the `instanceof Error` ternary.
