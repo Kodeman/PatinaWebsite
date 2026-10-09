@@ -1,17 +1,22 @@
 # Key Modules
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 ### Analytics (client)
 - **Location:** `src/lib/analytics.ts`, `src/lib/posthog.ts`, `src/lib/attribution.ts`, `src/lib/identity.ts`
-- **Purpose:** typed event catalogue and consent-gated PostHog client.
-- **Exposes:** `track(event, props)`, `analytics`, `getPostHogClient()`, `getConsent()/setConsent()`, `captureAttribution()`, `getAttribution()`, `classifyChannel()`, `identifyUser()`, `aliasOnConversion()`.
-- **Events:** `page_viewed`, `nav_link_clicked`, `cta_click`, `founding_circle_signup`, `founding_cta_click`, `founding_modal_*`, `newsletter_signup`, `waitlist_signup`, `contact_form_submitted`, `maker_application_submitted`, `designer_application_submitted`, `consent_updated`, `scroll_depth_reached`, `room_hotspot_*`, `shop_this_room_clicked`, `style_*`, `app_feature_status_view`, `user_identified`, search and product events.
-- **Depends on:** posthog-js. Disabled in development unless `NEXT_PUBLIC_POSTHOG_ENABLE_IN_DEV=true`.
+- **Purpose:** typed event catalogue and PostHog client. Before consent (or after Decline) posthog-js runs `cookieless_mode: "on_reject"` (no cookies, server-hashed identity); Accept upgrades to a persistent profile. Autocapture, dead clicks, `capture_pageleave` and the `surface: marketing-web` super-property are on; DNT is respected.
+- **Exposes:** `track(event, props)`, `analytics`, `getPostHogClient()`, `getConsent()/setConsent()`, `captureAttribution()` (UTMs, click ids incl. `ttclid`, `li_fat_id`, `ref`; first and last touch), `getAttribution()`, `classifyChannel()`, `identifyUser()`, `aliasOnConversion()`.
+- **Events:** `page_viewed`, `nav_link_clicked`, `cta_click`, `founding_cta_click`, `founding_modal_*`, `consent_updated` (Accept and Decline), `user_identified`. Signup events (`founding_circle_signup`, `newsletter_signup`, `designer_application_submitted`, `maker_application_submitted`, `contact_form_submitted`) are server-only; never `track()` them from a form.
+- **TrackedLink:** `src/components/ui/TrackedLink/` wraps `next/link` or `<a>` and fires `cta_click` (default), `nav_link_clicked`, or `maker_apply_click` with a `location`; use it for any CTA, mailto, or outbound link so `e2e/tracking-coverage.spec.ts` passes.
+- **Depends on:** posthog-js. Disabled in development unless `NEXT_PUBLIC_POSTHOG_ENABLE_IN_DEV=true`. `tests/posthog.test.mjs` covers the init options.
 
 ### Analytics (server)
 - **Location:** `src/lib/posthog-server.ts`, `src/lib/lead-capture.ts`
-- **Exposes:** `getServerPostHog()`, `captureServerEvent()` (wraps `after()`, isolates failure), `captureLeadEvent({...})` which keeps the anonymous distinct id, attribution and person properties.
+- **Exposes:** `getServerPostHog()`, `captureServerEvent()` (wraps `after()`, isolates failure), `captureLeadEvent({...})` which keeps the anonymous distinct id, attribution and person properties, and `$set_once`s first-touch `initial_*` UTMs. These server events are the authoritative signup counts.
+
+### Lead route helpers
+- **Location:** `src/lib/lead-route.ts`
+- **Exposes:** response helpers (`success`, `badRequest`, `serviceUnavailable`, `invalidRequest`), `rateLimitResponse`, `screenSubmission` (rate limit + honeypot), email helpers (`isValidEmail`, `emailError`, `normalizeEmail`, `emailDomain`), `leadAttribution`, `logSupabaseError`/`saveFailed`, `scheduleDelivery` and `scheduleLeadNotification` (both `after()`). Each lead route's `POST` is a short pipeline of these, kept under the CRAP gate.
 
 ### Lead payload
 - **Location:** `src/lib/lead-payload.ts`
@@ -27,7 +32,7 @@
 
 ### Email
 - **Location:** `src/lib/emails/`
-- **Key files:** `send.ts` (`sendHtmlEmail` → Resend REST; logs failure when `RESEND_API_KEY` missing), `template.ts` (`frame`, `button`, `signedBy`, `signOff`, `escapeHtml`, `UNSUBSCRIBE_MAILTO`), `senders.ts` (`kodySignupSender`), `founding-welcome.ts`, `newsletter-welcome.ts`, `application-received.ts` (`sendDesignerReceived`, `sendMakerReceived`), `contact-received.ts` (`sendContactNotification`, `sendContactAutoReply`). Newsletter confirmation lives at `src/app/api/newsletter/confirmation-email.ts`.
+- **Key files:** `send.ts` (`sendHtmlEmail` → Resend REST; logs failure when `RESEND_API_KEY` missing), `template.ts` (`frame`, `button`, `signedBy`, `signOff`, `escapeHtml`, `UNSUBSCRIBE_MAILTO`), `senders.ts` (`kodySignupSender`, `LEAD_NOTIFY_TO` = kody@patina.cloud), `lead-notification.ts` (`sendLeadNotification`: internal alert per signup with kind, contact, campaign/channel and a PostHog person link), `founding-welcome.ts`, `newsletter-welcome.ts`, `application-received.ts` (`sendDesignerReceived`, `sendMakerReceived`), `contact-received.ts` (`sendContactNotification`, `sendContactAutoReply`). Newsletter confirmation lives at `src/app/api/newsletter/confirmation-email.ts`.
 
 ### Copy and SEO
 - `src/lib/copy/system-messages.ts`: `systemMessages` (errors, success, consent, newsletter states), `SMS_CONSENT_TEXT` (frozen, matches the Twilio A2P campaign).

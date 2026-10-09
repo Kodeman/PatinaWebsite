@@ -1,6 +1,6 @@
 # Communication
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 ## HTTP API (same origin, JSON)
 
@@ -16,7 +16,11 @@ All form routes accept `application/json` bodies built by `buildLeadPayload()` a
 
 ## Client → analytics
 
-`track()` in `src/lib/analytics.ts` is the only sanctioned path; it no-ops without consent or a key. Page views come from `PostHogPageView` in `src/app/providers.tsx`. Attribution is captured once per session by `captureAttribution()` and read back into every lead payload.
+`track()` in `src/lib/analytics.ts` is the only sanctioned path for named events; it no-ops without a key. Without consent posthog-js still captures in cookieless mode, so pageviews and clicks are counted anonymously. Page views come from `PostHogPageView` in `src/app/providers.tsx`; clicks from autocapture plus `TrackedLink`/`track()` named events. Attribution is captured once per session by `captureAttribution()` and read back into every lead payload, including `/api/contact`. Signup events are never sent from the browser; the server event is authoritative.
+
+## Campaign links
+
+`next.config.ts` has temporary vanity redirects for print: `/parade`, `/studio-door`, `/hire` → `/designers?utm_source=…&utm_medium=print&utm_campaign=2026-10-…`. UTM rules and the link table for every October piece are in `docs/marketing/utm-convention.md`; reporting (dashboard 2084092, daily subscription 167653 to kody@) in `docs/posthog-reporting.md`.
 
 ## PostHog proxy
 
@@ -28,7 +32,7 @@ All form routes accept `application/json` bodies built by `buildLeadPayload()` a
 
 ## Server → Resend
 
-`sendHtmlEmail()` POSTs to Resend's REST API with `fetch`. Sender identities come from `src/lib/emails/senders.ts`; every marketing email includes the unsubscribe line from `template.ts`. When `RESEND_API_KEY` is absent the send is logged as failed and the API response is unaffected, except `/api/contact`, which requires the founder notification to be accepted when the DB insert failed.
+`sendHtmlEmail()` POSTs to Resend's REST API with `fetch`. Every new signup (Founding, newsletter request, designer, maker, contact) also sends an internal `sendLeadNotification()` to `LEAD_NOTIFY_TO` (kody@patina.cloud) via `scheduleLeadNotification()` in `after()`; repeat founding signups and honeypot hits do not. The contact founder notification goes to hello@ and kody@. Sender identities come from `src/lib/emails/senders.ts`; every marketing email includes the unsubscribe line from `template.ts`. When `RESEND_API_KEY` is absent the send is logged as failed and the API response is unaffected, except `/api/contact`, which requires the founder notification to be accepted when the DB insert failed.
 
 ## Sanity
 

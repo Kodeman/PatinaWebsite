@@ -1,6 +1,6 @@
 # Patterns & Conventions
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 ## Code Organization
 
@@ -26,6 +26,8 @@ Route-per-folder under `src/app`; server `page.tsx` composes presentation compon
 
 - **E2E** (`e2e/*.spec.ts`): one spec per page named after the route; they assert critical UI and navigation against `next dev`. Run the matching spec after touching a page (`npx playwright test e2e/<page>.spec.ts`). Full suite before a PR. `test:cloudflare` reruns them against the Worker preview.
 - **Server lifecycle** (`tests/server-lifecycle.test.mjs`): loads route handlers through `tests/helpers/load-module.mjs`, which transpiles the TypeScript with an inline source map and runs it in a `vm` context with every import mocked. It asserts the 503/after/email ordering contract per route. Add a case here when changing a route's persistence or side-effect order. The same loader backs `tests/lead-payload.test.mjs`, `tests/rate-limit.test.mjs`, and `tests/sitemap.test.mjs`.
+- **Tracking coverage** (`e2e/tracking-coverage.spec.ts`): visits every sitemap route plus `/signup` and `/makers/apply`, asserts a `$pageview` with and without consent, and clicks every link/button in nav, footer and `main`, failing on any that emits no event. Playwright's webServer sets `NEXT_PUBLIC_POSTHOG_ENABLE_IN_DEV=true` and the dummy key `phc_test`, so every spec runs with PostHog loaded (`/ingest` is intercepted).
+- **Lead notifications and PostHog init**: `tests/lead-notification.test.mjs`, `tests/posthog.test.mjs`.
 - **Build artifact** (`tests/cloudflare-artifact.test.mjs`): the OpenNext env module keeps only `NEXT_PUBLIC_*` values.
 - **CRAP gate**: `.claude/quartermaster/crap.json`, ceiling 6 ratcheted against `main`, `.ts` files only. Coverage from `node --test --experimental-test-coverage` maps back to `src/` through the loader's source maps, so a covered function passes at its complexity; an uncovered one must stay at one branch. `.tsx` is excluded because lizard counts `?` inside JSX text as a ternary. Any new `.ts` module that a route imports must be mocked or loaded in the lifecycle harness (see `errors` in `handlerHarness`).
 

@@ -1,6 +1,6 @@
 # Entry Points
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 ## Page routes
 
@@ -41,7 +41,7 @@
 
 ## Redirects and rewrites (`next.config.ts`)
 
-`www.patina.cloud` → apex; `/waitlist`, `/join`, `/founding-circle` → `/founding`; `/materials` → `/makers` (temporary); `/furniture/:path*` → `/makers`. `/ingest/*` rewrites to PostHog.
+`www.patina.cloud` → apex; `/waitlist`, `/join`, `/founding-circle` → `/founding`; `/materials` → `/makers` (temporary); `/furniture/:path*` → `/makers`. Print vanity paths `/parade`, `/studio-door`, `/hire` → `/designers` with campaign UTMs (temporary; see `docs/marketing/utm-convention.md`). `/ingest/*` rewrites to PostHog.
 
 ## Commands
 

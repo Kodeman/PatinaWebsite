@@ -1,6 +1,6 @@
 # Architecture
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 ## Summary
 
@@ -19,9 +19,10 @@ Browser ──► Next.js (Cloudflare Worker, .open-next/worker.js)
   │  forms      └─ src/app/api/{founding,newsletter,contact,designers-apply,makers-apply}
   │                    │ rate-limit.ts + honeypot
   │                    ├─► Supabase Postgres (service role, src/lib/supabase.ts)
-  │                    └─► after(): Resend email (src/lib/emails/*), PostHog server event (lead-capture.ts)
+  │                    └─► after(): Resend email (src/lib/emails/*), internal alert to kody@ (lead-notification.ts),
+  │                                 PostHog server event (lead-capture.ts)
   │
-  └─ posthog-js (consent-gated, src/lib/posthog.ts) ──► /ingest ──► PostHog
+  └─ posthog-js (cookieless until consent, src/lib/posthog.ts) ──► /ingest ──► PostHog
 Sanity Studio: /studio/[[...tool]] embeds sanity/sanity.config.ts
 Sanity webhook: POST /api/revalidate ──► revalidatePath()
 ```
@@ -31,8 +32,8 @@ Sanity webhook: POST /api/revalidate ──► revalidatePath()
 - **Pages** (`src/app/*/page.tsx`): server components. Most render `StudioPage` or bespoke studio layouts (`src/components/studio/`). Interactive islands are separate `"use client"` files next to the page (`ContactContent.tsx`, `SignupContent.tsx`, `MakerStudy.tsx`, `FoundingPageContent.tsx`).
 - **Root layout** (`src/app/layout.tsx`): local fonts (Libre Caslon Display, Manrope), Organization + Website JSON-LD, `SkipLink`, `PostHogProviders`, `StudioMotionProvider`, `FoundingModalProvider`, `CookieConsent`, and the global `FoundingCircleModal`.
 - **Lead capture** (client): `FoundingCircleForm`, `NewsletterSignup`, `SignupContent`, `DesignerApplicationForm`, `MakersApplyContent`, `ContactContent` build a payload with `src/lib/lead-payload.ts` (UTM + first/last-touch attribution + PostHog distinct id + honeypot) and POST to the matching API route, then `track()` a typed event.
-- **Lead capture** (server): route handlers share `src/lib/rate-limit.ts`, `src/lib/supabase.ts`, `src/lib/lead-capture.ts`, `src/lib/copy/system-messages.ts`, and `src/lib/emails/*`.
-- **Analytics**: `src/lib/analytics.ts` is the typed event catalogue (`track()`); `src/lib/posthog.ts` initialises posthog-js only with consent; `src/lib/posthog-server.ts` wraps posthog-node with `after()`.
+- **Lead capture** (server): route handlers share `src/lib/rate-limit.ts`, `src/lib/supabase.ts`, `src/lib/lead-capture.ts`, `src/lib/lead-route.ts`, `src/lib/copy/system-messages.ts`, and `src/lib/emails/*`.
+- **Analytics**: `src/lib/analytics.ts` is the typed event catalogue (`track()`); `src/lib/posthog.ts` initialises posthog-js (cookieless until consent); `src/lib/posthog-server.ts` wraps posthog-node with `after()`.
 - **Content**: Sanity schemas in `sanity/schemas/`, GROQ in `sanity/lib/queries.ts`, client in `sanity/lib/client.ts`. Only `/careers`, `/journal`, `/journal/[slug]`, and `sitemap.ts` fetch Sanity on this branch; other page copy is in code.
 - **Motion**: `src/components/motion/*` (Framer Motion wrappers honouring `useReducedMotion`) and `StudioMotion` (a user-toggleable motion context that sets `body[data-studio-motion]`).
 
@@ -50,7 +51,7 @@ Newsletter is double opt-in: `POST /api/newsletter` stores a pending row and ema
 
 - Supabase is accessed only with the service-role key, server-side. There is no browser Supabase client and no auth on this site.
 - Missing persistence or mail credentials produce a retryable `503` with `Retry-After`, never a fabricated success or count (`tests/server-lifecycle.test.mjs` pins this).
-- PostHog: autocapture off, consent-gated, DNT respected, proxied through `/ingest`. `skipTrailingSlashRedirect` is set so ingest paths are not redirected.
+- PostHog: cookieless until consent, autocapture and dead clicks on, DNT respected, proxied through `/ingest`. `skipTrailingSlashRedirect` is set so ingest paths are not redirected.
 - Cloudflare build (`scripts/cloudflare-build.mjs`) strips private env from the OpenNext artifact; secrets live as Worker bindings only.
 - Old catalogue routes (`/furniture/*`, `/materials`, `/waitlist`, `/join`) redirect; the marketplace is pre-launch.
 - Customer-facing copy must follow `docs/messaging/patina-messaging-system.md`.

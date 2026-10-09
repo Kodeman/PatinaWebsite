@@ -1,6 +1,6 @@
 # Codebase Map — Patina Website
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 Patina's marketing site ("The Living Study"): a Next.js 16 App Router app that tells the brand story, captures leads (Founding Circle, newsletter, designer and maker applications, contact) into a Supabase Postgres, tracks the funnel in PostHog, sends lifecycle email through Resend, and deploys to Cloudflare Workers via OpenNext. Sanity hosts editorial content (journal, careers) and an embedded Studio at `/studio`. The app and marketplace are pre-launch.
 
