@@ -1,152 +1,111 @@
 import { randomUUID } from "node:crypto";
-import { after, NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
-import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
-import { errorMessage } from "@/lib/errors";
-import { sendLeadNotification } from "@/lib/emails/lead-notification";
+import {
+  emailError, emailDomain, invalidRequest, normalizeEmail, orNull, saveFailed, scheduleDelivery,
+  scheduleLeadNotification, screenSubmission, serviceUnavailable, success, userAgent, type LeadBody,
+} from "@/lib/lead-route";
 import { sendNewsletterConfirmation } from "./confirmation-email";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TAG = "Newsletter";
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "referrer"] as const;
+type Utm = Record<(typeof UTM_KEYS)[number], unknown>;
+
+/** The first value that isn't null or undefined, else null. */
+function firstDefined(current: unknown, legacy: unknown) {
+  return current ?? legacy ?? null;
+}
+
+/**
+ * Reads flat top-level utm_* keys (current form payload), falling back to the
+ * legacy nested `utm` object for backward compatibility.
+ */
+function resolveUtm(body: LeadBody): Utm {
+  const legacy = body.utm || {};
+  const utm = {} as Utm;
+  for (const key of UTM_KEYS) utm[key] = firstDefined(body[key], legacy[key]);
+  return utm;
+}
+
+function touchAttribution(body: LeadBody) {
+  return {
+    ...(body.first_touch_attribution ? { first_touch: body.first_touch_attribution } : {}),
+    ...(body.last_touch_attribution ? { last_touch: body.last_touch_attribution } : {}),
+  };
+}
+
+function subscriberRow(request: NextRequest, body: LeadBody, email: string, utm: Utm, token: string) {
+  return {
+    email,
+    source: body.source || "website",
+    signup_page: orNull(body.signup_page),
+    ...utm,
+    user_agent: userAgent(request),
+    lead_attribution: touchAttribution(body),
+    posthog_distinct_id: orNull(body.posthog_distinct_id),
+    confirmed: false,
+    confirmation_token: token,
+  };
+}
+
+/** Confirmation email, internal notice and event for a stored subscriber. */
+function recordSubscriber(body: LeadBody, email: string, utm: Utm, token: string) {
+  // Failures don't block the success response — the unconfirmed row is saved
+  // either way and the user can re-subscribe to trigger a fresh link.
+  scheduleDelivery(TAG, "Confirmation email", () => sendNewsletterConfirmation({ email, token }));
+  scheduleLeadNotification(TAG, {
+    kind: "newsletter (pending confirmation)",
+    email,
+    distinctId: body.posthog_distinct_id,
+    fields: { source: body.source, signup_page: body.signup_page, channel: body.channel },
+    attribution: body,
+  });
+
+  // Prefers the anonymous client distinct_id so pre-signup browsing links to
+  // the same person.
+  captureLeadEvent({
+    event: "newsletter_signup",
+    email,
+    posthogDistinctId: body.posthog_distinct_id,
+    properties: {
+      email_domain: emailDomain(email),
+      source: body.source,
+      signup_page: body.signup_page,
+      utm_source: utm.utm_source,
+      utm_medium: utm.utm_medium,
+      utm_campaign: utm.utm_campaign,
+    },
+    personProps: { email, newsletter_source: body.source },
+    attribution: body,
+  });
+}
+
+async function handle(request: NextRequest, body: LeadBody) {
+  const rejection = screenSubmission(request, body, "newsletter", emailError);
+  if (rejection) return rejection;
+
+  const email = normalizeEmail(body.email);
+  const utm = resolveUtm(body);
+  if (!supabaseAdmin) return serviceUnavailable();
+
+  // Double opt-in: store an unconfirmed row with a fresh confirmation token.
+  // Re-subscribing (upsert conflict on email) rotates the token and resets
+  // confirmed=false so the link in the freshest email is the one that works.
+  const token = randomUUID();
+  const { error } = await supabaseAdmin
+    .from("newsletter_subscribers")
+    .upsert(subscriberRow(request, body, email, utm, token), { onConflict: "email" });
+  if (error) return saveFailed(TAG, error, "Failed to save signup");
+
+  recordSubscriber(body, email, utm, token);
+  return success();
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const {
-      email,
-      source,
-      signup_page,
-      posthog_distinct_id,
-      utm,
-      utm_source,
-      utm_medium,
-      utm_campaign,
-      utm_content,
-      utm_term,
-      referrer,
-      first_touch_attribution,
-      last_touch_attribution,
-    } = body;
-
-    // Silently accept honeypot hits so bots can't distinguish the trap.
-    if (isHoneypotTripped(body)) {
-      return NextResponse.json({ success: true });
-    }
-
-    // Rate-limit per client IP (best-effort, in-memory).
-    const ip = getClientIp(request);
-    const limited = checkRateLimit(`${ip}:newsletter`);
-    if (!limited.ok) {
-      return NextResponse.json(
-        { error: "Too many requests" },
-        { status: 429, headers: { "Retry-After": String(limited.retryAfter) } }
-      );
-    }
-
-    if (!email || !EMAIL_REGEX.test(email)) {
-      return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
-    }
-
-    const normalizedEmail = email.toLowerCase().trim();
-
-    // Read flat top-level utm_* keys (current form payload), falling back to the
-    // legacy nested `utm` object for backward compatibility.
-    const resolvedUtmSource = utm_source ?? utm?.utm_source ?? null;
-    const resolvedUtmMedium = utm_medium ?? utm?.utm_medium ?? null;
-    const resolvedUtmCampaign = utm_campaign ?? utm?.utm_campaign ?? null;
-    const resolvedUtmContent = utm_content ?? utm?.utm_content ?? null;
-    const resolvedUtmTerm = utm_term ?? utm?.utm_term ?? null;
-    const resolvedReferrer = referrer ?? utm?.referrer ?? null;
-
-    if (!supabaseAdmin) {
-      return NextResponse.json(
-        { error: systemMessages.errors.generic },
-        { status: 503, headers: { "Retry-After": "60" } },
-      );
-    }
-
-    // Double opt-in: store an unconfirmed row with a fresh confirmation token.
-    // Re-subscribing (upsert conflict on email) rotates the token and resets
-    // confirmed=false so the link in the freshest email is the one that works.
-    const confirmationToken = randomUUID();
-
-    const { error } = await supabaseAdmin.from("newsletter_subscribers").upsert(
-      {
-        email: normalizedEmail,
-        source: source || "website",
-        signup_page: signup_page || null,
-        utm_source: resolvedUtmSource,
-        utm_medium: resolvedUtmMedium,
-        utm_campaign: resolvedUtmCampaign,
-        utm_content: resolvedUtmContent,
-        utm_term: resolvedUtmTerm,
-        referrer: resolvedReferrer,
-        user_agent: request.headers.get("user-agent") || null,
-        lead_attribution: {
-          ...(first_touch_attribution ? { first_touch: first_touch_attribution } : {}),
-          ...(last_touch_attribution ? { last_touch: last_touch_attribution } : {}),
-        },
-        posthog_distinct_id: posthog_distinct_id || null,
-        confirmed: false,
-        confirmation_token: confirmationToken,
-      },
-      { onConflict: "email" }
-    );
-
-    if (error) {
-      console.error("[Newsletter] Supabase error:", JSON.stringify({
-        code: error.code,
-        message: error.message,
-        details: error.details,
-      }));
-      return NextResponse.json({ error: "Failed to save signup" }, { status: 500 });
-    }
-
-    // Send confirmation after the response, within its lifetime. Failures don't block
-    // the success response — the unconfirmed row is saved either way and the user
-    // can re-subscribe to trigger a fresh link.
-    after(() =>
-      sendNewsletterConfirmation({
-        email: normalizedEmail,
-        token: confirmationToken,
-      }).catch((err) => {
-        console.error("[Newsletter] Confirmation email failed:", errorMessage(err));
-      }),
-    );
-    after(() =>
-      sendLeadNotification({
-        kind: "newsletter (pending confirmation)",
-        email: normalizedEmail,
-        distinctId: posthog_distinct_id,
-        fields: { source, signup_page, channel: body.channel },
-        attribution: body,
-      }).catch((err) => {
-        console.error("[Newsletter] Lead notification failed:", errorMessage(err));
-      }),
-    );
-
-    // Track server-side with proper identity merge. Prefers the anonymous
-    // client distinct_id so pre-signup browsing links to the same person.
-    captureLeadEvent({
-      event: "newsletter_signup",
-      email: normalizedEmail,
-      posthogDistinctId: posthog_distinct_id,
-      properties: {
-        email_domain: normalizedEmail.split("@")[1],
-        source,
-        signup_page,
-        utm_source: resolvedUtmSource,
-        utm_medium: resolvedUtmMedium,
-        utm_campaign: resolvedUtmCampaign,
-      },
-      personProps: { email: normalizedEmail, newsletter_source: source },
-      attribution: body,
-    });
-
-    return NextResponse.json({ success: true });
+    return await handle(request, await request.json());
   } catch (err) {
-    console.error("[Newsletter] Request error:", errorMessage(err));
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return invalidRequest(TAG, err);
   }
 }

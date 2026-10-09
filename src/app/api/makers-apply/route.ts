@@ -1,158 +1,102 @@
-import { after, NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
-import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
+import { isHoneypotTripped } from "@/lib/rate-limit";
 import { sendMakerReceived } from "@/lib/emails/application-received";
-import { sendLeadNotification } from "@/lib/emails/lead-notification";
-import { errorMessage } from "@/lib/errors";
+import {
+  badRequest, emailError, emailDomain, invalidRequest, leadAttribution, normalizeEmail, orNull,
+  rateLimitResponse, saveFailed, scheduleDelivery, scheduleLeadNotification, serviceUnavailable, success,
+  type LeadBody, type Rejection,
+} from "@/lib/lead-route";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TAG = "MakerApply";
+
+function validationError(body: LeadBody): Rejection {
+  const invalidEmail = emailError(body);
+  if (invalidEmail) return invalidEmail;
+  if (!body.brand_name || !body.contact_name) return badRequest("Brand name and contact name are required");
+  return null;
+}
+
+/**
+ * Honeypot, then validation, then the rate limit. Bots auto-fill every field,
+ * including the hidden one; a filled trap gets a success-shaped response
+ * without writing anything.
+ */
+function screen(request: NextRequest, body: LeadBody): Rejection {
+  if (isHoneypotTripped(body)) return success();
+  return validationError(body) || rateLimitResponse(request, "makers-apply");
+}
+
+function applicationRow(body: LeadBody, email: string) {
+  return {
+    brand_name: body.brand_name,
+    contact_name: body.contact_name,
+    email,
+    location: orNull(body.location),
+    website: orNull(body.website),
+    description: orNull(body.description),
+    materials: orNull(body.materials),
+    trade_program: orNull(body.trade_program),
+    referral_source: orNull(body.referral_source),
+    lead_attribution: leadAttribution(body),
+    posthog_distinct_id: orNull(body.posthog_distinct_id),
+  };
+}
+
+/** Event, acknowledgement and internal notice for a saved application. */
+function recordApplication(body: LeadBody, email: string) {
+  // Keyed on the anonymous posthog_distinct_id so the application merges with
+  // the lead's pre-signup browsing.
+  captureLeadEvent({
+    event: "maker_application_submitted",
+    email,
+    posthogDistinctId: body.posthog_distinct_id,
+    properties: {
+      brand_name: body.brand_name,
+      referral_source: body.referral_source,
+      // The maker form's workshop name, site/portfolio, and description.
+      has_company: !!body.brand_name,
+      has_website: !!body.website,
+      has_motivation: !!body.description,
+      email_domain: emailDomain(email),
+    },
+    personProps: { email, role: "maker" },
+    attribution: body,
+  });
+
+  // Send failures don't block the success response — the row is saved either way.
+  scheduleDelivery(TAG, "Ack email", () =>
+    sendMakerReceived({ email, brand_name: body.brand_name, contact_name: body.contact_name }),
+  );
+  scheduleLeadNotification(TAG, {
+    kind: "maker application",
+    email,
+    name: `${body.contact_name} (${body.brand_name})`,
+    distinctId: body.posthog_distinct_id,
+    fields: { role: "maker", source: body.source, signup_page: body.signup_page, channel: body.channel },
+    attribution: body,
+  });
+}
+
+async function handle(request: NextRequest, body: LeadBody) {
+  const rejection = screen(request, body);
+  if (rejection) return rejection;
+
+  const email = normalizeEmail(body.email);
+  if (!supabaseAdmin) return serviceUnavailable();
+
+  const { error } = await supabaseAdmin.from("maker_applications").insert(applicationRow(body, email));
+  if (error) return saveFailed(TAG, error, "Failed to save application");
+
+  recordApplication(body, email);
+  return success();
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const {
-      brand_name,
-      contact_name,
-      email,
-      location,
-      website,
-      description,
-      materials,
-      trade_program,
-      referral_source,
-      posthog_distinct_id,
-      utm_source,
-      utm_medium,
-      utm_campaign,
-      utm_content,
-      utm_term,
-      referrer,
-      gclid,
-      fbclid,
-      channel,
-      first_touch_attribution,
-      last_touch_attribution,
-    } = body;
-
-    // Honeypot: bots auto-fill every field, including the hidden one. A filled
-    // trap means a bot — respond success-shaped without writing anything.
-    if (isHoneypotTripped(body)) {
-      return NextResponse.json({ success: true });
-    }
-
-    if (!email || !EMAIL_REGEX.test(email)) {
-      return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
-    }
-
-    if (!brand_name || !contact_name) {
-      return NextResponse.json({ error: "Brand name and contact name are required" }, { status: 400 });
-    }
-
-    // Rate limit per client IP — cheap first line of defense against spam.
-    const ip = getClientIp(request);
-    const limit = checkRateLimit(`${ip}:makers-apply`);
-    if (!limit.ok) {
-      return NextResponse.json(
-        { error: "Too many requests" },
-        { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
-      );
-    }
-
-    const normalizedEmail = email.toLowerCase().trim();
-
-    // Consolidate the unified lead attribution into a single jsonb column.
-    const lead_attribution = {
-      utm_source: utm_source || null,
-      utm_medium: utm_medium || null,
-      utm_campaign: utm_campaign || null,
-      utm_content: utm_content || null,
-      utm_term: utm_term || null,
-      referrer: referrer || null,
-      gclid: gclid || null,
-      fbclid: fbclid || null,
-      channel: channel || null,
-      first_touch: first_touch_attribution || null,
-      last_touch: last_touch_attribution || null,
-    };
-
-    if (!supabaseAdmin) {
-      return NextResponse.json(
-        { error: systemMessages.errors.generic },
-        { status: 503, headers: { "Retry-After": "60" } },
-      );
-    }
-
-    const { error } = await supabaseAdmin.from("maker_applications").insert({
-      brand_name,
-      contact_name,
-      email: normalizedEmail,
-      location: location || null,
-      website: website || null,
-      description: description || null,
-      materials: materials || null,
-      trade_program: trade_program || null,
-      referral_source: referral_source || null,
-      lead_attribution,
-      posthog_distinct_id: posthog_distinct_id || null,
-    });
-
-    if (error) {
-      console.error("[MakerApply] Supabase error:", JSON.stringify({
-        code: error.code,
-        message: error.message,
-        details: error.details,
-      }));
-      return NextResponse.json({ error: "Failed to save application" }, { status: 500 });
-    }
-
-    // Track server-side. Keyed on the anonymous posthog_distinct_id so the
-    // application merges with the lead's pre-signup browsing.
-    captureLeadEvent({
-      event: "maker_application_submitted",
-      email: normalizedEmail,
-      posthogDistinctId: posthog_distinct_id,
-      properties: {
-        brand_name,
-        referral_source,
-        // The maker form's workshop name, site/portfolio, and description.
-        has_company: !!brand_name,
-        has_website: !!website,
-        has_motivation: !!description,
-        email_domain: normalizedEmail.split("@")[1],
-      },
-      personProps: { email: normalizedEmail, role: "maker" },
-      attribution: body,
-    });
-
-    // Run the acknowledgement after the response. Send failures don't block
-    // the success response — the row is saved either way.
-    after(() =>
-      sendMakerReceived({
-        email: normalizedEmail,
-        brand_name,
-        contact_name,
-      }).catch((err) => {
-        console.error("[MakerApply] Ack email failed:", errorMessage(err));
-      }),
-    );
-    after(() =>
-      sendLeadNotification({
-        kind: "maker application",
-        email: normalizedEmail,
-        name: `${contact_name} (${brand_name})`,
-        distinctId: posthog_distinct_id,
-        fields: { role: "maker", source: body.source, signup_page: body.signup_page, channel },
-        attribution: body,
-      }).catch((err) => {
-        console.error("[MakerApply] Lead notification failed:", errorMessage(err));
-      }),
-    );
-
-    return NextResponse.json({ success: true });
+    return await handle(request, await request.json());
   } catch (err) {
-    console.error("[MakerApply] Request error:", errorMessage(err));
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return invalidRequest(TAG, err);
   }
 }

@@ -15,7 +15,10 @@ const nextResponse = {
 const copy = loadModule('src/lib/copy/system-messages.ts', {});
 const errors = loadModule('src/lib/errors.ts', {});
 
-function handlerHarness(route, { configured = true, existing = null, rejectEmail = false, insertError = null, emailResult = { success: true } } = {}) {
+function handlerHarness(route, {
+  configured = true, existing = null, rejectEmail = false, insertError = null, emailResult = { success: true },
+  upsertErrors = [], rateLimit = { ok: true },
+} = {}) {
   const callbacks = [];
   const sends = [];
   const events = [];
@@ -32,7 +35,7 @@ function handlerHarness(route, { configured = true, existing = null, rejectEmail
     select() { return this; },
     eq() { return this; },
     maybeSingle: async () => ({ data: existing, error: null }),
-    upsert: async (row) => { writes.push(row); return { error: null }; },
+    upsert: async (row) => { writes.push(row); return { error: upsertErrors.shift() ?? null }; },
     insert: async (row) => { writes.push(row); return { error: insertError }; },
     update(row) { writes.push(row); return this; },
     then(resolve) { return Promise.resolve({ error: null }).then(resolve); },
@@ -45,7 +48,7 @@ function handlerHarness(route, { configured = true, existing = null, rejectEmail
     '@/lib/errors': errors,
     '@/lib/rate-limit': {
       isHoneypotTripped: (body) => body.honeypot === true,
-      checkRateLimit: () => ({ ok: true }),
+      checkRateLimit: () => rateLimit,
       getClientIp: () => '127.0.0.1',
     },
     '@/lib/site-url': { SITE_URL: 'https://patina.example' },
@@ -63,6 +66,9 @@ function handlerHarness(route, { configured = true, existing = null, rejectEmail
     '@/lib/emails/lead-notification': { sendLeadNotification: send('lead-notification') },
     './confirmation-email': { sendNewsletterConfirmation: send('newsletter-confirmation') },
   };
+  // The shared lead-route steps run for real against the same mocks, so their
+  // after() callbacks, sends and logs land in this harness.
+  dependencies['@/lib/lead-route'] = loadModule('src/lib/lead-route.ts', dependencies, { logs });
   const handler = loadModule(`src/app/api/${route}/route.ts`, dependencies, { logs });
   return { handler, callbacks, sends, events, writes, logs, delivery };
 }
@@ -392,4 +398,300 @@ test('lead analytics keeps first touch once as initial_* and sets last-touch utm
   });
   captureLeadEvent({ event: 'signup', email: validLead.email, attribution: { first_touch_attribution: null } });
   assert.equal(Object.hasOwn(events[1].properties, '$set_once'), false);
+});
+
+// Route contract details beyond the lifecycle: rejections, persistence failures,
+// row shapes, and the founding phone/consent rules. Each lead route keeps its
+// own status codes, bodies and log labels.
+const plain = (value) => JSON.parse(JSON.stringify(value));
+const logTag = {
+  founding: 'Founding', newsletter: 'Newsletter', 'designers-apply': 'DesignerApply',
+  'makers-apply': 'MakerApply', contact: 'Contact',
+};
+const leadRoutes = Object.keys(logTag);
+
+for (const route of leadRoutes) {
+  test(`${route}: an unreadable body is an invalid request`, async () => {
+    const harness = handlerHarness(route);
+    const response = await harness.handler.POST(new Request('https://patina.example/api/test', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: 'not json',
+    }));
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), { error: 'Invalid request' });
+    assert.equal(harness.logs.length, 1);
+    assert.equal(harness.logs[0][1], `[${logTag[route]}] Request error:`);
+  });
+
+  test(`${route}: a rate-limited client gets 429 and nothing is written`, async () => {
+    const harness = handlerHarness(route, { rateLimit: { ok: false, retryAfter: 30 } });
+    const response = await harness.handler.POST(postRequest());
+    assert.equal(response.status, 429);
+    assert.deepEqual(await response.json(), { error: 'Too many requests' });
+    assert.equal(response.headers.get('Retry-After'), route === 'founding' ? null : '30');
+    assert.deepEqual(harness.writes, []);
+  });
+
+  test(`${route}: an invalid email is rejected before persistence`, async () => {
+    const harness = handlerHarness(route);
+    const response = await harness.handler.POST(postRequest({ ...validLead, email: 'not-an-email' }));
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), { error: 'Valid email is required' });
+    assert.deepEqual(harness.writes, []);
+  });
+}
+
+test('makers-apply: validation runs before the rate limit', async () => {
+  const harness = handlerHarness('makers-apply', { rateLimit: { ok: false, retryAfter: 30 } });
+  const response = await harness.handler.POST(postRequest({ ...validLead, email: '' }));
+  assert.equal(response.status, 400);
+});
+
+const missingField = [
+  ['founding', { source: '' }, 'Source is required'],
+  ['founding', { phone: '12345' }, copy.systemMessages.signup.invalidPhone],
+  ['founding', { phone: 6085550100 }, copy.systemMessages.signup.invalidPhone],
+  ['designers-apply', { last_name: '' }, 'First and last name are required'],
+  ['makers-apply', { brand_name: '' }, 'Brand name and contact name are required'],
+  ['contact', { name: '   ' }, 'Name is required'],
+  ['contact', { message: '' }, 'A message is required'],
+];
+for (const [route, patch, error] of missingField) {
+  test(`${route}: ${JSON.stringify(patch)} is rejected with "${error}"`, async () => {
+    const harness = handlerHarness(route);
+    const response = await harness.handler.POST(postRequest({ ...validLead, ...patch }));
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), { error });
+    assert.deepEqual(harness.writes, []);
+  });
+}
+
+for (const [route, failure, error] of [
+  ['designers-apply', { insertError: { code: 'XX000', message: 'boom' } }, 'Failed to save application'],
+  ['makers-apply', { insertError: { code: 'XX000', message: 'boom' } }, 'Failed to save application'],
+  ['newsletter', { upsertErrors: [{ code: 'XX000', message: 'boom' }] }, 'Failed to save signup'],
+  ['founding', { upsertErrors: [{ code: 'XX000', message: 'boom' }] }, 'Failed to save signup'],
+]) {
+  test(`${route}: a persistence error returns 500 and schedules nothing`, async () => {
+    const harness = handlerHarness(route, failure);
+    const response = await harness.handler.POST(postRequest(attributedLead));
+    assert.equal(response.status, 500);
+    assert.deepEqual(await response.json(), { error });
+    assert.equal(harness.callbacks.length, 0);
+    assert.equal(harness.logs[0][1], `[${logTag[route]}] Supabase error:`);
+    const logged = JSON.parse(harness.logs[0][2]);
+    assert.equal(logged.code, 'XX000');
+    assert.equal(logged.message, 'boom');
+    if (route !== 'founding') {
+      assert.deepEqual(Object.keys(logged), ['code', 'message']);
+      assert.deepEqual(harness.events, []);
+      return;
+    }
+    assert.equal(logged.email_domain, 'example.test');
+    assert.equal(logged.source, 'lifecycle-test');
+    assert.equal(harness.events.length, 1);
+    assert.deepEqual(plain(harness.events[0]), {
+      distinctId: 'anon-1', event: 'founding_signup_error', properties: {
+        error_code: 'XX000', error_message: 'boom', source: 'lifecycle-test', signup_page: '/founding',
+      },
+    });
+  });
+}
+
+for (const route of ['designers-apply', 'makers-apply', 'newsletter', 'contact']) {
+  test(`${route}: delivery rejections are logged, not raised`, async () => {
+    const harness = handlerHarness(route, { rejectEmail: true });
+    assert.equal((await harness.handler.POST(postRequest())).status, 200);
+    await assert.doesNotReject(Promise.all(harness.callbacks.map((callback) => callback())));
+    const expected = {
+      'designers-apply': ['[DesignerApply] Ack email failed:', '[DesignerApply] Lead notification failed:'],
+      'makers-apply': ['[MakerApply] Ack email failed:', '[MakerApply] Lead notification failed:'],
+      newsletter: ['[Newsletter] Confirmation email failed:', '[Newsletter] Lead notification failed:'],
+      contact: ['[Contact] Notification email failed', '[Contact] Auto-reply email failed:'],
+    }[route];
+    assert.deepEqual(harness.logs.map((log) => log[1]).sort(), [...expected].sort());
+  });
+}
+
+test('contact: a saved note whose notice is not accepted logs it and still succeeds', async () => {
+  const harness = handlerHarness('contact', { emailResult: { success: false } });
+  harness.delivery.resolve();
+  assert.equal((await harness.handler.POST(postRequest())).status, 200);
+  await Promise.all(harness.callbacks.map((callback) => callback()));
+  assert.deepEqual(harness.logs.map((log) => log[1]), ['[Contact] Notification email was not accepted']);
+});
+
+test('contact: the saved row and event carry the trimmed note', async () => {
+  const harness = handlerHarness('contact');
+  await harness.handler.POST(postRequest({
+    ...attributedLead, email: 'Member@Example.TEST', name: '  A Member ', message: ' Hello ', reason: ' trade ',
+  }));
+  assert.deepEqual(plain(harness.writes[0]), {
+    name: 'A Member', email: 'member@example.test', reason: 'trade', message: 'Hello',
+    posthog_distinct_id: 'anon-1', user_agent: null,
+  });
+  assert.equal(harness.events[0].properties.reason, 'trade');
+  assert.equal(harness.events[0].properties.email_domain, 'example.test');
+  const bare = handlerHarness('contact');
+  await bare.handler.POST(postRequest());
+  assert.equal(bare.writes[0].reason, 'general');
+  assert.equal(bare.writes[0].posthog_distinct_id, null);
+});
+
+test('designers-apply and makers-apply rows carry the lead attribution snapshot', async () => {
+  const lead = { ...attributedLead, utm_source: 'news', gclid: 'g-1', location: 'Madison' };
+  const designer = handlerHarness('designers-apply');
+  await designer.handler.POST(postRequest(lead));
+  const maker = handlerHarness('makers-apply');
+  await maker.handler.POST(postRequest(lead));
+  const attribution = {
+    utm_source: 'news', utm_medium: null, utm_campaign: null, utm_content: null, utm_term: null,
+    referrer: null, gclid: 'g-1', fbclid: null, channel: 'paid',
+    first_touch: lead.first_touch_attribution, last_touch: lead.last_touch_attribution,
+  };
+  assert.deepEqual(plain(designer.writes[0]), {
+    first_name: 'A', last_name: 'Member', email: 'member@example.test', company: 'Studio', location: 'Madison',
+    website: 'https://studio.example', motivation: 'Sourcing', sourcing_process: null, referral_source: null,
+    lead_attribution: attribution, posthog_distinct_id: 'anon-1',
+  });
+  assert.deepEqual(plain(maker.writes[0]), {
+    brand_name: 'Test Workshop', contact_name: 'A Maker', email: 'member@example.test', location: 'Madison',
+    website: 'https://studio.example', description: 'Walnut tables', materials: null, trade_program: null,
+    referral_source: null, lead_attribution: attribution, posthog_distinct_id: 'anon-1',
+  });
+  assert.deepEqual(plain(designer.events[0].properties), {
+    company: 'Studio', has_company: true, has_website: true, has_motivation: true,
+    email_domain: 'example.test', referral_source: null,
+  });
+  assert.deepEqual(plain(maker.events[0].properties), {
+    brand_name: 'Test Workshop', has_company: true, has_website: true, has_motivation: true,
+    email_domain: 'example.test',
+  });
+  for (const harness of [designer, maker]) {
+    harness.delivery.resolve();
+    await Promise.all(harness.callbacks.map((callback) => callback()));
+  }
+  assert.deepEqual(plain(designer.sends[0].payload), { email: 'member@example.test', first_name: 'A', last_name: 'Member' });
+  assert.deepEqual(plain(maker.sends[0].payload), { email: 'member@example.test', brand_name: 'Test Workshop', contact_name: 'A Maker' });
+});
+
+test('newsletter: flat utm keys win over the legacy nested object, which still fills gaps', async () => {
+  const harness = handlerHarness('newsletter');
+  await harness.handler.POST(postRequest({
+    ...attributedLead, source: undefined, utm_source: 'flat',
+    utm: { utm_source: 'nested', utm_medium: 'nested-medium', referrer: 'https://nested.example' },
+  }));
+  assert.deepEqual(plain(harness.writes[0]), {
+    email: 'member@example.test', source: 'website', signup_page: '/founding',
+    utm_source: 'flat', utm_medium: 'nested-medium', utm_campaign: null, utm_content: null, utm_term: null,
+    referrer: 'https://nested.example', user_agent: null,
+    lead_attribution: { first_touch: attributedLead.first_touch_attribution, last_touch: attributedLead.last_touch_attribution },
+    posthog_distinct_id: 'anon-1', confirmed: false, confirmation_token: 'test-confirmation-token',
+  });
+  assert.deepEqual(plain(harness.events[0].properties), {
+    email_domain: 'example.test', signup_page: '/founding',
+    utm_source: 'flat', utm_medium: 'nested-medium', utm_campaign: null,
+  });
+  harness.delivery.resolve();
+  await Promise.all(harness.callbacks.map((callback) => callback()));
+  assert.deepEqual(plain(harness.sends[0].payload), { email: 'member@example.test', token: 'test-confirmation-token' });
+  const bare = handlerHarness('newsletter');
+  await bare.handler.POST(postRequest());
+  assert.deepEqual(plain(bare.writes[0].lead_attribution), {});
+  assert.equal(bare.writes[0].utm_source, null);
+  assert.equal(bare.writes[0].posthog_distinct_id, null);
+});
+
+test('founding: the waitlist row maps nested utm, defaults and preferred styles', async () => {
+  const harness = handlerHarness('founding');
+  await harness.handler.POST(postRequest({
+    ...attributedLead, role: undefined, preferred_styles: ['mid-century'], gclid: 'g-1',
+    utm: { utm_source: 'news', utm_campaign: 'fall', referrer: 'https://ref.example' },
+  }));
+  assert.deepEqual(plain(harness.writes[0]), {
+    email: 'member@example.test', source: 'lifecycle-test', signup_page: '/founding', cta_text: 'Join the circle',
+    utm_source: 'news', utm_medium: null, utm_campaign: 'fall', utm_content: null, utm_term: null,
+    referrer: 'https://ref.example', role: 'unknown', gclid: 'g-1', fbclid: null, channel: 'paid',
+    posthog_distinct_id: 'anon-1',
+    first_touch_attribution: { ...attributedLead.first_touch_attribution, preferred_styles: ['mid-century'] },
+    last_touch_attribution: attributedLead.last_touch_attribution, user_agent: null,
+  });
+  assert.deepEqual(plain(harness.events[0]).properties, {
+    source: 'lifecycle-test', signup_page: '/founding', cta_text: 'Join the circle', email_domain: 'example.test',
+    has_utm: true, channel: 'paid', sms_consent: false,
+  });
+  assert.deepEqual(plain(harness.events[0].personProps), { email: 'member@example.test', role: 'unknown', founding_source: 'lifecycle-test' });
+  harness.delivery.resolve();
+  await Promise.all(harness.callbacks.map((callback) => callback()));
+  assert.deepEqual(plain(harness.sends[0].payload), { email: 'member@example.test', first_name: 'A' });
+  assert.deepEqual(plain(harness.sends[1].payload.fields), { role: 'unknown', source: 'lifecycle-test', signup_page: '/founding', channel: 'paid' });
+  const bare = handlerHarness('founding');
+  await bare.handler.POST(postRequest());
+  assert.deepEqual(plain(bare.writes[0].first_touch_attribution), {});
+  assert.equal(bare.writes[0].last_touch_attribution, null);
+  assert.equal(bare.events[0].properties.has_utm, false);
+});
+
+const phoneCases = [
+  { name: 'a US number with consent records the number and consent', lead: { phone: '(608) 555-0100', sms_consent: true },
+    phone: '+16085550100', consent: true },
+  { name: 'an international number keeps its country code', lead: { phone: '+44 20 7946 0958' }, phone: '+442079460958', consent: false },
+  { name: 'a blank number is no number', lead: { phone: '   ', sms_consent: true }, phone: undefined, consent: false },
+  { name: 'consent without a number records no consent', lead: { sms_consent: true }, phone: undefined, consent: false },
+  { name: 'a different stored number is not overwritten without consent',
+    existing: { email: validLead.email, phone: '+16085550199' }, lead: { phone: '6085550100' }, phone: undefined, consent: false },
+  { name: 'the same stored number is restated',
+    existing: { email: validLead.email, phone: '+16085550100' }, lead: { phone: '6085550100' }, phone: '+16085550100', consent: false },
+  { name: 'an empty stored number is filled',
+    existing: { email: validLead.email, phone: null }, lead: { phone: '6085550100' }, phone: '+16085550100', consent: false },
+  { name: 'consent replaces a different stored number',
+    existing: { email: validLead.email, phone: '+16085550199' }, lead: { phone: '6085550100', sms_consent: true },
+    phone: '+16085550100', consent: true },
+];
+for (const phoneCase of phoneCases) {
+  test(`founding phone: ${phoneCase.name}`, async () => {
+    const harness = handlerHarness('founding', { existing: phoneCase.existing ?? null });
+    const response = await harness.handler.POST(postRequest({ ...validLead, ...phoneCase.lead }));
+    assert.equal(response.status, 200);
+    assert.equal(harness.writes.length, 1);
+    const [row] = harness.writes;
+    assert.equal(row.phone, phoneCase.phone);
+    assert.equal(Object.hasOwn(row, 'phone'), phoneCase.phone !== undefined);
+    assert.equal(row.sms_consent, phoneCase.consent ? true : undefined);
+    assert.equal(Object.hasOwn(row, 'sms_consent_at'), phoneCase.consent);
+    if (phoneCase.consent) assert.equal(row.sms_consent_text, copy.SMS_CONSENT_TEXT);
+    assert.equal(harness.events[0].properties.sms_consent, phoneCase.consent);
+  });
+}
+
+for (const code of ['PGRST204', '42703']) {
+  test(`founding phone: missing consent columns (${code}) retry once without consent`, async () => {
+    const harness = handlerHarness('founding', { upsertErrors: [{ code, message: 'column missing' }] });
+    const response = await harness.handler.POST(postRequest({ ...validLead, phone: '6085550100', sms_consent: true }));
+    assert.equal(response.status, 200);
+    assert.equal(harness.writes.length, 2);
+    assert.equal(harness.writes[0].sms_consent, true);
+    assert.equal(Object.hasOwn(harness.writes[1], 'sms_consent'), false);
+    assert.equal(harness.writes[1].phone, '+16085550100');
+    assert.equal(harness.logs[0][0], 'warn');
+    assert.match(harness.logs[0][1], /migration 00433_waitlist_sms_consent\.sql is pending/);
+    assert.equal(harness.events[0].properties.sms_consent, false);
+  });
+}
+
+test('founding phone: a missing-column error without consent is a save failure, not a retry', async () => {
+  const harness = handlerHarness('founding', { upsertErrors: [{ code: 'PGRST204', message: 'column missing' }] });
+  const response = await harness.handler.POST(postRequest({ ...validLead, phone: '6085550100' }));
+  assert.equal(response.status, 500);
+  assert.equal(harness.writes.length, 1);
+});
+
+test('founding phone: a failed retry is a save failure', async () => {
+  const harness = handlerHarness('founding', {
+    upsertErrors: [{ code: 'PGRST204', message: 'column missing' }, { code: 'XX000', message: 'boom' }],
+  });
+  const response = await harness.handler.POST(postRequest({ ...validLead, phone: '6085550100', sms_consent: true }));
+  assert.equal(response.status, 500);
+  assert.equal(harness.writes.length, 2);
+  assert.equal(harness.events[0].event, 'founding_signup_error');
+  assert.equal(harness.events[0].distinctId, validLead.email);
 });
