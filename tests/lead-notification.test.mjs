@@ -7,12 +7,12 @@ const senders = loadModule('src/lib/emails/senders.ts', {});
 
 function withCapturedSend(path) {
   const sent = [];
-  const module = loadModule(path, {
+  const mod = loadModule(path, {
     './send': { sendHtmlEmail: async (options) => { sent.push(options); return { success: true }; } },
     './template': template,
     './senders': senders,
   });
-  return { module, sent };
+  return { mod, sent };
 }
 
 const lead = {
@@ -28,8 +28,8 @@ const lead = {
 };
 
 test('lead notification goes to kody@ as internal mail that replies to the lead', async () => {
-  const { module, sent } = withCapturedSend('src/lib/emails/lead-notification.ts');
-  await module.sendLeadNotification(lead);
+  const { mod, sent } = withCapturedSend('src/lib/emails/lead-notification.ts');
+  await mod.sendLeadNotification(lead);
   assert.equal(sent.length, 1);
   assert.equal(sent[0].to, 'kody@patina.cloud');
   assert.equal(sent[0].replyTo, 'member@example.test');
@@ -38,13 +38,13 @@ test('lead notification goes to kody@ as internal mail that replies to the lead'
     { name: 'source', value: 'lead_notification' },
     { name: 'email_type', value: 'internal' },
   ]);
-  await module.sendLeadNotification({ ...lead, name: null });
+  await mod.sendLeadNotification({ ...lead, name: null });
   assert.equal(sent[1].subject, 'New Founding Circle signup — member@example.test');
 });
 
 test('lead notification body is an escaped key/value table with a PostHog person link', () => {
-  const { module } = withCapturedSend('src/lib/emails/lead-notification.ts');
-  const html = module.leadNotificationEmail(lead);
+  const { mod } = withCapturedSend('src/lib/emails/lead-notification.ts');
+  const html = mod.leadNotificationEmail(lead);
   assert.match(html, />kind<\/td><td[^>]*>Founding Circle</);
   assert.match(html, />name<\/td><td[^>]*>Ada &lt;Lovelace&gt;</);
   assert.match(html, />signup_page<\/td><td[^>]*>\/founding</);
@@ -54,13 +54,13 @@ test('lead notification body is an escaped key/value table with a PostHog person
   assert.doesNotMatch(html, />channel</, 'Empty fields are left out');
   assert.match(html, /href="https:\/\/us\.posthog\.com\/project\/326191\/person\/anon%2Fid%201"/);
   assert.doesNotMatch(html, /Unsubscribe/);
-  const fallback = module.leadNotificationEmail({ ...lead, distinctId: null, attribution: undefined });
+  const fallback = mod.leadNotificationEmail({ ...lead, distinctId: null, attribution: undefined });
   assert.match(fallback, /person\/member%40example\.test"/);
 });
 
 test('contact notification reaches both hello@ and kody@', async () => {
-  const { module, sent } = withCapturedSend('src/lib/emails/contact-received.ts');
-  await module.sendContactNotification({ name: 'A', email: 'a@example.test', reason: 'press', message: 'Hi' });
+  const { mod, sent } = withCapturedSend('src/lib/emails/contact-received.ts');
+  await mod.sendContactNotification({ name: 'A', email: 'a@example.test', reason: 'press', message: 'Hi' });
   assert.deepEqual([...sent[0].to], ['hello@patina.cloud', 'kody@patina.cloud']);
   assert.equal(sent[0].replyTo, 'a@example.test');
 });
