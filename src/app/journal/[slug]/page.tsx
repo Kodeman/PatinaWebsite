@@ -4,13 +4,18 @@ import Image from "next/image";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
+import { StudioPage } from "@/components/studio/StudioPage";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+import { StrataMark } from "@/components/ui/StrataMark";
+import styles from "@/components/studio/EditorialPages.module.css";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { generateArticleJsonLd, generateBreadcrumbJsonLd } from "@/lib/seo";
 import { SITE_URL as siteUrl } from "@/lib/site-url";
 import { sanityFetch } from "../../../../sanity/lib/client";
-import { journalPostBySlugQuery, journalPostsQuery } from "../../../../sanity/lib/queries";
+import {
+  journalPostBySlugQuery,
+  journalPostsQuery,
+} from "../../../../sanity/lib/queries";
 
 interface JournalPost {
   _id: string;
@@ -41,14 +46,13 @@ function formatDate(dateString: string): string {
 }
 
 export async function generateStaticParams() {
-  const posts = await sanityFetch<{ slug: string }[]>({
-    query: journalPostsQuery,
-    isDraftMode: false,
-  }) || [];
+  const posts =
+    (await sanityFetch<{ slug: string }[]>({
+      query: journalPostsQuery,
+      isDraftMode: false,
+    })) || [];
 
-  return posts
-    .filter((post) => post.slug)
-    .map((post) => ({ slug: post.slug }));
+  return posts.filter((post) => post.slug).map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -84,7 +88,11 @@ export async function generateMetadata({
 
 const portableTextComponents = {
   types: {
-    image: ({ value }: { value: { asset?: { url: string }; alt?: string; caption?: string } }) => (
+    image: ({
+      value,
+    }: {
+      value: { asset?: { url: string }; alt?: string; caption?: string };
+    }) => (
       <figure className="my-8">
         {value.asset?.url && (
           <Image
@@ -126,12 +134,20 @@ const portableTextComponents = {
     ),
   },
   marks: {
-    link: ({ value, children }: { value?: { href: string }; children: React.ReactNode }) => (
+    link: ({
+      value,
+      children,
+    }: {
+      value?: { href: string };
+      children: React.ReactNode;
+    }) => (
       <a
         href={value?.href}
         className="text-[var(--patina-clay-beige)] underline hover:text-[var(--patina-charcoal)] transition-colors"
         target={value?.href?.startsWith("http") ? "_blank" : undefined}
-        rel={value?.href?.startsWith("http") ? "noopener noreferrer" : undefined}
+        rel={
+          value?.href?.startsWith("http") ? "noopener noreferrer" : undefined
+        }
       >
         {children}
       </a>
@@ -154,13 +170,11 @@ export default async function JournalPostPage({
 }) {
   const { slug } = await params;
   const { isEnabled: isDraft } = await draftMode();
-
   const post = await sanityFetch<JournalPost | null>({
     query: journalPostBySlugQuery,
     params: { slug },
     isDraftMode: isDraft,
   });
-
   if (!post) notFound();
 
   const articleUrl = `${siteUrl}/journal/${post.slug}`;
@@ -182,90 +196,105 @@ export default async function JournalPostPage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleJsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
       />
-      <Navigation />
-
-      <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">
-        <article className="pt-32 pb-20 lg:pt-40 lg:pb-28">
-          <div className="max-w-[680px] mx-auto px-4 sm:px-6">
-            {/* Header */}
-            <header className="mb-10">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="font-mono text-xs uppercase tracking-wider text-[var(--patina-clay-beige)]">
-                  {categoryLabels[post.category] || post.category}
-                </span>
-              </div>
-              <h1 className="font-display text-[clamp(2rem,5vw,3rem)] font-normal text-[var(--patina-charcoal)] mb-4 leading-tight">
-                {post.title}
-              </h1>
-              <div className="flex items-center gap-3 font-mono text-sm text-[var(--patina-mocha-brown)]/60">
-                <span>{post.author}</span>
-                <span>·</span>
-                <time dateTime={post.publishedAt}>
-                  {formatDate(post.publishedAt)}
-                </time>
-              </div>
-            </header>
-
-            {/* Cover Image */}
-            {post.coverImageUrl && (
-              <div className="relative aspect-[16/9] rounded-[var(--radius-xl)] overflow-hidden mb-10">
+      <StudioPage
+        className={`${styles.editorialPage} ${styles.articlePage}`}
+        eyebrow={
+          categoryLabels[post.category] || post.category || "The Designer’s Eye"
+        }
+        title={post.title}
+        description={post.excerpt}
+        heroAction={
+          <a className="studio-link" href="#article-body">
+            Read the story <span aria-hidden="true">↓</span>
+          </a>
+        }
+        heroArt={
+          post.coverImageUrl ? (
+            <StudioMotion kind="image" className={styles.articleHeroArt}>
+              <figure>
                 <Image
                   src={post.coverImageUrl}
                   alt={post.coverImageAlt || post.title}
-                  fill
-                  className="object-cover"
-                  sizes="680px"
+                  width={1536}
+                  height={1024}
                   priority
+                  sizes="(max-width: 760px) 100vw, 52vw"
                 />
+                <figcaption>Published in The Designer’s Eye.</figcaption>
+              </figure>
+            </StudioMotion>
+          ) : undefined
+        }
+      >
+        <section className="studio-section">
+          <div className={styles.articleLayout}>
+            <aside className={styles.articleRail}>
+              <StrataMark size="compact" align="left" />
+              <p>The Designer’s Eye</p>
+              <div>
+                <span>Words by</span>
+                <strong>{post.author}</strong>
               </div>
-            )}
-
-            {/* Body */}
-            {post.body && (
-              <div className="prose-patina">
+              {post.publishedAt && (
+                <time dateTime={post.publishedAt}>
+                  {formatDate(post.publishedAt)}
+                </time>
+              )}
+              <Link href="/journal" className="studio-link">
+                All journal entries
+              </Link>
+            </aside>
+            <article id="article-body" className={styles.articleBody}>
+              {post.body && (
                 <PortableText
                   value={post.body}
                   components={portableTextComponents}
                 />
+              )}
+              <div className={styles.articleEnd}>
+                <StrataMark size="compact" align="left" />
+                <span>Where Time Adds Value.</span>
               </div>
-            )}
-
-            {/* Footer */}
-            <footer className="mt-16 pt-8 border-t border-[var(--patina-clay-beige)]/15">
-              <div className="bg-[var(--patina-soft-cream)] rounded-[var(--radius-xl)] p-8 mb-8">
-                <NewsletterSignup variant="inline" source="journal-post" />
-              </div>
-              <Link
-                href="/journal"
-                className="inline-flex items-center gap-2 text-[var(--patina-clay-beige)] hover:text-[var(--patina-charcoal)] transition-colors font-medium"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                  />
-                </svg>
-                Back to Journal
-              </Link>
-            </footer>
+            </article>
           </div>
-        </article>
-      </main>
-
-      <Footer />
+          <div className={styles.newsletter}>
+            <div>
+              <StrataMark size="compact" align="left" />
+              <h2>
+                The conversation
+                <br />
+                continues.
+              </h2>
+              <p>
+                Subscribe to The Designer’s Eye for future notes from Patina.
+              </p>
+            </div>
+            <NewsletterSignup
+              variant="inline"
+              source="journal-post"
+              showIntro={false}
+            />
+          </div>
+          <div className={styles.links}>
+            <Link href="/journal" className="studio-link">
+              Back to The Designer’s Eye
+            </Link>
+            <Link href="/founding" className="studio-link">
+              Explore the Founding Circle
+            </Link>
+          </div>
+        </section>
+      </StudioPage>
     </>
   );
 }

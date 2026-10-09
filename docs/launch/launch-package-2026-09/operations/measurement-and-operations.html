@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Launch measurement and daily operations</title><link rel="stylesheet" href="../reading.css"></head>
+<body class="reading-edition"><a class="skip" href="#content">Skip to content</a>
+<nav class="reader-nav" aria-label="Launch collection"><a href="../launch-book.html">Patina / Launch collection</a><a href="measurement-and-operations.md">Editable Markdown</a><button type="button" onclick="window.print()">Print</button></nav>
+<div class="reader-layout"><aside class="contents" aria-label="On this page"><div class="toc">
+<ul>
+<li><a href="#launch-measurement-and-daily-operations">Launch measurement and daily operations</a><ul>
+<li><a href="#start-with-the-dashboard-already-built">Start with the dashboard already built</a></li>
+<li><a href="#the-weekly-scorecard">The weekly scorecard</a></li>
+<li><a href="#campaign-links-that-stay-intelligible">Campaign links that stay intelligible</a></li>
+<li><a href="#a-practical-member-correspondence-system">A practical member correspondence system</a></li>
+<li><a href="#templates-and-the-information-they-hold">Templates and the information they hold</a></li>
+<li><a href="#the-30-minute-weekly-review">The 30-minute weekly review</a></li>
+<li><a href="#dispatch-checks-specific-to-this-package">Dispatch checks specific to this package</a></li>
+<li><a href="#implementation-sources">Implementation sources</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside><main id="content"><img class="reader-strata" src="../creative/assets/strata-default.svg" alt="Patina Strata"><h1 id="launch-measurement-and-daily-operations">Launch measurement and daily operations</h1>
+<p>Prepared 11 September 2026. This is an operating guide and a set of blank working templates; it does not configure a new platform or send any communication.</p>
+<h2 id="start-with-the-dashboard-already-built">Start with the dashboard already built</h2>
+<p><a href="https://us.posthog.com/project/326191/dashboard/2084092">Patina Cloud Traffic &amp; Signups</a> is in the Patina Website PostHog project. It was created and its nine insights verified on 10 September 2026. It defaults to the last 30 days, using the project’s UTC timezone. The campaign calendar uses relative days and should be scheduled locally in America/Chicago.</p>
+<p>The dashboard contains:</p>
+<table>
+<thead>
+<tr>
+<th>Insight</th>
+<th>Definition and useful limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Website visitors</td>
+<td>Unique PostHog people with <code>$pageview</code> on <code>$host = patina.cloud</code>, deduplicated across the selected date range. Browser traffic depends on analytics consent and may include founder/test browsing.</td>
+</tr>
+<tr>
+<td>Founding Circle signups</td>
+<td>Unique people with <code>founding_circle_signup</code>, <code>surface = marketing-web</code>, and <code>$lib = posthog-node</code>. Browser copies are excluded. These are successful participants, not necessarily first-ever new database members.</td>
+</tr>
+<tr>
+<td>Designer applications</td>
+<td>Unique people with <code>designer_application_submitted</code> and the same server/surface filters. Not accepted designers.</td>
+</tr>
+<tr>
+<td>Maker applications</td>
+<td>Unique people with <code>maker_application_submitted</code> and the same server/surface filters. Not accepted makers.</td>
+</tr>
+<tr>
+<td>Daily website traffic</td>
+<td>Daily unique visitors alongside raw pageviews. A returning person can appear on several days; do not sum daily visitors to calculate the period total.</td>
+</tr>
+<tr>
+<td>Visitor to Founding Circle</td>
+<td>Same-person website visit followed by server-confirmed enrollment within seven days. Signups without a linked browser visit do not enter this funnel.</td>
+</tr>
+<tr>
+<td>Most visited pages</td>
+<td>People per path; one person can be counted under several paths.</td>
+</tr>
+<tr>
+<td>Website referral sources</td>
+<td>People by recorded referring domain. <code>$direct</code> means no referrer was supplied; this is not a full attribution model.</td>
+</tr>
+<tr>
+<td>Where Founding Circle signups happen</td>
+<td>Successful participants by form placement <code>source</code>, such as <code>studio_nav</code>. This identifies the invitation on the website, not the external campaign source.</td>
+</tr>
+</tbody>
+</table>
+<p>At the 10 September verification, the 30-day calendar window showed 5 measured visitors, 43 pageviews, 1 Founding Circle participant, and no designer or maker applications. This is a <strong>dated instrumentation snapshot</strong>, not a current performance report or an organic launch baseline. Founder/test activity may be present. No campaign in this package has been distributed.</p>
+<p>Use the dashboard for directional journeys and the application/enrollment records for operational truth. Do not present a server-signups divided by consented-visitors calculation as a universal conversion rate. Prefer the linked funnel and label its scope.</p>
+<h2 id="the-weekly-scorecard">The weekly scorecard</h2>
+<p>Use <a href="weekly-scorecard.csv">weekly-scorecard.csv</a>. Enter the selected period and a snapshot time. Keep the row’s timezone explicit. Record:</p>
+<ol>
+<li>New non-test Founding Circle records created in the period; maintain a separate adjustment list for duplicates and controlled tests.</li>
+<li>Designer and maker applications received, reviewed, and awaiting review; note the oldest unanswered application.</li>
+<li>Measured website visitors, pageviews, and the dashboard’s linked funnel steps.</li>
+<li>Personal invitations actually sent, substantive replies, press approaches, and journalist responses.</li>
+<li>Member feedback themes and any operational problem.</li>
+</ol>
+<p>For growth, count new database rows using their original creation time and normalized email uniqueness. The Founding endpoint can upsert an existing member, so an analytics event alone does not establish a new member. Do not overwrite the original cohort date during manual reconciliation. This package does not execute database queries or export the member list.</p>
+<p>Keep audience paths separate. Do not infer a maker’s identity from the legacy generic lead <code>role</code> alone: the shared payload can classify trade sources broadly. Use the actual maker/designer application flow and table/event to identify these audiences.</p>
+<p>The headline growth target belongs to the non-test database enrollment count. The dashboard’s unique-person signup count is a companion signal, not a substitute. Email fallback identities and multiple devices can also affect person-level deduplication.</p>
+<h2 id="campaign-links-that-stay-intelligible">Campaign links that stay intelligible</h2>
+<p><a href="campaign-links.csv">campaign-links.csv</a> contains the complete launch link registry. Use lowercase values with underscores. Keep <code>utm_campaign=living_study_launch</code> for continuity with the earlier launch drafts. Never put a client’s name, address, email, private project, or application answer in a URL.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>utm_source</code></td>
+<td>The channel or sender context</td>
+<td><code>leah_client_invitation</code>, <code>founder_outreach</code>, <code>instagram</code>, <code>linkedin</code>, <code>madison_press</code></td>
+</tr>
+<tr>
+<td><code>utm_medium</code></td>
+<td>Distribution method</td>
+<td><code>email</code>, <code>organic_social</code>, <code>earned</code></td>
+</tr>
+<tr>
+<td><code>utm_campaign</code></td>
+<td>This campaign</td>
+<td><code>living_study_launch</code></td>
+</tr>
+<tr>
+<td><code>utm_content</code></td>
+<td>The exact copy/creative placement</td>
+<td><code>email_01</code>, <code>social_01</code>, <code>press_01</code></td>
+</tr>
+</tbody>
+</table>
+<p>Press registry IDs name markets, not numbered pitch sections: PRESS-01 covers both Madison pitch drafts (sections 1 and 2); PRESS-02 is Chicago (section 3); PRESS-03 is Minneapolis (section 4).</p>
+<p>Fragments belong after the query: <code>/designers?utm_source=…#apply</code>. Put the Instagram link in the profile or a Story link sticker; a URL in a feed caption is not the intended tap destination. Use generic <code>utm_content=profile</code> attribution for a shared profile link, because older posts remain visible. Reserve <code>social_01</code>–<code>social_12</code> for the actual per-post Story sticker or LinkedIn link. Use the existing homepage’s distinct audience navigation when several posts are active. Do not invent an unbuilt link-in-bio page.</p>
+<p>The site’s shared lead payload includes UTM and first/last-touch attribution where available. Its local attribution record expires after 30 days and last-touch updates on tagged visits. The coarse derived <code>channel</code> is not sufficient for email reporting; a direct email click can still receive a generic channel classification. Report the explicit UTM fields.</p>
+<p>The current nine-tile PostHog dashboard does <strong>not</strong> provide a complete UTM-to-new-enrollment campaign report. Server success events do not all carry the full campaign fields. Reconcile the captured attribution on enrollment/application records and use the link registry with the outreach log. Do not claim an automated campaign ROI report exists. Earned links may lose their tags when edited by a publisher.</p>
+<h2 id="a-practical-member-correspondence-system">A practical member correspondence system</h2>
+<p>The live immediate Founding Circle welcome and designer/maker acknowledgements come from <strong>Kody at Patina <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#101;&#108;&#108;&#111;&#64;&#112;&#97;&#116;&#105;&#110;&#97;&#46;&#99;&#108;&#111;&#117;&#100;">&#104;&#101;&#108;&#108;&#111;&#64;&#112;&#97;&#116;&#105;&#110;&#97;&#46;&#99;&#108;&#111;&#117;&#100;</a></strong>, with replies to <strong>hello@patina.cloud</strong>. Do not send an additional campaign welcome after the existing welcome. The prepared Day 7, Day 21, and monthly question messages are manual followthrough until deliberately configured in an email platform.</p>
+<p>Before a batch, check membership/application status, unsubscribe and suppression preferences, previous sends, and replies. Keep a single send log so a person is not approached separately as a member and a prospect on the same day. A newsletter subscription remains separate and uses its existing confirmation process; joining the Founding Circle does not authorize adding someone to every list.</p>
+<p>The draft marketing footer offers a reply-based way to stop notes. Kody must monitor that mailbox and record the preference before another send. Where the sending tool supplies a working unsubscribe link, retain it. Do not replace a real suppression mechanism with decorative footer copy. Essential application responses follow the person’s request; optional campaign followthrough must honor their communication preferences.</p>
+<p>Daily during an active wave: check bounces/failures, reply requests, opt-outs, new applications, and overdue responses. Email accepted by a provider is not confirmed delivery. Do not use open rate as the main success measure; useful replies, completed forms, and actual delivery/failure records answer more of this campaign’s questions.</p>
+<h2 id="templates-and-the-information-they-hold">Templates and the information they hold</h2>
+<ul>
+<li><a href="outreach-tracker.csv">outreach-tracker.csv</a>: blank contact/action log. Assign an internal contact ID; keep personal contact details in the private system already used by the founders, not this shareable repository or launch ZIP.</li>
+<li><a href="member-feedback-log.csv">member-feedback-log.csv</a>: theme, question, implication, decision, reply date, and permission status. Summarize privately; publish a person’s words or name only with their choice recorded.</li>
+<li><a href="weekly-scorecard.csv">weekly-scorecard.csv</a>: six blank campaign-week rows. Empty cells mean not entered, not zero.</li>
+<li><a href="42-day-calendar.csv">42-day-calendar.csv</a>: proposed work, relative timing, asset IDs, owner, dependency, and status. Every row starts as a draft; nothing is scheduled.</li>
+</ul>
+<h2 id="the-30-minute-weekly-review">The 30-minute weekly review</h2>
+<p><strong>First 5 minutes:</strong> Are replies, delivery, and application deadlines healthy?</p>
+<p><strong>Next 10 minutes:</strong> How many new non-test members joined, and what do the measured journeys suggest? Check exact UTM values alongside the outreach log. Separate unknown attribution from direct traffic.</p>
+<p><strong>Next 10 minutes:</strong> What did people ask? Select one clarification or product question worth addressing. Note which themes came from homeowners, designers, and makers.</p>
+<p><strong>Final 5 minutes:</strong> Assign next week’s two posts, individual outreach, and member followthrough. Reduce distribution if followup capacity is the constraint.</p>
+<h2 id="dispatch-checks-specific-to-this-package">Dispatch checks specific to this package</h2>
+<p>Choose the actual T0 date and senders; read the final first-person copy aloud; verify the destination in a normal browser; retain image captions/credits; confirm the person handling replies and the 7-day/2-week review windows; and reconcile the stated program caps with current enrollment handling. The current site still states a 200-member cap; this package does not introduce an automated capacity control or a remaining-places counter.</p>
+<p>Automated public GET checks from this preparation environment returned HTTP 403 on 11 September 2026. The deployment and analytics verification from 10 September remain documented, but this package does not claim a fresh end-to-end production signup/email test. Check the live routes in a normal browser before distribution; no synthetic signup or email was sent during preparation.</p>
+<h2 id="implementation-sources">Implementation sources</h2>
+<p>Definitions above were checked against <code>src/lib/lead-capture.ts</code>, <code>posthog-server.ts</code>, <code>lead-payload.ts</code>, <code>attribution.ts</code>, the founding/designer/maker API routes, the signup email source, and the dashboard built in this conversation. Earlier launch documents reference <code>waitlist_signup</code> as a primary measure; the new dashboard correctly uses <code>founding_circle_signup</code>.</p></main></div>
+<footer>Patina · Where Time Adds Value. · hello@patina.cloud</footer></body></html>

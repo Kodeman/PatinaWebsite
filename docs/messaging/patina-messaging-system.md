@@ -2,7 +2,7 @@
 
 *The single source of truth for how Patina sounds, what it promises, and who it speaks to — across the website, email, and every system message. When any two documents disagree, this one wins. Supersedes the voice guidance previously scattered across `Design/patina-implementation-guide.md`, `patina_site_modification_spec.md` §13, and `Design/Patina_Marketing_Summary_v2.md`.*
 
-**Version 1.0 · Owner: Kody & Leah Kochaver · Last updated: 2026-07-10**
+**Version 1.0 · Owner: Kody & Leah Kochaver · Last updated: 2026-09-10**
 
 ---
 
@@ -51,11 +51,13 @@ The opposite of disposable. This is why the brand exists: furniture (and taste, 
 
 Patina is multi-sided. We run **two messaging spines with one voice**. Every page belongs primarily to one track and states which CTA it drives.
 
+**Living Study launch direction, 9 September 2026:** consumer Founding Circle enrollment leads the homepage and public campaign. Dedicated designer and maker invitations support Kody’s outreach. Membership is open everywhere; initial outreach follows Leah’s clients and the Chicago–Madison–Minneapolis corridor. The app and marketplace remain pre-launch. This launch direction supersedes the earlier trade-first campaign emphasis; see `design-proposals/living-study/PRODUCTION-BRIEF.md`.
+
 ### Shared spine (true for everyone)
 Craft over volume · Designer-taught, not algorithm-fed · Madison/Midwest honesty · Time adds value · Built in public.
 
 ### Track A — Trade (interior designers, architects, high-end trade)
-*The audience this brand review prioritizes, and the product (Designer Portal) that's actually live.*
+*The professional audience for dedicated recruitment and partnership outreach. Product availability must be stated per surface; the public app and marketplace remain pre-launch.*
 
 - **Who:** Working interior designers (solo + small firms), and architects specifying FF&E / millwork on residential and boutique-commercial projects. People with taste, opinions, and clients — who source for a living.
 - **What they want to hear:** *You are the intelligence, not the user.* Co-creation over "beta access." Practice efficiency (the briefing package that kills the 90-minute intake). A lead pipeline they don't have today. Ownership of the taxonomy. Named credit.
@@ -76,7 +78,7 @@ Craft over volume · Designer-taught, not algorithm-fed · Madison/Midwest hones
   2. **Fewer, righter choices.** A focused selection that fits your room — not a thousand that don't.
   3. **Furniture that earns its place.** Heritage makers, honest materials, built to be handed down.
   4. **Help build it.** The Founding Circle shapes the product and gets named at launch.
-- **Surfaces:** home, `/app`, `/founding`, `/makers`, `/materials`, `/journal`.
+- **Surfaces:** home, `/app`, `/founding`, `/makers`, `/journal`. The Materials page is paused for the launch (10 September 2026); its former URL redirects to `/makers`.
 - **Primary CTA:** **Join the Founding Circle.**
 
 ---
@@ -97,6 +99,7 @@ Four attributes. Every line should be recognizably at least two of them.
 - **Consumer pages:** warmer, more reassuring, more sensory.
 - **System/error messages:** briefest possible, human, never blaming the user ("Let's try that again" not "Invalid input").
 - **Email from Leah/Kody:** first person, personal, a little unpolished on purpose — build-in-public.
+- **Signup welcomes (Kody’s direction, 10 September 2026):** Kody welcomes Founding Circle members, designers, and makers in his own voice. Kody reviews designer and maker applications with Leah. An automatic acknowledgement confirms receipt; it must not imply that an application has already been reviewed or accepted.
 
 ### The test
 Read it aloud. If a real person — specifically a warm, smart designer at a kitchen table in Madison — wouldn't say it, rewrite it.
@@ -147,16 +150,21 @@ Use these; don't inflate them. Update this list before making a new claim anywhe
 - **200** Founding Circle spots (cap) · **50** Founding Designers · **15** Founding Makers.
 - **Madison, Wisconsin** roots · founded **2023** · founders **Leah & Kody Kochaver**.
 - **Middlewest Studio** — Leah's real interior-design practice; the origin and the taste that teaches the system.
+- **Leah’s background** (verified 2026-09-10): Fine Art and Communications degrees, followed by interior-design study; 12 years in Seattle, returned to Wisconsin in 2018, launched Middle West Studio in 2023. [Studio biography](https://www.middlewest.studio/). Do not conflate the studio’s 2023 opening with a newly inferred Patina origin event.
+- **Kody’s background** (verified 2026-09-10): two decades making complex systems simpler to use, with work spanning Jydo, Blacktee, and Avidex. His stated approach begins with the experience, supports people’s work, and prioritizes lasting usefulness. [Personal website](https://www.kochaver.com/), [LinkedIn](https://www.linkedin.com/in/kkochaver/).
+- **Documentary photography**: Middle West Studio project images and Leah’s portrait may be used for this redesign (Kody authorized 2026-09-10). Credit the studio and named photographer. These are Middle West projects, not Patina marketplace listings or Patina client commissions. See `public/images/founders/README.md`.
+- **Kody’s motivation** (confirmed by Kody, 2026-09-09): he sees a gap in available tools, which feel sterile and disconnected from the creative process. He is building Patina so the tools feel like part of that process.
 - **No sponsored placements, no pay-to-play** — every maker earned placement through craft.
-- **Applications read personally** — designers within **7 days**, makers within **2 weeks**; no automated intake.
+- **Applications reviewed personally by Kody with Leah** — designers within **7 days**, makers within **2 weeks**. Signup acknowledgements are automatic; review and acceptance are personal.
 - Materials credibility (Leah/Kody voice): *white oak (~1,360 Janka), full-grain leather, linen, soapstone — materials that look better the day you hand the piece down than the day it arrived.*
 - **Structural integrity warranted 10 years** (from Terms) — "natural wood movement and patina are not defects."
 
 ### Honesty rules (non-negotiable)
 - The **app and marketplace are pre-launch.** Never imply the app is downloadable today. Say "Founding members get first access when the app launches."
-- **Never promise what doesn't exist.** If we say "watch your inbox for a letter from Leah," that letter must actually send (see implementation plan).
+- **Never promise what doesn't exist.** If we say "watch your inbox for a letter from Kody," that letter must actually send (see implementation plan).
 - **Date the future or don't mention it.** "We're not ready yet" > "Coming soon!"
 - **No fictional people or reviews.** Match cards, quotes, and team members must be real or clearly labeled illustrative.
+- **Illustrative image captions** (Kody’s direction, 2026-09-10): use “Illustrative imagery — awaiting partner photography.” for public generated studio studies. Keep alt text descriptive and illustrative. Preserve internal records of AI generation and asset provenance; preserve real Middle West Studio project captions and photographer credits. This caption does not imply a pictured product or workshop belongs to a Patina partner.
 
 ---
 
@@ -173,7 +181,7 @@ Each page has one job, one primary message, one CTA.
 | `/services` | Trade→Consumer bridge | Sell the briefing-package advantage | Your designer starts with a running start | Find your designer *(not "Download the App")* |
 | `/makers`, `/makers/apply` | Trade (supply) | Recruit heritage makers | Craft over volume; earned, not paid, placement | Apply to Partner |
 | `/about` | Both | Earn trust via the real story | Two people, one problem nobody could name | Meet makers / For designers / Founding Circle |
-| `/materials` | Consumer | Substantiate "built to last" | Honest materials, traceable, aging well | Meet Our Makers |
+| `/materials` | Paused | Redirect existing visits to `/makers` | Not in navigation or sitemap | — |
 | `/journal` | Both | Prove the thesis (content) | Leah's desk: honest notes on building Patina | Subscribe (The Designer's Eye) |
 | `/contact` | Both | Route real inquiries | We actually read these | Send Message *(must work)* |
 
@@ -197,7 +205,7 @@ Use these exact labels. One primary per track — retire all variants.
 All success/error/empty/consent strings live in one module (`src/lib/copy/system-messages.ts`) and follow these rules:
 
 - **Errors:** short, human, never blame the user. "That email doesn't look right — mind checking it?" beats "Invalid email." Unify the three "Something went wrong" variants into one warm line: *"Something slipped on our end. Try that again?"*
-- **Success:** warm + specific + true. If we say a letter is coming, it's coming. "Welcome to the Founding Circle. Leah's first letter is on its way." (only once the email actually sends).
+- **Success:** warm + specific + true. If we say a letter is coming, it's coming. "Welcome to the Founding Circle. Watch your inbox for a first letter from Kody." (only once the email actually sends).
 - **Empty states:** turn absence into anticipation. "The first posts are coming soon — we're writing about the decisions behind building Patina."
 - **Consent:** minimal, honest, linked. Keep the one-paragraph banner; add a Privacy Policy link; keep Decline as a real, equal choice.
 - **Waiting/pre-launch:** always name the real state. "Not ready yet" with a reason.
@@ -206,8 +214,8 @@ All success/error/empty/consent strings live in one module (`src/lib/copy/system
 
 ## 10. Email voice
 
-- **From a person, not a brand.** Founding + newsletter mail is signed **"Warmly, Kody & Leah."** Personal, first-person, build-in-public.
-- **Subject lines:** plain and true, no clickbait. "A first letter from Leah" / "You're in — here's what happens next."
+- **Signup sender:** Founding Circle welcomes and designer/maker acknowledgements come from **Kody at Patina**, signed **"Warmly, Kody."** Replies use the configured Patina mailbox. Kody speaks about building the product; application acknowledgements say he will review with Leah. The Designer’s Eye remains Leah’s editorial voice.
+- **Subject lines:** plain and true, no clickbait. "A first letter from Kody" / "You're in — here's what happens next."
 - **Design:** the warm system palette — `#FAF7F2` background, `#2C2926` text, `#E5E2DD` rules — footer `Patina · hello@patina.cloud`. Consistent with the site's paper-warm identity.
 - **Every marketing email** carries an unsubscribe/preferences line. Transactional acks may omit it.
 - **Never** fake urgency or scarcity in email. The 200-spot cap is real; state it, don't manufacture it.

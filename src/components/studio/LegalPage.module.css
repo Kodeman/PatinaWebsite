@@ -1,0 +1,58 @@
+.page {
+  min-height: 100vh;
+  background: var(--studio-paper);
+  color: var(--studio-ink);
+}
+.page > section:first-child {
+  background: var(--studio-stone);
+  padding-top: 165px;
+  padding-bottom: 55px;
+  border-bottom: 1px solid var(--studio-line);
+}
+.page h1 {
+  font: 400 clamp(60px, 7vw, 100px)/1.03 var(--font-display);
+  letter-spacing: -0.035em;
+  margin: 26px 0;
+}
+.page h2 {
+  font: 400 clamp(30px, 3vw, 42px)/1.16 var(--font-display);
+  letter-spacing: -0.02em;
+}
+.page p,
+.page li {
+  color: var(--studio-mocha);
+  font-size: 16px;
+  line-height: 1.85;
+}
+.page a {
+  color: var(--studio-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
+.page a:hover {
+  color: var(--studio-olive);
+}
+.page > section:first-child p {
+  font-size: 12px;
+  color: var(--studio-mocha);
+}
+.mark {
+  margin-top: 32px;
+}
+@media (max-width: 760px) {
+  .page > section:first-child {
+    padding-top: 135px;
+    padding-bottom: 42px;
+  }
+  .page > section > div {
+    padding-inline: 24px;
+  }
+  .page h1 {
+    font-size: clamp(52px, 13vw, 72px);
+  }
+  .page p,
+  .page li {
+    font-size: 15px;
+  }
+}

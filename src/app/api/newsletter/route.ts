@@ -1,8 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
+import { errorMessage } from "@/lib/errors";
 import { sendNewsletterConfirmation } from "./confirmation-email";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,12 +59,10 @@ export async function POST(request: NextRequest) {
     const resolvedReferrer = referrer ?? utm?.referrer ?? null;
 
     if (!supabaseAdmin) {
-      console.log("[Newsletter] Supabase not configured, signup data:", {
-        email: normalizedEmail,
-        source,
-        signup_page,
-      });
-      return NextResponse.json({ success: true });
+      return NextResponse.json(
+        { error: systemMessages.errors.generic },
+        { status: 503, headers: { "Retry-After": "60" } },
+      );
     }
 
     // Double opt-in: store an unconfirmed row with a fresh confirmation token.
@@ -102,18 +102,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Failed to save signup" }, { status: 500 });
     }
 
-    // Fire-and-forget double opt-in confirmation email. Send failures don't block
+    // Send confirmation after the response, within its lifetime. Failures don't block
     // the success response — the unconfirmed row is saved either way and the user
     // can re-subscribe to trigger a fresh link.
-    sendNewsletterConfirmation({
-      email: normalizedEmail,
-      token: confirmationToken,
-    }).catch((emailErr) => {
-      console.error(
-        "[Newsletter] Confirmation email failed:",
-        emailErr instanceof Error ? emailErr.message : "Unknown error",
-      );
-    });
+    after(() =>
+      sendNewsletterConfirmation({
+        email: normalizedEmail,
+        token: confirmationToken,
+      }).catch((err) => {
+        console.error("[Newsletter] Confirmation email failed:", errorMessage(err));
+      }),
+    );
 
     // Track server-side with proper identity merge. Prefers the anonymous
     // client distinct_id so pre-signup browsing links to the same person.
@@ -134,7 +133,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[Newsletter] Request error:", err instanceof Error ? err.message : "Unknown error");
+    console.error("[Newsletter] Request error:", errorMessage(err));
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

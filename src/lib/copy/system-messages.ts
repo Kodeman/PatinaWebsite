@@ -27,7 +27,7 @@ export const systemMessages = {
   founding: {
     successTitle: "Welcome to the Founding Circle.",
     successBody:
-      "Watch your inbox for a first letter from Leah. We build in public — you'll see every step.",
+      "Watch your inbox for a first letter from Kody. We build in public — you'll see every step.",
     inlineSuccess: "Welcome to the Founding Circle!",
   },
 

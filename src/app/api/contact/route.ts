@@ -1,17 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
 import { sendContactAutoReply, sendContactNotification } from "@/lib/emails/contact-received";
+import { errorMessage } from "@/lib/errors";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/**
- * Contact form handler. Previously the form silently discarded messages — this
- * route persists them (best-effort) and, crucially, emails the founders so the
- * message reaches a human even if the `contact_messages` table isn't migrated
- * yet. Email delivery is the guaranteed channel; DB persistence is a bonus.
- */
+/** Save contact notes, with an acknowledged email fallback when storage fails. */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -46,47 +43,56 @@ export async function POST(request: NextRequest) {
     const safeReason = String(reason || "general").trim();
     const safeMessage = String(message).trim();
 
-    // Best-effort persistence. If the table isn't migrated yet, we log and keep
-    // going — the notification email below is the guaranteed delivery channel.
-    if (supabaseAdmin) {
-      const { error } = await supabaseAdmin.from("contact_messages").insert({
-        name: safeName,
-        email: normalizedEmail,
-        reason: safeReason,
-        message: safeMessage,
-        posthog_distinct_id: posthog_distinct_id || null,
-        user_agent: request.headers.get("user-agent") || null,
-      });
-      if (error) {
-        console.error(
-          "[Contact] Supabase insert failed (continuing via email):",
-          JSON.stringify({ code: error.code, message: error.message }),
-        );
-      }
-    } else {
-      console.log("[Contact] Supabase not configured, message from:", normalizedEmail);
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: systemMessages.errors.generic },
+        { status: 503, headers: { "Retry-After": "60" } },
+      );
     }
 
-    // Notify the founders (guaranteed channel) and auto-reply to the sender.
-    // Fire-and-forget: send failures don't block the success response.
-    sendContactNotification({
+    const notifyFounders = async () => {
+      try {
+        const result = await sendContactNotification({
+          name: safeName,
+          email: normalizedEmail,
+          reason: safeReason,
+          message: safeMessage,
+        });
+        if (!result.success) console.error("[Contact] Notification email was not accepted");
+        return result.success;
+      } catch {
+        console.error("[Contact] Notification email failed");
+        return false;
+      }
+    };
+
+    // Keep the existing email fallback, but confirm acceptance before success.
+    const { error } = await supabaseAdmin.from("contact_messages").insert({
       name: safeName,
       email: normalizedEmail,
       reason: safeReason,
       message: safeMessage,
-    }).catch((err) => {
-      console.error(
-        "[Contact] Notification email failed:",
-        err instanceof Error ? err.message : "Unknown error",
-      );
+      posthog_distinct_id: posthog_distinct_id || null,
+      user_agent: request.headers.get("user-agent") || null,
     });
+    if (error) {
+      console.error("[Contact] Supabase insert failed; attempting email fallback");
+      if (!(await notifyFounders())) {
+        return NextResponse.json(
+          { error: systemMessages.errors.generic },
+          { status: 503, headers: { "Retry-After": "60" } },
+        );
+      }
+    } else {
+      // A saved note can be acknowledged while notification completes.
+      after(async () => { await notifyFounders(); });
+    }
 
-    sendContactAutoReply({ email: normalizedEmail, name: safeName }).catch((err) => {
-      console.error(
-        "[Contact] Auto-reply email failed:",
-        err instanceof Error ? err.message : "Unknown error",
-      );
-    });
+    after(() =>
+      sendContactAutoReply({ email: normalizedEmail, name: safeName }).catch((err) => {
+        console.error("[Contact] Auto-reply email failed:", errorMessage(err));
+      }),
+    );
 
     captureLeadEvent({
       event: "contact_form_submitted",
@@ -101,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[Contact] Request error:", err instanceof Error ? err.message : "Unknown error");
+    console.error("[Contact] Request error:", errorMessage(err));
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

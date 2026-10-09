@@ -1,39 +1,15 @@
-import { Playfair_Display, Inter, DM_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import localFont from "next/font/local";
 import { defaultMetadata, generateOrganizationJsonLd, generateWebsiteJsonLd } from "@/lib/seo";
 import { SkipLink } from "@/components/ui/SkipLink";
 import { CookieConsent } from "@/components/ui/CookieConsent";
-import {
-  FoundingCircleModal,
-  FoundingModalProvider,
-} from "@/components/ui/FoundingCircleModal";
+import { FoundingCircleModal, FoundingModalProvider } from "@/components/ui/FoundingCircleModal";
+import { StudioMotionProvider } from "@/components/studio/StudioMotion";
 import { PostHogProviders } from "./providers";
 import "./globals.css";
+import "./studio.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  preload: true,
-});
-
-const inter = Inter({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-  preload: true,
-});
-
-const dmMono = DM_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  display: "swap",
-  preload: true,
-});
+const caslon = localFont({ src: "../../public/fonts/libre-caslon-display.ttf", variable: "--font-caslon", display: "swap", weight: "400" });
+const manrope = localFont({ src: "../../public/fonts/manrope.ttf", variable: "--font-manrope", display: "swap", weight: "200 800" });
 
 export const metadata = defaultMetadata;
 
@@ -61,17 +37,16 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${playfair.variable} ${inter.variable} ${dmMono.variable} antialiased`}>
+      <body className={`${caslon.variable} ${manrope.variable} antialiased`}>
         <SkipLink />
         <PostHogProviders>
-          <FoundingModalProvider>
+          <StudioMotionProvider><FoundingModalProvider>
             {children}
             <FoundingCircleModal />
-          </FoundingModalProvider>
+          </FoundingModalProvider></StudioMotionProvider>
         </PostHogProviders>
+        <noscript><div className="studio-noscript">The studio’s interactive features need JavaScript. To join the Founding Circle or ask us a question, write to <a href="mailto:hello@patina.cloud">hello@patina.cloud</a>.</div></noscript>
         <CookieConsent />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,0 +1,1158 @@
+.track {
+  --edge: var(--studio-edge);
+  --paper: var(--studio-paper);
+  --stone: var(--studio-stone);
+  --ink: var(--studio-ink);
+  --mocha: var(--studio-mocha);
+  --line: var(--studio-line);
+  --ease: var(--studio-ease);
+  position: relative;
+  background: var(--stone);
+}
+.track[data-scroll="true"] {
+  height: 265svh;
+  min-height: calc(820px + 165svh);
+}
+.stage {
+  height: 100svh;
+  min-height: 820px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--paper);
+  transition: color 0.6s;
+}
+.track[data-scroll="true"] .stage {
+  position: sticky;
+  top: min(0px, calc(100svh - 820px));
+}
+.photo {
+  object-fit: cover;
+  transition:
+    opacity 1.15s var(--ease),
+    transform 1.5s var(--ease);
+  z-index: -3;
+}
+.room {
+  object-position: 50% 55%;
+  transform: scale(1.015);
+}
+.making {
+  object-position: 62% 50%;
+  opacity: 0;
+  transform: scale(1.08);
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, #231f1a99, transparent 69%),
+    linear-gradient(0deg, #211d18b3, transparent 28%);
+  transition: opacity 0.9s;
+}
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 17px;
+  border: 1px solid #faf7f226;
+  pointer-events: none;
+  z-index: 8;
+  transition: border-color 0.7s;
+}
+.copy {
+  position: absolute;
+  left: var(--edge);
+  top: 24%;
+  width: 49%;
+  z-index: 5;
+  transition:
+    top 0.9s var(--ease),
+    width 0.9s var(--ease),
+    color 0.6s;
+}
+.copy h1 {
+  font: 400 clamp(76px, 8.3vw, 136px)/0.94 var(--font-display);
+  letter-spacing: -0.045em;
+  margin: 0;
+}
+.kicker {
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 0 0 24px;
+}
+.description {
+  font-size: 13px;
+  line-height: 1.9;
+  max-width: 35ch;
+  margin: 30px 0 0;
+  text-wrap: pretty;
+}
+.context {
+  transition:
+    opacity 0.5s,
+    visibility 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.context[data-scene-context="active"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.heroJoin {
+  margin-top: 29px;
+}
+.heroJoin > a {
+  display: block;
+  width: fit-content;
+  font-size: 10px;
+  margin-top: 15px;
+  min-height: 30px;
+  text-decoration: underline;
+}
+.roomCue {
+  position: absolute;
+  top: 64%;
+  left: 74%;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.roomCue button {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid #faf7f2b3;
+  background: #faf7f21a;
+  backdrop-filter: blur(7px);
+  font-size: 25px;
+  transition:
+    background 0.3s,
+    transform 0.4s var(--ease);
+}
+.roomCue button:hover {
+  background: var(--paper);
+  color: var(--ink);
+  transform: scale(1.08);
+}
+.roomCue p {
+  font-size: 11px;
+  line-height: 1.55;
+  text-shadow: 0 1px 10px #0009;
+}
+.roomCue p span {
+  display: block;
+  font-size: 9px;
+  margin-top: 4px;
+}
+.chair {
+  position: absolute;
+  left: 43%;
+  top: 28%;
+  width: 52%;
+  height: 65%;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: rotate(0deg);
+  transition:
+    left 1.2s var(--ease),
+    top 1.2s var(--ease),
+    width 1.2s var(--ease),
+    height 1.2s var(--ease),
+    opacity 0.8s,
+    transform 1.2s var(--ease),
+    background 0.7s,
+    box-shadow 0.7s;
+}
+.chair img {
+  object-fit: contain;
+  filter: drop-shadow(8px 24px 14px #3f3b3717);
+}
+.chair figcaption {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  right: 20px;
+  font-size: 9px;
+  color: var(--mocha);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.studySide {
+  position: absolute;
+  right: var(--edge);
+  top: 22%;
+  width: 195px;
+  z-index: 5;
+  color: var(--ink);
+}
+.studySide > p:first-child {
+  font-size: 11px;
+  line-height: 1.7;
+  padding-bottom: 17px;
+  border-bottom: 1px solid var(--line);
+}
+.fan {
+  position: relative;
+  height: 185px;
+  margin-top: 27px;
+}
+.swatch {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: 66px;
+  height: 142px;
+  padding: 0;
+  background: none;
+  transform: rotate(var(--r));
+  transform-origin: 50% 95%;
+  transition: transform 0.7s var(--ease);
+  isolation: isolate;
+}
+.swatch:nth-child(1) {
+  --x: 0px;
+  --r: -11deg;
+}
+.swatch:nth-child(2) {
+  --x: 57px;
+  --r: 2deg;
+}
+.swatch:nth-child(3) {
+  --x: 113px;
+  --r: 14deg;
+}
+.swatch .texture {
+  display: block;
+  width: 100%;
+  height: 112px;
+  box-shadow: 0 7px 14px #3f3b3726;
+  background-image: url("/images/studio/materials.jpg");
+  background-size: 640%;
+}
+.swatch[data-material="0"] .texture {
+  background-position: 0% 74%;
+}
+.swatch[data-material="1"] .texture {
+  background-position: 77% 12%;
+}
+.swatch[data-material="2"] .texture {
+  background-position: 100% 66%;
+}
+.swatch > span:last-child {
+  display: block;
+  font-size: 9px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+.swatch[aria-pressed="true"] {
+  transform: translateY(-14px) rotate(var(--r));
+  z-index: 4;
+}
+.swatch:hover {
+  transform: translateY(-20px) rotate(var(--r));
+  z-index: 5;
+}
+.materialCaption {
+  font-size: 10px;
+  line-height: 1.75;
+  min-height: 95px;
+}
+.materialCaption strong {
+  display: block;
+  font: 400 26px/1.05 var(--font-display);
+  margin-bottom: 12px;
+}
+.annotation {
+  position: absolute;
+  left: var(--edge);
+  bottom: 23%;
+  z-index: 4;
+  max-width: 200px;
+  color: var(--mocha);
+  font-size: 10px;
+  padding-left: 45px;
+}
+.annotation::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  left: 0;
+  top: 9px;
+  height: 1px;
+  background: var(--studio-clay);
+}
+.annotation span {
+  font: 23px/1.1 var(--font-display);
+  display: block;
+  margin-bottom: 7px;
+}
+.makingNote {
+  position: absolute;
+  left: var(--edge);
+  bottom: 23%;
+  width: 245px;
+  color: var(--paper);
+  z-index: 6;
+}
+.makingNote p {
+  font-size: 11px;
+  line-height: 1.85;
+}
+.makingNote a {
+  font-size: 11px;
+  margin-top: 18px;
+}
+.dock {
+  position: absolute;
+  bottom: 30px;
+  left: var(--edge);
+  right: var(--edge);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 25px;
+  z-index: 10;
+}
+.scrollNote {
+  font-size: 10px;
+  line-height: 1.7;
+}
+.scrollNote p {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.scrollNote p > span {
+  white-space: nowrap;
+}
+.scrollNote > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: 9px;
+  text-decoration: underline;
+}
+.switch {
+  display: flex;
+  position: relative;
+  background: #24201a35;
+  border: 1px solid #faf7f247;
+  border-radius: 100px;
+  padding: 5px;
+  backdrop-filter: blur(16px);
+  isolation: isolate;
+  --index: 0;
+}
+.switch::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 10px) / 3);
+  border-radius: 100px;
+  background: var(--paper);
+  transform: translateX(calc(var(--index) * 100%));
+  transition: transform 0.7s var(--ease);
+  z-index: -1;
+}
+.switch button {
+  width: 135px;
+  min-height: 49px;
+  padding: 10px 13px;
+  font-size: 11px;
+  color: inherit;
+  transition: color 0.4s;
+  white-space: nowrap;
+  border-radius: 100px;
+}
+.switch button[aria-pressed="true"] {
+  color: var(--ink);
+}
+.dockEnd {
+  text-align: right;
+  justify-self: end;
+}
+.dockEnd p {
+  font-size: 10px;
+  line-height: 1.6;
+}
+.progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 15;
+  background: #faf7f21a;
+}
+.progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  background: currentColor;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+}
+.track[data-scene="study"] .stage {
+  color: var(--ink);
+}
+.track[data-scene="study"] .room {
+  opacity: 0;
+  transform: scale(1.14);
+}
+.track[data-scene="study"] .shade {
+  opacity: 0;
+}
+.track[data-scene="study"] .stage::after {
+  border-color: #655b5217;
+}
+.track[data-scene="study"] .copy {
+  width: 35%;
+}
+.track[data-scene="study"] .copy h1 {
+  font-size: clamp(67px, 6.5vw, 103px);
+}
+.track[data-scene="study"] .description {
+  max-width: 28ch;
+}
+.track[data-scene="study"] .chair {
+  opacity: 1;
+  left: 30%;
+  top: 25%;
+  width: 57%;
+  height: 63%;
+}
+.track[data-scene="study"] .switch {
+  background: #655b5210;
+  border-color: #655b5228;
+}
+.track[data-scene="study"] .switch::before {
+  background: var(--ink);
+}
+.track[data-scene="study"] .switch button[aria-pressed="true"] {
+  color: var(--paper);
+}
+.track[data-scene="making"] .room {
+  opacity: 0;
+  transform: scale(1.1);
+}
+.track[data-scene="making"] .making {
+  opacity: 1;
+  transform: scale(1);
+}
+.track[data-scene="making"] .copy {
+  width: 45%;
+  top: 25%;
+}
+.track[data-scene="making"] .copy h1 {
+  font-size: clamp(74px, 7.6vw, 119px);
+}
+.track[data-scene="making"] .shade {
+  background:
+    linear-gradient(90deg, #1e1b16b5, transparent 74%),
+    linear-gradient(0deg, #1e1b1699, transparent 25%);
+}
+.track[data-scene="making"] .chair {
+  opacity: 1;
+  left: 75%;
+  top: 19%;
+  width: 205px;
+  height: 225px;
+  background: var(--paper);
+  box-shadow: 0 10px 35px #0003;
+  transform: rotate(5deg);
+}
+.track[data-scene="making"] .chair img {
+  padding: 10px 10px 30px;
+  filter: none;
+}
+.track[data-scene="making"] .chair figcaption {
+  opacity: 1;
+  transition-delay: 0.7s;
+}
+.beginnings {
+  padding: 105px var(--studio-edge) 85px;
+  display: grid;
+  grid-template-columns: 1fr 2.2fr;
+  gap: 8%;
+  align-items: start;
+}
+.chapterLabel {
+  font-size: 10px;
+  line-height: 1.8;
+  color: var(--studio-mocha);
+  display: flex;
+  gap: 25px;
+  align-items: start;
+}
+.chapterLabel::before {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--studio-clay);
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+.beginnings h2 {
+  font: 400 clamp(51px, 5.7vw, 87px)/1.06 var(--font-display);
+  letter-spacing: -0.035em;
+}
+.beginnings h2 em {
+  color: var(--studio-mocha);
+}
+.small {
+  margin-top: 30px;
+  color: var(--studio-mocha);
+  font-size: 10px;
+}
+.founders {
+  padding: 0 var(--studio-edge) 80px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 11%;
+  position: relative;
+}
+.founderArt {
+  position: sticky;
+  top: 125px;
+  height: min(680px, calc(100svh - 160px));
+  min-height: 480px;
+  align-self: start;
+  margin-top: 45px;
+  isolation: isolate;
+}
+.founderPhoto {
+  position: absolute;
+  inset: 0 18px 45px 0;
+  overflow: hidden;
+  background: var(--studio-stone);
+}
+.founderPhoto img {
+  object-fit: cover;
+}
+.founderCaption {
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  font-size: 8px;
+  color: var(--studio-mocha);
+}
+.founderPaper {
+  position: absolute;
+  inset: 35px 0 90px 20px;
+  background: #e6ddd0;
+  box-shadow: 0 18px 35px #3f3b3714;
+  overflow: hidden;
+}
+.founderPaper > p {
+  position: absolute;
+  left: 30px;
+  top: 27px;
+  font-size: 9px;
+  color: var(--studio-mocha);
+}
+.founderPaper img {
+  object-fit: contain;
+  padding: 50px 0 35px;
+}
+.founderPaper > span {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 26px;
+  font-size: 9px;
+  color: var(--studio-mocha);
+  border-top: 1px solid #a3927c66;
+  padding-top: 13px;
+}
+.founderSlip {
+  position: absolute;
+  left: -22px;
+  bottom: 65px;
+  width: 280px;
+  max-width: 85%;
+  padding: 25px 29px;
+  background: var(--studio-paper);
+  box-shadow: 0 7px 25px #3f3b371c;
+  transform: rotate(-3deg);
+}
+.founderSlip p {
+  font: 34px/1.1 var(--font-display);
+  letter-spacing: -0.02em;
+}
+.founderSlip span {
+  display: block;
+  font-size: 9px;
+  color: var(--studio-mocha);
+  margin-top: 17px;
+}
+.founderText article {
+  min-height: 83svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 85px 0;
+  position: relative;
+}
+.founderText article + article {
+  border-top: 1px solid var(--studio-line);
+}
+.person {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  font: 24px/1 var(--font-display);
+  color: var(--studio-clay);
+}
+.person span {
+  font: 10px/1.7 var(--font-body);
+  color: var(--studio-mocha);
+}
+.founderText h2 {
+  font: 400 clamp(52px, 5.1vw, 78px)/1.02 var(--font-display);
+  letter-spacing: -0.035em;
+  margin-bottom: 12px;
+}
+.founderText article > p:not(.person) {
+  font-size: 13px;
+  line-height: 1.95;
+  max-width: 38ch;
+  margin-top: 18px;
+}
+.founderText a {
+  align-self: start;
+  margin-top: 23px;
+}
+.founderText blockquote {
+  margin: 23px 0 0;
+  padding-left: 22px;
+  border-left: 1px solid var(--studio-clay);
+  font: 27px/1.3 var(--font-display);
+  max-width: 26ch;
+}
+.belief {
+  margin: 0 var(--studio-edge);
+  padding: 65px 0 90px;
+  border-top: 1px solid var(--studio-line);
+  display: grid;
+  grid-template-columns: 1fr 2.2fr;
+  gap: 8%;
+}
+.belief h2 {
+  font: 400 clamp(48px, 5.6vw, 83px)/1.04 var(--font-display);
+  letter-spacing: -0.035em;
+}
+.belief > div > p {
+  font-size: 13px;
+  line-height: 1.9;
+  max-width: 45ch;
+  margin-top: 30px;
+}
+.belief a {
+  margin-top: 25px;
+}
+@media (max-width: 1180px) {
+  .dock {
+    gap: 20px;
+  }
+  .switch button {
+    width: 112px;
+    font-size: 10px;
+  }
+  .scrollNote {
+    font-size: 9px;
+  }
+  .studySide {
+    width: 160px;
+  }
+  .fan {
+    height: 165px;
+  }
+  .swatch {
+    width: 52px;
+    height: 124px;
+  }
+  .swatch .texture {
+    height: 96px;
+  }
+  .swatch:nth-child(2) {
+    --x: 45px;
+  }
+  .swatch:nth-child(3) {
+    --x: 90px;
+  }
+  .track[data-scene="study"] .copy h1 {
+    font-size: 74px;
+  }
+  .track[data-scene="study"] .chair {
+    left: 29%;
+    top: 31%;
+    width: 59%;
+    height: 56%;
+  }
+  .track[data-scene="making"] .chair {
+    left: auto;
+    right: var(--edge);
+    width: 170px;
+    height: 190px;
+  }
+}
+@media (max-width: 760px) {
+  .track[data-scroll="true"] {
+    min-height: 0;
+    height: 265svh;
+  }
+  .stage {
+    min-height: 790px;
+  }
+  .track[data-scroll="true"] .stage {
+    min-height: 100svh;
+    top: 0;
+  }
+  .stage::after {
+    inset: 10px;
+  }
+  .room {
+    object-position: 58% 55%;
+  }
+  .shade {
+    background:
+      linear-gradient(180deg, #191612a8, #1c181257 65%),
+      linear-gradient(0deg, #211d18b3, transparent 30%);
+  }
+  .copy,
+  .track[data-scene="study"] .copy,
+  .track[data-scene="making"] .copy {
+    top: 18%;
+    width: calc(100% - 48px);
+    left: 24px;
+  }
+  .copy h1,
+  .track[data-scene="making"] .copy h1 {
+    font-size: clamp(58px, 12.8vw, 88px);
+    line-height: 0.98;
+  }
+  .description {
+    font-size: 12px;
+    max-width: 29ch;
+    margin-top: 22px;
+  }
+  .kicker {
+    font-size: 9px;
+    margin-bottom: 18px;
+  }
+  .heroJoin {
+    margin-top: 22px;
+  }
+  .heroJoin button {
+    font-size: 11px;
+    min-height: 48px;
+    padding: 13px 19px;
+    gap: 25px;
+  }
+  .heroJoin > a {
+    font-size: 9px;
+    margin-top: 12px;
+  }
+  .roomCue {
+    top: 65%;
+    left: 66%;
+  }
+  .roomCue button {
+    width: 48px;
+    height: 48px;
+  }
+  .roomCue p {
+    display: none;
+  }
+  .dock {
+    left: 24px;
+    right: 24px;
+    bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .switch {
+    order: -1;
+    width: 100%;
+    padding: 4px;
+  }
+  .switch::before {
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc((100% - 8px) / 3);
+  }
+  .switch button {
+    width: 33.333%;
+    min-height: 46px;
+    padding: 8px 3px;
+    font-size: 9px;
+  }
+  .scrollNote p {
+    font-size: 9px;
+  }
+  .scrollNote > a {
+    font-size: 8px;
+    min-height: 27px;
+  }
+  .dockEnd button {
+    font-size: 9px;
+    min-height: 30px;
+  }
+  .dockEnd p {
+    font-size: 10px;
+    max-width: 25ch;
+  }
+  .track[data-scene="study"] .copy h1 {
+    font-size: 57px;
+  }
+  .track[data-scene="study"] .description {
+    max-width: 27ch;
+  }
+  .track[data-scene="study"] .chair {
+    top: 35%;
+    left: 18%;
+    width: 82%;
+    height: 40%;
+  }
+  .studySide {
+    right: 24px;
+    left: 24px;
+    top: auto;
+    bottom: 136px;
+    width: auto;
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .studySide > p:first-child {
+    display: none;
+  }
+  .fan {
+    height: 94px;
+    margin-top: 10px;
+  }
+  .swatch {
+    width: 43px;
+    height: 84px;
+  }
+  .swatch .texture {
+    height: 63px;
+  }
+  .swatch:nth-child(2) {
+    --x: 45px;
+  }
+  .swatch:nth-child(3) {
+    --x: 87px;
+  }
+  .swatch > span:last-child {
+    font-size: 8px;
+    margin-top: 7px;
+  }
+  .materialCaption {
+    font-size: 9px;
+    min-height: 0;
+  }
+  .materialCaption strong {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .annotation {
+    display: none;
+  }
+  .track[data-scene="making"] .chair {
+    left: auto;
+    right: 30px;
+    top: auto;
+    bottom: 23%;
+    width: 125px;
+    height: 140px;
+  }
+  .track[data-scene="making"] .chair img {
+    padding-bottom: 24px;
+  }
+  .chair figcaption {
+    font-size: 7px;
+    left: 12px;
+    right: 8px;
+    bottom: 12px;
+  }
+  .makingNote {
+    bottom: 23%;
+    width: 44%;
+    left: 24px;
+  }
+  .makingNote p {
+    font-size: 10px;
+  }
+  .makingNote a {
+    font-size: 10px;
+    margin-top: 10px;
+  }
+  .beginnings {
+    padding: 65px 24px 45px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .beginnings h2 {
+    font-size: 51px;
+  }
+  .small {
+    font-size: 9px;
+    margin-top: 24px;
+  }
+  .chapterLabel {
+    font-size: 9px;
+    gap: 18px;
+  }
+  .founders {
+    padding: 0 24px 20px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .founderArt {
+    position: relative;
+    top: auto;
+    min-height: 0;
+    height: 490px;
+    margin: 0 0 0 12px;
+  }
+  .founderSlip {
+    left: -20px;
+    width: 235px;
+    padding: 22px;
+  }
+  .founderSlip p {
+    font-size: 30px;
+  }
+  .founderPaper {
+    display: none;
+  }
+  .founderText article {
+    min-height: 0;
+    padding: 42px 0 52px;
+  }
+  .person {
+    margin-bottom: 26px;
+  }
+  .founderText h2 {
+    font-size: 55px;
+  }
+  .founderText article > p:not(.person) {
+    max-width: 44ch;
+    font-size: 13px;
+  }
+  .founderText blockquote {
+    font-size: 27px;
+  }
+  .belief {
+    margin: 0 24px;
+    padding: 45px 0 65px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .belief h2 {
+    font-size: 49px;
+  }
+  .belief > div > p {
+    font-size: 12px;
+  }
+}
+@media (max-width: 760px) and (min-height: 541px) and (max-height: 740px) {
+  .copy,
+  .track[data-scene="study"] .copy,
+  .track[data-scene="making"] .copy {
+    top: 17%;
+  }
+  .copy h1,
+  .track[data-scene="making"] .copy h1 {
+    font-size: 52px;
+  }
+  .track[data-scene="study"] .copy h1 {
+    font-size: 46px;
+  }
+  .description,
+  .track[data-scene="study"] .description {
+    font-size: 10px;
+    line-height: 1.7;
+    margin-top: 14px;
+    max-width: 30ch;
+  }
+  .kicker {
+    font-size: 8px;
+    margin-bottom: 13px;
+  }
+  .heroJoin {
+    margin-top: 17px;
+  }
+  .heroJoin button {
+    min-height: 44px;
+    padding: 10px 15px;
+    font-size: 10px;
+  }
+  .heroJoin > a {
+    font-size: 8px;
+    margin-top: 9px;
+  }
+  .dock {
+    bottom: 12px;
+    gap: 8px;
+  }
+  .switch button {
+    min-height: 42px;
+  }
+  .scrollNote p {
+    font-size: 8px;
+  }
+  .track[data-scene="study"] .chair {
+    top: 36%;
+    height: 34%;
+    left: 22%;
+    width: 78%;
+  }
+  .studySide {
+    bottom: 118px;
+    grid-template-columns: 125px 1fr;
+    gap: 14px;
+  }
+  .fan {
+    height: 75px;
+  }
+  .swatch {
+    width: 39px;
+    height: 72px;
+  }
+  .swatch .texture {
+    height: 51px;
+  }
+  .swatch:nth-child(2) {
+    --x: 40px;
+  }
+  .swatch:nth-child(3) {
+    --x: 78px;
+  }
+  .materialCaption {
+    font-size: 8px;
+  }
+  .materialCaption strong {
+    font-size: 19px;
+    margin-bottom: 6px;
+  }
+  .track[data-scene="making"] .chair {
+    bottom: 23%;
+    width: 100px;
+    height: 115px;
+  }
+  .makingNote {
+    bottom: 23%;
+    width: 43%;
+  }
+  .makingNote p {
+    font-size: 9px;
+  }
+  .makingNote a {
+    font-size: 9px;
+    margin-top: 5px;
+  }
+}
+@media (max-width: 360px) {
+  .copy h1 {
+    font-size: 54px;
+  }
+  .track[data-scene="study"] .copy h1 {
+    font-size: 45px;
+  }
+  .kicker {
+    font-size: 8px;
+  }
+  .studySide {
+    gap: 10px;
+    grid-template-columns: 125px 1fr;
+  }
+  .beginnings h2 {
+    font-size: 44px;
+  }
+  .belief h2 {
+    font-size: 43px;
+  }
+  .founderArt {
+    height: 410px;
+  }
+  .founderText h2 {
+    font-size: 49px;
+  }
+  .dockEnd p {
+    max-width: 23ch;
+  }
+  .scrollNote p {
+    font-size: 8px;
+    gap: 8px;
+  }
+  .scrollNote > a {
+    font-size: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track[data-scroll="true"] {
+    height: auto;
+    min-height: 0;
+  }
+  .track[data-scroll="true"] .stage {
+    position: relative;
+  }
+  .founderArt {
+    position: relative;
+    top: 0;
+  }
+  .founderText article {
+    min-height: 0;
+  }
+  .founderPaper {
+    display: none;
+  }
+}
+:global(body[data-studio-motion="off"]) .founderArt {
+  position: relative;
+  top: 0;
+}
+:global(body[data-studio-motion="off"]) .founderText article {
+  min-height: 0;
+}
+@media print {
+  .track[data-scroll="true"] {
+    height: auto;
+    min-height: 0;
+  }
+  .track[data-scroll="true"] .stage,
+  .founderArt {
+    position: relative;
+    top: 0;
+  }
+  .dock,
+  .roomCue {
+    display: none;
+  }
+  .founderText article {
+    min-height: 0;
+  }
+  .founders {
+    display: block;
+  }
+  .founderArt {
+    height: 500px;
+  }
+}

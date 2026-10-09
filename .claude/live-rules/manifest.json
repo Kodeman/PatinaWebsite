@@ -2,6 +2,19 @@
   "version": 1,
   "rules": [
     {
+      "path": "rules/crap-gate.md",
+      "hash": "3c4f1566c2bd2631b96c20038613429d8293ef260c963cdc5b91aeeb8a5feab9",
+      "description": "Keep changed code within the CRAP ceiling",
+      "globs": [
+        "src/**"
+      ],
+      "dirs": [],
+      "prompt": [],
+      "priority": 85,
+      "enabled": true,
+      "include": []
+    },
+    {
       "path": "rules/e2e-verification.md",
       "hash": "d48a35cc0ac7488fbae64e9a3b1a6094c1bc8bded4eb16cd7feb0d2723bdf7e6",
       "description": "Verify page and component changes with the matching e2e spec",
@@ -18,7 +31,7 @@
     },
     {
       "path": "rules/messaging-voice.md",
-      "hash": "e1a975b6d3fa6b6ac6e2d56493b13c64c93ab530370db443d93787bed76f43ee",
+      "hash": "12068a9bf24f433ab88236c611d35129aa100961d82a1f1dd076d48954509bde",
       "description": "Customer-facing copy follows the messaging system",
       "globs": [
         "src/app/**/*.tsx",

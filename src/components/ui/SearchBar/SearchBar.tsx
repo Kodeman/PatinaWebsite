@@ -66,31 +66,6 @@ const searchData: SearchResult[] = [
     subtitle: "Discover our founding partners",
     href: "/makers",
   },
-  // Materials
-  {
-    type: "material",
-    title: "American Black Walnut",
-    subtitle: "Eastern United States",
-    href: "/materials",
-  },
-  {
-    type: "material",
-    title: "White Oak",
-    subtitle: "North America",
-    href: "/materials",
-  },
-  {
-    type: "material",
-    title: "Japanese Hinoki",
-    subtitle: "Japan",
-    href: "/materials",
-  },
-  {
-    type: "material",
-    title: "Vegetable-Tanned Leather",
-    subtitle: "Tuscany, Italy",
-    href: "/materials",
-  },
   // Pages
   {
     type: "page",
@@ -153,7 +128,8 @@ export function SearchBar({ variant = "default" }: SearchBarProps) {
   }, []);
 
   useEffect(() => {
-    search(query);
+    const timer = window.setTimeout(() => search(query), 150);
+    return () => window.clearTimeout(timer);
   }, [query, search]);
 
   useEffect(() => {
@@ -383,13 +359,6 @@ export function SearchBar({ variant = "default" }: SearchBarProps) {
                         className="block px-3 py-2 rounded-[var(--radius-md)] text-[var(--patina-mocha-brown)] hover:bg-[var(--patina-soft-cream)] hover:text-[var(--patina-charcoal)] transition-colors"
                       >
                         Meet Our Makers
-                      </Link>
-                      <Link
-                        href="/materials"
-                        onClick={handleCloseSearch}
-                        className="block px-3 py-2 rounded-[var(--radius-md)] text-[var(--patina-mocha-brown)] hover:bg-[var(--patina-soft-cream)] hover:text-[var(--patina-charcoal)] transition-colors"
-                      >
-                        Explore Materials
                       </Link>
                       <Link
                         href="/services"

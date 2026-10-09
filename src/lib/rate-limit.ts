@@ -11,19 +11,20 @@ import { NextRequest } from "next/server";
 // a cheap first line of defense rather than a guarantee.
 
 /**
- * Extract the client IP from the request. Uses the first hop of the
- * `x-forwarded-for` chain (the originating client per Vercel/proxy convention),
+ * Extract the client IP supplied by Cloudflare, or use the first hop of the
+ * `x-forwarded-for` chain for other hosting environments,
  * falling back to `'unknown'` when no forwarding header is present.
  */
 export function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    const firstHop = forwardedFor.split(",")[0]?.trim();
-    if (firstHop) {
-      return firstHop;
-    }
-  }
-  return "unknown";
+  // Cloudflare overwrites this header with the visitor’s IP at the edge.
+  const cloudflareIp = request.headers.get("cf-connecting-ip")?.trim();
+  return cloudflareIp || firstForwardedHop(request.headers.get("x-forwarded-for")) || "unknown";
+}
+
+/** The first non-blank hop of an `x-forwarded-for` chain, or null. */
+function firstForwardedHop(forwardedFor: string | null): string | null {
+  const firstHop = forwardedFor?.split(",")[0]?.trim();
+  return firstHop || null;
 }
 
 interface RateLimitBucket {

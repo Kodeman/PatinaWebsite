@@ -1,0 +1,10 @@
+# Optional local Workers runtime configuration; copy to ignored .dev.vars.
+# .env.local supplies build values, not the preview Worker's private bindings.
+# Set test credentials here only for intentional integration checks.
+# Never use production leads or send real mail during automated UI tests.
+NEXTJS_ENV=production
+SUPABASE_SERVICE_ROLE_KEY=
+RESEND_API_KEY=
+SANITY_API_READ_TOKEN=
+SANITY_WEBHOOK_SECRET=
+SANITY_PREVIEW_SECRET=

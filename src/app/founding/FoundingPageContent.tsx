@@ -1,252 +1,167 @@
-'use client';
-
-import Link from 'next/link';
-import { Container } from '@/components/layout/Container';
-import { FadeIn, StaggerChildren, StaggerItem } from '@/components/motion';
-import { FoundingCircleForm } from '@/components/ui/FoundingCircleForm';
-import { FoundingCounter } from '@/components/ui/FoundingCounter';
-import { StrataMark } from '@/components/ui/StrataMark';
-import { PlaceholderImage } from '@/components/ui/PlaceholderImage';
-import { foundersTogetherImage } from '@/data/aboutContent';
-
-const benefits = [
-  {
-    icon: '★',
-    title: 'Named Recognition',
-    body: "Founding members get credited at launch. Your name on the thing you helped build.",
-  },
-  {
-    icon: '◈',
-    title: 'Behind the Curtain',
-    body: "Exclusive updates from Kody & Leah as the catalog grows, makers sign on, and the platform takes shape. The real, unpolished building story.",
-  },
-  {
-    icon: '⟡',
-    title: 'Real Influence',
-    body: "Monthly questions on what matters: which makers to partner with, which style categories to prioritize. Your input shapes the product.",
-  },
-  {
-    icon: '⌂',
-    title: 'First Access',
-    body: "When the app launches, you're first through the door — and first to test it as we build. Your feedback makes it better for everyone.",
-  },
-  {
-    icon: '◆',
-    title: 'Permanent Status',
-    body: "Founding member status never expires. When we launch publicly, your early support is recognized — permanently.",
-  },
-];
+import Link from "next/link";
+import { StrataMark } from "@/components/ui/StrataMark";
+import { FoundingCircleForm } from "@/components/ui/FoundingCircleForm";
+import { foundingBenefits } from "@/components/studio/FoundingInvitation";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
 
 export function FoundingPageContent() {
   return (
     <>
-      {/* ===== HERO ===== */}
-      <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 bg-[var(--patina-warm-white)]">
-        <Container>
-          <div className="max-w-[700px] mx-auto text-center">
-            <FadeIn>
-              <span className="text-label text-[var(--patina-clay-beige)] mb-4 block">
-                JOIN US
-              </span>
-              <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-normal text-[var(--patina-charcoal)] mb-3 leading-tight">
-                The Founding Circle
-              </h1>
-              <p className="font-mono text-sm text-[var(--patina-mocha-brown)]/70 mb-6">
-                Limited to 200 founding members
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-4">
-                We&apos;re building a furniture platform where real designers teach it what belongs,
-                real makers craft the pieces, and your room gets the attention it deserves.
-              </p>
-              <p className="text-lg text-[var(--patina-mocha-brown)] leading-relaxed mb-10">
-                We&apos;re not ready to launch yet — but we&apos;d love your help getting there.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <FoundingCircleForm
-                source="founding_hero"
-                ctaText="Join the Founding Circle →"
-                className="max-w-md mx-auto"
-              />
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <div className="mt-6">
-                <FoundingCounter showCap cap={200} />
-              </div>
-            </FadeIn>
+      <section className="studio-founding-opening">
+        <div className="studio-founding-heading">
+          <p className="studio-kicker">An invitation from Kody &amp; Leah</p>
+          <h1>
+            A place at
+            <br />
+            the beginning.
+          </h1>
+          <p>
+            We’re building a more personal way to discover furniture. One that
+            brings a designer’s eye, a maker’s care, and your own point of view
+            together.
+          </p>
+          <p>
+            The app and marketplace aren’t ready yet. The people who help shape
+            them will be part of the story from the start.
+          </p>
+          <a href="#membership" className="studio-link">
+            Explore your membership <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+        <StudioMotion className="studio-founding-card">
+          <div className="studio-letter-top">
+            <StrataMark size="compact" align="left" />
+            <p>
+              Patina / Founding Circle
+              <br />
+              Madison, Wisconsin
+            </p>
           </div>
-        </Container>
+          <h2>Come on in.</h2>
+          <p>Join the Founding Circle.</p>
+          <p className="studio-founding-cap">
+            Limited to 200 founding members.
+            <br />
+            Open wherever you call home.
+          </p>
+          <FoundingCircleForm
+            source="founding_page"
+            ctaText="Join the Founding Circle"
+          />
+          <p className="studio-founding-note">
+            A first letter from Kody to welcome you. Then notes from the studio
+            as Patina takes shape.
+          </p>
+          <p className="studio-founding-signature">Warmly, Kody &amp; Leah</p>
+        </StudioMotion>
       </section>
-
-      {/* ===== WHAT YOU GET ===== */}
-      <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
-        <Container>
-          <FadeIn className="text-center mb-12">
-            <span className="text-label text-[var(--patina-clay-beige)] mb-4 block">
-              WHAT YOU GET
-            </span>
-            <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] font-normal text-[var(--patina-charcoal)]">
-              More than early access
-            </h2>
-          </FadeIn>
-
-          <StaggerChildren staggerDelay={0.1} className="max-w-[900px] mx-auto">
-            <div className="grid sm:grid-cols-2 gap-6">
-              {benefits.map((benefit) => (
-                <StaggerItem key={benefit.title}>
-                  <div className="bg-white p-8 rounded-[var(--radius-lg)] shadow-[var(--shadow-sm)] border border-[rgba(163,146,124,0.08)] h-full">
-                    <span className="text-2xl mb-4 block">{benefit.icon}</span>
-                    <h3 className="font-display text-xl font-medium text-[var(--patina-charcoal)] mb-3">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-[0.9375rem] text-[var(--patina-mocha-brown)] leading-relaxed">
-                      {benefit.body}
-                    </p>
-                  </div>
-                </StaggerItem>
-              ))}
+      <section
+        id="membership"
+        className="studio-section studio-two-column studio-membership"
+      >
+        <div className="studio-copy">
+          <p className="studio-kicker">A circle with a part to play.</p>
+          <h2>
+            More than
+            <br />
+            early access.
+          </h2>
+          <p>
+            Your questions, preferences, and honest reactions can help us build
+            a place that feels like it belongs in the creative process.
+          </p>
+          <JoinCircleButton source="founding_benefits" />
+        </div>
+        <dl>
+          {foundingBenefits.map(([title, description], index) => (
+            <div key={title}>
+              <dt>
+                <span>0{index + 1}</span>
+                {title}
+              </dt>
+              <dd>{description}</dd>
             </div>
-          </StaggerChildren>
-        </Container>
+          ))}
+        </dl>
       </section>
-
-      {/* ===== WHAT WE'RE BUILDING ===== */}
-      <section className="py-20 lg:py-28 bg-[var(--patina-warm-white)]">
-        <Container>
-          <div className="max-w-[700px] mx-auto">
-            <FadeIn className="mb-8">
-              <span className="text-label text-[var(--patina-clay-beige)] mb-4 block">
-                THE VISION
-              </span>
-              <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] font-normal text-[var(--patina-charcoal)]">
-                What We&apos;re Building
-              </h2>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <div className="space-y-5 text-[var(--patina-mocha-brown)] text-[1.0625rem] leading-relaxed">
-                <p>
-                  Patina is a furniture platform that works the way a great designer thinks —
-                  in complete rooms, not isolated products.
-                </p>
-                <p>
-                  At its heart is a designer-taught recommendation system — the one we quietly
-                  call the Aesthete Engine. Not trained on click data or ad revenue, but on the
-                  instincts of professional interior designers who know what makes a room feel right.
-                </p>
-                <p>
-                  We&apos;re building a catalog of heritage makers and trusted brands, developing
-                  AR room visualization tools, and shaping style profiles that actually
-                  understand your taste.
-                </p>
-                <p className="text-[var(--patina-charcoal)] font-medium">
-                  It&apos;s not ready yet. But it&apos;s getting closer every week.
-                </p>
-              </div>
-            </FadeIn>
-          </div>
-        </Container>
+      <section className="studio-section studio-two-column studio-founding-next">
+        <div className="studio-copy">
+          <p className="studio-kicker">After you join</p>
+          <h2>
+            The conversation
+            <br />
+            starts here.
+          </h2>
+        </div>
+        <ol className="studio-list">
+          <li>
+            <h3>A first letter.</h3>
+            <p>
+              Kody welcomes you to the circle and shares why we’re building
+              Patina.
+            </p>
+          </li>
+          <li>
+            <h3>A look at the work.</h3>
+            <p>
+              Updates from the studio and monthly questions invite your
+              perspective as the platform takes shape.
+            </p>
+          </li>
+          <li>
+            <h3>A first step inside.</h3>
+            <p>
+              Founding members get first access when the app launches. We’ll
+              write when there’s something ready for you to try.
+            </p>
+          </li>
+        </ol>
       </section>
-
-      {/* ===== WHO WE ARE ===== */}
-      <section className="py-20 lg:py-28 bg-[var(--patina-soft-cream)]">
-        <Container>
-          <FadeIn className="text-center mb-12">
-            <span className="text-label text-[var(--patina-clay-beige)] mb-4 block">
-              THE TEAM
-            </span>
-            <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] font-normal text-[var(--patina-charcoal)]">
-              Who We Are
-            </h2>
-          </FadeIn>
-
-          <div className="max-w-[900px] mx-auto grid lg:grid-cols-2 gap-12 items-center">
-            <FadeIn>
-              <div className="aspect-[4/3] rounded-[var(--radius-xl)] overflow-hidden">
-                <PlaceholderImage meta={foundersTogetherImage} className="w-full h-full" />
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <div className="space-y-5 text-[var(--patina-mocha-brown)] text-[1.0625rem] leading-relaxed">
-                <h3 className="font-display text-2xl font-normal text-[var(--patina-charcoal)]">
-                  Kody &amp; Leah
-                </h3>
-                <p>
-                  Leah runs Middlewest Studio, an interior design practice in Madison, Wisconsin.
-                  Her clients trust her taste — and that taste is what Patina learns from.
-                </p>
-                <p>
-                  Kody builds the technology. His background is in enterprise software
-                  (Starbucks Corporate, Microsoft-funded startups), but his heart is
-                  in making tools that actually help real people make better decisions
-                  about their homes.
-                </p>
-                <p className="text-[var(--patina-charcoal)] font-medium">
-                  Together, we&apos;re building what we wish existed: a way to get the benefit
-                  of working with a great designer, whether or not you hire one.
-                </p>
-              </div>
-            </FadeIn>
-          </div>
-        </Container>
-      </section>
-
-      {/* ===== BOTTOM CTA ===== */}
-      <section className="py-20 lg:py-28 bg-[var(--patina-charcoal)] relative overflow-hidden">
-        {/* Paper texture */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-          aria-hidden="true"
-        />
-
-        <Container className="relative z-10">
-          <div className="max-w-[600px] mx-auto text-center">
-            <FadeIn>
-              <div className="flex justify-center mb-8">
-                <StrataMark size="medium" variant="reversed" />
-              </div>
-              <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] font-normal text-[var(--patina-off-white)] mb-6">
-                Ready to help us build this?
-              </h2>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <FoundingCircleForm
-                source="founding_bottom"
-                variant="dark"
-                ctaText="Join the Founding Circle →"
-                className="max-w-md mx-auto"
-              />
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <div className="mt-6">
-                <FoundingCounter variant="dark" showCap cap={200} />
-              </div>
-              <p className="mt-4 font-mono text-xs text-[rgba(237,233,228,0.5)]">
-                200 spots. Once they&apos;re filled, this page becomes a waitlist.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <Link
-                href="/about"
-                className="inline-block mt-8 text-sm text-[rgba(237,233,228,0.6)] hover:text-[var(--patina-off-white)] transition-colors"
-              >
-                Back to Our Story
-              </Link>
-            </FadeIn>
-          </div>
-        </Container>
+      <section className="studio-section studio-two-column studio-founding-questions">
+        <div className="studio-copy">
+          <p className="studio-kicker">A few things to know.</p>
+          <h2>
+            Before you
+            <br />
+            pull up a chair.
+          </h2>
+        </div>
+        <div>
+          <details>
+            <summary>Do I need to live in the Midwest?</summary>
+            <p>
+              No. Patina is rooted in Madison, Wisconsin, and our first outreach
+              is focused on Chicago, Madison, and Minneapolis. The Founding
+              Circle is open wherever you call home.
+            </p>
+          </details>
+          <details>
+            <summary>Can I use the app today?</summary>
+            <p>
+              The app and marketplace are pre-launch. Membership brings you into
+              the building process and gives you first access when the app
+              launches.
+            </p>
+          </details>
+          <details>
+            <summary>I’m a designer or a maker. Where do I start?</summary>
+            <p>
+              There are dedicated invitations for{" "}
+              <Link href="/designers">the Founding 50 designers</Link> and{" "}
+              <Link href="/makers">our first maker partners</Link>. We’d love to
+              learn about your work.
+            </p>
+          </details>
+          <details>
+            <summary>What if I have a question for you?</summary>
+            <p>
+              Write to{" "}
+              <a href="mailto:hello@patina.cloud">hello@patina.cloud</a> or{" "}
+              <Link href="/contact">leave us a note</Link>. We read them.
+            </p>
+          </details>
+        </div>
       </section>
     </>
   );

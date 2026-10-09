@@ -2,6 +2,8 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Signup Page", () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.route("**/api/**", (route) => route.request().method() === "GET" ? route.continue() : route.abort());
     await page.goto("/signup");
   });
 
@@ -17,7 +19,7 @@ test.describe("Signup Page", () => {
   });
 
   test("should keep consent optional", async ({ page }) => {
-    await page.getByLabel("Email").fill("test@example.com");
+    await page.getByLabel("Email", { exact: true }).fill("test@example.com");
     await page.getByLabel("Mobile number (optional)").fill("5551234567");
 
     await expect(page.getByText("Add a mobile number, or uncheck the texts option.")).not.toBeVisible();
@@ -25,7 +27,7 @@ test.describe("Signup Page", () => {
   });
 
   test("should show the exact inline error when consent is checked without a mobile number", async ({ page }) => {
-    await page.getByLabel("Email").fill("test@example.com");
+    await page.getByLabel("Email", { exact: true }).fill("test@example.com");
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Create Account" }).click();
 
@@ -62,7 +64,7 @@ test.describe("Signup Page", () => {
     });
 
     await page.getByLabel("First name (optional)").fill("Ada");
-    await page.getByLabel("Email").fill("ada@example.com");
+    await page.getByLabel("Email", { exact: true }).fill("ada@example.com");
     await page.getByLabel("Mobile number (optional)").fill("555 123 4567");
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Create Account" }).click();

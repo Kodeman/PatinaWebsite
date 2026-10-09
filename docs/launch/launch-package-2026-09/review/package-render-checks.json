@@ -1,0 +1,85 @@
+{
+  "checked_at": "2026-09-11T09:53:42.553Z",
+  "imageFailures": [],
+  "errors": [],
+  "printLayout": [
+    {
+      "id": "cover",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "direction",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "story",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "membership",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "sequence",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "letters",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "artwork",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "motion",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "press",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "measurement",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "operations",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    },
+    {
+      "id": "collection",
+      "width": 1123,
+      "height": 794,
+      "clipped": []
+    }
+  ],
+  "mobile": {
+    "viewport": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  "sheets": 12
+}

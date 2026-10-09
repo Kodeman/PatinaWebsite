@@ -1,0 +1,213 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
+import { StrataMark } from "@/components/ui/StrataMark";
+import { StudioPage } from "@/components/studio/StudioPage";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
+import styles from "@/components/studio/EditorialPages.module.css";
+
+export const metadata: Metadata = {
+  title: "The Material Study",
+  description:
+    "An eye for grain, texture, and the way a material changes with time. Explore the material sensibility behind Patina.",
+  alternates: { canonical: "https://patina.cloud/materials" },
+};
+
+const materials = [
+  {
+    name: "White oak",
+    thought: "A quiet foundation.",
+    texture: styles.wood,
+    description:
+      "Start with the grain. Notice its direction, the tone in the light, and how it sits beside the softer things in a room.",
+  },
+  {
+    name: "Linen",
+    thought: "A little softness.",
+    texture: styles.linen,
+    description:
+      "A visible weave gives a plain surface another dimension. Put it beside timber and see how the two textures change one another.",
+  },
+  {
+    name: "Full-grain leather",
+    thought: "Character, close up.",
+    texture: styles.leather,
+    description:
+      "Look for the variation in the surface. Consider the feel, the finish, and whether you’ll enjoy the marks that living leaves behind.",
+  },
+  {
+    name: "Soapstone",
+    thought: "Weight and stillness.",
+    texture: styles.stone,
+    description:
+      "A darker, quieter surface can give a room a place to rest. Consider its weight and character alongside the warmth of wood.",
+  },
+];
+
+export default function MaterialsPage() {
+  return (
+    <StudioPage
+      className={styles.editorialPage}
+      eyebrow="The material study"
+      title={
+        <>
+          Good things
+          <br />
+          have depth.
+        </>
+      }
+      description="Grain, texture, weight, light. Before a piece earns its place in a room, there’s a material worth getting to know."
+      heroAction={
+        <a href="#material-study" className="studio-button">
+          Explore the materials <span aria-hidden="true">↓</span>
+        </a>
+      }
+      heroArt={
+        <StudioMotion kind="paper" className={styles.materialHeroArt}>
+          <figure className={styles.materialHeroImage}>
+            <Image
+              src="/images/studio/materials.jpg"
+              alt="Illustrative worktable with wood and fabric samples beside a chair sketch"
+              width={1536}
+              height={1024}
+              priority
+              sizes="(max-width: 760px) 100vw, 52vw"
+            />
+            <figcaption>
+              An illustrative material study, created with AI. Samples shown are
+              not available product finishes.
+            </figcaption>
+          </figure>
+          <div className={styles.heroSampleCollection} aria-hidden="true">
+            <div className={styles.wood}>
+              <span>Grain</span>
+            </div>
+            <div className={styles.linen}>
+              <span>Weave</span>
+            </div>
+            <div className={styles.leather}>
+              <span>Character</span>
+            </div>
+          </div>
+          <span className={styles.materialHeroLabel}>Considered together.</span>
+        </StudioMotion>
+      }
+    >
+      <section
+        id="material-study"
+        className={`studio-section ${styles.materialLedger}`}
+      >
+        <div className="studio-two-column">
+          <p className="studio-kicker">Considered together.</p>
+          <div className="studio-copy">
+            <h2 className={styles.sectionTitle}>
+              A palette to
+              <br />
+              think with.
+            </h2>
+            <p className={styles.lead}>
+              Materials have a conversation. A darker grain beside a loose
+              weave. A soft surface next to something solid.
+            </p>
+            <p>
+              These are some of the materials that inform our eye. Think of this
+              as a starting point for noticing what you’re drawn to.
+            </p>
+          </div>
+        </div>
+        <ul className={styles.materialList}>
+          {materials.map((material) => (
+            <li key={material.name} className={styles.materialRow}>
+              <StudioMotion kind="paper">
+                <div className={styles.sampleMount}>
+                  <div
+                    className={`${styles.sample} ${material.texture}`}
+                    aria-hidden="true"
+                  />
+                  <span>{material.name}</span>
+                </div>
+              </StudioMotion>
+              <div>
+                <h3>{material.name}</h3>
+                <span className="studio-kicker">{material.thought}</span>
+              </div>
+              <p>{material.description}</p>
+            </li>
+          ))}
+        </ul>
+        <p className={styles.caption}>
+          Color and texture studies are illustrative, not specifications or
+          finish options.
+        </p>
+      </section>
+      <section className={`studio-section ${styles.makingSection}`}>
+        <div className={styles.closing}>
+          <div>
+            <p className="studio-kicker">Beyond the surface.</p>
+            <h2 className={styles.sectionTitle}>
+              Ask about
+              <br />
+              the making.
+            </h2>
+            <p>
+              A material is part of a bigger story. Who worked with it, how it
+              was joined, how it was finished, and how to care for it all
+              matter.
+            </p>
+            <Link href="/makers" className="studio-link">
+              Meet our approach to makers
+            </Link>
+          </div>
+          <StudioMotion kind="paper">
+            <div className={styles.note}>
+              <p className="studio-kicker">Questions worth keeping.</p>
+              <ul className={styles.principles}>
+                <li>
+                  <h3>How was it made?</h3>
+                  <p>
+                    Look beyond the surface to the construction and the person
+                    behind the choices.
+                  </p>
+                </li>
+                <li>
+                  <h3>How will it live?</h3>
+                  <p>
+                    Think about everyday use, care, and the changes you’ll
+                    welcome over time.
+                  </p>
+                </li>
+                <li>
+                  <h3>Why does it belong?</h3>
+                  <p>
+                    Consider the room as a whole. The right material has a
+                    relationship with what surrounds it.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </StudioMotion>
+        </div>
+      </section>
+      <section className={`studio-section ${styles.membershipClosing}`}>
+        <StrataMark size="compact" align="left" variant="on-clay" />
+        <div className={styles.closing}>
+          <h2 className={styles.sectionTitle}>
+            Bring your eye.
+            <br />
+            We’ll bring ours.
+          </h2>
+          <div>
+            <p>
+              Help shape a furniture platform built around real design judgment
+              and honest materials. Founding members get first access when the
+              app launches.
+            </p>
+            <JoinCircleButton source="materials-closing" />
+          </div>
+        </div>
+      </section>
+    </StudioPage>
+  );
+}
+

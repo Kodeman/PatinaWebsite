@@ -1,0 +1,11 @@
+# Round three imagery
+
+Generated with the built-in image generation tool, 9 September 2026. Illustrative concept studies, not documentary maker, founder, or product photography. Original PNGs and compressed JPEGs are retained in assets/.
+
+## maker-hands-v3
+
+Use case: photorealistic-natural. Asset type: wide editorial image for Patina handcrafted furniture website concept. Photograph a close, intimate moment at a furniture maker's worn workbench. Only an adult craftsperson's hands and linen work apron partially in view at the right edge, carefully fitting a rounded walnut chair arm into a precise mortise and tenon joint. A few fine curled wood shavings, an old wooden hand plane and pencil on the scratched solid timber workbench. Deep warm walnut, honey oak, dusty olive in background, natural window light from left, soft shadows, quiet documentary photography, slight film grain, tactile pores and end grain, beautiful imperfect real workshop. Main focus is the wood joinery and hands, no faces, no machines, no shiny industrial factory, no excessive tools, no logos, no text, no border or collage. Landscape 3:2 composition. This is illustrative concept imagery and must not depict a named real maker or founder.
+
+## material-table-v3
+
+Use case: photorealistic-natural. Asset type: wide editorial image for Patina furniture design website, creative material table. A naturally lit interior designer's working table photographed from directly above. Tactile samples gathered informally on aged honey-colored oak: large folded oatmeal linen fabric upper right, smaller moss olive wool fabric partly overlapping, a rich walnut timber sample lower left, a small pale oak sample, a softly worn cognac leather swatch, ivory paper with an understated pencil drawing of a lounge chair seen from side and a few loose pencil marks (no writing), a graphite pencil, a small imperfect cream ceramic cup partly cropped at upper left. A creative process in progress, thoughtfully arranged yet genuinely used, quiet asymmetry and negative space between groups, intimate Madison Wisconsin studio mood, soft afternoon sunlight and shadow, visible fibers, natural realistic textures and warm colors. No people, no text, no labels, no logos, no fake handwriting, no border, no collage grid. Landscape 3:2.

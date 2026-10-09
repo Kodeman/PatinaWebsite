@@ -2,67 +2,42 @@ import { test, expect } from "@playwright/test";
 
 test.describe("404 Not Found Page", () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.route("**/api/**", (route) => route.request().method() === "GET" ? route.continue() : route.abort());
     await page.goto("/this-page-does-not-exist-12345");
+    const consent = page.getByRole("dialog", { name: "Cookie consent" });
+    if (await consent.isVisible()) await consent.getByRole("button", { name: "Decline", exact: true }).click();
   });
 
-  test("should display 404 page for non-existent routes", async ({ page }) => {
+  test("explains that the page was not found", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Page not found");
-  });
-
-  test("should display helpful message", async ({ page }) => {
     await expect(page.getByText(/This piece seems to have moved/)).toBeVisible();
-    await expect(page.getByText(/Let's help you find what you're looking for/)).toBeVisible();
   });
 
-  test("should display navigation", async ({ page }) => {
-    await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
-  });
-
-  test("should have Go Home button", async ({ page }) => {
-    const homeButton = page.getByRole("link", { name: /Go Home/i });
-    await expect(homeButton).toBeVisible();
-    await expect(homeButton).toHaveAttribute("href", "/");
-  });
-
-  test("should have Browse Furniture button", async ({ page }) => {
-    const browseButton = page.getByRole("link", { name: /Browse Furniture/i });
-    await expect(browseButton).toBeVisible();
-    await expect(browseButton).toHaveAttribute("href", "/furniture");
-  });
-
-  test("should navigate to home when clicking Go Home", async ({ page }) => {
-    const homeButton = page.getByRole("link", { name: /Go Home/i });
-    await homeButton.click();
+  test("provides a home route", async ({ page }) => {
+    const home = page.getByRole("link", { name: "Go Home", exact: true });
+    await expect(home).toHaveAttribute("href", "/");
+    await home.click();
     await expect(page).toHaveURL("/");
   });
 
-  test("should navigate to furniture when clicking Browse Furniture", async ({ page }) => {
-    const browseButton = page.getByRole("link", { name: /Browse Furniture/i });
-    await browseButton.click();
-    await expect(page).toHaveURL(/\/furniture/);
+  test("provides a useful maker route instead of a retired catalog", async ({ page }) => {
+    const makers = page.getByRole("link", { name: "Meet Our Makers", exact: true });
+    await expect(makers).toHaveAttribute("href", "/makers");
+    await makers.click();
+    await expect(page).toHaveURL(/\/makers$/);
   });
 
-  test("should display StrataMark logo element", async ({ page }) => {
-    // The StrataMark should be visible on the 404 page
-    const main = page.locator("main");
-    await expect(main).toBeVisible();
+  test("retains navigation, the Strata and footer", async ({ page }) => {
+    await expect(page.getByRole("navigation", { name: "Main navigation", exact: true })).toBeVisible();
+    await expect(page.locator("main").getByRole("img", { name: "Patina strata mark" }).first()).toBeVisible();
+    await expect(page.locator("footer")).toBeVisible();
   });
 
-  test("should display footer", async ({ page }) => {
-    const footer = page.locator("footer");
-    await expect(footer).toBeVisible();
-  });
-
-  test("should show 404 for various non-existent routes", async ({ page }) => {
-    const routes = [
-      "/random-page",
-      "/foo/bar/baz",
-      "/products/invalid-product",
-    ];
-
-    for (const route of routes) {
-      await page.goto(route);
+  test("returns a real 404 for unknown routes", async ({ page }) => {
+    for (const route of ["/random-page", "/foo/bar/baz", "/products/invalid-product"]) {
+      const response = await page.goto(route);
+      expect(response?.status()).toBe(404);
       await expect(page.getByRole("heading", { level: 1 })).toContainText("Page not found");
     }
   });

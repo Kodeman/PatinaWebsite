@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 
 export interface ARPreviewButtonProps {
@@ -10,25 +10,24 @@ export interface ARPreviewButtonProps {
   className?: string;
 }
 
+type DeviceType = "ios" | "android" | "desktop";
+
+const subscribeToDevice = () => () => {};
+const getServerDevice = (): DeviceType => "desktop";
+const getDevice = (): DeviceType => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(userAgent)) return "ios";
+  if (/android/.test(userAgent)) return "android";
+  return "desktop";
+};
+
 export function ARPreviewButton({
   arModelUrl,
   productName,
-  productSlug,
   className,
 }: ARPreviewButtonProps) {
   const [showModal, setShowModal] = useState(false);
-  const [deviceType, setDeviceType] = useState<"ios" | "android" | "desktop">("desktop");
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    if (/iphone|ipad|ipod/.test(userAgent)) {
-      setDeviceType("ios");
-    } else if (/android/.test(userAgent)) {
-      setDeviceType("android");
-    } else {
-      setDeviceType("desktop");
-    }
-  }, []);
+  const deviceType = useSyncExternalStore(subscribeToDevice, getDevice, getServerDevice);
 
   const handleClick = () => {
     if (arModelUrl && deviceType !== "desktop") {

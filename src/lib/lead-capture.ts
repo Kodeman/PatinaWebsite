@@ -1,4 +1,4 @@
-import { getServerPostHog } from "@/lib/posthog-server";
+import { captureServerEvent } from "@/lib/posthog-server";
 
 /**
  * Arguments for {@link captureLeadEvent}.
@@ -44,15 +44,12 @@ export function captureLeadEvent({
   properties,
   personProps,
 }: CaptureLeadEventArgs): void {
-  const posthog = getServerPostHog();
-  if (!posthog) return;
-
   // Prefer the anonymous client distinct_id so pre-signup browsing merges
   // into the same person; fall back to email when none was forwarded.
   const distinctId = posthogDistinctId || email;
 
   try {
-    posthog.capture({
+    captureServerEvent({
       distinctId,
       event,
       properties: {

@@ -1,28 +1,20 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Navigation } from '@/components/layout/Navigation';
-import { Footer } from '@/components/layout/Footer';
-import { FoundingPageContent } from './FoundingPageContent';
+import type { Metadata } from "next";
+import { Navigation } from "@/components/layout/Navigation";
+import { Footer } from "@/components/layout/Footer";
+import { FoundingPageContent } from "./FoundingPageContent";
 
 export const metadata: Metadata = {
-  title: 'Join the Founding Circle',
+  title: "Join the Founding Circle",
   description:
-    'Be part of building a new kind of furniture platform. Founding Circle members get first access, real influence, and behind-the-scenes updates from the team.',
-  openGraph: {
-    title: 'The Founding Circle — Patina',
-    description: "We're building something different. Come help us shape it.",
-    url: 'https://patina.cloud/founding',
-  },
-  alternates: {
-    canonical: 'https://patina.cloud/founding',
-  },
+    "Help shape Patina. First access, monthly input, founder updates, and a permanent place in our story. Limited to 200 founding members; open wherever you call home.",
+  alternates: { canonical: "/founding" },
 };
 
 export default function FoundingPage() {
   return (
     <>
       <Navigation />
-      <main id="main-content" className="min-h-screen">
+      <main id="main-content" className="studio-page">
         <FoundingPageContent />
       </main>
       <Footer />

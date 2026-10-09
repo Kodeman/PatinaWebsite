@@ -22,7 +22,7 @@ export default function SignupPage() {
   return (
     <>
       <Navigation />
-      <main id="main-content" className="min-h-screen">
+      <main id="main-content" className="min-h-screen studio-page studio-legacy-signup">
         <SignupContent />
       </main>
       <Footer />

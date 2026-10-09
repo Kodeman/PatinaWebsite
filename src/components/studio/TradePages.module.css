@@ -1,0 +1,674 @@
+.loading {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: #faf7f2;
+  color: #655b52;
+}
+.loading p {
+  font:
+    13px/1.8 var(--font-body),
+    sans-serif;
+}
+.introduction {
+  align-items: center;
+  gap: clamp(52px, 8vw, 135px);
+  color: #3f3b37;
+}
+.introduction :global(.studio-copy) p,
+.applicationIntro :global(.studio-copy) p,
+.scopeContent :global(.studio-copy) p,
+.dark :global(.studio-copy) p {
+  font-size: 16px;
+  line-height: 1.85;
+}
+.note {
+  position: relative;
+  padding: clamp(30px, 4.2vw, 60px);
+  background: #ede9e0;
+  color: #3f3b37;
+  box-shadow: 14px 18px 0 #a3927c24;
+  border: 1px solid #c9beb0;
+}
+.note > :global(.studio-kicker) {
+  display: block;
+  margin: 32px 0 22px;
+}
+:global(.studio-page) .note :global(.studio-kicker) {
+  color: #655b52;
+}
+.note h3,
+.note blockquote {
+  margin: 0 0 26px;
+  font:
+    400 clamp(38px, 4vw, 58px)/1.05 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  color: #3f3b37;
+}
+.note h3 em,
+.note blockquote em {
+  color: #3f3b37;
+}
+.note p {
+  font-size: 15px;
+  line-height: 1.85;
+  margin: 24px 0;
+  color: #655b52;
+}
+.signature {
+  display: block;
+  margin-top: 28px;
+  color: #3f3b37;
+  font:
+    italic 34px/1.2 var(--font-display),
+    Georgia,
+    serif;
+}
+.benefits {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(52px, 8vw, 130px);
+  border-top: 1px solid #c9beb0;
+  color: #3f3b37;
+}
+.numberedList {
+  margin: 0;
+}
+.numberedList > div {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 28px;
+  padding: 36px 0 36px 42px;
+  border-top: 1px solid #a3927c80;
+}
+.numberedList > div > span {
+  position: absolute;
+  left: 0;
+  top: 41px;
+  font-size: 11px;
+  color: #655b52;
+}
+.numberedList dt {
+  font:
+    400 clamp(28px, 2.5vw, 36px)/1.1 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.025em;
+  color: #3f3b37;
+}
+.numberedList dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.85;
+  color: #655b52;
+}
+.dark {
+  background: #4f5948;
+  color: #faf7f2;
+}
+.dark :global(.studio-copy) p,
+.dark :global(.studio-kicker),
+.dark :global(.studio-copy) em {
+  color: #faf7f2;
+}
+.dark :global(.studio-button) {
+  background: #faf7f2;
+  color: #3f3b37;
+}
+.dark :global(.studio-button):hover {
+  background: #ede9e4;
+}
+.application {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(48px, 8vw, 140px);
+  scroll-margin-top: 100px;
+}
+.application :global(.studio-kicker),
+.applicationIntro :global(.studio-kicker) {
+  display: block;
+  margin-top: 35px;
+}
+.small,
+.note p.small {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  margin-top: 35px;
+}
+.briefList {
+  margin: 30px 0;
+}
+.briefList > div {
+  border-top: 1px solid #a3927c80;
+  padding: 24px 0;
+}
+.briefList dt {
+  font:
+    400 30px/1.16 var(--font-display),
+    Georgia,
+    serif;
+  margin-bottom: 10px;
+  color: #3f3b37;
+}
+.briefList dd {
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+  color: #655b52;
+}
+.makerAssembly {
+  position: relative;
+  padding-bottom: 20px;
+  min-width: 0;
+}
+.materialPlate {
+  margin: 0 0 0 -8%;
+}
+.materialPlate figure,
+.chairStudy figure,
+.scopeImage figure {
+  margin: 0;
+}
+.materialPlate figure {
+  display: flex;
+  flex-direction: column;
+}
+.materialPlate figcaption {
+  order: -1;
+  margin: 0 0 12px;
+}
+.materialPlate img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.25;
+  object-fit: cover;
+}
+.materialPlate figcaption,
+.scopeImage figcaption {
+  color: #655b52;
+  font-size: 11px;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+.makerNote {
+  width: 87%;
+  margin: -80px 0 0 auto;
+  z-index: 2;
+  background: #faf7f2;
+  box-shadow: 10px 16px 25px #3f3b3715;
+}
+.makerNote h3 {
+  font-size: clamp(37px, 3.6vw, 52px);
+}
+.makerPrinciples {
+  background: #ede9e4;
+  border-top: 0;
+}
+.makerPrinciples .numberedList > div:first-child {
+  border-top-color: #a3927c;
+}
+.handoffDesk {
+  position: relative;
+  padding-top: 0;
+  min-width: 0;
+}
+.chairStudy {
+  position: relative;
+  margin: 0 -4% 0 2%;
+  padding: 20px 18px 35px;
+  border: 1px solid #c9beb0;
+  background: #e6e0d6;
+  color: #3f3b37;
+}
+.chairStudy img {
+  width: 100%;
+  height: 340px;
+  object-fit: contain;
+  display: block;
+}
+.chairStudy figcaption {
+  padding: 0 14px;
+  font-size: 11px;
+  line-height: 1.8;
+  color: #655b52;
+}
+.briefNote {
+  width: 89%;
+  margin: -32px 0 0 -7%;
+  background: #faf7f2;
+  padding-top: 38px;
+  z-index: 2;
+}
+.briefNote h3 {
+  font-size: clamp(38px, 3.8vw, 54px);
+}
+.briefNote .briefList {
+  margin-bottom: 0;
+}
+.briefNote .briefList > div {
+  padding: 18px 0;
+}
+.briefNote .briefList dt {
+  font-size: 27px;
+}
+.briefNote .briefList dd {
+  font-size: 14px;
+}
+.serviceIntroduction {
+  align-items: start;
+}
+.serviceIntroduction > :global(.studio-copy) {
+  position: sticky;
+  top: 145px;
+  padding-top: 55px;
+}
+.scopeSection {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(50px, 8vw, 130px);
+  background: #ede9e4;
+  color: #3f3b37;
+}
+.scopeImage {
+  align-self: start;
+  position: sticky;
+  top: 145px;
+  padding-top: 25px;
+}
+.scopeImage img {
+  width: 100%;
+  aspect-ratio: 0.8;
+  object-fit: cover;
+  object-position: 45% 50%;
+}
+.scopeContent {
+  min-width: 0;
+}
+.scopeContent .numberedList {
+  margin-top: 40px;
+}
+.scopeContent .numberedList > div {
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+.form {
+  min-width: 0;
+  scroll-margin-top: 120px;
+}
+.form :is(input, select, textarea) {
+  border-radius: 0;
+  min-height: 54px;
+  box-shadow: none;
+  font-size: 16px;
+}
+.form :is(input, select, textarea):focus-visible {
+  outline: 2px solid #4f5948;
+  outline-offset: 3px;
+}
+.form button[type="submit"] {
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 54px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+}
+.form :is(input, textarea)::placeholder {
+  opacity: 1;
+}
+.dark .form button[type="submit"] {
+  background: #faf7f2;
+  color: #3f3b37;
+}
+.dark .form :is(input, textarea, select) {
+  border-color: #faf7f280;
+  background: #faf7f20a;
+  color: #faf7f2;
+}
+.dark .form select option {
+  background: #4f5948;
+  color: #faf7f2;
+}
+.dark .form :is(input, textarea)::placeholder {
+  color: #ede9e4;
+  opacity: 1;
+}
+.dark .form label {
+  color: #faf7f2;
+}
+.contactLayout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: clamp(45px, 8vw, 130px);
+  align-items: start;
+  background: #ede9e4;
+  color: #3f3b37;
+}
+.contactDetails {
+  position: sticky;
+  top: 135px;
+  padding-top: 20px;
+}
+.contactDetails > :global(.studio-kicker) {
+  display: block;
+  margin: 32px 0 23px;
+  color: #655b52;
+}
+.contactDetails h2 {
+  font:
+    400 clamp(54px, 6vw, 86px)/1.02 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.04em;
+  color: #3f3b37;
+}
+.contactDetails p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #655b52;
+  max-width: 36ch;
+  margin: 25px 0;
+}
+.contactDetails p.small {
+  font-size: 12px;
+}
+.contactLinks {
+  display: grid;
+  gap: 15px;
+  margin: 42px 0;
+}
+.contactLinks > a {
+  justify-content: space-between;
+  max-width: 345px;
+  color: #3f3b37;
+}
+.lightForm {
+  position: relative;
+  background: #faf7f2;
+  color: #3f3b37;
+  padding: clamp(28px, 4.2vw, 64px);
+  border: 1px solid #c9beb0;
+  box-shadow: 10px 14px 0 #a3927c22;
+}
+.lightForm > :global(.studio-kicker) {
+  display: block;
+  margin-bottom: 35px;
+  color: #655b52;
+}
+.lightForm :is(input, textarea, select) {
+  background: #f5f2ed;
+  border-color: #8a7d6b;
+  color: #3f3b37;
+}
+.lightForm :is(input, textarea)::placeholder {
+  color: #655b52;
+  opacity: 1;
+}
+.lightForm label {
+  color: #3f3b37;
+  font-size: 13px;
+}
+.lightForm h3 {
+  color: #3f3b37;
+}
+.lightForm p,
+.lightForm p a {
+  color: #655b52;
+}
+.lightForm p[role="alert"] {
+  color: #a14434;
+}
+.lightForm button[type="submit"] {
+  background: #4f5948;
+  color: #faf7f2;
+}
+.lightForm button[type="submit"]:hover {
+  background: #3f3b37;
+}
+.lightForm select {
+  appearance: auto;
+}
+.formMasthead {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  align-items: start;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #c9beb0;
+  margin-bottom: 35px;
+  color: #655b52;
+}
+.formMasthead > span {
+  text-align: right;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.formTitle {
+  font:
+    400 clamp(34px, 3.5vw, 48px)/1.1 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  margin: 0 0 35px;
+  color: #3f3b37;
+}
+.applicationIntro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(45px, 10vw, 155px);
+  align-items: start;
+  color: #3f3b37;
+}
+.applicationIntro .briefList {
+  margin: 0;
+}
+.makerFormSection {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: clamp(45px, 7vw, 110px);
+  background: #ede9e4;
+  color: #3f3b37;
+  scroll-margin-top: 95px;
+}
+.makerForm {
+  width: 100%;
+  margin: 0;
+}
+.makerForm :global(.text-center) {
+  text-align: left;
+}
+.makerForm h2 {
+  font:
+    400 clamp(35px, 3.4vw, 48px)/1.08 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.025em;
+}
+.makerForm h3 {
+  font:
+    400 30px/1.15 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.02em;
+  padding-bottom: 16px;
+  border-bottom-color: #c9beb0;
+}
+.makerForm [id] {
+  scroll-margin-top: 125px;
+}
+.applicationGuide {
+  position: sticky;
+  top: 135px;
+  align-self: start;
+}
+.applicationGuide h2 {
+  font:
+    400 clamp(45px, 4.5vw, 66px)/1.04 var(--font-display),
+    Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  margin: 24px 0;
+  color: #3f3b37;
+}
+.applicationGuide p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: #655b52;
+  max-width: 36ch;
+  margin: 25px 0;
+}
+.applicationGuide p.small {
+  font-size: 12px;
+}
+.applicationGuide nav {
+  display: grid;
+  margin: 32px 0;
+}
+.applicationGuide nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 20px 0;
+  text-decoration: none;
+  border-top: 1px solid #a3927c80;
+  font:
+    400 27px/1.2 var(--font-display),
+    Georgia,
+    serif;
+  color: #3f3b37;
+}
+.applicationGuide nav a span {
+  font:
+    11px/1.5 var(--font-body),
+    sans-serif;
+  color: #655b52;
+}
+.applicationGuide nav a:hover {
+  color: #4f5948;
+}
+@media (max-width: 1000px) {
+  .benefits,
+  .application,
+  .contactLayout,
+  .applicationIntro,
+  .scopeSection,
+  .makerFormSection {
+    grid-template-columns: 1fr;
+  }
+  .contactDetails,
+  .applicationGuide,
+  .scopeImage,
+  .serviceIntroduction > :global(.studio-copy) {
+    position: static;
+    padding-top: 0;
+  }
+  .numberedList > div {
+    grid-template-columns: 1fr 1.25fr;
+  }
+  .makerAssembly,
+  .handoffDesk {
+    width: 100%;
+    max-width: 660px;
+    margin: 0 auto;
+  }
+  .materialPlate {
+    margin-left: 0;
+  }
+  .note {
+    max-width: 620px;
+  }
+  .briefNote {
+    margin-left: 0;
+  }
+  .chairStudy {
+    margin-right: 0;
+  }
+  .scopeImage img {
+    aspect-ratio: 1.6;
+  }
+  .applicationGuide nav {
+    max-width: 550px;
+  }
+}
+@media (max-width: 540px) {
+  .numberedList > div {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding-top: 27px;
+    padding-bottom: 27px;
+  }
+  .numberedList > div > span {
+    top: 32px;
+  }
+  .numberedList dt {
+    font-size: 30px;
+  }
+  .numberedList dd {
+    max-width: 40ch;
+  }
+  .note {
+    box-shadow: 8px 10px 0 #a3927c20;
+    padding: 28px;
+  }
+  .makerNote {
+    width: 94%;
+    margin-top: -45px;
+  }
+  .makerNote h3 {
+    font-size: 38px;
+  }
+  .makerNote > :global(.studio-kicker) {
+    margin-top: 25px;
+  }
+  .materialPlate figcaption {
+    max-width: none;
+    font-size: 11px;
+  }
+  .briefNote {
+    width: 94%;
+    margin-top: -15px;
+  }
+  .briefNote h3 {
+    font-size: 39px;
+  }
+  .chairStudy img {
+    height: 255px;
+  }
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .lightForm {
+    padding: 26px 23px;
+    box-shadow: 6px 8px 0 #a3927c22;
+  }
+  .formMasthead {
+    gap: 18px;
+  }
+  .formMasthead > span {
+    font-size: 10px;
+  }
+  .applicationGuide nav a {
+    font-size: 26px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contactDetails,
+  .applicationGuide,
+  .scopeImage,
+  .serviceIntroduction > :global(.studio-copy) {
+    position: static;
+  }
+}

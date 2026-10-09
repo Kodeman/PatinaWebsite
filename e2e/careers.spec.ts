@@ -2,66 +2,47 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Careers Page", () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.route("**/api/**", (route) => route.request().method() === "GET" ? route.continue() : route.abort());
     await page.goto("/careers");
+    const consent = page.getByRole("dialog", { name: "Cookie consent" });
+    if (await consent.isVisible()) await consent.getByRole("button", { name: "Decline", exact: true }).click();
   });
 
-  test("should display the page with correct title", async ({ page }) => {
+  test("introduces the work without invented employment benefits", async ({ page }) => {
     await expect(page).toHaveTitle(/Careers.*Patina/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Make something");
+    await expect(page.getByText("Unlimited PTO", { exact: true })).toHaveCount(0);
   });
 
-  test("should display hero section with heading", async ({ page }) => {
-    const heading = page.locator("h1");
-    await expect(heading).toContainText("lasting");
+  test("explains the principles behind the work", async ({ page }) => {
+    for (const name of ["Respect the judgment.", "Make room for the process.", "Tell the truth."]) {
+      await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
+    }
   });
 
-  test("should display navigation", async ({ page }) => {
-    await expect(page.locator("nav").first()).toBeVisible();
+  test("provides an honest openings state and a route to contact", async ({ page }) => {
+    await expect(page.getByRole("heading", { name: "Open roles.", exact: true })).toBeVisible();
+    const emptyState = page.getByRole("heading", { name: /No open roles/ });
+    if (await emptyState.count()) {
+      await expect(emptyState).toBeVisible();
+      await page.getByRole("link", { name: "Introduce yourself", exact: true }).click();
+      await expect(page).toHaveURL(/\/contact$/);
+    } else {
+      const role = page.getByRole("link", { name: "Ask about this role", exact: true }).first();
+      await expect(role).toBeVisible();
+      await expect(role).toHaveAttribute("href", /^\/contact\?subject=/);
+    }
   });
 
-  test("should display company values", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: "Our values" })).toBeVisible();
-    await expect(page.getByText("Craft Over Speed")).toBeVisible();
-    await expect(page.getByText("Transparency First")).toBeVisible();
-    await expect(page.getByText("Sustainable Thinking")).toBeVisible();
-    await expect(page.getByText("Maker Mindset")).toBeVisible();
+  test("keeps partnership paths distinct from employment", async ({ page }) => {
+    await expect(page.getByRole("link", { name: "Partner as a designer", exact: true })).toHaveAttribute("href", "/designers");
+    await expect(page.getByRole("link", { name: "Partner as a maker", exact: true })).toHaveAttribute("href", "/makers");
+    await expect(page.getByRole("link", { name: "Meet the founders", exact: true })).toHaveAttribute("href", "/about");
   });
 
-  test("should display benefits section", async ({ page }) => {
-    await expect(page.getByText("Benefits & Perks")).toBeVisible();
-    await expect(page.getByText("Competitive salary + equity")).toBeVisible();
-    await expect(page.getByText("Unlimited PTO")).toBeVisible();
-    await expect(page.getByText("Furniture discount")).toBeVisible();
-  });
-
-  test("should display open positions", async ({ page }) => {
-    await expect(page.getByText("Open positions")).toBeVisible();
-    await expect(page.getByText("Senior Product Designer")).toBeVisible();
-    await expect(page.getByText("Full-Stack Engineer")).toBeVisible();
-    await expect(page.getByText("Design Services Lead")).toBeVisible();
-    await expect(page.getByText("Maker Relations Manager")).toBeVisible();
-    await expect(page.getByText("Content Producer")).toBeVisible();
-  });
-
-  test("should display job departments", async ({ page }) => {
-    await expect(page.getByText("Design").first()).toBeVisible();
-    await expect(page.getByText("Engineering")).toBeVisible();
-    await expect(page.getByText("Customer Experience")).toBeVisible();
-  });
-
-  test("should have Apply Now buttons", async ({ page }) => {
-    const applyButtons = page.getByRole("link", { name: "Apply Now" });
-    await expect(applyButtons.first()).toBeVisible();
-    expect(await applyButtons.count()).toBeGreaterThan(0);
-  });
-
-  test("should display general application CTA", async ({ page }) => {
-    await expect(page.getByText("Don't see a fit?")).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: "Send General Application" })
-    ).toBeVisible();
-  });
-
-  test("should display footer", async ({ page }) => {
+  test("retains shared navigation and footer", async ({ page }) => {
+    await expect(page.getByRole("navigation", { name: "Main navigation", exact: true })).toBeVisible();
     await expect(page.locator("footer")).toBeVisible();
   });
 });

@@ -1,0 +1,23 @@
+{
+  "skill_name": "omnifocus-task-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just finished setting up the PostHog integration code on the website. Now I need to actually sign up for PostHog Cloud, create the project, and get the API key. I also need to run the waitlist SQL migration on our Supabase instance at api.patina.cloud. Can you help me track what I need to do?",
+      "expected_output": "Creates 2 OmniFocus tasks via Drafts: one for PostHog signup and one for Supabase SQL migration. Each task should have clear actionable titles, be routed to the Patina project, and include relevant context in the note about what needs to happen and why.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Let's plan the content for next month. We need 2 Tier 1 journal articles — I'm thinking 'How to Tell If Furniture Will Last 20 Years' and 'What Interior Designers Look For That You'd Never Notice'. I'll need Leah's input on both before we can publish. Also we should get the newsletter launched by end of month.",
+      "expected_output": "Should proactively create multiple OmniFocus tasks: getting Leah's input for each article (separate tasks), reviewing drafts when ready, launching the newsletter. Should use defer dates for sequencing (e.g., Leah input first, review after) and a due date for the newsletter launch. All routed to Patina project.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Go ahead and update the robots.txt to add all the AI crawler rules from the visibility plan. Also add the llms.txt file. While you're at it, I should probably submit the sitemap to Google Search Console and Bing Webmaster Tools once you're done — remind me to do that.",
+      "expected_output": "Claude should do the code work itself (robots.txt, llms.txt) AND create OmniFocus tasks for the human-only parts (submitting sitemap to Google Search Console, submitting to Bing Webmaster Tools). Should NOT create tasks for the things Claude can do directly. The reminder request should trigger task creation even though it's casual phrasing.",
+      "files": []
+    }
+  ]
+}

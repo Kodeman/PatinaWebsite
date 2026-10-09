@@ -2,12 +2,17 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Maker Application Page", () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.route("**/api/**", (route) => route.request().method() === "GET" ? route.continue() : route.abort());
     await page.goto("/makers/apply");
+    // Wait for the streamed route to finish hydrating before querying its copy.
+    await expect(page.locator("body")).toHaveAttribute("data-studio-motion", "off");
+    await expect(page.locator("main")).toHaveCount(1);
   });
 
   test("should display hero section with heading", async ({ page }) => {
     const heading = page.locator("h1");
-    await expect(heading).toContainText("maker");
+    await expect(heading).toContainText("your work.");
   });
 
   test("should display navigation", async ({ page }) => {
@@ -15,11 +20,10 @@ test.describe("Maker Application Page", () => {
   });
 
   test("should display what we look for section", async ({ page }) => {
-    await expect(page.getByText("What we look for")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Exceptional Craft" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Sustainable Practices" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Authentic Story" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Partnership Mindset" })).toBeVisible();
+    await expect(page.getByText(/Kody and Leah personally read every application/)).toBeVisible();
+    for (const criterion of ["Exceptional Craft", "Sustainable Practices", "Authentic Story", "Partnership Mindset"]) {
+      await expect(page.locator("dt").filter({ hasText: criterion })).toBeVisible();
+    }
   });
 
   test("should display application form", async ({ page }) => {
@@ -78,6 +82,7 @@ test.describe("Maker Application Page", () => {
   });
 
   test("should show success message after form submission", async ({ page }) => {
+    await page.route("**/api/makers-apply", (route) => route.fulfill({ json: { success: true } }));
     // Fill required fields
     await page.getByLabel("Workshop Name *").fill("Test Workshop");
     await page.getByLabel("Location *").fill("Brooklyn, NY");
@@ -92,11 +97,11 @@ test.describe("Maker Application Page", () => {
 
     // Check success message
     await expect(page.getByText("Application Received")).toBeVisible();
-    await expect(page.getByText("will review your application")).toBeVisible();
+    await expect(page.getByText(/will review your application/)).toBeVisible();
   });
 
   test("should have link to privacy policy", async ({ page }) => {
-    await expect(page.getByRole("link", { name: "Privacy Policy" })).toBeVisible();
+    await expect(page.locator("main").getByRole("link", { name: "Privacy Policy", exact: true })).toBeVisible();
   });
 
   test("should display footer", async ({ page }) => {

@@ -1,0 +1,1058 @@
+.page {
+  --paper: #faf7f2;
+  --ink: #3f3b37;
+  --muted: #655b52;
+  --olive: #4f5948;
+  --stone: #ede9e4;
+  color: var(--ink);
+  background: var(--paper);
+}
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.08fr 1fr;
+  gap: 5%;
+  padding: 155px var(--studio-edge) 65px;
+  min-height: 940px;
+  align-items: center;
+  overflow: clip;
+}
+.heroCopy {
+  position: relative;
+  z-index: 2;
+  padding-block: 15px 35px;
+}
+.eyebrow {
+  font: 500 12px/1.8 var(--font-body);
+  margin: 0 0 27px;
+  color: var(--muted);
+}
+.hero h1 {
+  font: 400 clamp(78px, 6.8vw, 105px)/1.01 var(--font-display);
+  letter-spacing: -0.04em;
+  margin: 0 0 32px;
+}
+.hero h1 span {
+  display: block;
+}
+.heroDescription {
+  font-size: 16px;
+  line-height: 1.9;
+  max-width: 40ch;
+  margin-bottom: 31px;
+}
+.heroCopy > .textLink {
+  margin-bottom: 30px;
+}
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  min-height: 48px;
+  padding: 8px 0;
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+  font-size: 13px;
+  color: inherit;
+}
+.textLink:hover {
+  color: var(--olive);
+}
+.heroArt {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  padding: 0 0 35px;
+}
+.heroImage {
+  position: relative;
+  height: 650px;
+  overflow: hidden;
+}
+.heroImage img {
+  object-fit: cover;
+  object-position: 48% 50%;
+}
+.heroArt::before {
+  position: absolute;
+  content: "";
+  inset: -25px -72px 75px 48px;
+  background: #e3d9cb;
+  z-index: 0;
+}
+.heroArt figcaption {
+  position: relative;
+  color: var(--muted);
+  font: 11px/1.8 var(--font-body);
+  padding-top: 20px;
+  max-width: 48ch;
+}
+.heroArt figcaption a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.chapterNav {
+  position: sticky;
+  top: 94px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  padding: 0 var(--studio-edge);
+  min-height: 65px;
+  background: var(--paper);
+  color: var(--ink);
+  border-block: 1px solid var(--studio-line);
+}
+.chapterNavTitle {
+  font-size: 12px;
+  color: var(--muted);
+}
+.chapterNav > div {
+  display: flex;
+  gap: 34px;
+}
+.chapterNav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  min-height: 64px;
+  font-size: 13px;
+  text-decoration: none;
+}
+.chapterNav a > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.chapterNav a::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  background: var(--olive);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s;
+}
+.chapterNav a[aria-current="location"]::after {
+  transform: scaleX(1);
+}
+.leah,
+.kody,
+.together,
+.next {
+  scroll-margin-top: 180px;
+}
+.leah {
+  position: relative;
+  padding: 110px var(--studio-edge) 100px;
+  display: grid;
+  grid-template-columns: 1.12fr 1fr;
+  gap: 12%;
+  align-items: center;
+}
+.chapterHeading {
+  font: 400 clamp(54px, 5.2vw, 79px)/1.045 var(--font-display);
+  letter-spacing: -0.035em;
+  margin: 0 0 32px;
+}
+.reading p:not(.eyebrow) {
+  font-size: 16px;
+  line-height: 1.9;
+  max-width: 46ch;
+  margin: 23px 0;
+}
+.reading .lead {
+  font-size: 21px !important;
+  line-height: 1.65 !important;
+  max-width: 36ch;
+}
+.leahQuote {
+  font: 400 37px/1.18 var(--font-display);
+  color: var(--olive);
+  margin: 34px 0 20px;
+  max-width: 23ch;
+}
+.leahPortrait {
+  position: relative;
+  margin: 0 0 0 32px;
+  padding: 0 18px 0 0;
+}
+.leahPortrait > img {
+  width: 100%;
+  height: 570px;
+  object-fit: cover;
+  object-position: 50% 28%;
+}
+.leahPortrait::before {
+  content: "";
+  position: absolute;
+  inset: 28px -7px 65px 33px;
+  background: #d5cdbf;
+  transform: rotate(3deg);
+  z-index: -1;
+}
+.leahPortrait figcaption {
+  font-size: 12px;
+  line-height: 1.8;
+  padding-top: 23px;
+  color: var(--muted);
+}
+.leahPortrait strong {
+  font: 400 30px/1.3 var(--font-display);
+  display: block;
+  color: var(--ink);
+  margin-bottom: 5px;
+}
+.milestones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 38px;
+  padding-top: 24px;
+  border-top: 1px solid var(--studio-line);
+  max-width: 470px;
+}
+.milestones > div {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.milestones dt {
+  font: 400 32px/1 var(--font-display);
+}
+.milestones dd {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.roomJourney {
+  position: relative;
+  height: 235svh;
+  background: var(--stone);
+  color: var(--ink);
+}
+.roomStage {
+  position: sticky;
+  top: 159px;
+  height: calc(100svh - 159px);
+  min-height: 580px;
+  max-height: 1000px;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  overflow: hidden;
+}
+.roomImages {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  background: #d8cbbd;
+}
+.roomImage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.65s var(--studio-ease);
+}
+.roomImage[data-active="true"] {
+  opacity: 1;
+}
+.roomImage img {
+  object-fit: cover;
+}
+.roomImageLabel {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  padding: 12px 17px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.roomObservation {
+  padding: clamp(35px, 4vw, 65px);
+  align-self: center;
+  min-width: 0;
+}
+.roomControls {
+  display: flex;
+  gap: 21px;
+  border-bottom: 1px solid #b4a895;
+  margin-bottom: 38px;
+}
+.roomControls button {
+  background: none;
+  border: 0;
+  padding: 13px 0 18px;
+  min-height: 48px;
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--muted);
+  position: relative;
+}
+.roomControls button[aria-pressed="true"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+.roomControls button[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background: var(--ink);
+  bottom: -1px;
+  left: 0;
+  right: 0;
+}
+.roomObservationText {
+  min-height: 230px;
+}
+.roomObservationText h3 {
+  font: 400 clamp(42px, 4vw, 63px)/1.05 var(--font-display);
+  letter-spacing: -0.035em;
+  margin: 0 0 22px;
+}
+.roomObservationText p {
+  font-size: 16px;
+  line-height: 1.85;
+  max-width: 37ch;
+}
+.roomCredit {
+  border-top: 1px solid #b4a895;
+  padding-top: 23px;
+  margin-top: 25px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.roomCredit a {
+  display: block;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-bottom: 7px;
+}
+.roomCredit span {
+  display: block;
+}
+.roomInvitation {
+  font: 400 24px/1.3 var(--font-display);
+  margin-top: 30px;
+  max-width: 24ch;
+}
+.roomJourney[data-motion="off"] {
+  height: auto;
+}
+.roomJourney[data-motion="off"] .roomStage {
+  position: relative;
+  top: auto;
+  height: auto;
+  min-height: 730px;
+}
+.roomJourney[data-motion="off"] .roomImage {
+  transition: none;
+}
+.kody {
+  padding: 110px var(--studio-edge);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12%;
+  align-items: center;
+  background: var(--olive);
+  color: var(--paper);
+}
+.kody .eyebrow {
+  color: var(--paper);
+}
+.kody .textLink:hover {
+  color: var(--paper);
+}
+.kody .reading p {
+  max-width: 42ch;
+}
+.workingPage {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 50px 44px;
+  box-shadow: 13px 17px 0 #30372b66;
+}
+.workingPageTop {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 25px;
+  padding-bottom: 29px;
+  border-bottom: 1px solid var(--studio-line);
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.workingPage blockquote {
+  font: 400 clamp(43px, 4.4vw, 66px)/1.07 var(--font-display);
+  letter-spacing: -0.025em;
+  margin: 36px 0 32px;
+}
+.workingPage > p {
+  font-size: 14px;
+  line-height: 1.85;
+  max-width: 39ch;
+  margin-bottom: 28px;
+}
+.workingPageFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  border-top: 1px solid var(--studio-line);
+  padding-top: 25px;
+}
+.workingPageFoot > span {
+  font: italic 27px/1.2 var(--font-display);
+}
+.workingPageFoot a {
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.kodySignpost {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  font-size: 12px;
+  line-height: 1.8;
+  padding-top: 25px;
+  margin-top: 35px;
+  border-top: 1px solid #faf7f255;
+}
+.together {
+  padding: 115px var(--studio-edge) 105px;
+}
+.meetingIntro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12%;
+  align-items: start;
+  margin-bottom: 80px;
+}
+.meetingIntro .chapterHeading {
+  font-size: clamp(56px, 5.7vw, 85px);
+}
+.meetingIntro p:not(.eyebrow) {
+  font-size: 17px;
+  line-height: 1.9;
+  max-width: 44ch;
+  margin: 0 0 25px;
+}
+.belief {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: 10%;
+  padding: 65px 0 15px;
+  border-top: 1px solid var(--studio-line);
+}
+.belief h3 {
+  font: 400 clamp(110px, 13vw, 200px)/0.95 var(--font-display);
+  letter-spacing: -0.05em;
+  margin: 23px 0 28px;
+}
+.beliefName > p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.beliefCopy blockquote {
+  font: 400 36px/1.22 var(--font-display);
+  max-width: 28ch;
+  margin: 0 0 25px;
+}
+.beliefCopy p {
+  font-size: 16px;
+  line-height: 1.9;
+  max-width: 43ch;
+  margin: 22px 0;
+}
+.beliefCopy .tagline {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--olive);
+}
+.next {
+  position: relative;
+  padding: 90px var(--studio-edge) 100px;
+  background: #e4ddd1;
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 10%;
+  align-items: center;
+}
+.closingArt {
+  position: relative;
+  max-width: 510px;
+  margin: 0;
+  padding-bottom: 40px;
+}
+.closingArt > img {
+  display: block;
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  object-position: 50% 58%;
+}
+.closingArt figcaption {
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--muted);
+  padding-top: 20px;
+}
+.closingArt a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.invitation {
+  padding: 50px 0;
+}
+.invitation > .eyebrow {
+  margin-top: 30px;
+}
+.invitation .chapterHeading {
+  font-size: clamp(54px, 5.7vw, 85px);
+}
+.invitation > p:not(.eyebrow) {
+  font-size: 16px;
+  line-height: 1.9;
+  max-width: 41ch;
+  margin: 24px 0 33px;
+}
+.invitation :global(.studio-button) {
+  background: var(--olive);
+  color: var(--paper);
+  font-size: 13px;
+  min-height: 56px;
+}
+.invitation :global(.studio-button):hover {
+  background: var(--ink);
+}
+.invitation .membershipNote {
+  font-size: 12px !important;
+  color: var(--muted);
+  margin: 20px 0 !important;
+}
+.invitationLinks {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.invitationLinks a {
+  font-size: 12px;
+}
+@media (min-width: 1700px) {
+  .hero {
+    min-height: 1060px;
+  }
+  .heroImage {
+    height: 760px;
+  }
+  .hero h1 {
+    font-size: 120px;
+  }
+  .leahPortrait > img {
+    height: 660px;
+  }
+}
+@media (max-width: 1100px) {
+  .hero {
+    min-height: 870px;
+    padding-top: 150px;
+    gap: 5%;
+  }
+  .hero h1 {
+    font-size: 79px;
+  }
+  .heroImage {
+    height: 590px;
+  }
+  .leah,
+  .kody {
+    gap: 7%;
+    padding-block: 85px;
+  }
+  .leahPortrait {
+    margin-left: 0;
+  }
+  .leahPortrait > img {
+    height: 520px;
+  }
+  .chapterHeading {
+    font-size: 59px;
+  }
+  .roomStage {
+    grid-template-columns: 1.1fr 1fr;
+  }
+  .roomObservation {
+    padding: 35px;
+  }
+  .roomControls {
+    gap: 16px;
+  }
+  .roomControls button {
+    font-size: 11px;
+  }
+  .roomObservationText p {
+    font-size: 15px;
+  }
+  .roomObservationText {
+    min-height: 230px;
+  }
+  .roomInvitation {
+    font-size: 22px;
+  }
+  .workingPage {
+    padding: 35px;
+  }
+  .workingPage blockquote {
+    font-size: 49px;
+  }
+  .meetingIntro {
+    gap: 7%;
+  }
+  .belief {
+    gap: 7%;
+  }
+  .beliefCopy blockquote {
+    font-size: 32px;
+  }
+  .next {
+    gap: 7%;
+  }
+  .closingArt > img {
+    height: 550px;
+  }
+}
+@media (max-width: 850px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding-top: 140px;
+    min-height: 0;
+  }
+  .heroCopy {
+    padding: 0;
+  }
+  .hero h1 {
+    font-size: clamp(69px, 9vw, 88px);
+    max-width: 15ch;
+  }
+  .heroDescription {
+    max-width: 48ch;
+  }
+  .heroArt {
+    max-width: none;
+    padding: 0 0 15px 25px;
+  }
+  .heroImage {
+    height: 600px;
+  }
+  .heroArt::before {
+    inset: 15px -24px 90px 55px;
+  }
+  .chapterNavTitle {
+    display: none;
+  }
+  .chapterNav {
+    justify-content: center;
+  }
+  .chapterNav > div {
+    gap: clamp(26px, 8vw, 65px);
+  }
+  .leah {
+    gap: 60px;
+    grid-template-columns: 1fr;
+    padding-block: 75px;
+  }
+  .reading p:not(.eyebrow) {
+    max-width: 60ch;
+  }
+  .reading .lead {
+    max-width: 40ch;
+  }
+  .leahPortrait {
+    max-width: 480px;
+    margin: 0 auto;
+    padding-right: 15px;
+  }
+  .leahPortrait > img {
+    height: 560px;
+  }
+  .kody {
+    grid-template-columns: 1fr;
+    gap: 65px;
+    padding-block: 80px;
+  }
+  .kody .reading {
+    grid-row: 1;
+  }
+  .kody .reading p {
+    max-width: 56ch;
+  }
+  .workingPage {
+    max-width: 580px;
+    padding: 44px;
+  }
+  .workingPage blockquote {
+    font-size: 60px;
+  }
+  .meetingIntro {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+  .meetingIntro p:not(.eyebrow) {
+    max-width: 60ch;
+  }
+  .belief {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .belief h3 {
+    font-size: 150px;
+  }
+  .beliefCopy p {
+    max-width: 55ch;
+  }
+  .beliefCopy blockquote {
+    font-size: 37px;
+  }
+  .next {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-block: 75px;
+  }
+  .closingArt {
+    max-width: 650px;
+    width: 100%;
+    padding-bottom: 20px;
+  }
+  .closingArt > img {
+    height: 540px;
+    object-position: 50% 65%;
+  }
+  .invitation {
+    padding: 10px 0;
+  }
+  .invitation > p:not(.eyebrow) {
+    max-width: 53ch;
+  }
+}
+@media (max-width: 760px) {
+  .hero {
+    padding: 122px 24px 50px;
+    gap: 24px;
+  }
+  .hero h1 {
+    font-size: 52px;
+    max-width: 12ch;
+    margin-bottom: 23px;
+  }
+  .heroDescription {
+    font-size: 15px;
+    line-height: 1.85;
+    margin-bottom: 20px;
+  }
+  .heroCopy > .textLink {
+    margin-bottom: 12px;
+  }
+  .heroArt {
+    padding-left: 0;
+  }
+  .heroImage {
+    height: 470px;
+  }
+  .heroArt::before {
+    inset: 12px -24px 65px 30px;
+  }
+  .heroArt figcaption {
+    font-size: 11px;
+    max-width: 42ch;
+  }
+  .eyebrow {
+    font-size: 11px;
+    margin-bottom: 24px;
+  }
+  .chapterNav {
+    top: 83px;
+    padding-inline: 24px;
+    min-height: 56px;
+  }
+  .chapterNav > div {
+    justify-content: space-between;
+    gap: 0;
+    width: 100%;
+  }
+  .chapterNav a {
+    min-height: 55px;
+    font-size: 12px;
+    gap: 8px;
+  }
+  .chapterNav a > span {
+    font-size: 9px;
+  }
+  .leah,
+  .kody,
+  .together,
+  .next {
+    scroll-margin-top: 160px;
+  }
+  .leah {
+    padding: 65px 24px 75px;
+    gap: 50px;
+  }
+  .chapterHeading {
+    font-size: 49px;
+  }
+  .reading p:not(.eyebrow) {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+  .reading .lead {
+    font-size: 19px !important;
+  }
+  .leahQuote {
+    font-size: 32px;
+    margin-block: 30px;
+  }
+  .milestones {
+    gap: 20px;
+    margin-top: 30px;
+  }
+  .milestones dt {
+    font-size: 30px;
+  }
+  .milestones dd {
+    font-size: 11px;
+  }
+  .leahPortrait {
+    width: 100%;
+    max-width: 420px;
+    padding-inline: 12px 18px;
+  }
+  .leahPortrait > img {
+    height: 430px;
+    object-position: 50% 24%;
+  }
+  .leahPortrait::before {
+    inset: 20px 10px 75px 30px;
+  }
+  .leahPortrait strong {
+    font-size: 28px;
+  }
+  .leahPortrait figcaption {
+    font-size: 11px;
+  }
+  .roomJourney {
+    height: auto;
+  }
+  .roomStage {
+    position: relative;
+    top: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+  .roomImages {
+    height: 475px;
+  }
+  .roomImageLabel {
+    top: 24px;
+    left: 24px;
+    font-size: 10px;
+  }
+  .roomObservation {
+    padding: 35px 24px 45px;
+  }
+  .roomControls {
+    gap: 25px;
+    margin-bottom: 28px;
+  }
+  .roomControls button {
+    font-size: 12px;
+  }
+  .roomObservationText {
+    min-height: 188px;
+  }
+  .roomObservationText h3 {
+    font-size: 44px;
+  }
+  .roomObservationText p {
+    font-size: 15px;
+    max-width: 48ch;
+  }
+  .roomCredit {
+    margin-top: 18px;
+    font-size: 11px;
+  }
+  .roomInvitation {
+    font-size: 25px;
+    max-width: 26ch;
+    margin-top: 28px;
+  }
+  .roomJourney[data-motion="off"] .roomStage {
+    min-height: 0;
+  }
+  .kody {
+    padding: 65px 24px 75px;
+    gap: 50px;
+  }
+  .workingPage {
+    padding: 32px 26px;
+    box-shadow: 7px 10px 0 #30372b66;
+    margin-inline: 5px;
+  }
+  .workingPageTop {
+    font-size: 10px;
+  }
+  .workingPage blockquote {
+    font-size: 43px;
+    margin-block: 30px;
+  }
+  .workingPage > p {
+    font-size: 14px;
+  }
+  .workingPageFoot {
+    display: block;
+  }
+  .workingPageFoot > span {
+    display: block;
+    margin-bottom: 20px;
+  }
+  .workingPageFoot a {
+    font-size: 12px;
+  }
+  .kodySignpost {
+    font-size: 11px;
+    gap: 8px 20px;
+  }
+  .together {
+    padding: 70px 24px;
+  }
+  .meetingIntro .chapterHeading {
+    font-size: 49px;
+  }
+  .meetingIntro p:not(.eyebrow) {
+    font-size: 15px;
+  }
+  .belief {
+    padding-top: 45px;
+    gap: 35px;
+  }
+  .belief h3 {
+    font-size: 125px;
+    margin-top: 20px;
+  }
+  .beliefCopy blockquote {
+    font-size: 31px;
+  }
+  .beliefCopy p {
+    font-size: 15px;
+  }
+  .next {
+    padding: 65px 24px 70px;
+    gap: 35px;
+  }
+  .closingArt > img {
+    height: 420px;
+  }
+  .closingArt figcaption {
+    font-size: 11px;
+  }
+  .invitation .chapterHeading {
+    font-size: 52px;
+  }
+  .invitation > p:not(.eyebrow) {
+    font-size: 15px;
+  }
+  .invitation :global(.studio-button) {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .invitationLinks {
+    gap: 25px;
+  }
+  .invitationLinks a {
+    font-size: 12px;
+  }
+}
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 48px;
+  }
+  .heroImage {
+    height: 405px;
+  }
+  .chapterNav a {
+    font-size: 11px;
+    gap: 6px;
+  }
+  .chapterHeading,
+  .meetingIntro .chapterHeading {
+    font-size: 43px;
+  }
+  .leahPortrait > img {
+    height: 370px;
+  }
+  .roomImages {
+    height: 410px;
+  }
+  .roomControls {
+    gap: 19px;
+  }
+  .roomControls button {
+    font-size: 11px;
+  }
+  .roomObservationText {
+    min-height: 225px;
+  }
+  .roomObservationText h3 {
+    font-size: 40px;
+  }
+  .workingPage {
+    padding: 29px 23px;
+  }
+  .workingPage blockquote {
+    font-size: 38px;
+  }
+  .belief h3 {
+    font-size: 112px;
+  }
+  .beliefCopy blockquote {
+    font-size: 29px;
+  }
+  .invitation .chapterHeading {
+    font-size: 45px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .roomJourney {
+    height: auto;
+  }
+  .roomStage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 730px;
+  }
+  .roomImage,
+  .chapterNav a::after {
+    transition: none;
+  }
+}

@@ -2,8 +2,10 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { draftMode } from "next/headers";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
+import { StudioPage } from "@/components/studio/StudioPage";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+import { StrataMark } from "@/components/ui/StrataMark";
+import styles from "@/components/studio/EditorialPages.module.css";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { sanityFetch } from "../../../sanity/lib/client";
 import { journalPostsQuery } from "../../../sanity/lib/queries";
@@ -53,101 +55,185 @@ function formatDate(dateString: string): string {
 
 export default async function JournalPage() {
   const { isEnabled: isDraft } = await draftMode();
-
-  const posts = await sanityFetch<JournalPost[]>({
-    query: journalPostsQuery,
-    isDraftMode: isDraft,
-  }) || [];
+  const posts = (
+    (await sanityFetch<JournalPost[]>({
+      query: journalPostsQuery,
+      isDraftMode: isDraft,
+    })) || []
+  ).filter((post) => post.slug && post.title);
 
   return (
-    <>
-      <Navigation />
-
-      <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">
-        {/* Hero */}
-        <section className="pt-32 pb-16 lg:pt-40 lg:pb-20">
-          <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-              The Designer&apos;s Eye
+    <StudioPage
+      className={styles.editorialPage}
+      eyebrow="The Designer’s Eye"
+      title={
+        <>
+          Notes from
+          <br />a work in progress.
+        </>
+      }
+      description="Design thinking, material discoveries, and honest notes on building Patina. From Leah’s desk and the work we’re doing together."
+      heroAction={
+        <a
+          href={posts.length ? "#journal-entries" : "#journal-letter"}
+          className="studio-button"
+        >
+          {posts.length ? "Read the journal" : "Subscribe to the letters"}{" "}
+          <span aria-hidden="true">↓</span>
+        </a>
+      }
+      heroArt={
+        <StudioMotion kind="paper" className={styles.journalHeroArt}>
+          <div className={styles.journalFolio}>
+            <div className={styles.folioTop}>
+              <StrataMark size="compact" align="left" />
+              <span>Patina / A studio journal</span>
+            </div>
+            <p className={styles.folioTitle}>
+              The
+              <br />
+              Designer’s
+              <br />
+              Eye.
             </p>
-            <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-normal text-[var(--patina-charcoal)] mb-4 leading-tight">
-              Notes on design, craft, and building something new.
-            </h1>
-            <p className="text-lg text-[var(--patina-mocha-brown)] max-w-[600px] mx-auto">
-              From Leah&apos;s desk at Middlewest Studio — product discoveries,
-              sourcing stories, and honest updates on building Patina.
+            <div className={styles.folioImage}>
+              <Image
+                src="/images/studio/materials.jpg"
+                alt="Illustrative material table with wood, textiles, and a pencil sketch"
+                width={1536}
+                height={1024}
+                priority
+                sizes="(max-width: 760px) 80vw, 40vw"
+              />
+            </div>
+            <p className={styles.folioFoot}>
+              Rooms. Materials. The making of Patina.
             </p>
           </div>
-        </section>
-
-        {/* Posts Grid */}
-        <section className="pb-20 lg:pb-28">
-          <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
-            {posts.length > 0 ? (
-              <div className="grid sm:grid-cols-2 gap-8">
-                {posts.map((post) => (
-                  <Link
-                    key={post._id}
-                    href={`/journal/${post.slug}`}
-                    className="group block"
-                  >
-                    <article className="bg-white rounded-[var(--radius-xl)] overflow-hidden border border-[var(--patina-clay-beige)]/10 transition-all duration-400 hover:-translate-y-1 hover:shadow-[var(--shadow-md)] h-full">
-                      {post.coverImageUrl && (
-                        <div className="relative aspect-[16/9] overflow-hidden">
-                          <Image
-                            src={post.coverImageUrl}
-                            alt={post.coverImageAlt || post.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            sizes="(max-width: 640px) 100vw, 50vw"
-                          />
-                        </div>
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className="font-mono text-xs uppercase tracking-wider text-[var(--patina-clay-beige)]">
-                            {categoryLabels[post.category] || post.category}
-                          </span>
-                          <span className="text-[var(--patina-clay-beige)]/30">
-                            ·
-                          </span>
-                          <span className="font-mono text-xs text-[var(--patina-mocha-brown)]/60">
-                            {formatDate(post.publishedAt)}
-                          </span>
-                        </div>
-                        <h2 className="font-display text-xl text-[var(--patina-charcoal)] mb-2 group-hover:text-[var(--patina-mocha-brown)] transition-colors">
-                          {post.title}
-                        </h2>
-                        <p className="text-sm text-[var(--patina-mocha-brown)] leading-relaxed line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                    </article>
-                  </Link>
-                ))}
+          <p className={styles.heroCaption}>
+            Illustrative imagery — awaiting partner photography.
+          </p>
+        </StudioMotion>
+      }
+    >
+      <section
+        id="journal-entries"
+        className={`studio-section ${styles.journalSection}`}
+        aria-label="Journal"
+      >
+        <div className={styles.sectionMasthead}>
+          <span>
+            {posts.length
+              ? "From the journal"
+              : "The first chapter is taking shape"}
+          </span>
+          <span>By the people building Patina</span>
+        </div>
+        {posts.length > 0 ? (
+          <div className={styles.postList}>
+            {posts.map((post, index) => (
+              <Link
+                key={post._id}
+                href={`/journal/${post.slug}`}
+                className={styles.postLink}
+                data-featured={index === 0}
+              >
+                {post.coverImageUrl ? (
+                  <StudioMotion kind="image">
+                    <div className={styles.postImage}>
+                      <Image
+                        src={post.coverImageUrl}
+                        alt={post.coverImageAlt || post.title}
+                        fill
+                        sizes="(max-width: 760px) 100vw, 50vw"
+                      />
+                    </div>
+                  </StudioMotion>
+                ) : (
+                  <div className={styles.blankPage} aria-hidden="true">
+                    <div>
+                      <StrataMark size="compact" align="left" />
+                      <p>The Designer’s Eye</p>
+                      <span>Notes from Patina</span>
+                    </div>
+                  </div>
+                )}
+                <article>
+                  <div className={styles.postMeta}>
+                    <span>
+                      {categoryLabels[post.category] || post.category}
+                    </span>
+                    {post.publishedAt && (
+                      <time dateTime={post.publishedAt}>
+                        {formatDate(post.publishedAt)}
+                      </time>
+                    )}
+                  </div>
+                  <h2>{post.title}</h2>
+                  <p>{post.excerpt}</p>
+                  <span className={styles.postRead}>Read the story</span>
+                </article>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.emptyJournal}>
+            <StudioMotion kind="paper">
+              <div className={styles.blankPage} aria-hidden="true">
+                <div>
+                  <StrataMark size="compact" align="left" />
+                  <p>
+                    The first
+                    <br />
+                    page.
+                  </p>
+                  <span>Leah &amp; Kody / Patina</span>
+                </div>
               </div>
-            ) : (
-              <div className="text-center py-16">
-                <p className="font-display text-xl text-[var(--patina-charcoal)] mb-3">
-                  The first posts are coming soon.
-                </p>
-                <p className="text-[var(--patina-mocha-brown)] mb-8 max-w-md mx-auto">
-                  We&apos;re writing about the decisions behind building
-                  Patina — from choosing our first makers to how designer-taught
-                  AI actually works. Subscribe to get notified.
-                </p>
-              </div>
-            )}
-
-            {/* Newsletter CTA */}
-            <div className="mt-16 bg-[var(--patina-soft-cream)] rounded-[var(--radius-xl)] p-8">
-              <NewsletterSignup variant="inline" source="journal" />
+            </StudioMotion>
+            <div className="studio-copy">
+              <p className="studio-kicker">We’re putting pen to paper.</p>
+              <h2 className={styles.sectionTitle}>
+                Every decision
+                <br />
+                has a story.
+              </h2>
+              <p>
+                There are no published journal entries yet. We’re preparing
+                notes on the design decisions, material questions, and people
+                shaping Patina.
+              </p>
+              <p>
+                Subscribe to The Designer’s Eye for future notes, or spend a
+                little time with{" "}
+                <Link href="/about" className="studio-link">
+                  our story
+                </Link>
+                .
+              </p>
             </div>
           </div>
-        </section>
-      </main>
-
-      <Footer />
-    </>
+        )}
+        <div id="journal-letter" className={styles.newsletter}>
+          <div>
+            <StrataMark size="compact" align="left" />
+            <h2>
+              A letter worth
+              <br />
+              making time for.
+            </h2>
+            <p>
+              The Designer’s Eye brings notes on design, materials, and building
+              Patina to your inbox.
+            </p>
+          </div>
+          <NewsletterSignup
+            variant="inline"
+            source="journal"
+            showIntro={false}
+          />
+        </div>
+      </section>
+    </StudioPage>
   );
 }

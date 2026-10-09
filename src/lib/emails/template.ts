@@ -21,7 +21,7 @@ export function escapeHtml(s: string) {
 /** Default sign-off. Both founders, matching the brand's "Warmly, Kody & Leah" voice. */
 export const signOff = `<p style="margin-top:24px">Warmly,<br/>Kody &amp; Leah<br/>Patina</p>`;
 
-/** Sign-off from a single founder (e.g. a personal first letter from Leah). */
+/** Sign-off from a single founder (e.g. a personal first letter from Kody). */
 export function signedBy(name: string, meta = "Patina") {
   return `<p style="margin-top:24px">Warmly,<br/>${escapeHtml(name)}<br/>${escapeHtml(meta)}</p>`;
 }

@@ -1,13 +1,15 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { Navigation } from "@/components/layout/Navigation";
+import { Footer } from "@/components/layout/Footer";
 import { NewsletterConfirmBanner } from "@/components/ui/NewsletterConfirmBanner";
-import { HomepageHero } from "@/components/sections/HomepageHero";
-import { AppExperience } from "@/components/sections/AppExperience";
-import { Handoff } from "@/components/sections/Handoff";
-import { BehindTheScenes } from "@/components/sections/BehindTheScenes";
-import { NewsletterDivider } from "@/components/sections/NewsletterDivider";
-import { CloseSection } from "@/components/sections/CloseSection";
-import { HomepageFooter } from "@/components/sections/HomepageFooter";
+import { LivingStudy, FounderJourney } from "@/components/studio/LivingStudy";
+import { FoundingInvitation } from "@/components/studio/FoundingInvitation";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function HomePage() {
   return (
@@ -15,19 +17,83 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <NewsletterConfirmBanner />
       </Suspense>
-
-      <Navigation variant="transparent" hideAtTop />
-
-      <main id="main-content">
-        <HomepageHero />
-        <AppExperience />
-        <Handoff />
-        <BehindTheScenes />
-        <NewsletterDivider />
-        <CloseSection />
+      <Navigation />
+      <main id="main-content" className="studio-home">
+        <LivingStudy />
+        <div className="studio-launch-line">
+          <p>
+            The app and marketplace are in the making. The Founding Circle is
+            open.
+          </p>
+          <Link href="/founding">A place at the beginning ↗</Link>
+        </div>
+        <FounderJourney />
+        <section className="studio-doors" aria-labelledby="studio-doors-title">
+          <div className="studio-doors-heading">
+            <p className="studio-kicker">
+              There’s a place for your perspective.
+            </p>
+            <h2 id="studio-doors-title">
+              A studio takes
+              <br />
+              many hands.
+            </h2>
+          </div>
+          <div className="studio-door">
+            <StudioMotion kind="paper">
+              <Image
+                src="/images/studio/materials.jpg"
+                width={800}
+                height={650}
+                sizes="(max-width: 760px) 100vw, 40vw"
+                alt="Illustrative designer’s material study, with timber and textile samples"
+              />
+            </StudioMotion>
+            <p className="studio-kicker">For designers / the Founding 50</p>
+            <h3>
+              Your judgment
+              <br />
+              belongs here.
+            </h3>
+            <p>
+              Help shape a tool that understands the way you see. Bring your
+              perspective to the first circle of designers building Patina.
+            </p>
+            <Link className="studio-link" href="/designers">
+              For designers <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+          <div className="studio-door studio-door-maker">
+            <StudioMotion>
+              <Image
+                src="/images/studio/workbench.jpg"
+                width={800}
+                height={650}
+                sizes="(max-width: 760px) 100vw, 40vw"
+                alt="Illustrative workshop study of a wooden frame being made by hand"
+              />
+            </StudioMotion>
+            <p className="studio-kicker">For makers / the first 15 partners</p>
+            <h3>
+              Make something
+              <br />
+              worth knowing.
+            </h3>
+            <p>
+              The material, the method, the person behind it. Help us make
+              furniture discovery a place where your work gets its full story.
+            </p>
+            <Link className="studio-link" href="/makers">
+              For makers <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+          <p className="studio-doors-caption">
+            Illustrative imagery — awaiting partner photography.
+          </p>
+        </section>
+        <FoundingInvitation source="studio_home_invitation" />
       </main>
-
-      <HomepageFooter />
+      <Footer />
     </>
   );
 }

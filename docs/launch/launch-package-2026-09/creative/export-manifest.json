@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-09-11T09:38:02.294Z",
+  "format": "PNG",
+  "deviceScaleFactor": 1,
+  "fontsLoaded": true,
+  "renderErrors": [],
+  "assets": [
+    {
+      "id": "c01",
+      "file": "c01-founding-square",
+      "width": 1080,
+      "height": 1080,
+      "description": "Founding Circle invitation, square",
+      "path": "exports/c01-founding-square.png",
+      "clippedText": 0
+    },
+    {
+      "id": "c02",
+      "file": "c02-founding-portrait",
+      "width": 1080,
+      "height": 1350,
+      "description": "Founding Circle room study, portrait",
+      "path": "exports/c02-founding-portrait.png",
+      "clippedText": 0
+    },
+    {
+      "id": "c03",
+      "file": "c03-studio-story",
+      "width": 1080,
+      "height": 1920,
+      "description": "Living Study invitation, vertical story",
+      "path": "exports/c03-studio-story.png",
+      "clippedText": 0
+    },
+    {
+      "id": "c04",
+      "file": "c04-designer-portrait",
+      "width": 1080,
+      "height": 1350,
+      "description": "Invitation for interior designers, portrait",
+      "path": "exports/c04-designer-portrait.png",
+      "clippedText": 0
+    },
+    {
+      "id": "c05",
+      "file": "c05-maker-portrait",
+      "width": 1080,
+      "height": 1350,
+      "description": "Invitation for furniture makers, portrait",
+      "path": "exports/c05-maker-portrait.png",
+      "clippedText": 0
+    },
+    {
+      "id": "c06",
+      "file": "c06-founder-linkedin",
+      "width": 1200,
+      "height": 627,
+      "description": "Why Kody is building Patina, LinkedIn landscape",
+      "path": "exports/c06-founder-linkedin.png",
+      "clippedText": 0
+    }
+  ]
+}

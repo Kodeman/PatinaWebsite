@@ -4,16 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Patina is a premium furniture marketplace website built with Next.js 15 (App Router). The brand emphasizes handcrafted furniture with stories - artisan makers, material provenance, and AR visualization. Tagline: "Where Time Adds Value".
+Patina is a premium furniture marketplace website built with Next.js 16 (App Router). The current branch is "The Living Study" redesign: story-led pages with hardcoded copy, lead capture into Supabase, and a Cloudflare Workers deploy. Tagline: "Where Time Adds Value". The app and marketplace are pre-launch.
+
+A codebase map lives in `.claude/.codebase-info/` (injected at session start); live rules in `.claude/live-rules/rules/`. Trust those and the code over older sections of this file.
 
 ## Commands
 
 ```bash
-npm run dev          # Start development server (localhost:3000)
-npm run build        # Production build
-npm run lint         # ESLint
-npm run test:e2e     # Run all Playwright e2e tests
-npm run test:e2e:ui  # Playwright UI mode
+npm run dev               # Start development server (localhost:3000)
+npm run build             # Production build (Next only)
+npm run build:cloudflare  # OpenNext Worker build; strips private env from the artifact
+npm run preview:cloudflare # Worker preview on :8787 (private bindings from ignored .dev.vars)
+npm run deploy:cloudflare # Publish the existing build; see docs/launch/living-study/CLOUDFLARE-DEPLOYMENT.md
+npm run check:production-env # Required env keys present locally
+npm run lint              # ESLint
+npm run test:server       # node --test tests/*.test.mjs (route lifecycle, lead payload, rate limit, sitemap)
+npm run test:e2e          # Run all Playwright e2e tests
+npm run test:e2e:ui       # Playwright UI mode
+npm run test:cloudflare   # Playwright against the Worker preview (PATINA_PREVIEW_URL)
+node "/Users/kody/.claude/plugins/cache/eigenwise-toolshed/quartermaster/0.11.1/bin/quartermaster.js" crap --project .  # CRAP gate, must pass before a src/ change is done
 
 # Run single test file
 npx playwright test e2e/about.spec.ts
@@ -27,7 +36,9 @@ npx playwright test -g "should display hero"
 ### Tech Stack
 - **Next.js 16** with App Router (React 19)
 - **Tailwind CSS v4** with CSS-based theme configuration
-- **Sanity CMS** for content (schemas defined, using sample data currently)
+- **Sanity CMS** for editorial content: on this branch only `/careers`, `/journal`, and `sitemap.ts` read Sanity; every other page is hardcoded. Check `sanityFetch` imports before assuming a page is CMS-backed.
+- **Supabase Postgres** (hosted project in `NEXT_PUBLIC_SUPABASE_URL`, service role, server-only) for lead tables
+- **Cloudflare Workers** via `@opennextjs/cloudflare` (`wrangler.jsonc`); `vercel.json` is the previous host
 - **Framer Motion** for animations with reduced motion support
 - **Playwright** for e2e testing
 
@@ -83,17 +94,18 @@ src/
 
 ### Routes
 
-- `/` - Homepage
-- `/furniture` - Catalog with filters
-- `/furniture/[slug]` - Product detail
-- `/designers` - Designer portal (dark theme)
-- `/services` - Design services packages
-- `/about` - Company story
-- `/app` - Mobile app download
+- `/` - Homepage (Living Study scroll narrative)
+- `/founding` - Founding Circle (`/waitlist`, `/join` redirect here); `/signup` - waitlist with SMS consent
+- `/designers`, `/makers`, `/makers/apply`, `/services`, `/about`, `/app`, `/contact`, `/careers`, `/journal`, `/press`, `/privacy`, `/terms`
+- `/studio` - embedded Sanity Studio
+- `/furniture/*` and `/materials` redirect to `/makers`; the marketplace is pre-launch
 
-### E2E Tests
+### Tests
 
-Tests are in `e2e/` directory. Each page has a corresponding spec file testing critical UI elements and navigation.
+- `e2e/` - one Playwright spec per page; run the matching spec after touching a page. Needs network to the Sanity CDN for CMS pages.
+- `tests/` - `node --test`. Route handlers load through `tests/helpers/load-module.mjs` (TypeScript transpiled with inline source maps, run in a `vm` context, every import mocked). Coverage maps back to `src/`, which the CRAP gate consumes.
+- Gotchas: a new `src/lib` import in a route must be added to `handlerHarness` dependencies (see `errors`), or the loader throws `Unmocked import`. Objects created inside the VM have a different prototype, so use `assert.equal` per field or JSON round-trips, not strict `deepEqual`.
+- Route catch blocks log with `errorMessage(err)` from `src/lib/errors.ts`; do not inline the `instanceof Error` ternary.
 
 ## Engagement Tracking — Full Cross-Platform Workflow
 
@@ -118,12 +130,13 @@ The website is the **top of the funnel**. Users land here → browse → sign up
 ### Key Architecture Decisions
 - **PostHog Cloud** (not self-hosted) — zero ops, free tier 1M events/month
 - **Single PostHog project** across all Patina surfaces — unified user identity
-- **Supabase `waitlist` table** on self-hosted instance (`api.patina.cloud`) — NOT the cloud Supabase
+- **Supabase `waitlist` table** on the hosted project in `NEXT_PUBLIC_SUPABASE_URL` (earlier plans targeted a self-hosted `api.patina.cloud` instance; the code no longer does)
 - **Identity merge:** Anonymous PostHog `distinct_id` → stored in waitlist row → linked to `auth.users` on conversion via trigger
 - Keep the typed `AnalyticsEvents` abstraction in `analytics.ts` — it's clean
 
 ### Supabase Connection
-- Self-hosted at `api.patina.cloud` (192.168.1.14)
+- Hosted project referenced by `NEXT_PUBLIC_SUPABASE_URL` (the self-hosted `api.patina.cloud` instance is no longer what the code targets)
+- Tables the routes write: `waitlist`, `newsletter_subscribers`, `contact_messages`, `founding_designer_applications`, `maker_applications`. No migrations in this repo; inspect the live schema before adding columns (see `docs/reports/engagement-capture-audit-2026-06.md` on drift)
 - Waitlist table schema in `docs/engagement-tracking-plan.md` Section 1.1
 - The `handle_new_user()` trigger auto-creates profiles from waitlist data when users convert
 
@@ -146,3 +159,5 @@ Copy `.env.example` to `.env.local`. Required for Sanity CMS integration:
 - `NEXT_PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_POSTHOG_KEY` — PostHog project API key (public, safe for client)
 - `NEXT_PUBLIC_POSTHOG_HOST` — PostHog ingest URL (default: `https://us.i.posthog.com`)
+- `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY` — lead persistence and email; routes return a retryable 503 without them
+- Production secrets live as Worker bindings, never in source; `scripts/production-env.mjs` lists required build vs runtime keys

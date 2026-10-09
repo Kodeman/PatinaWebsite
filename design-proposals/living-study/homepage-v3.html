@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FAF7F2">
+<title>Patina — A home, gathered over time</title>
+<style>
+@font-face{font-family:Caslon;src:url('assets/caslon.ttf') format('truetype');font-display:swap}
+@font-face{font-family:Manrope;src:url('assets/manrope.ttf') format('truetype');font-display:swap}
+:root{--paper:#FAF7F2;--stone:#EDE9E4;--clay:#A3927C;--mocha:#655B52;--ink:#3F3B37;--olive:#4F5948;--line:#d1c9bd;--serif:Caslon,Georgia,serif;--sans:Manrope,Arial,sans-serif;--gutter:clamp(22px,5vw,88px)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.7 var(--sans)}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer}a{color:inherit;text-underline-offset:5px}button:focus-visible,a:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid #896327;outline-offset:5px}img{display:block;max-width:100%}h1,h2,h3,h4,p,figure{margin:0}h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;line-height:1.03}h1{font-size:clamp(70px,7.6vw,122px)}h2{font-size:clamp(45px,5vw,76px)}h3{font-size:clamp(32px,3vw,46px)}p{max-width:60ch}button{border:0}a{text-decoration-thickness:1px}[hidden]{display:none!important}.small{font-size:11px;line-height:1.65}.muted{color:var(--mocha)}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.skip{position:fixed;z-index:100;top:-100px;left:20px;background:var(--paper);padding:12px}.skip:focus{top:12px}.button{display:inline-flex;align-items:center;justify-content:center;gap:20px;background:var(--ink);color:var(--paper);padding:15px 23px;min-height:48px;text-decoration:none;font-size:12px;line-height:1.5;border:1px solid var(--ink);transition:background .2s}.button:hover{background:var(--olive);border-color:var(--olive)}.button.light{background:var(--paper);color:var(--ink);border-color:var(--paper)}.link{display:inline-flex;align-items:center;gap:15px;min-height:44px;padding:6px 0;text-decoration:none;border-bottom:1px solid currentColor;background:none;font-size:12px}.link svg{width:18px;height:18px}.wordmark{font:28px/1 Georgia,serif;letter-spacing:.15em;text-decoration:none}.strata{display:flex;flex-direction:column;gap:5px;width:35px}.strata i{height:2px;background:currentColor}.strata i:nth-child(2){width:78%}.strata i:nth-child(3){width:55%}.prototype-bar{display:flex;justify-content:space-between;align-items:center;padding:8px var(--gutter);background:var(--olive);color:var(--paper);font-size:10px;gap:20px}.prototype-bar>div{display:flex;gap:20px;align-items:center}.prototype-bar button{background:none;color:inherit;padding:2px 0;min-height:28px;border-bottom:1px solid #fff6;font-size:10px}.site-header{position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:25px;min-height:87px;padding:20px var(--gutter);background:var(--paper);border-bottom:1px solid var(--line)}.site-nav{display:flex;gap:30px;align-items:center}.site-nav a{font-size:12px;text-decoration:none;min-height:44px;display:flex;align-items:center}.site-nav a:hover,.site-nav a[aria-current]{text-decoration:underline}.menu-toggle{display:none;background:none;min-height:44px;padding:10px}.header-invitation{font-size:11px}.section{padding:110px var(--gutter)}
+.hero{display:grid;grid-template-columns:43% 57%;min-height:710px}.hero-copy{padding:58px 4vw 40px var(--gutter);display:flex;flex-direction:column;justify-content:center;align-items:start}.hero-copy h1{margin-bottom:30px}.hero-copy>p{font-size:14px;max-width:35ch;line-height:1.8}.hero-copy .link{margin:25px 0 18px}.hero-footnote{margin-top:34px;max-width:35ch;font-size:10px;color:var(--mocha)}.hero-footnote a{display:inline-block;margin-top:7px}.hero-room{position:relative;background:var(--mocha);isolation:isolate;min-width:0;overflow:hidden}.hero-room>.room-photo{width:100%;height:100%;object-fit:cover;object-position:63% 50%;position:absolute;inset:0;transition:transform 1.25s cubic-bezier(.2,.65,.3,1);transform-origin:69% 65%}.hero-room[data-view="chair"]>.room-photo{transform:scale(1.7)}.room-topline{position:absolute;top:25px;left:28px;right:28px;display:flex;justify-content:space-between;gap:20px;color:var(--paper);font-size:11px;text-shadow:0 1px 8px #0009}.room-topline span{background:#3f3b3766;padding:4px 9px}.room-toggle{position:absolute;bottom:24px;left:28px;display:flex;padding:4px;background:var(--paper);gap:3px}.room-toggle button{min-height:44px;padding:8px 15px;background:transparent;font-size:11px}.room-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}.hotspot{position:absolute;left:65%;top:60%;display:grid;place-items:center;width:48px;height:48px;border:1px solid #faf7f2ab;border-radius:50%;color:var(--paper);background:#3f3b3740;font-size:27px;box-shadow:0 0 0 8px #faf7f21a;transition:background .25s}.hotspot:hover,.hotspot[aria-pressed="true"]{background:var(--paper);color:var(--ink)}.hero-room[data-view="chair"] .hotspot{opacity:0;pointer-events:none;visibility:hidden}.room-note{position:absolute;bottom:92px;left:28px;max-width:285px;background:var(--paper);padding:25px 25px 22px;box-shadow:0 12px 35px #0002;animation:note-in .4s both}.room-note .small{font-size:10px;color:var(--mocha);padding-right:12px}.room-note h3{font-size:33px;margin:12px 0}.room-note>p{font-size:12px;line-height:1.75}.note-close{position:absolute;right:4px;top:2px;min-height:44px;min-width:44px;background:none;font-size:23px}.room-note .note-credit{font-size:9px;margin-top:15px;color:var(--mocha)}.room-under{display:flex;align-items:center;justify-content:space-between;gap:30px;padding:19px var(--gutter);border-bottom:1px solid var(--line)}.room-under>p{font-family:var(--serif);font-size:24px}.room-under>span{font-size:10px;color:var(--mocha);max-width:42ch;text-align:right}.hero-copy>*{animation:arrive 1s both}.hero-copy>p{animation-delay:.12s}.hero-copy>.link{animation-delay:.22s}.hero-copy>.hero-footnote{animation-delay:.3s}
+.material-intro{display:grid;grid-template-columns:1fr 1fr;gap:12%;align-items:end;margin-bottom:50px}.material-intro p{max-width:44ch;font-size:14px}.material-intro .small{margin-top:17px;color:var(--mocha);font-size:11px}.material-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:6%;align-items:center}.desk-photo{position:relative;margin:0 0 38px}.desk-photo>img{width:100%;height:auto;aspect-ratio:1.15;object-fit:cover;object-position:42% 50%}.desk-photo figcaption{position:absolute;bottom:-27px;left:0;font-size:10px;color:var(--mocha)}.paper-slip{position:absolute;right:-17px;bottom:32px;background:var(--paper);padding:19px 25px;width:200px;box-shadow:0 8px 23px #302b2020;transform:rotate(-5deg)}.paper-slip p{font-family:var(--serif);font-size:26px;line-height:1.12}.paper-slip span{display:block;font-size:9px;margin-top:10px;color:var(--mocha)}.table-area{min-width:0}.table-top{display:flex;align-items:baseline;justify-content:space-between;gap:20px}.table-top h3{font-size:32px}.reset-table{background:none;text-decoration:underline;text-underline-offset:4px;min-height:44px;font-size:10px;padding:8px 0}.sample-table{position:relative;height:350px;margin:14px 0 5px;background:radial-gradient(ellipse,#e7e1d5 0,transparent 68%);isolation:isolate;overflow:hidden}.material-sample{--dx:0px;--dy:0px;position:absolute;left:var(--left);top:var(--top);width:clamp(110px,12vw,170px);padding:10px 10px 12px;background:#f9f5eb;box-shadow:1px 8px 15px #44362720;text-align:left;transform:translate(var(--dx),var(--dy)) rotate(var(--rotation));transition:transform .7s cubic-bezier(.2,.8,.2,1),box-shadow .3s;touch-action:none;user-select:none;cursor:grab}.material-sample:nth-child(1){--left:3%;--top:35px;--rotation:-10deg;z-index:2}.material-sample:nth-child(2){--left:35%;--top:95px;--rotation:5deg;z-index:3}.material-sample:nth-child(3){--left:64%;--top:25px;--rotation:12deg;z-index:1}.material-sample[aria-pressed="true"]{box-shadow:0 0 0 2px var(--olive),2px 15px 25px #44362730;z-index:5}.material-sample.dragging{transition:none;cursor:grabbing;z-index:6}.material-sample .texture{display:block;height:150px;background-image:url('assets/material-table-v3.jpg');background-size:600%;pointer-events:none}.material-sample[data-material="walnut"] .texture{background-position:0% 74%}.material-sample[data-material="linen"] .texture{background-position:77% 12%}.material-sample[data-material="olive"] .texture{background-position:100% 66%}.material-sample .sample-name{display:block;font-family:var(--serif);font-size:22px;line-height:1.1;margin-top:12px;pointer-events:none}.material-sample .sample-detail{display:block;font-size:8px;margin-top:4px;pointer-events:none}.sample-guidance{font-size:10px;color:var(--mocha);margin-bottom:24px}.sample-response{border-top:1px solid var(--line);padding-top:22px;min-height:150px}.sample-response h4{font:30px/1.05 var(--serif);margin:0 0 13px}.sample-response p{font-size:12px;max-width:43ch}.sample-response .small{font-size:9px;color:var(--mocha);margin-top:15px}.table-footer{font-size:11px;margin-top:18px;color:var(--mocha)}.table-footer a{white-space:nowrap}
+.craft{background:var(--olive);color:var(--paper);padding:90px 0 80px;overflow:hidden}.craft-intro{padding:0 var(--gutter);display:flex;justify-content:space-between;align-items:end;gap:50px;margin-bottom:45px}.craft-intro h2{max-width:650px}.craft-intro>p{font-size:13px;max-width:34ch;color:#e4e5dc}.craft-image-wrap{position:relative;width:88%;margin-left:0;overflow:hidden;height:650px;background:#66513e}.craft-image-wrap img{width:100%;height:115%;object-fit:cover;object-position:55% 50%;transform:translateY(calc(var(--craft-shift,0px) - 25px));will-change:transform}.craft-caption{font-size:10px;color:#e1e2d9;margin:15px var(--gutter) 0}.craft-closeup{display:grid;grid-template-columns:1fr 1fr;gap:9%;align-items:start;margin:-140px var(--gutter) 0 40%;position:relative}.craft-note{background:var(--paper);color:var(--ink);padding:38px;box-shadow:0 15px 40px #0002;grid-column:1/-1;max-width:570px}.craft-note h3{margin-bottom:22px}.craft-note>p{font-size:13px;max-width:45ch}.craft-note .link{margin-top:20px}.craft-detail{margin-top:22px;border-top:1px solid var(--line);padding-top:20px}.craft-detail img{width:100%;height:180px;object-fit:cover;object-position:43% 43%}.craft-detail p{font-size:12px;margin-top:18px}.craft-detail .small{font-size:9px;color:var(--mocha)}.maker-belief{padding:45px var(--gutter) 0;display:flex;justify-content:space-between;gap:35px;align-items:center}.maker-belief p{font-size:12px;max-width:50ch}.maker-belief .link{color:var(--paper);white-space:nowrap}
+.human-thread{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:40px;border-bottom:1px solid var(--line);padding:55px var(--gutter)}.thread-image{width:150px;height:120px;overflow:hidden;transform:rotate(-4deg)}.thread-image img{width:100%;height:100%;object-fit:cover}.human-thread p{font-family:var(--serif);font-size:clamp(28px,3vw,40px);line-height:1.13;max-width:26ch}.human-thread .small{display:block;font:11px/1.7 var(--sans);color:var(--mocha);margin-top:15px}.handoff{display:grid;grid-template-columns:1fr .85fr;gap:14%;align-items:center}.handoff h2{margin-bottom:27px}.handoff-copy>p{font-size:14px;max-width:40ch}.handoff .link{margin-top:25px}.brief-desk{position:relative;padding:25px 10% 35px;background:var(--stone)}.brief{padding:32px;background:var(--paper);transform:rotate(4deg);box-shadow:0 18px 35px #3f3b3717;transition:transform .6s}.brief-desk:hover .brief{transform:rotate(0)}.brief .small{color:var(--mocha);font-size:10px}.brief h3{margin:25px 0 18px}.brief-palette{display:flex;gap:8px;margin-bottom:24px}.brief-palette span{width:40px;height:40px;border-radius:50%;background:var(--clay)}.brief-palette span:nth-child(2){background:#6a4932}.brief-palette span:nth-child(3){background:#73785a}.brief dl{margin:0}.brief dl>div{border-top:1px solid var(--line);padding:12px 0;font-size:11px}.brief dt{color:var(--mocha);font-size:9px}.brief dd{margin:3px 0 0}.brief-desk>p{font-size:9px;color:var(--mocha);margin-top:28px;text-align:center}
+.invitation{padding:80px var(--gutter);background:var(--stone);display:grid;grid-template-columns:1fr 1fr;gap:14%;align-items:center}.invitation h2{font-size:clamp(45px,5vw,72px)}.invitation p{font-size:13px;max-width:40ch;margin-bottom:22px}.invitation .small{display:block;font-size:10px;color:var(--mocha);margin-top:14px}.site-footer{padding:40px var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:35px}.footer-links{display:flex;gap:25px;font-size:11px}.site-footer>p{font-size:11px}.concept-credits{padding:20px var(--gutter) 30px;border-top:1px solid var(--line);font-size:10px;color:var(--mocha)}.concept-credits summary{cursor:pointer;min-height:44px;display:flex;align-items:center}.concept-credits p{max-width:100ch;margin:10px 0}
+.story-header{padding:65px var(--gutter) 50px;display:grid;grid-template-columns:1.3fr 1fr;gap:9%;align-items:end}.story-header .link{margin-bottom:35px}.story-header h1{font-size:clamp(62px,7vw,112px)}.story-header>p{max-width:40ch;font-size:15px}.story-picture{margin:0 var(--gutter);position:relative}.story-picture img{width:100%;height:540px;object-fit:cover;object-position:center 47%}.story-picture figcaption{font-size:10px;margin-top:12px;color:var(--mocha)}.story-body{padding:85px var(--gutter);display:grid;grid-template-columns:.65fr 1.4fr;gap:14%}.story-body aside{font-size:12px}.story-body aside .strata{margin-bottom:25px}.story-body aside p{margin-bottom:15px}.founder-account{padding-bottom:45px;margin-bottom:40px;border-bottom:1px solid var(--line)}.founder-account .person{font-size:12px;margin-bottom:22px;display:block}.founder-account h2{font-size:clamp(39px,4vw,62px);margin-bottom:25px}.founder-account p{font-size:15px;margin:18px 0;line-height:1.85;max-width:56ch}.founder-account blockquote{font-family:var(--serif);font-size:32px;line-height:1.3;margin:30px 0}.founder-account .small{font-size:10px;color:var(--mocha)}.story-ending h2{font-size:clamp(42px,4vw,62px);margin-bottom:24px}.story-ending p{font-size:15px;line-height:1.85}.story-ending .link{margin-top:25px}
+dialog{border:0;background:var(--paper);color:var(--ink);padding:45px;width:min(520px,calc(100% - 32px));max-height:90svh;box-shadow:0 30px 100px #0004}dialog::backdrop{background:#25211dbb;backdrop-filter:blur(5px)}dialog h2{font-size:54px;margin:30px 0 24px}dialog p{font-size:13px;margin-bottom:20px}.dialog-close{position:absolute;right:8px;top:7px;min-width:44px;min-height:44px;font-size:27px;background:none}.dialog-context{border-top:1px solid var(--line);padding-top:20px;margin-top:25px;font-size:10px!important;color:var(--mocha)}dialog .button{width:100%}
+@keyframes arrive{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}@keyframes note-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+body[data-motion="off"] *,body[data-motion="off"] *::before,body[data-motion="off"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}html:has(body[data-motion="off"]){scroll-behavior:auto}.no-js{padding:20px var(--gutter);background:var(--stone)}
+@media(min-width:1700px){.hero{min-height:850px}.hero-copy>p{font-size:17px}.material-intro p{font-size:16px}.sample-table{height:390px}.material-sample{width:190px}.material-sample .texture{height:175px}}
+@media(max-width:1100px){.site-nav{gap:18px}.site-header{gap:20px}.hero{min-height:670px;grid-template-columns:45% 55%}.hero-copy{padding-right:25px}.hero-copy h1{font-size:78px}.hero-copy>p{font-size:12px}.hero-footnote{font-size:9px}.room-topline{left:20px;right:20px;font-size:9px}.material-layout{gap:5%}.material-sample{width:130px}.material-sample .texture{height:120px}.material-sample:nth-child(3){--left:59%}.sample-table{height:300px}.craft-image-wrap{height:530px}.craft-closeup{margin-left:37%}.human-thread{grid-template-columns:100px 1fr auto;gap:28px}.thread-image{width:100px;height:100px}.handoff{gap:8%}.brief-desk{padding:20px 6%}.story-body{gap:8%}}
+@media(max-width:760px){html{scroll-padding-top:88px}.prototype-bar{padding:7px 20px;gap:10px}.prototype-bar>span{font-size:9px}.prototype-bar>div{gap:12px}.prototype-bar a{display:none}.site-header{min-height:75px;padding:15px 22px;gap:15px}.wordmark{font-size:25px}.header-invitation{display:none}.menu-toggle{display:block}.site-nav{display:none;position:absolute;top:100%;left:0;right:0;padding:18px 25px 25px;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0;box-shadow:0 12px 18px #3f3b370a}.site-header.menu-open .site-nav{display:flex}.site-nav a{font-size:14px;min-height:48px}.hero{display:flex;flex-direction:column;min-height:0}.hero-copy{padding:40px 24px 32px}.hero-copy h1{font-size:clamp(69px,12vw,90px);line-height:.98;margin-bottom:23px}.hero-copy h1 br:last-child{display:none}.hero-copy>p{font-size:13px;max-width:42ch}.hero-copy .link{margin:18px 0 0}.hero-footnote{margin-top:22px;max-width:none;font-size:10px}.hero-footnote a{margin-left:8px}.hero-room{height:530px;min-height:0}.hero-room>.room-photo{object-position:61% 50%}.room-topline{top:20px;left:20px;right:20px}.room-topline span{font-size:9px}.room-toggle{bottom:20px;left:20px}.hotspot{left:66%;top:59%}.room-note{left:20px;bottom:89px;max-width:260px;padding:23px}.room-note h3{font-size:31px}.room-under{padding:20px 24px;display:block}.room-under>p{font-size:25px}.room-under>span{display:block;text-align:left;margin-top:10px;font-size:9px;max-width:48ch}.section{padding:65px 24px}.material-intro{grid-template-columns:1fr;gap:25px;margin-bottom:32px}.material-intro h2{font-size:50px}.material-intro p{font-size:13px}.material-layout{grid-template-columns:1fr;gap:40px}.desk-photo{margin:0 0 10px}.desk-photo>img{aspect-ratio:1.1}.paper-slip{width:166px;right:-7px;bottom:25px;padding:17px 20px}.paper-slip p{font-size:24px}.desk-photo figcaption{font-size:9px}.table-area{margin-top:10px}.sample-table{height:310px}.material-sample{width:32%;max-width:150px;padding:8px}.material-sample:nth-child(1){--left:2%;--top:36px}.material-sample:nth-child(2){--left:33%;--top:100px}.material-sample:nth-child(3){--left:64%;--top:28px}.material-sample .texture{height:115px}.material-sample .sample-name{font-size:21px}.material-sample .sample-detail{font-size:7px}.sample-response{min-height:145px}.craft{padding:65px 0 55px}.craft-intro{padding:0 24px;display:block;margin-bottom:30px}.craft-intro h2{font-size:50px}.craft-intro>p{margin-top:24px;max-width:44ch;font-size:12px}.craft-image-wrap{width:100%;height:430px}.craft-image-wrap img{object-position:58% 50%}.craft-caption{font-size:9px;margin:13px 24px 0}.craft-closeup{display:block;margin:25px 24px 0}.craft-note{padding:28px}.craft-note h3{font-size:39px}.craft-note>p{font-size:12px}.maker-belief{display:block;padding:30px 24px 0}.maker-belief p{font-size:11px}.maker-belief .link{margin-top:15px}.human-thread{padding:40px 24px;grid-template-columns:75px 1fr;gap:25px}.thread-image{width:75px;height:105px}.human-thread p{font-size:31px}.human-thread .small{font-size:9px;margin-top:10px}.human-thread>.link{grid-column:2;justify-self:start;margin-top:-13px}.handoff{grid-template-columns:1fr;gap:45px}.handoff h2{font-size:50px}.handoff-copy>p{font-size:13px}.brief-desk{margin:0 10px;padding:20px 8%}.brief{padding:25px}.invitation{padding:60px 24px;grid-template-columns:1fr;gap:28px}.invitation h2{font-size:53px}.invitation p{font-size:13px}.site-footer{padding:35px 24px;flex-wrap:wrap;gap:25px}.footer-links{gap:20px}.site-footer>p{width:100%;font-size:10px}.concept-credits{padding:15px 24px 25px;font-size:9px}.story-header{padding:35px 24px;grid-template-columns:1fr;gap:27px}.story-header h1{font-size:63px}.story-header .link{margin-bottom:25px}.story-header>p{font-size:13px}.story-picture{margin:0 24px}.story-picture img{height:370px;object-position:43% 50%}.story-picture figcaption{font-size:9px}.story-body{padding:45px 24px 60px;grid-template-columns:1fr;gap:30px}.story-body aside{display:flex;gap:23px;font-size:10px;flex-wrap:wrap}.story-body aside .strata{width:30px;margin:5px 0 0}.story-body aside p{margin:0;max-width:20ch}.founder-account{margin-bottom:30px;padding-bottom:30px}.founder-account h2{font-size:44px}.founder-account p{font-size:13px}.founder-account blockquote{font-size:29px}.story-ending h2{font-size:45px}.story-ending p{font-size:13px}dialog{padding:32px 25px}dialog h2{font-size:46px}}
+@media(max-width:360px){.hero-copy h1{font-size:65px}.hero-room{height:460px}.material-intro h2,.craft-intro h2,.handoff h2{font-size:45px}.material-sample .texture{height:95px}.material-sample .sample-name{font-size:18px}.material-sample .sample-detail{font-size:6px}.table-top h3{font-size:29px}.sample-table{height:280px}.story-header h1{font-size:56px}.room-topline span{font-size:8px}.hero-footnote a{display:block;margin-left:0}.room-note{max-width:245px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+@media print{.prototype-bar,.site-header,.room-toggle,.hotspot,.menu-toggle,.reset-table,.sample-guidance,dialog{display:none!important}html{scroll-behavior:auto}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}.hero{min-height:650px}.hero-copy>*{animation:none}.section{padding:45px}.craft-image-wrap{height:400px}.craft-note,.founder-account{break-inside:avoid}.sample-table{height:320px}.site-footer{padding:25px}.craft-image-wrap img{transform:none}.story-picture img{height:400px}}
+</style>
+</head>
+<body data-motion="on">
+<a class="skip" href="#main-content">Skip to content</a>
+<div class="prototype-bar"><span>The living study / Homepage prototype · 03</span><div><a href="Patina-The-Living-Study.html" target="_top">Design presentation</a><button id="motion-toggle" type="button" aria-pressed="true">Motion on</button></div></div>
+<header class="site-header" id="site-header">
+ <a class="wordmark" href="#home" aria-label="Patina home">PATINA</a>
+ <nav class="site-nav" id="site-nav" aria-label="Main navigation"><a href="#materials">The material table</a><a href="#makers">The making</a><a href="#our-story">Our story</a><a href="#designer">For your home</a></nav>
+ <button class="button header-invitation" data-invitation="consumer">Join the Founding Circle</button>
+ <button class="menu-toggle" id="menu-toggle" aria-controls="site-nav" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+</header>
+<main id="main-content" tabindex="-1">
+<div id="home-view">
+ <section class="hero" id="home" aria-labelledby="home-title">
+  <div class="hero-copy"><h1 id="home-title" tabindex="-1">A home,<br>gathered<br> over time.</h1><p>A designer’s eye for furniture that belongs. Honest materials, thoughtful makers, and a little room to find your own way.</p><button class="link" id="explore-room">Look closer at the room <span aria-hidden="true">↗</span></button><div class="hero-footnote">We’re building Patina. First access when the app launches.<br><a href="#our-story">A small beginning, with Leah &amp; Kody.</a></div></div>
+  <div class="hero-room" id="room" data-view="room"><img class="room-photo" src="assets/room-concept.jpg" alt="Concept room with warm timber, a leather lounge chair, linen sofa and afternoon light" fetchpriority="high"><div class="room-topline"><span>A study in warmth</span><span>Illustrative room</span></div><button class="hotspot" id="chair-point" aria-label="See the designer note for the chair" aria-pressed="false" aria-controls="room-note">+</button><aside class="room-note" id="room-note" aria-live="polite" hidden><button class="note-close" id="note-close" aria-label="Close room note">×</button><span class="small">Through a designer’s eye</span><h3>A little breathing room.</h3><p>The open frame leaves a view through the room. A substantial chair can still feel light.</p><p class="note-credit">Illustrative design note. Final room notes will be developed with Leah.</p></aside><div class="room-toggle" role="group" aria-label="Room view"><button data-view="room" aria-pressed="true">The room</button><button data-view="chair" aria-pressed="false">A closer look</button></div></div>
+ </section>
+ <div class="room-under"><p>Notice what you’re drawn to.</p><span>Explore on your own, with a designer’s judgment woven in. Connect with a designer when you’re ready for more.</span></div>
+ <section class="section" id="materials" aria-labelledby="materials-title">
+  <div class="material-intro"><h2 id="materials-title">Some things make<br>more sense together.</h2><div><p>A warm grain. A quiet weave. A color you keep coming back to. Start with a few things you love, and give them a little space to become something.</p><p class="small">A small study from the material table. Try a different arrangement.</p></div></div>
+  <div class="material-layout"><figure class="desk-photo"><img src="assets/material-table-v3.jpg" width="1536" height="1024" alt="Illustrative studio worktable with timber and textile samples, a chair sketch, a pencil and a ceramic cup" loading="lazy"><div class="paper-slip"><p>Leave room<br>for a little<br>discovery.</p><span>A material study</span></div><figcaption>Studio atmosphere study / Generated concept image</figcaption></figure>
+   <div class="table-area"><div class="table-top"><h3>Your little worktable.</h3><button class="reset-table" id="reset-table">Arrange again</button></div><div class="sample-table" id="sample-table" role="group" aria-label="Moveable material samples">
+    <button class="material-sample" data-material="walnut" aria-label="Walnut sample" aria-describedby="sample-guidance" aria-pressed="true"><span class="texture"></span><span class="sample-name">Walnut</span><span class="sample-detail">Depth &amp; warmth</span></button>
+    <button class="material-sample" data-material="linen" aria-label="Linen sample" aria-describedby="sample-guidance" aria-pressed="false"><span class="texture"></span><span class="sample-name">Linen</span><span class="sample-detail">A quieter texture</span></button>
+    <button class="material-sample" data-material="olive" aria-label="Olive wool sample" aria-describedby="sample-guidance" aria-pressed="false"><span class="texture"></span><span class="sample-name">Olive wool</span><span class="sample-detail">A little color</span></button>
+   </div><p class="sample-guidance" id="sample-guidance">Select a sample to explore. Drag to arrange, or focus one and use the arrow keys.</p><div class="sample-response" aria-live="polite"><h4 id="sample-title">A little depth goes a long way.</h4><p id="sample-copy">The darker grain gives this palette a point of contrast. Set it beside a quieter textile and notice how each changes the other.</p><p class="small">Illustrative palette. These samples are for exploration, not available finishes or product specifications.</p></div><p class="sr-only" id="move-status" role="status"></p><p class="table-footer">Tools should feel at home in the creative process. <a href="#our-story">That’s why we’re here.</a></p></div>
+  </div>
+ </section>
+ <section class="craft" id="makers" aria-labelledby="makers-title">
+  <div class="craft-intro"><h2 id="makers-title">Before the room,<br>there are the hands.</h2><p>The care in a piece starts long before it reaches your home. We want you to know what went into it.</p></div>
+  <figure><div class="craft-image-wrap" id="craft-image"><img src="assets/maker-hands-v3.jpg" width="1536" height="1024" alt="Illustrative maker’s hands fitting walnut joinery beside wood shavings and a hand plane" loading="lazy"></div><figcaption class="craft-caption">Workshop atmosphere study / Generated imagery, not a featured Patina maker</figcaption></figure>
+  <div class="craft-closeup"><div class="craft-note"><h3>Look at how<br>it comes together.</h3><p>The meeting of two pieces of timber. The curve where a hand will rest. Small decisions give a piece its character.</p><button class="link" id="craft-toggle" aria-expanded="false" aria-controls="craft-detail">Spend a moment with the detail <span aria-hidden="true">+</span></button><div class="craft-detail" id="craft-detail" hidden><img src="assets/maker-hands-v3.jpg" alt="Closer crop of the illustrative timber joint" loading="lazy"><p>A photograph starts the conversation. A maker’s account tells us how a joint is formed, why a finish was chosen, and how a piece should be cared for.</p><p class="small">This study explores the questions. Product and maker details will come from documented work.</p></div></div></div>
+  <div class="maker-belief"><p>Craft earns its place here. No sponsored placements, no pay-to-play.</p><button class="link" data-invitation="maker">Apply to Partner</button></div>
+ </section>
+ <aside class="human-thread" aria-label="A note from the founders"><div class="thread-image"><img src="assets/material-table-v3.jpg" alt="" loading="lazy"></div><p>We’re making the kind of tools<br>we wanted at our own worktable.<span class="small">Leah &amp; Kody Kochaver / Madison, Wisconsin</span></p><a class="link" href="#our-story">A little about us <span aria-hidden="true">↗</span></a></aside>
+ <section class="section handoff" id="designer" aria-labelledby="designer-title"><div class="handoff-copy"><h2 id="designer-title">A place to begin.<br>A person to<br>take it further.</h2><p>You don’t need to have it all figured out. We’re building a way for your room, your favorite pieces, and the things you’ve discovered to become the start of a conversation with a designer.</p><button class="link" data-invitation="designer">Explore the designer handoff</button></div><div class="brief-desk"><div class="brief"><span class="small">A proposed room brief</span><h3>The things<br>you’re drawn to.</h3><div class="brief-palette" aria-label="Illustrative warm neutral, walnut and olive palette"><span></span><span></span><span></span></div><dl><div><dt>The room</dt><dd>A living room with space to slow down</dd></div><div><dt>The feeling</dt><dd>Warm timber. Tactile linen. A little green.</dd></div><div><dt>Still to figure out</dt><dd>A chair that feels right beside the window</dd></div></dl></div><p>Future experience study. No room brief is saved or sent.</p></div></section>
+</div>
+<div id="story-view" hidden>
+ <section class="story-header" id="our-story" aria-labelledby="story-title"><div><a class="link" href="#home">Back to the rooms</a><h1 id="story-title" tabindex="-1">The tools should<br>belong in<br>the process.</h1></div><p>We’re Leah and Kody Kochaver. Patina brings together Leah’s interior-design practice and Kody’s belief that creative work deserves tools that feel like part of it.</p></section>
+ <figure class="story-picture"><img src="assets/material-table-v3.jpg" width="1536" height="1024" alt="Illustrative material table with a chair sketch, tactile samples and tools for thinking" loading="lazy"><figcaption>A study of the feeling we’re building toward. Concept imagery, not the founders’ actual studio.</figcaption></figure>
+ <div class="story-body"><aside><span class="strata" aria-hidden="true"><i></i><i></i><i></i></span><p>Leah &amp; Kody Kochaver<br>Madison, Wisconsin<br>Founded in 2023</p><p>Where Time Adds Value.</p></aside><div>
+  <section class="founder-account" aria-labelledby="leah-title"><span class="person">Leah / Design &amp; Experience</span><h2 id="leah-title">It starts with<br>the way a designer sees.</h2><p>Leah runs Middlewest Studio in Madison. Sourcing furniture for her clients is part of the work that gave Patina its starting point: the relationships between a room, its materials, and the person who lives there.</p><blockquote>“The tools never matched how designers actually think.”</blockquote><p class="small">From Leah’s existing Founding Circle welcome letter.</p><p>Patina is being built to put that designer’s eye within reach, and to make it easier to continue with a working designer when you want more help.</p><a class="link" href="https://middlewest.studio" target="_blank" rel="noreferrer">Visit Middlewest Studio</a></section>
+  <section class="founder-account" aria-labelledby="kody-title"><span class="person">Kody / Technology &amp; Product</span><h2 id="kody-title">Making space<br>for the creative part.</h2><p>Kody sees a gap in the tools available. Too many feel sterile, disconnected from the creative process they’re supposed to support.</p><p>He’s building Patina because the tools should feel like part of that process: a place to explore, notice a connection, and let an idea take shape.</p><p>That belief is shaping the experience alongside Leah’s design judgment. A room to look around. Materials to consider together. A person to continue the conversation.</p></section>
+  <section class="story-ending" aria-labelledby="together-title"><h2 id="together-title">We’re still<br>putting it together.</h2><p>The app and marketplace are pre-launch. The Founding Circle is an invitation to help shape what they become, with a first letter from Leah and first access when the app launches.</p><a class="link" href="#materials">Come back to the worktable</a></section>
+ </div></div>
+</div>
+<section class="invitation" aria-labelledby="invitation-title"><h2 id="invitation-title">There’s room<br>for you here.</h2><div><p>We’re building Patina, and we’d love your help shaping it. Join the Founding Circle. Your welcome begins with a first letter from Leah.</p><button class="button" data-invitation="consumer">Join the Founding Circle</button><span class="small">First access when the app launches.<br>Warmly, Kody &amp; Leah</span></div></section>
+</main>
+<footer class="site-footer"><a class="wordmark" href="#home" aria-label="Patina home">PATINA</a><div class="footer-links"><a href="#our-story">Our story</a><a href="mailto:hello@patina.cloud">Say hello</a><a href="https://patina.cloud/designers" target="_blank" rel="noreferrer">For designers</a></div><p>Where Time Adds Value. / Madison, Wisconsin</p></footer>
+<details class="concept-credits"><summary>About this prototype &amp; its imagery</summary><p>Round 03 of The Living Study, September 9, 2026. This is a local design prototype. Room, maker and material imagery is generated concept art, not documentary photography, real product specifications, or evidence of maker partnerships. The sample table is a visual exercise. It does not customize or save a product.</p><p>Founder facts follow the Patina Messaging System. Kody’s motivation comes from his feedback on September 9, 2026; the wording here is an editorial draft. Leah’s quote is from the existing Founding Circle welcome email. No fictional founder portraits or origin anecdotes are used. Invitations preview the existing live destinations without submitting anything.</p><p>Libre Caslon Display and Manrope / SIL Open Font License. Generated images and the source prompts are retained with the presentation. <a href="Patina-The-Living-Study.html" target="_top">Return to the design presentation.</a></p></details>
+<dialog id="invitation-dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Close invitation">×</button><span class="strata" aria-hidden="true"><i></i><i></i><i></i></span><h2 id="dialog-title">There’s room<br>for you here.</h2><p id="dialog-copy">Help shape Patina and receive a first letter from Leah.</p><p class="small" id="dialog-detail">First access when the app launches.</p><a class="button" id="dialog-link" href="https://patina.cloud/founding" target="_blank" rel="noreferrer">Visit the Founding Circle</a><p class="dialog-context" id="dialog-context">Prototype invitation. Continue to the current Patina website to join. Nothing has been submitted here.</p></dialog>
+<noscript><p class="no-js">The homepage is readable without JavaScript. Enable JavaScript to arrange samples, explore room details, and open Our story or invitation previews. You can also <a href="https://patina.cloud/about">read the current Patina story</a> or <a href="https://patina.cloud/founding">visit the Founding Circle</a>.</p></noscript>
+<script>
+(() => {
+ const body = document.body;
+ const motionButton = document.getElementById('motion-toggle');
+ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+ let motionOn = !reducedMotion.matches;
+ function setMotion(on) {
+  motionOn = on;
+  body.dataset.motion = on ? 'on' : 'off';
+  motionButton.setAttribute('aria-pressed', String(on));
+  motionButton.textContent = on ? 'Motion on' : 'Motion off';
+  updateCraft();
+ }
+ motionButton.addEventListener('click', () => setMotion(!motionOn));
+ reducedMotion.addEventListener('change', event => setMotion(!event.matches));
+ const header = document.getElementById('site-header');
+ const menu = document.getElementById('menu-toggle');
+ function closeMenu() { header.classList.remove('menu-open'); menu.setAttribute('aria-expanded','false'); }
+ menu.addEventListener('click', () => {const open = header.classList.toggle('menu-open'); menu.setAttribute('aria-expanded', String(open));});
+ header.addEventListener('keydown', event => {if(event.key === 'Escape'){closeMenu();menu.focus();}});
+ header.querySelectorAll('a').forEach(link => link.addEventListener('click',closeMenu));
+ const homeView = document.getElementById('home-view');
+ const storyView = document.getElementById('story-view');
+ const embedded = location.href.startsWith('about:srcdoc');
+ let embeddedHash = location.hash;
+ let wasStory = false;
+ function showRoute(initial = false) {
+  const route = embedded ? embeddedHash : location.hash;
+  const story = route === '#our-story' || (route === '#main-content' && wasStory);
+  homeView.hidden = story;
+  storyView.hidden = !story;
+  document.title = story ? 'Our story — Leah & Kody | Patina' : 'Patina — A home, gathered over time';
+  document.querySelectorAll('.site-nav a').forEach(link => {
+   if (link.hash === route) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current');
+  });
+  if(story || wasStory || initial) {
+   const target = document.getElementById((route || '#home').slice(1));
+   if(target) target.scrollIntoView({behavior:'instant', block:'start'});
+   if(!initial && story) document.getElementById('story-title').focus({preventScroll:true});
+   else if(!initial && wasStory) {
+    const heading = target?.querySelector('h1,h2');
+    if(heading){heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});}
+   }
+  }
+  wasStory = story;
+  closeMenu();
+ }
+ // Embedded views change locally; standalone views retain URL and Back support.
+ document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
+  if(!embedded) return;
+  event.preventDefault();
+  embeddedHash=link.getAttribute('href');
+  showRoute();
+  document.getElementById(embeddedHash.slice(1))?.scrollIntoView({behavior:motionOn?'smooth':'instant'});
+ }));
+ addEventListener('hashchange', () => showRoute());
+ showRoute(true);
+ const room = document.getElementById('room');
+ const note = document.getElementById('room-note');
+ const point = document.getElementById('chair-point');
+ function roomView(view) {
+  room.dataset.view = view;
+  room.querySelectorAll('[data-view]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.view === view)));
+  note.hidden = view === 'room';
+  point.setAttribute('aria-pressed','false');
+ }
+ room.querySelectorAll('button[data-view]').forEach(button => button.addEventListener('click', () => roomView(button.dataset.view)));
+ point.addEventListener('click', () => {note.hidden = !note.hidden;point.setAttribute('aria-pressed',String(!note.hidden));});
+ document.getElementById('note-close').addEventListener('click', () => {note.hidden=true;point.setAttribute('aria-pressed','false');room.querySelector('button[aria-pressed="true"]')?.focus();});
+ document.getElementById('explore-room').addEventListener('click', () => {roomView('chair');room.scrollIntoView({behavior:motionOn ? 'smooth':'instant',block:'center'});room.querySelector('[data-view="chair"]').focus({preventScroll:true});});
+ const samples = [...document.querySelectorAll('.material-sample')];
+ const table = document.getElementById('sample-table');
+ const sampleNotes = {
+  walnut:{title:'A little depth goes a long way.',copy:'The darker grain gives this palette a point of contrast. Set it beside a quieter textile and notice how each changes the other.'},
+  linen:{title:'Something quiet to come back to.',copy:'A pale, visible weave gives the stronger materials some breathing room. Try it beside the walnut, then the olive. Which pairing feels more like home?'},
+  olive:{title:'Let a little color settle in.',copy:'An earthy green sits comfortably beside warm timber. Move it closer to the linen and see how a small amount of color can change the whole palette.'}
+ };
+ const positions = new Map(samples.map(sample => [sample,{x:0,y:0}]));
+ let activeDrag = null;
+ let suppressClick = null;
+ function selectSample(sample) {
+  samples.forEach(item => item.setAttribute('aria-pressed',String(item === sample)));
+  const content = sampleNotes[sample.dataset.material];
+  document.getElementById('sample-title').textContent = content.title;
+  document.getElementById('sample-copy').textContent = content.copy;
+ }
+ function moveSample(sample, x, y) {
+  const padding = 14;
+  const maxX = Math.max(padding, table.clientWidth - sample.offsetWidth - padding);
+  const maxY = Math.max(padding, table.clientHeight - sample.offsetHeight - padding);
+  const bounded = {x:Math.min(maxX,Math.max(padding,sample.offsetLeft+x))-sample.offsetLeft,y:Math.min(maxY,Math.max(padding,sample.offsetTop+y))-sample.offsetTop};
+  positions.set(sample,bounded);
+  sample.style.setProperty('--dx',bounded.x+'px');sample.style.setProperty('--dy',bounded.y+'px');
+ }
+ samples.forEach(sample => {
+  sample.addEventListener('click', () => {if(suppressClick === sample){suppressClick=null;return;}selectSample(sample);});
+  sample.addEventListener('pointerdown', event => {
+   if(event.button !== 0 || activeDrag) return;
+   suppressClick=null;
+   const position = positions.get(sample);
+   activeDrag={sample,id:event.pointerId,startX:event.clientX,startY:event.clientY,x:position.x,y:position.y,moved:false};
+   sample.setPointerCapture(event.pointerId);sample.classList.add('dragging');selectSample(sample);
+  });
+  sample.addEventListener('pointermove', event => {
+   if(activeDrag?.sample !== sample || activeDrag.id !== event.pointerId) return;
+   const dx=event.clientX-activeDrag.startX,dy=event.clientY-activeDrag.startY;
+   if(Math.abs(dx)+Math.abs(dy)>5) activeDrag.moved=true;
+   if(activeDrag.moved) moveSample(sample,activeDrag.x+dx,activeDrag.y+dy);
+  });
+  function endDrag(event) {
+   if(activeDrag?.sample !== sample || activeDrag.id !== event.pointerId) return;
+   if(activeDrag.moved){suppressClick=sample;document.getElementById('move-status').textContent=sample.querySelector('.sample-name').textContent+' sample moved.';}
+   activeDrag=null;sample.classList.remove('dragging');
+   if(sample.hasPointerCapture(event.pointerId)) sample.releasePointerCapture(event.pointerId);
+  }
+  sample.addEventListener('pointerup',endDrag);sample.addEventListener('pointercancel',endDrag);sample.addEventListener('lostpointercapture',endDrag);
+  sample.addEventListener('keydown',event => {
+   const directions={ArrowLeft:[-12,0],ArrowRight:[12,0],ArrowUp:[0,-12],ArrowDown:[0,12]};
+   if(!directions[event.key]) return;
+   event.preventDefault();selectSample(sample);const p=positions.get(sample),d=directions[event.key];moveSample(sample,p.x+d[0],p.y+d[1]);
+   document.getElementById('move-status').textContent=sample.querySelector('.sample-name').textContent+' sample moved '+event.key.slice(5).toLowerCase()+'.';
+  });
+ });
+ document.getElementById('reset-table').addEventListener('click',()=>{
+  activeDrag=null;suppressClick=null;
+  samples.forEach(sample=>{sample.classList.remove('dragging');positions.set(sample,{x:0,y:0});sample.style.setProperty('--dx','0px');sample.style.setProperty('--dy','0px');});
+  selectSample(samples[0]);document.getElementById('move-status').textContent='The samples are back in their starting arrangement.';
+ });
+ const resizeObserver=new ResizeObserver(()=>{if(!table.clientWidth)return;samples.forEach(sample=>{const p=positions.get(sample);if(p.x||p.y)moveSample(sample,p.x,p.y);});});
+ resizeObserver.observe(table);
+ const craftToggle = document.getElementById('craft-toggle');
+ craftToggle.addEventListener('click',()=>{const detail=document.getElementById('craft-detail');detail.hidden=!detail.hidden;craftToggle.setAttribute('aria-expanded',String(!detail.hidden));craftToggle.querySelector('span').textContent=detail.hidden?'+':'−';});
+ const craftImage = document.getElementById('craft-image');
+ let scheduled=false;
+ function updateCraft() {
+  scheduled=false;
+  const rect=craftImage.getBoundingClientRect();
+  const progress=Math.max(0,Math.min(1,(innerHeight-rect.top)/(innerHeight+rect.height)));
+  const shift=motionOn && !reducedMotion.matches ? -progress*38 : 0;
+  craftImage.style.setProperty('--craft-shift',shift+'px');
+ }
+ addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(updateCraft);}},{passive:true});
+ setMotion(motionOn);
+ const dialog=document.getElementById('invitation-dialog');
+ const invitations={
+  consumer:{title:'There’s room for you here.',copy:'Join Leah and Kody in shaping a designer-taught way to find furniture that belongs.',detail:'A first letter from Leah. First access when the app launches.',href:'https://patina.cloud/founding',label:'Visit the Founding Circle',context:'Prototype invitation. Continue to the current Patina website to join. Nothing has been submitted here.'},
+  maker:{title:'Tell us about your work.',copy:'Your materials, your process, and the decisions that make a piece yours. We’d like to hear the story.',detail:'Maker applications are read personally. Expect a response within two weeks.',href:'https://patina.cloud/makers/apply',label:'Apply to Partner',context:'Prototype invitation. Continue to Patina’s existing maker application. No application is created here.'},
+  designer:{title:'Continue with a person.',copy:'We’re building a way to carry what you’ve discovered into a conversation with a working designer.',detail:'The app and connected room brief are pre-launch. You can explore Patina’s current design services today.',href:'https://patina.cloud/services',label:'Explore current design services',context:'The briefing shown here is illustrative. No brief has been saved, sent, or matched with a designer.'}
+ };
+ document.querySelectorAll('[data-invitation]').forEach(button=>button.addEventListener('click',()=>{
+  const data=invitations[button.dataset.invitation];
+  document.getElementById('dialog-title').textContent=data.title;document.getElementById('dialog-copy').textContent=data.copy;document.getElementById('dialog-detail').textContent=data.detail;
+  const link=document.getElementById('dialog-link');link.href=data.href;link.textContent=data.label;document.getElementById('dialog-context').textContent=data.context;dialog.showModal();
+ }));
+ dialog.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
+})();
+</script>
+</body>
+</html>

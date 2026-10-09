@@ -8,7 +8,11 @@ function getSupabaseAdmin() {
     return null;
   }
   return createClient(supabaseUrl, supabaseServiceKey, {
-    auth: { persistSession: false },
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
   });
 }
 

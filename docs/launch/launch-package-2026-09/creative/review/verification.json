@@ -1,0 +1,112 @@
+{
+  "checkedAt": "2026-09-11T09:44:37.146Z",
+  "errors": [],
+  "missingImages": [],
+  "mobileOverflow": false,
+  "playControlAdvancesTime": true,
+  "sceneResults": [
+    {
+      "second": 0,
+      "visibleScene": "A room,\nconsidered."
+    },
+    {
+      "second": 4.7,
+      "visibleScene": "A closer\nlook."
+    },
+    {
+      "second": 8.7,
+      "visibleScene": "A designer’s\neye."
+    },
+    {
+      "second": 12.7,
+      "visibleScene": "The work\nbehind it."
+    },
+    {
+      "second": 19,
+      "visibleScene": "A place\nat the table."
+    }
+  ],
+  "reducedMotionDisablesDrift": true,
+  "sourceChecks": [
+    {
+      "source": "public/images/studio/room.jpg",
+      "file": "assets/room.jpg",
+      "unchanged": true,
+      "sha256": "14d953bb3f3038b2e1c6fc0a121b70000780a64d1b52d08575bf66657b483a8b"
+    },
+    {
+      "source": "public/images/studio/chair.png",
+      "file": "assets/chair.png",
+      "unchanged": true,
+      "sha256": "afd229fe1f79b287db4d0a6d9c506762e2a428cc5e4f32a490b965edd3f319e7"
+    },
+    {
+      "source": "public/images/studio/materials.jpg",
+      "file": "assets/materials.jpg",
+      "unchanged": true,
+      "sha256": "70fd8a1bed27d40f061afa45afe1e2f479882b8026d72d86517f2661477655a6"
+    },
+    {
+      "source": "public/images/studio/workbench.jpg",
+      "file": "assets/workbench.jpg",
+      "unchanged": true,
+      "sha256": "8a51219dc7642c1bc580e7b3244f3903b9558e63264d9abd24bd0adfcaa7dad5"
+    },
+    {
+      "source": "public/images/founders/hiawatha-room.jpg",
+      "file": "assets/hiawatha-room.jpg",
+      "unchanged": true,
+      "sha256": "c27bc827ee7f5ada6f24cb165641525506b4a7af184b52dd61a9674bfbe7e4d6"
+    },
+    {
+      "source": "public/fonts/libre-caslon-display.ttf",
+      "file": "assets/libre-caslon-display.ttf",
+      "unchanged": true,
+      "sha256": "199b2a7deefd8d7d9bae05d34902c4c6486bd11b8e5d1a22c0cea8862943a5a1"
+    },
+    {
+      "source": "public/fonts/manrope.ttf",
+      "file": "assets/manrope.ttf",
+      "unchanged": true,
+      "sha256": "a13d9b41b0a471ce58f0e46d377fa3cc76615e4632c3b15eb397caadf7a13f0a"
+    }
+  ],
+  "dimensions": [
+    {
+      "file": "exports/c01-founding-square.png",
+      "width": 1080,
+      "height": 1080,
+      "correct": true
+    },
+    {
+      "file": "exports/c02-founding-portrait.png",
+      "width": 1080,
+      "height": 1350,
+      "correct": true
+    },
+    {
+      "file": "exports/c03-studio-story.png",
+      "width": 1080,
+      "height": 1920,
+      "correct": true
+    },
+    {
+      "file": "exports/c04-designer-portrait.png",
+      "width": 1080,
+      "height": 1350,
+      "correct": true
+    },
+    {
+      "file": "exports/c05-maker-portrait.png",
+      "width": 1080,
+      "height": 1350,
+      "correct": true
+    },
+    {
+      "file": "exports/c06-founder-linkedin.png",
+      "width": 1200,
+      "height": 627,
+      "correct": true
+    }
+  ]
+}

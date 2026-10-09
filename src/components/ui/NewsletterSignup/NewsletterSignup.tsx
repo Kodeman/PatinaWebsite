@@ -15,6 +15,7 @@ interface NewsletterSignupProps {
   variant?: "inline" | "footer";
   source?: string;
   className?: string;
+  showIntro?: boolean;
 }
 
 type FormState = "idle" | "loading" | "success" | "error";
@@ -23,6 +24,7 @@ export function NewsletterSignup({
   variant = "inline",
   source = "website",
   className,
+  showIntro = true,
 }: NewsletterSignupProps) {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<FormState>("idle");
@@ -133,6 +135,8 @@ export function NewsletterSignup({
           <input
             ref={inputRef}
             type="email"
+          aria-label="Email for The Designer’s Eye"
+          autoComplete="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -164,7 +168,7 @@ export function NewsletterSignup({
         className
       )}
     >
-      <p className="text-label text-[var(--patina-clay-beige)] mb-2">
+      {showIntro && <><p className="text-label text-[var(--patina-clay-beige)] mb-2">
         The Designer&apos;s Eye
       </p>
       <p className="font-display text-xl text-[var(--patina-charcoal)] mb-2">
@@ -172,7 +176,7 @@ export function NewsletterSignup({
       </p>
       <p className="text-sm text-[var(--patina-mocha-brown)] mb-6">
         From Leah&apos;s desk at Middlewest Studio.
-      </p>
+      </p></>}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
@@ -190,6 +194,8 @@ export function NewsletterSignup({
         <input
           ref={inputRef}
           type="email"
+          aria-label="Email for The Designer’s Eye"
+          autoComplete="email"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);

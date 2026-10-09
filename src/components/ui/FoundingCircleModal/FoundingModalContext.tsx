@@ -35,10 +35,10 @@ export function FoundingModalProvider({ children }: { children: React.ReactNode 
 
   const close = useCallback(() => {
     setIsOpen(false);
-    // Restore focus after the close animation completes
+    // Restore focus after the native dialog closes without moving the page.
     const el = triggerElementRef.current;
     if (el && typeof el.focus === "function") {
-      setTimeout(() => el.focus(), 500);
+      requestAnimationFrame(() => { if (el.isConnected) el.focus({ preventScroll: true }); });
     }
   }, []);
 

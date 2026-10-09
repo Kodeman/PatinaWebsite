@@ -1,13 +1,33 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  async headers() {
+    return [{
+      source: "/:path*",
+      headers: [
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "X-Frame-Options", value: "DENY" },
+        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      ],
+    }];
+  },
   // Avoid trailing-slash redirects on PostHog ingest endpoints (rely on trailing slashes)
   skipTrailingSlashRedirect: true,
   async redirects() {
     return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.patina.cloud' }],
+        destination: 'https://patina.cloud/:path*',
+        permanent: true,
+      },
       { source: '/waitlist', destination: '/founding', permanent: true },
       { source: '/join', destination: '/founding', permanent: true },
       { source: '/founding-circle', destination: '/founding', permanent: true },
+      // Keep old discovery links and their campaign parameters useful.
+      { source: '/materials', destination: '/makers', permanent: false },
+      { source: '/furniture/:path*', destination: '/makers', permanent: true },
     ];
   },
   async rewrites() {

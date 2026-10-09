@@ -34,5 +34,5 @@ Resend and the PostHog proxy are plain `fetch`/rewrites, no SDK.
 ## Notes
 
 - `overrides` in `package.json` pin `js-yaml` under `@vercel/frameworks` and `uuid` under `typeid-js` for audit reasons.
-- No test coverage tool is installed; the CRAP gate uses Node's built-in `--experimental-test-coverage` lcov reporter (see `.claude/quartermaster/crap.json`).
+- No test coverage tool is installed; the CRAP gate uses Node's built-in `--experimental-test-coverage` lcov reporter with `--enable-source-maps` (see `.claude/quartermaster/crap.json`).
 - Do not add a package for a single call site (live rule `reuse-first-implementation`).

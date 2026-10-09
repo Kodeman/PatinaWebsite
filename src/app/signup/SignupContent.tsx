@@ -154,16 +154,8 @@ export function SignupContent() {
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  {/*
-                    Intentionally not sourced from systemMessages.founding: this
-                    single-line confirmation differs in wording from
-                    successTitle + successBody ("Watch your inbox for a first
-                    letter from Leah. We build in public…"), which is written for
-                    the modal's two-line success panel. Changing either would
-                    change shipped copy, so the two stay separate.
-                  */}
                   <p className="text-base font-medium text-[var(--patina-mocha-brown)]">
-                    Welcome to the Founding Circle. Leah&apos;s first letter is on its way.
+                    {systemMessages.founding.successTitle} {systemMessages.founding.successBody}
                   </p>
                 </div>
               ) : (

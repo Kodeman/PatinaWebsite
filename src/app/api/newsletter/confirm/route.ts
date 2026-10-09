@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { sendNewsletterWelcome } from "@/lib/emails/newsletter-welcome";
 import { SITE_URL } from "@/lib/site-url";
+import { errorMessage } from "@/lib/errors";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -29,10 +31,12 @@ export async function GET(request: NextRequest) {
       return landing("invalid");
     }
 
-    // No backend configured (e.g. local/preview without secrets) — don't throw.
+    // Keep the confirmation token unused so the same link can be retried.
     if (!supabaseAdmin) {
-      console.log("[NewsletterConfirm] Supabase not configured, skipping confirm for:", email);
-      return landing("confirmed");
+      return NextResponse.json(
+        { error: systemMessages.newsletter.confirmError },
+        { status: 503, headers: { "Retry-After": "60" } },
+      );
     }
 
     // Match on email + token so a stale or guessed token can't confirm a row.
@@ -91,22 +95,18 @@ export async function GET(request: NextRequest) {
       personProps: { email, newsletter_confirmed: true },
     });
 
-    // Fire-and-forget the genuine "first letter" the signup success promised.
+    // Keep the first letter alive after the confirmation response.
     // Only on this fresh confirm — the already-confirmed path above returns
     // earlier, so a second click won't re-send it. Failures don't block landing.
-    sendNewsletterWelcome({ email }).catch((emailErr) => {
-      console.error(
-        "[NewsletterConfirm] Welcome email failed:",
-        emailErr instanceof Error ? emailErr.message : "Unknown error",
-      );
-    });
+    after(() =>
+      sendNewsletterWelcome({ email }).catch((err) => {
+        console.error("[NewsletterConfirm] Welcome email failed:", errorMessage(err));
+      }),
+    );
 
     return landing("confirmed");
   } catch (err) {
-    console.error(
-      "[NewsletterConfirm] Request error:",
-      err instanceof Error ? err.message : "Unknown error",
-    );
+    console.error("[NewsletterConfirm] Request error:", errorMessage(err));
     return landing("error");
   }
 }

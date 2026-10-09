@@ -1,0 +1,5 @@
+# Isolated chair study — Round 04
+
+Built-in image generation tool, background-extraction edit of assets/room-concept.jpg. Final asset: assets/chair-study-v4.png. Illustrative furniture only; not a documented Patina product. Generated September 9, 2026.
+
+Use case: background-extraction. Edit the provided Patina concept room image to isolate ONLY the walnut and cognac leather lounge chair in the foreground, on a genuinely transparent background. Preserve exactly its distinctive low slung geometry, three-quarter viewing angle, wooden arms and frame, stretched leather seat and back, natural wood grain and warm lighting from the left. Keep the whole chair fully visible with generous transparent margins and no cropping. Remove all background furniture, floor, rug, wall, decorations and objects. Do not redesign or add anything to the chair. No text, labels, border, watermark, floor or solid background. This will be a high fidelity cutout layered in an interactive furniture website. Output a clean photorealistic RGBA image with real alpha transparency, landscape or square canvas.

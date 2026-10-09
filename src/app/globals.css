@@ -67,9 +67,9 @@
   --color-patina-golden: #C4A265;
 
   /* Typography - Font Families */
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "DM Mono", "Consolas", monospace;
+  --font-display: var(--font-caslon), Georgia, serif;
+  --font-body: var(--font-manrope), Arial, sans-serif;
+  --font-mono: var(--font-manrope), Arial, sans-serif;
 
   /* Font Sizes */
   --font-size-display-1: 3.5rem;

@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Patina — The Living Study
 
-## Getting Started
+Patina’s pre-launch website, built with Next.js 16 and React 19. The Living Study brings together the founder story, designer and maker invitations, and Founding Circle enrollment. Production hosting is configured for Cloudflare Workers through OpenNext.
 
-First, run the development server:
+## Local development
+
+Use Node 24 (`.nvmrc`), install the lockfile with `npm ci`, and copy `.env.example` to `.env.local` with the intended development configuration.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Customer-facing copy follows [the messaging system](docs/messaging/patina-messaging-system.md).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production build and preview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build:cloudflare
+npm run preview:cloudflare
+```
 
-## Learn More
+The Workers preview runs at http://localhost:8787. Public build values come from the environment or ignored local env files. Private Workers preview bindings require an ignored `.dev.vars` file; see `.dev.vars.example`. Without test credentials, lead APIs return a retryable unavailable response. Automated tests intercept submissions.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+npm run test:server
+npm run test:cloudflare
+npx wrangler deploy --dry-run --outdir .wrangler/deploy-check
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The dry run validates packaging without uploading a Worker. It does not establish production credentials, remote bindings, or mail delivery.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+Follow the [Cloudflare deployment runbook](docs/launch/living-study/CLOUDFLARE-DEPLOYMENT.md) for account setup, build configuration, secrets, domain cutover, and rollback. The configured Worker is `patina-website`; custom domains are attached at cutover. `npm run deploy:cloudflare` publishes the existing build and populates its content cache—build first.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The [production handoff](docs/launch/living-study/PRODUCTION-HANDOFF.md) records visual validation, asset credits, and remaining launch decisions. The app and marketplace remain pre-launch.

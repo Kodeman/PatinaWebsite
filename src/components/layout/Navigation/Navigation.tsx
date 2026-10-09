@@ -1,135 +1,142 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { StrataMark } from "@/components/ui/StrataMark";
-import { FoundingPopover } from "@/components/ui/FoundingPopover";
-import { MobileMenu } from "../MobileMenu";
+import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
+import { MotionControl } from "@/components/studio/StudioMotion";
 
-const navLinks = [
-  { href: "/makers", label: "Our Makers" },
-  { href: "/app", label: "The App" },
-  { href: "/designers", label: "For Designers" },
-  { href: "/about", label: "Our Story" },
+const links = [
+  { href: "/", label: "The studio" },
+  { href: "/about", label: "Our story" },
+  { href: "/designers", label: "For designers" },
+  { href: "/makers", label: "For makers" },
   { href: "/journal", label: "Journal" },
 ];
 
 export interface NavigationProps {
-  /** Use dark variant for dark backgrounds */
   variant?: "default" | "dark" | "transparent";
-  /** Hide the nav when at the very top of the page (for hero sections) */
   hideAtTop?: boolean;
 }
 
-export function Navigation({ variant = "default", hideAtTop = false }: NavigationProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
+export function Navigation({}: NavigationProps) {
+  const pathname = usePathname();
+  const menuRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scene, setScene] = useState({ scene: "room", past: false });
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const update = (event: Event) =>
+      setScene((event as CustomEvent<{ scene: string; past: boolean }>).detail);
+    window.addEventListener("patina:scene", update);
+    return () => window.removeEventListener("patina:scene", update);
   }, []);
-
-  const isDark = variant === "dark" || variant === "transparent";
-
-  const containerClasses = cn(
-    "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-    variant === "default" && "bg-[var(--patina-warm-white)] border-b border-[rgba(163,146,124,0.1)]",
-    variant === "dark" && "bg-[var(--patina-charcoal)]",
-    variant === "transparent" && !isScrolled && "bg-transparent",
-    variant === "transparent" && isScrolled && "bg-[var(--patina-charcoal)]/95 backdrop-blur-sm",
-    isScrolled && variant === "default" && "shadow-[var(--shadow-md)]",
-    hideAtTop && !isScrolled && "opacity-0 pointer-events-none -translate-y-full",
-    hideAtTop && isScrolled && "opacity-100 pointer-events-auto translate-y-0",
-  );
-
-  const linkClasses = cn(
-    "text-sm transition-colors duration-200",
-    isDark
-      ? "text-[rgba(237,233,228,0.7)] hover:text-[var(--patina-off-white)]"
-      : "text-[var(--patina-mocha-brown)] hover:text-[var(--patina-charcoal)]"
-  );
-
-  const wordmarkClasses = cn(
-    "font-display text-xl font-medium tracking-[0.2em]",
-    isDark ? "text-[var(--patina-off-white)]" : "text-[var(--patina-charcoal)]"
-  );
-
+  useEffect(() => {
+    menuRef.current?.close();
+  }, [pathname]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const html = document.documentElement;
+    const previousOverflow = html.style.overflow;
+    html.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = previousOverflow;
+    };
+  }, [menuOpen]);
+  const isDark = pathname === "/" && scene.scene !== "study" && !scene.past;
+  function closeMenu() {
+    menuRef.current?.close();
+  }
   return (
     <>
-      <nav aria-label="Main navigation" className={containerClasses}>
-        {/* Paper texture overlay for default variant */}
-        {variant === "default" && (
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            }}
+      <header className={`studio-nav ${isDark ? "studio-nav-over-room" : ""}`}>
+        <Link href="/" aria-label="Patina home" className="studio-brand">
+          <span>PATINA</span>
+          <StrataMark
+            size="compact"
+            align="left"
+            variant={isDark ? "on-clay" : "default"}
           />
-        )}
-
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="flex items-center justify-between h-[60px] lg:h-[80px]">
-            {/* Logo */}
-            <Link href="/" className="flex flex-col items-start">
-              <span className={wordmarkClasses}>PATINA</span>
-              <StrataMark
-                size="compact"
-                variant={isDark ? "reversed" : "default"}
-                align="left"
-              />
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-10">
-              {navLinks.map((link) => (
-                <Link key={link.href + link.label} href={link.href} className={linkClasses}>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* CTA */}
-            <div className="hidden lg:flex items-center gap-4">
-              <FoundingPopover isDark={isDark} />
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 -mr-2"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-label="Open menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              <svg
-                className={cn("w-6 h-6", isDark ? "text-[var(--patina-off-white)]" : "text-[var(--patina-charcoal)]")}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+        </Link>
+        <nav className="studio-desktop-links" aria-label="Main navigation">
+          {links
+            .filter((link) => link.href !== "/")
+            .map((link) => (
+              <Link
+                href={link.href}
+                key={link.href}
+                aria-current={pathname === link.href ? "page" : undefined}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+                {link.label}
+              </Link>
+            ))}
+        </nav>
+        <JoinCircleButton source="studio_nav" className="studio-nav-join" />
+        <button
+          type="button"
+          ref={triggerRef}
+          className="studio-menu-toggle"
+          aria-haspopup="dialog"
+          aria-controls="studio-menu"
+          aria-expanded={menuOpen}
+          onClick={() => {
+            menuRef.current?.showModal();
+            setMenuOpen(true);
+          }}
+        >
+          Menu
+        </button>
+      </header>
+      <dialog
+        ref={menuRef}
+        id="studio-menu"
+        className="studio-menu"
+        aria-label="Explore the Patina studio"
+        onClose={() => {
+          setMenuOpen(false);
+          triggerRef.current?.focus({ preventScroll: true });
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) closeMenu();
+        }}
+      >
+        <div className="studio-menu-sheet">
+          <div className="studio-menu-top">
+            <StrataMark size="compact" align="left" />
+            <button type="button" onClick={closeMenu} aria-label="Close menu">
+              Close ×
             </button>
           </div>
+          <p className="studio-kicker">Make yourself at home.</p>
+          <nav aria-label="Studio navigation">
+            {links.map((link) => (
+              <Link
+                href={link.href}
+                key={link.href}
+                onClick={closeMenu}
+                aria-current={pathname === link.href ? "page" : undefined}
+              >
+                {link.label}
+                <span aria-hidden="true">↗</span>
+              </Link>
+            ))}
+          </nav>
+          <div
+            onClick={(event) => {
+              if ((event.target as HTMLElement).closest("button")) closeMenu();
+            }}
+          >
+            <JoinCircleButton source="studio_menu" />
+          </div>
+          <div className="studio-menu-foot">
+            <Link href="/founding" onClick={closeMenu}>
+              Explore the Founding Circle
+            </Link>
+            <MotionControl />
+          </div>
         </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <MobileMenu
-        isOpen={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
-        links={navLinks}
-      />
+      </dialog>
     </>
   );
 }

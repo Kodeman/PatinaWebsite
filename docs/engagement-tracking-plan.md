@@ -34,6 +34,10 @@ This document outlines the comprehensive engagement tracking strategy for Patina
 
 ## 1. Identity Layer (Supabase)
 
+**Confirmed database, 10 September 2026:** the website uses the hosted Supabase Cloud project **Strata**, reference `bkvcixdmuyejfzcijpdg`, at `https://bkvcixdmuyejfzcijpdg.supabase.co`. The owner confirmed that Supabase is no longer self-hosted; earlier instructions pointing database operations at `api.patina.cloud` or the LAN host are superseded. This is also the project configured on the existing Vercel production website.
+
+Use the authorized Supabase connection for this project to inspect schema and apply reviewed migrations. Keep service-role credentials server-only. The schema examples below are the original implementation plan, not instructions to recreate tables already present. Current website migration execution and release verification are recorded in [the deployment record](launch/living-study/DEPLOYMENT-RECORD.md). Existing `api`, `app`, `admin`, and `client` DNS/Worker configurations are outside this website database correction.
+
 ### 1.1 Waitlist Schema
 
 Create the foundational waitlist table that captures attribution and converts to authenticated users:
@@ -1045,9 +1049,10 @@ ORDER BY step_order;
 # 3. Copy API key from project settings
 # 4. Note: No infrastructure deployment needed!
 
-# Supabase schema
-psql "postgresql://postgres:password@api.patina.cloud:5432/postgres"
-\i /path/to/waitlist-schema.sql
+# Supabase schema: hosted Strata project bkvcixdmuyejfzcijpdg
+# Inspect the existing schema through the authorized Supabase connection first.
+# Apply reviewed additive migrations with apply_migration or this project's SQL editor.
+# Keep credentials out of command arguments and do not recreate existing tables.
 
 # Marketing site integration
 cd ~/PatinaWebsite

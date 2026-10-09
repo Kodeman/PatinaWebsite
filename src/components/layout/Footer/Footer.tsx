@@ -1,144 +1,54 @@
 import Link from "next/link";
 import { StrataMark } from "@/components/ui/StrataMark";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
-
-const footerLinks = {
-  explore: [
-    { href: "/makers", label: "Makers" },
-    { href: "/app", label: "The App" },
-    { href: "/materials", label: "Materials" },
-    { href: "/journal", label: "Journal" },
-  ],
-  workWithUs: [
-    { href: "/founding", label: "Founding Circle" },
-    { href: "/designers", label: "For Designers" },
-    { href: "/makers/apply", label: "For Makers" },
-    { href: "/services", label: "Design Services" },
-  ],
-  company: [
-    { href: "/about", label: "Our Story" },
-    { href: "/contact", label: "Contact" },
-  ],
-};
+import { MotionControl } from "@/components/studio/StudioMotion";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer aria-label="Site footer" className="bg-[var(--patina-charcoal)] relative">
-      {/* Paper texture overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 pb-8">
-        {/* Newsletter Signup */}
-        <div className="mb-12 pb-12 border-b border-[rgba(163,146,124,0.15)]">
-          <NewsletterSignup variant="footer" source="footer" />
-        </div>
-
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
-          {/* Brand Column */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="inline-flex flex-col items-start mb-5">
-              <span className="font-display text-2xl font-medium tracking-[0.2em] text-[var(--patina-off-white)] mb-2">
-                PATINA
-              </span>
-              <StrataMark size="medium" variant="reversed" align="left" />
-            </Link>
-            <p className="text-[0.9375rem] italic text-[var(--patina-clay-beige)]">
-              Where Time Adds Value
-            </p>
-          </div>
-
-          {/* Explore Column */}
-          <div>
-            <h2 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
-              Explore
-            </h2>
-            <ul className="space-y-3">
-              {footerLinks.explore.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Work With Us Column */}
-          <div>
-            <h2 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
-              Work With Us
-            </h2>
-            <ul className="space-y-3">
-              {footerLinks.workWithUs.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Column */}
-          <div>
-            <h2 className="font-display text-base font-medium text-[var(--patina-off-white)] mb-5">
-              Company
-            </h2>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-[rgba(163,146,124,0.15)]">
-          <p className="text-[0.8125rem] text-[rgba(237,233,228,0.7)]">
-            &copy; {currentYear} Patina. All rights reserved.
+    <footer className="studio-footer" aria-label="Site footer">
+      <div className="studio-footer-letter">
+        <div>
+          <p className="studio-kicker">A letter from the studio.</p>
+          <h2>The Designer’s Eye.</h2>
+          <p>
+            Notes on rooms, materials, and the choices that make a home feel
+            like yours.
           </p>
-
-          <div className="flex gap-6">
-            <Link
-              href="/privacy"
-              className="text-[0.8125rem] text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-[0.8125rem] text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/signup"
-              className="text-[0.8125rem] text-[rgba(237,233,228,0.85)] hover:text-[var(--patina-off-white)] transition-colors duration-200"
-            >
-              Sign Up
-            </Link>
-          </div>
+        </div>
+        <NewsletterSignup
+          variant="inline"
+          source="studio_footer"
+          showIntro={false}
+        />
+      </div>
+      <div className="studio-footer-main">
+        <Link href="/" className="studio-brand" aria-label="Patina home">
+          <span>PATINA</span>
+          <StrataMark size="compact" align="left" />
+        </Link>
+        <nav aria-label="Footer navigation">
+          <Link href="/founding">Founding Circle</Link>
+          <Link href="/about">Our story</Link>
+          <Link href="/designers">For designers</Link>
+          <Link href="/makers">For makers</Link>
+          <Link href="/app">The app</Link>
+          <Link href="/services">Design services</Link>
+          <Link href="/journal">Journal</Link>
+          <Link href="/press">Press</Link>
+          <Link href="/contact">Say hello</Link>
+        </nav>
+        <p>
+          From Madison, Wisconsin.
+          <br />
+          Open wherever you call home.
+        </p>
+      </div>
+      <div className="studio-footer-bottom">
+        <span>© {new Date().getFullYear()} Patina. Where Time Adds Value.</span>
+        <div>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <MotionControl />
         </div>
       </div>
     </footer>

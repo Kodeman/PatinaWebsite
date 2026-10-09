@@ -1,23 +1,32 @@
 import { sendHtmlEmail, type SendResult } from './send';
-import { frame, signOff, escapeHtml } from './template';
+import { kodySignupSender } from './senders';
+import { frame, signedBy, escapeHtml } from './template';
 
 export function designerReceivedEmail(app: { first_name: string; last_name?: string }) {
   const name = app.first_name?.trim() || 'there';
   return frame(`<p>Hi ${escapeHtml(name)},</p>
-<p>Thank you for applying to the Patina Founding 50. We read every application personally — no automated intake, no form‑letter response.</p>
-<p>Leah and I will get back to you within 7 days with either an invitation to a short call or a note about timing. In the meantime, if there's anything else you'd like us to see, just reply to this message.</p>
-<p>We're building Patina for designers who think about furniture the way you do — cultivated, not decorated. We're glad you raised your hand.</p>
-${signOff}`);
+<p>Thank you for applying to Patina's Founding 50. I'm Kody, one of Patina's founders.</p>
+<p>I'm building Patina with Leah, who runs Middlewest Studio here in Madison. I want the tools we build to feel like part of the creative process, and your experience as a designer matters to that work.</p>
+<p>Your application is in. I'll review it with Leah, and we'll get back to you within seven days with an invitation to talk or an update on timing.</p>
+<p>In the meantime, you're welcome to reply with anything else you'd like us to see. I'd especially like to hear where your current sourcing tools get in the way.</p>
+<p>Thanks for considering building this with us.</p>
+${signedBy('Kody', 'Co-founder, Patina · Madison, WI')}`, {
+    preheader: "Your Founding 50 application is in. I'll review it with Leah.",
+  });
 }
 
 export function makerReceivedEmail(app: { contact_name: string; brand_name: string }) {
   const name = app.contact_name?.trim() || 'there';
   const brand = app.brand_name?.trim() || 'your workshop';
   return frame(`<p>Hi ${escapeHtml(name)},</p>
-<p>Thank you for sharing ${escapeHtml(brand)} with us. We believe furniture should tell a story — and yours caught our attention.</p>
-<p>Leah personally reviews every maker application. Expect to hear from our team within two weeks with next steps. If something important comes up about your work in the meantime, just reply to this email.</p>
-<p>We're being very selective about the first 15 makers. Grateful you put ${escapeHtml(brand)} forward.</p>
-${signOff}`);
+<p>Thank you for introducing ${escapeHtml(brand)} to Patina. I'm Kody, one of the founders.</p>
+<p>Patina started with the belief that the tools we use to find furniture should make room for the care that goes into making it. A workshop's materials, methods, and point of view belong in that story.</p>
+<p>I'll review your application with Leah. We'll get back to you within two weeks with next steps or an update on timing.</p>
+<p>If there's a piece or a part of your process you'd like us to understand, you can reply with a link or a note. I'd like to learn what you want people to notice about your work.</p>
+<p>Thank you for considering a place in Patina's first chapter.</p>
+${signedBy('Kody', 'Co-founder, Patina · Madison, WI')}`, {
+    preheader: "Your maker application is in. I'll review it with Leah.",
+  });
 }
 
 export async function sendDesignerReceived(app: {
@@ -26,8 +35,9 @@ export async function sendDesignerReceived(app: {
   last_name?: string;
 }): Promise<SendResult> {
   return sendHtmlEmail({
+    ...kodySignupSender,
     to: app.email,
-    subject: 'We received your Founding 50 application',
+    subject: 'A note from Kody about your Founding 50 application',
     html: designerReceivedEmail(app),
     tags: [
       { name: 'source', value: 'application_received' },
@@ -42,8 +52,9 @@ export async function sendMakerReceived(app: {
   contact_name: string;
 }): Promise<SendResult> {
   return sendHtmlEmail({
+    ...kodySignupSender,
     to: app.email,
-    subject: `We received your Patina application for ${app.brand_name || 'your workshop'}`,
+    subject: `A note from Kody about your Patina application for ${app.brand_name || 'your workshop'}`,
     html: makerReceivedEmail(app),
     tags: [
       { name: 'source', value: 'application_received' },

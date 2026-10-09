@@ -1,164 +1,192 @@
-import { Metadata } from 'next';
-import { draftMode } from 'next/headers';
-import { Navigation } from '@/components/layout/Navigation';
-import { Footer } from '@/components/layout/Footer';
-import { AppHero } from '@/components/sections/AppHero';
-import { AppProblemBridge } from '@/components/sections/AppProblemBridge';
-import { AppJourney } from '@/components/sections/AppJourney';
-import { AestheteEngineExplainer } from '@/components/sections/AestheteEngineExplainer';
-import { AppDesignerHandoff } from '@/components/sections/AppDesignerHandoff';
-import { AppTrustSection } from '@/components/sections/AppTrustSection';
-import { AppCTA } from '@/components/sections/AppCTA';
-import { generateSoftwareApplicationJsonLd } from '@/lib/seo';
-import { sanityFetch } from '../../../sanity/lib/client';
-import { appPageQuery } from '../../../sanity/lib/queries';
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { StudioPage } from "@/components/studio/StudioPage";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
+import styles from "@/components/studio/EditorialPages.module.css";
+import { StrataMark } from "@/components/ui/StrataMark";
 
 export const metadata: Metadata = {
-  title: 'The Patina App',
+  title: "The App We’re Building",
   description:
-    "See your room the way a designer would. The Patina app brings AR room visualization, designer-taught recommendations, and heritage makers together in one experience. Founding members get first access.",
-  openGraph: {
-    title: 'The Patina App — See Your Room the Way a Designer Would',
-    description: 'AR room visualization, designer-taught recommendations, and heritage makers. Founding members get first access.',
-  },
+    "A designer’s eye, on your terms. Discover the furniture experience Patina is building and join the Founding Circle for first access at launch.",
+  alternates: { canonical: "https://patina.cloud/app" },
 };
 
-interface AppPage {
-  heroEyebrow?: string;
-  heroHeadline?: string;
-  heroHeadlineEmphasis?: string;
-  heroSubheadline?: string;
-  heroSecondaryLine?: string;
-  heroPrimaryCta?: string | { label: string; href?: string };
-  heroSecondaryCta?: string | { label: string; href?: string };
-  heroAndroidNote?: string;
-  problemHeader?: string;
-  problemParagraphs?: string[];
-  comparisonLeft?: {
-    label: string;
-    description: string;
-    itemCount: number;
-  };
-  comparisonRight?: {
-    label: string;
-    description: string;
-    itemCount: number;
-  };
-  journeyHeader?: string;
-  journeySteps?: Array<{
-    stepNumber: number;
-    title: string;
-    description: string;
-    tagline: string;
-    icon: string;
-  }>;
-  engineHeader?: string;
-  enginePillars?: Array<{
-    title: string;
-    description: string;
-    icon?: string;
-    examples?: string[];
-    highlight?: string;
-  }>;
-  handoffHeader?: string;
-  handoffDescription?: string;
-  handoffBenefit?: string;
-  handoffItems?: string[];
-  handoffCta?: string;
-  trustEyebrow?: string;
-  trustIndicators?: Array<{
-    title: string;
-    description: string;
-    icon?: string;
-  }>;
-  ctaHeadline?: string;
-  ctaHeadlineEmphasis?: string;
-  ctaSubheadline?: string;
-  ctaTertiaryLine?: string;
-  ctaPrimary?: string | { label: string; href?: string };
-  ctaSecondaryText?: string;
-  ctaSecondaryLink?: string | { label: string; href?: string };
-}
-
-export default async function AppPage() {
-  const { isEnabled: isDraft } = await draftMode();
-
-  const appPage = await sanityFetch<AppPage | null>({
-    query: appPageQuery,
-    isDraftMode: isDraft,
-  });
-
-  const softwareAppJsonLd = generateSoftwareApplicationJsonLd();
-
+export default function AppPage() {
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
-      />
-      <Navigation />
-
-      <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">
-        {/* Hero - Aesthete Engine branding, story-driven copy */}
-        <AppHero
-          eyebrow={appPage?.heroEyebrow}
-          headline={appPage?.heroHeadline}
-          headlineEmphasis={appPage?.heroHeadlineEmphasis}
-          subheadline={appPage?.heroSubheadline}
-          secondaryLine={appPage?.heroSecondaryLine}
-          primaryCta={appPage?.heroPrimaryCta}
-          secondaryCta={appPage?.heroSecondaryCta}
-          androidNote={appPage?.heroAndroidNote}
-        />
-
-        {/* Problem/Solution Bridge - "What's popular vs what's right" */}
-        <AppProblemBridge
-          header={appPage?.problemHeader}
-          paragraphs={appPage?.problemParagraphs}
-          comparisonLeft={appPage?.comparisonLeft}
-          comparisonRight={appPage?.comparisonRight}
-        />
-
-        {/* How It Works - 4-step vertical journey */}
-        <AppJourney
-          header={appPage?.journeyHeader}
-          steps={appPage?.journeySteps}
-        />
-
-        {/* Aesthete Engine Explainer - 3-pillar dark section */}
-        <AestheteEngineExplainer
-          header={appPage?.engineHeader}
-          pillars={appPage?.enginePillars}
-        />
-
-        {/* Designer Handoff - Data transfer value */}
-        <AppDesignerHandoff
-          header={appPage?.handoffHeader}
-          description={appPage?.handoffDescription}
-          benefit={appPage?.handoffBenefit}
-          items={appPage?.handoffItems}
-          cta={appPage?.handoffCta}
-        />
-
-        {/* Trust Indicators - 3-column trust section */}
-        <AppTrustSection
-          eyebrow={appPage?.trustEyebrow}
-          indicators={appPage?.trustIndicators}
-        />
-
-        {/* Final CTA */}
-        <AppCTA
-          headline={appPage?.ctaHeadline}
-          headlineEmphasis={appPage?.ctaHeadlineEmphasis}
-          subheadline={appPage?.ctaSubheadline}
-          tertiaryLine={appPage?.ctaTertiaryLine}
-          primaryCta={appPage?.ctaPrimary}
-          secondaryText={appPage?.ctaSecondaryText}
-          secondaryLink={appPage?.ctaSecondaryLink}
-        />
-      </main>
-
-      <Footer />
-    </>
+    <StudioPage
+      className={styles.editorialPage}
+      eyebrow="The app / In the making"
+      title={
+        <>
+          Your room.
+          <br />A little more possibility.
+        </>
+      }
+      description="We’re building a way to find furniture that belongs in your space, guided by a working designer’s judgment. The app and marketplace are pre-launch."
+      heroAction={<JoinCircleButton source="app-hero" />}
+      heroArt={
+        <StudioMotion kind="image" className={styles.appHeroArt}>
+          <figure className={styles.heroPhotograph}>
+            <Image
+              src="/images/studio/room.jpg"
+              alt="Illustrative warm living room with a lounge chair, timber, and linen"
+              width={1536}
+              height={1024}
+              priority
+              sizes="(max-width: 760px) 100vw, 52vw"
+            />
+            <figcaption>
+              Illustrative imagery — awaiting partner photography.
+              Not an app screen or available product listing.
+            </figcaption>
+          </figure>
+          <div className={styles.appHeroCard} aria-hidden="true">
+            <span>A closer look.</span>
+            <Image
+              src="/images/studio/chair.png"
+              alt=""
+              width={1536}
+              height={1024}
+              sizes="240px"
+              loading="eager"
+            />
+            <span>Shape. Texture. Possibility.</span>
+          </div>
+        </StudioMotion>
+      }
+    >
+      <section className={`studio-section ${styles.appIntroduction}`}>
+        <div className="studio-two-column">
+          <div className="studio-copy">
+            <p className="studio-kicker">What we’re building.</p>
+            <h2 className={styles.sectionTitle}>
+              A place to
+              <br />
+              follow your eye.
+            </h2>
+            <p>
+              Something catches your attention. A texture, a shape, a feeling.
+              You don’t need to know the name for it to begin.
+            </p>
+            <p>
+              Patina is being built around those discoveries: a focused
+              selection informed by real designers, with a path to a fuller
+              design conversation when you want one.
+            </p>
+            <JoinCircleButton source="app-introduction" />
+            <p className={styles.caption}>
+              First access when the app launches.
+            </p>
+          </div>
+          <StudioMotion kind="paper">
+            <figure className={styles.appStudy}>
+              <p className={styles.studyNote}>
+                Room to
+                <br />
+                think it through.
+              </p>
+              <Image
+                src="/images/studio/chair.png"
+                alt="Illustrative isolated timber and leather lounge chair"
+                width={1536}
+                height={1024}
+                sizes="(max-width: 760px) 100vw, 50vw"
+              />
+              <figcaption className={styles.caption}>
+                Illustrative imagery — awaiting partner photography.
+                Not a product for sale.
+              </figcaption>
+            </figure>
+          </StudioMotion>
+        </div>
+      </section>
+      <section className={`studio-section ${styles.appJourney}`}>
+        <div className="studio-two-column">
+          <div>
+            <StrataMark size="compact" align="left" />
+            <p className="studio-kicker">
+              The experience we’re working toward.
+            </p>
+            <h2 className={styles.sectionTitle}>
+              From a feeling
+              <br />
+              to a conversation.
+            </h2>
+          </div>
+          <ol className={styles.steps}>
+            <li>
+              <div>
+                <h3>Begin with your space.</h3>
+                <p>
+                  Your room, your taste, and how you live should be the starting
+                  point. We’re designing Patina to carry that context into the
+                  search.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3>Find what belongs.</h3>
+                <p>
+                  Real interior designers teach Patina what to look for. The aim
+                  is a focused selection you can consider with confidence.
+                </p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h3>Continue with a person.</h3>
+                <p>
+                  When you want more help, we’re building a handoff that carries
+                  your discoveries into a conversation with a working designer.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section className={`studio-section ${styles.appClosing}`}>
+        <div className={styles.closing}>
+          <StudioMotion kind="paper">
+            <div className={styles.note}>
+              <p className="studio-kicker">From the people building it.</p>
+              <h2>The tools should feel like part of the process.</h2>
+              <p>
+                Leah brings the judgment of a working designer. Kody is building
+                the tools to make room for that judgment and your own
+                discoveries.
+              </p>
+              <Link href="/about" className="studio-link">
+                Read our story
+              </Link>
+            </div>
+          </StudioMotion>
+          <div>
+            <h2 className={styles.sectionTitle}>
+              Have a hand
+              <br />
+              in what’s next.
+            </h2>
+            <p>
+              The Founding Circle gets first access, behind-the-scenes updates,
+              and a say in what we build. Join the people helping Patina take
+              shape.
+            </p>
+            <JoinCircleButton source="app-closing" />
+            <div className={styles.links}>
+              <Link href="/founding" className="studio-link">
+                Explore membership
+              </Link>
+              <Link href="/designers" className="studio-link">
+                Building with designers
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </StudioPage>
   );
 }

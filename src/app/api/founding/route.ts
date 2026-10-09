@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { getServerPostHog } from "@/lib/posthog-server";
+import { captureServerEvent } from "@/lib/posthog-server";
 import { isHoneypotTripped, checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { sendFoundingWelcome } from "@/lib/emails/founding-welcome";
 import { SMS_CONSENT_TEXT, systemMessages } from "@/lib/copy/system-messages";
+import { errorMessage } from "@/lib/errors";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -90,18 +91,15 @@ export async function POST(request: NextRequest) {
     const recordSmsConsent = sms_consent === true && !!normalizedPhone;
 
     if (!supabaseAdmin) {
-      console.log("[Founding] Supabase not configured, signup data:", {
-        email: normalizedEmail,
-        source,
-        signup_page,
-        preferred_styles,
-      });
-      return NextResponse.json({ success: true });
+      return NextResponse.json(
+        { error: systemMessages.errors.generic },
+        { status: 503, headers: { "Retry-After": "60" } },
+      );
     }
 
     // Only send the welcome letter on a member's first signup — the upsert below
     // is idempotent on email, so a re-submit must not re-trigger the "first
-    // letter from Leah."
+    // letter from Kody."
     const { data: existingRow } = await supabaseAdmin
       .from("waitlist")
       .select("email, phone")
@@ -189,19 +187,16 @@ export async function POST(request: NextRequest) {
       }));
 
       // Track signup failure server-side
-      const posthog = getServerPostHog();
-      if (posthog) {
-        posthog.capture({
-          distinctId: posthog_distinct_id || normalizedEmail,
-          event: "founding_signup_error",
-          properties: {
-            error_code: error.code,
-            error_message: error.message,
-            source,
-            signup_page,
-          },
-        });
-      }
+      captureServerEvent({
+        distinctId: posthog_distinct_id || normalizedEmail,
+        event: "founding_signup_error",
+        properties: {
+          error_code: error.code,
+          error_message: error.message,
+          source,
+          signup_page,
+        },
+      });
 
       return NextResponse.json({ error: "Failed to save signup" }, { status: 500 });
     }
@@ -225,20 +220,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Fire-and-forget welcome — the "first letter from Leah" the modal promises.
+    // Keep the welcome letter alive after the response on serverless hosts.
     // New members only; send failures don't block the success response.
     if (isNewSignup) {
-      sendFoundingWelcome({ email: normalizedEmail, first_name }).catch((err) => {
-        console.error(
-          "[Founding] Welcome email failed:",
-          err instanceof Error ? err.message : "Unknown error",
-        );
-      });
+      after(() =>
+        sendFoundingWelcome({ email: normalizedEmail, first_name }).catch((err) => {
+          console.error("[Founding] Welcome email failed:", errorMessage(err));
+        }),
+      );
     }
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[Founding] Request error:", err instanceof Error ? err.message : "Unknown error");
+    console.error("[Founding] Request error:", errorMessage(err));
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

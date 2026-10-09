@@ -2,68 +2,40 @@ import type { Metadata } from "next";
 import type { Product } from "@/types/sanity";
 import { SITE_URL as siteUrl } from "@/lib/site-url";
 const siteName = "Patina";
-const siteDescription = "Designer-curated furniture for real rooms. Find pieces that belong in your space, guided by working designers — with a full designer engagement ready when you want more.";
+const siteDescription = "A designer’s eye, within reach. Help shape Patina’s furniture platform: join the Founding Circle for first access when the app launches.";
 
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Patina | Complete Designer-Curated Rooms | Where Time Adds Value",
+    default: "Patina | Where Time Adds Value",
     template: "%s | Patina",
   },
   description: siteDescription,
-  keywords: [
-    "handcrafted furniture",
-    "artisan furniture",
-    "AR furniture visualization",
-    "sustainable furniture",
-    "heirloom quality",
-    "furniture makers",
-    "interior design",
-    "complete room design",
-    "designer-curated rooms",
-    "room planning",
-    "turnkey interior design",
-  ],
-  authors: [{ name: "Patina" }],
+  keywords: ["interior design", "furniture discovery", "handcrafted furniture", "furniture makers", "Founding Circle", "Madison Wisconsin"],
+  authors: [{ name: "Leah & Kody Kochaver" }],
   creator: "Patina",
   publisher: "Patina",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: siteName,
-    title: "Patina | Complete Designer-Curated Rooms | Where Time Adds Value",
+    siteName,
+    title: "Patina | Where Time Adds Value",
     description: siteDescription,
-    images: [
-      {
-        url: `${siteUrl}/og-image.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Patina - Complete Designer-Curated Rooms",
-      },
-    ],
+    images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: "Patina. Where Time Adds Value. Join the Founding Circle." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Patina | Complete Designer-Curated Rooms | Where Time Adds Value",
+    title: "Patina | Where Time Adds Value",
     description: siteDescription,
-    images: [`${siteUrl}/og-image.jpg`],
+    images: [`${siteUrl}/opengraph-image`],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+  icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }] },
 };
 
 export function generateProductJsonLd(product: Product) {
@@ -106,9 +78,8 @@ export function generateOrganizationJsonLd() {
     "@type": "Organization",
     name: "Patina",
     url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
-    description:
-      "Designer-taught furniture discovery platform where professional interior designers and makers classify every product.",
+    logo: `${siteUrl}/icon.svg`,
+    description: siteDescription,
     slogan: "Where Time Adds Value",
     foundingDate: "2023",
     foundingLocation: {
@@ -170,14 +141,7 @@ export function generateWebsiteJsonLd() {
     name: siteName,
     url: siteUrl,
     description: siteDescription,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${siteUrl}/furniture?search={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
+    inLanguage: "en-US",
   };
 }
 
@@ -199,20 +163,10 @@ export function generateSoftwareApplicationJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Patina",
-    operatingSystem: "iOS",
     applicationCategory: "LifestyleApplication",
-    description:
-      "Scan your room, discover your style, find furniture that belongs. Professional designers teach the AI what fits your space.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    creator: {
-      "@type": "Organization",
-      name: "Patina",
-      url: siteUrl,
-    },
+    description: "Patina is building designer-taught furniture discovery with a path to a working designer. The app and marketplace are pre-launch.",
+    url: `${siteUrl}/app`,
+    creator: { "@type": "Organization", name: "Patina", url: siteUrl },
   };
 }
 

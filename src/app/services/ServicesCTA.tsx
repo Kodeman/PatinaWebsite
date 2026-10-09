@@ -19,7 +19,7 @@ export function ServicesCTA({
   className = "",
 }: ServicesCTAProps) {
   const baseClasses =
-    "inline-flex items-center justify-center px-8 py-4 font-medium text-sm tracking-wide uppercase transition-all duration-300 rounded-[var(--radius-lg)]";
+    "studio-button inline-flex items-center justify-center px-7 py-4 text-sm transition-colors duration-300";
 
   const variantClasses = {
     "primary-dark":

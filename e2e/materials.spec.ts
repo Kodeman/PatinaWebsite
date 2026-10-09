@@ -1,61 +1,39 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Materials Page", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/materials");
-  });
+test("the paused Materials page sends existing visitors to makers", async ({
+  page,
+}) => {
+  await page.route("**/api/**", (route) =>
+    route.request().method() === "GET" ? route.continue() : route.abort(),
+  );
+  await page.goto("/materials");
+  await expect(page).toHaveURL(/\/makers$/);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator('a[href="/materials"]')).toHaveCount(0);
+});
 
-  test("should display the page with correct title", async ({ page }) => {
-    await expect(page).toHaveTitle(/Materials.*Patina/);
-  });
+test("the launch sitemap excludes the paused Materials page", async ({
+  request,
+}) => {
+  const response = await request.get("/sitemap.xml");
+  expect(response.ok()).toBeTruthy();
+  expect(await response.text()).not.toMatch(/<loc>[^<]*\/materials<\/loc>/);
+});
 
-  test("should display hero section with heading", async ({ page }) => {
-    const heading = page.locator("h1");
-    await expect(heading).toBeVisible();
-    await expect(heading).toContainText("quality");
-  });
-
-  test("should display navigation", async ({ page }) => {
-    await expect(page.locator("nav").first()).toBeVisible();
-  });
-
-  test("should display sustainability stats", async ({ page }) => {
-    await expect(page.getByText("100%").first()).toBeVisible();
-    await expect(page.getByText("FSC Certified Wood").first()).toBeVisible();
-  });
-
-  test("should display material cards", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: "American Black Walnut" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "White Oak" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Japanese Hinoki" })).toBeVisible();
-  });
-
-  test("should display material categories", async ({ page }) => {
-    // Wait for page to fully load
-    await page.waitForLoadState("networkidle");
-    // Categories are shown as badges on material cards
-    const hardwoodBadge = page.locator("text=Hardwood").first();
-    await expect(hardwoodBadge).toBeVisible();
-    await expect(page.getByText("Leather").first()).toBeVisible();
-    await expect(page.getByText("Natural Fiber")).toBeVisible();
-  });
-
-  test("should display sourcing philosophy section", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: "Our sourcing philosophy" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Traceability" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Longevity" })).toBeVisible();
-  });
-
-  test("should have CTA link to furniture", async ({ page }) => {
-    // Scroll to bottom to ensure CTA is visible
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    const cta = page.getByRole("link", { name: /Explore the Collection/i });
-    await expect(cta).toBeVisible();
-  });
-
-  test("should display footer", async ({ page }) => {
-    // Scroll to bottom to ensure footer is visible
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await expect(page.locator("footer")).toBeVisible();
-  });
+test("retired furniture routes lead directly to the maker invitation", async ({
+  request,
+}) => {
+  for (const [path, status] of [
+    ["/materials", 307],
+    ["/furniture", 308],
+    ["/furniture/archived-piece", 308],
+  ] as const) {
+    const response = await request.get(path + "?utm_source=studio-letter", {
+      maxRedirects: 0,
+    });
+    expect(response.status()).toBe(status);
+    expect(response.headers().location).toBe(
+      "/makers?utm_source=studio-letter",
+    );
+  }
 });

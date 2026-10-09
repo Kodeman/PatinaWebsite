@@ -19,7 +19,7 @@
 
 ### Request guards
 - **Location:** `src/lib/rate-limit.ts`
-- **Exposes:** `getClientIp()`, `checkRateLimit(key, limit, window)` (in-memory, per isolate), `isHoneypotTripped()`.
+- **Exposes:** `getClientIp()`, `checkRateLimit(key, limit, window)` (in-memory, per isolate), `isHoneypotTripped()`. `src/lib/errors.ts` adds `errorMessage(err)` for every route's catch logging.
 
 ### Persistence
 - **Location:** `src/lib/supabase.ts`

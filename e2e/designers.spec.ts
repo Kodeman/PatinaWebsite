@@ -1,101 +1,61 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Designer Portal Page", () => {
+test.describe("Founding Designers Page", () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.route("**/api/**", (route) => route.request().method() === "GET" ? route.continue() : route.abort());
     await page.goto("/designers");
+    const consent = page.getByRole("dialog", { name: "Cookie consent" });
+    if (await consent.isVisible()) await consent.getByRole("button", { name: "Decline", exact: true }).click();
   });
 
-  test("should display the page with correct title", async ({ page }) => {
-    await expect(page).toHaveTitle(/For Designers.*Patina/);
+  test("introduces the Founding 50 invitation", async ({ page }) => {
+    await expect(page).toHaveTitle(/Founding 50.*For Designers.*Patina/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Your eye belongs");
+    await expect(page.getByText(/The app and marketplace are pre-launch/).first()).toBeVisible();
   });
 
-  test("should display dark-themed hero section", async ({ page }) => {
-    // Check hero content
-    await expect(page.getByText("For Designers").first()).toBeVisible();
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Elevate your practice");
+  test("explains the five founding benefits", async ({ page }) => {
+    const benefits = ["Your vocabulary, in the tools", "A voice in what gets built", "A community of peers", "A running start with clients", "Your contribution, recognized"];
+    for (const benefit of benefits) await expect(page.locator("dt").filter({ hasText: benefit })).toBeVisible();
+    await expect(page.locator("dd").filter({ hasText: /no fee to join/ })).toBeVisible();
   });
 
-  test("should display navigation with dark variant", async ({ page }) => {
-    await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
-  });
-
-  test("should have Apply for Trade Access CTA button", async ({ page }) => {
-    const applyButton = page.getByRole("link", { name: /Apply for Trade Access/i });
-    await expect(applyButton).toBeVisible();
-    await expect(applyButton).toHaveAttribute("href", "#apply");
-  });
-
-  test("should have Browse Collection link", async ({ page }) => {
-    const browseLink = page.getByRole("link", { name: /Browse Collection/i }).first();
-    await expect(browseLink).toBeVisible();
-    await expect(browseLink).toHaveAttribute("href", "/furniture");
-  });
-
-  test("should display all 6 trade benefits", async ({ page }) => {
-    const benefitsSection = page.locator("section").filter({ hasText: "Trade Benefits" });
-    await expect(benefitsSection).toBeVisible();
-
-    const benefits = [
-      "Trade Pricing",
-      "AR Client Presentations",
-      "Curated Collections",
-      "Dedicated Support",
-      "White Glove Delivery",
-      "Maker Introductions",
-    ];
-
-    for (const benefit of benefits) {
-      await expect(page.getByRole("heading", { name: benefit })).toBeVisible();
-    }
-  });
-
-  test("should display designer testimonials", async ({ page }) => {
-    await expect(page.getByText("Designer Stories")).toBeVisible();
-    await expect(page.getByText("Sarah Chen")).toBeVisible();
-    await expect(page.getByText("Marcus Webb")).toBeVisible();
-  });
-
-  test("should have application form with all fields", async ({ page }) => {
-    const form = page.locator("form");
-    await expect(form).toBeVisible();
-
-    // Check form fields
-    await expect(page.locator("#firstName")).toBeVisible();
-    await expect(page.locator("#lastName")).toBeVisible();
-    await expect(page.locator("#email")).toBeVisible();
-    await expect(page.locator("#company")).toBeVisible();
-    await expect(page.locator("#website")).toBeVisible();
-    await expect(page.locator("#message")).toBeVisible();
-  });
-
-  test("should be able to fill out application form", async ({ page }) => {
-    await page.locator("#firstName").fill("Jane");
-    await page.locator("#lastName").fill("Smith");
-    await page.locator("#email").fill("jane@design.com");
-    await page.locator("#company").fill("Smith Design");
-    await page.locator("#website").fill("https://smithdesign.com");
-    await page.locator("#message").fill("I specialize in residential projects.");
-
-    // Verify values
-    await expect(page.locator("#firstName")).toHaveValue("Jane");
-    await expect(page.locator("#email")).toHaveValue("jane@design.com");
-  });
-
-  test("should have submit button in form", async ({ page }) => {
-    const submitButton = page.getByRole("button", { name: /Submit Application/i });
-    await expect(submitButton).toBeVisible();
-  });
-
-  test("should navigate to apply section when clicking CTA", async ({ page }) => {
-    const applyButton = page.getByRole("link", { name: /Apply for Trade Access/i });
-    await applyButton.click();
-
-    // Should scroll to form section
+  test("provides a direct application anchor", async ({ page }) => {
+    const apply = page.getByRole("link", { name: "Apply to the Founding 50", exact: true });
+    await expect(apply).toHaveAttribute("href", "#apply");
+    await apply.click();
     await expect(page.locator("#apply")).toBeInViewport();
+    await expect(page.locator("#apply form")).toBeVisible();
   });
 
-  test("should display footer", async ({ page }) => {
-    await expect(page.getByText("© 2025 Patina")).toBeVisible();
+  test("includes practice and contact fields", async ({ page }) => {
+    const form = page.locator("#apply form");
+    for (const label of ["First Name", "Last Name", "Email", "Company / Studio Name", "Location", "Portfolio or Website"]) {
+      await expect(form.getByLabel(label, { exact: true })).toBeVisible();
+    }
+    await expect(form.getByRole("button", { name: "Apply to the Founding 50", exact: true })).toBeVisible();
+  });
+
+  test("allows applicants to enter their practice details", async ({ page }) => {
+    const form = page.locator("#apply form");
+    await form.getByLabel("First Name", { exact: true }).fill("Jane");
+    await form.getByLabel("Last Name", { exact: true }).fill("Smith");
+    await form.getByLabel("Email", { exact: true }).fill("jane@example.com");
+    await form.getByLabel("Company / Studio Name", { exact: true }).fill("Example Studio");
+    await expect(form.getByLabel("First Name", { exact: true })).toHaveValue("Jane");
+    await expect(form.getByLabel("Company / Studio Name", { exact: true })).toHaveValue("Example Studio");
+  });
+
+  test("sets personal review expectations and offers contact", async ({ page }) => {
+    await expect(page.getByText(/personally review every application/)).toContainText("within 7 days");
+    await expect(page.getByRole("link", { name: "Talk to us first", exact: true })).toHaveAttribute("href", "/contact");
+    await expect(page.getByRole("link", { name: "The story behind Patina", exact: true })).toHaveAttribute("href", "/about");
+  });
+
+  test("retains navigation and footer without catalog calls to action", async ({ page }) => {
+    await expect(page.getByRole("navigation", { name: "Main navigation", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Browse Collection|Apply for Trade Access/ })).toHaveCount(0);
+    await expect(page.locator("footer")).toBeVisible();
   });
 });

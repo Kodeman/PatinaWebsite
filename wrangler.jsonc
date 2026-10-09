@@ -1,0 +1,48 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "patina-website",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-10",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "patina.cloud", "custom_domain": true },
+    { "pattern": "www.patina.cloud", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "images": { "binding": "IMAGES" },
+  "services": [
+    { "binding": "WORKER_SELF_REFERENCE", "service": "patina-website" }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "patina-website-cache"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" },
+      { "name": "NEXT_TAG_CACHE_DO_SHARDED", "class_name": "DOShardedTagCache" }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["DOQueueHandler", "DOShardedTagCache"]
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1
+  },
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://patina.cloud",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://bkvcixdmuyejfzcijpdg.supabase.co",
+    "NEXT_PUBLIC_POSTHOG_HOST": "https://us.i.posthog.com"
+  }
+}

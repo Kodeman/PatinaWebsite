@@ -9,7 +9,7 @@ PatinaWebsite/
 ├── src/                    # Application code (235 tracked files + Living Study additions)
 ├── sanity/                 # Sanity Studio config, schemas, client, GROQ queries
 ├── scripts/                # Cloudflare build/env scripts, Sanity seeders, email preview
-├── tests/                  # node --test server lifecycle + build artifact tests
+├── tests/                  # node --test: server lifecycle, lead payload, rate limit, sitemap, build artifact; helpers/load-module.mjs
 ├── e2e/                    # Playwright specs, one per page
 ├── docs/                   # Messaging system, engagement plan, launch runbooks, reports
 ├── public/                 # Fonts, images (studio imagery under public/images/studio)
@@ -37,7 +37,7 @@ App Router. Each folder is a route with `page.tsx`; client islands sit beside th
 - `motion/` `FadeIn`, `StaggerChildren`, `ScaleIn`, `PageTransition`, `ScrollFadeOut`, `ScrollRevealText`, `TextClipReveal`.
 
 ### src/lib/
-`analytics.ts`, `posthog.ts`, `posthog-server.ts`, `attribution.ts`, `identity.ts`, `lead-payload.ts`, `lead-capture.ts`, `rate-limit.ts`, `supabase.ts`, `seo.ts`, `site-url.ts`, `copy/system-messages.ts`, `emails/{send,senders,template,founding-welcome,newsletter-welcome,application-received,contact-received}.ts`, `utils/{cn,index}.ts`. `lib/sanity/` is an empty placeholder; the real client is `sanity/lib/`.
+`analytics.ts`, `errors.ts` (`errorMessage`), `posthog.ts`, `posthog-server.ts`, `attribution.ts`, `identity.ts`, `lead-payload.ts`, `lead-capture.ts`, `rate-limit.ts`, `supabase.ts`, `seo.ts`, `site-url.ts`, `copy/system-messages.ts`, `emails/{send,senders,template,founding-welcome,newsletter-welcome,application-received,contact-received}.ts`, `utils/{cn,index}.ts`. `lib/sanity/` is an empty placeholder; the real client is `sanity/lib/`.
 
 ### src/hooks/, src/types/, src/data/
 Hooks: `useReducedMotion`, `useInView`, `useScrollProgress`, `useScrollReveal`, `useScrollDepth`, `usePageView`, `useProductViewTracking`. Types: `sanity.ts` (Product/Maker/Material), `about.ts`, `app.ts`. Data: `aboutContent.ts`, `appContent.ts` (typed copy for the older about/app sections).

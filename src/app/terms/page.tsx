@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+import { StrataMark } from "@/components/ui/StrataMark";
+import styles from "@/components/studio/LegalPage.module.css";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -14,7 +16,7 @@ export default function TermsPage() {
     <>
       <Navigation />
 
-      <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">
+      <main id="main-content" className={styles.page}>
         {/* Hero Section */}
         <section className="relative pt-32 pb-16 bg-[var(--patina-soft-cream)]">
           <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,6 +29,7 @@ export default function TermsPage() {
             <p className="text-[var(--patina-mocha-brown)]">
               Last updated: August 11, 2026
             </p>
+            <div className={styles.mark}><StrataMark size="compact" align="left" /></div>
           </div>
         </section>
 

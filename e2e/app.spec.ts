@@ -1,84 +1,52 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("App Download Page", () => {
+test.describe("Pre-launch App Page", () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.route("**/api/**", (route) => route.request().method() === "GET" ? route.continue() : route.abort());
     await page.goto("/app");
+    const consent = page.getByRole("dialog", { name: "Cookie consent" });
+    if (await consent.isVisible()) await consent.getByRole("button", { name: "Decline", exact: true }).click();
   });
 
-  test("should display the page with correct title", async ({ page }) => {
-    await expect(page).toHaveTitle(/The Patina App.*Patina/);
+  test("explains the app’s pre-launch state", async ({ page }) => {
+    await expect(page).toHaveTitle(/The App We’re Building.*Patina/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Your room.");
+    await expect(page.getByText(/The app and marketplace are pre-launch/).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Download|App Store|Google Play/i })).toHaveCount(0);
   });
 
-  test("should display hero section with heading", async ({ page }) => {
-    await expect(page.getByText("Patina App")).toBeVisible();
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Furniture shopping");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("reimagined");
-  });
-
-  test("should display navigation", async ({ page }) => {
-    await expect(page.getByText("PATINA").first()).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Your Room" })).toBeVisible();
-  });
-
-  test("should have Download for iOS button", async ({ page }) => {
-    const downloadButton = page.getByRole("link", { name: /Download for iOS/i });
-    await expect(downloadButton).toBeVisible();
-  });
-
-  test("should display Android coming soon message", async ({ page }) => {
-    await expect(page.getByText(/Android coming soon/i)).toBeVisible();
-  });
-
-  test("should display app mockup placeholder", async ({ page }) => {
-    await expect(page.getByText("App Screenshot")).toBeVisible();
-  });
-
-  test("should display Features section", async ({ page }) => {
-    await expect(page.getByText("Features")).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Everything you need to/i })).toBeVisible();
-  });
-
-  test("should display all 4 app features", async ({ page }) => {
-    const features = [
-      "AR Visualization",
-      "Maker Stories",
-      "Save Favorites",
-      "Designer Connect",
-    ];
-
-    for (const feature of features) {
-      await expect(page.getByRole("heading", { name: feature })).toBeVisible();
+  test("sets out the planned discovery and handoff journey", async ({ page }) => {
+    for (const name of ["Begin with your space.", "Find what belongs.", "Continue with a person."]) {
+      await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
     }
+    await expect(page.getByText(/we’re building a handoff that carries your discoveries/)).toBeVisible();
   });
 
-  test("should display feature descriptions", async ({ page }) => {
-    await expect(page.getByText(/See how furniture looks in your actual space/)).toBeVisible();
-    await expect(page.getByText(/Explore the craftspeople behind each piece/)).toBeVisible();
-    await expect(page.getByText(/Create collections of pieces you love/)).toBeVisible();
-    await expect(page.getByText(/Work with expert designers directly/)).toBeVisible();
+  test("shows a material study without pretending it is a live product", async ({ page }) => {
+    await expect(page.getByRole("img", { name: "Illustrative isolated timber and leather lounge chair" })).toBeVisible();
+    await expect(page.locator("main figcaption").filter({ hasText: "Illustrative imagery — awaiting partner photography." })).toHaveCount(2);
+    await expect(page.getByText(/Not a product for sale/)).toBeVisible();
+    await expect(page.getByText(/Not an app screen or available product listing/)).toBeVisible();
   });
 
-  test("should display final CTA section", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: /Ready to discover furniture with/i })).toBeVisible();
+  test("offers membership instead of a download", async ({ page }) => {
+    await page.locator("main").getByRole("button", { name: "Join the Founding Circle", exact: true }).first().click();
+    await expect(page.getByRole("dialog", { name: /Founding Circle/ })).toBeVisible();
   });
 
-  test("should have App Store download button in CTA", async ({ page }) => {
-    const downloadButtons = page.getByRole("link", { name: /Download on the App Store/i });
-    await expect(downloadButtons.first()).toBeVisible();
+  test("connects the product direction to the founder story", async ({ page }) => {
+    await page.locator("main").getByRole("link", { name: "Read our story", exact: true }).click();
+    await expect(page).toHaveURL(/\/about$/);
   });
 
-  test("should have browse collection link in CTA", async ({ page }) => {
-    await expect(page.getByRole("link", { name: /browse our collection/i })).toBeVisible();
+  test("links to membership details and the designer invitation", async ({ page }) => {
+    await expect(page.getByRole("link", { name: "Explore membership", exact: true })).toHaveAttribute("href", "/founding");
+    await expect(page.getByRole("link", { name: "Building with designers", exact: true })).toHaveAttribute("href", "/designers");
   });
 
-  test("should navigate to furniture when clicking browse collection", async ({ page }) => {
-    const browseLink = page.getByRole("link", { name: /browse our collection/i });
-    await browseLink.click();
-    await expect(page).toHaveURL(/\/furniture/);
-  });
-
-  test("should display footer", async ({ page }) => {
-    const footer = page.locator("footer");
-    await expect(footer).toBeVisible();
+  test("retains shared navigation and footer", async ({ page }) => {
+    await expect(page.getByRole("navigation", { name: "Main navigation", exact: true })).toBeVisible();
+    await expect(page.locator("footer")).toBeVisible();
   });
 });

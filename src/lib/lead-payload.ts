@@ -29,6 +29,8 @@ export interface BuildLeadPayloadOptions {
 
 export interface LeadPayload {
   source: string;
+  /** Legacy nesting still consumed by the Founding Circle endpoint. */
+  utm: Attribution["last_touch"] | null;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -46,40 +48,46 @@ export interface LeadPayload {
   [key: string]: unknown;
 }
 
-/**
- * Build the unified lead payload shared by all signup forms.
- */
-export function buildLeadPayload(opts: BuildLeadPayloadOptions): LeadPayload {
-  const attribution = getAttribution();
-  const last = attribution?.last_touch;
+type LastTouch = Attribution["last_touch"];
 
-  const payload: LeadPayload = {
-    // Every lead API requires `source`; emit it here so no caller has to
-    // remember to repeat it in `extra`. Callers that still pass it in `extra`
-    // (FoundingCircleModal, NewsletterSignup) send the identical value, so the
-    // spread below is a no-op for them.
-    source: opts.source,
+/** Flat attribution fields every lead API accepts, derived from the last touch. */
+function lastTouchFields(last: LastTouch | null) {
+  return {
     utm_source: last?.utm_source,
     utm_medium: last?.utm_medium,
     utm_campaign: last?.utm_campaign,
     utm_content: last?.utm_content,
     utm_term: last?.utm_term,
     referrer: last?.referrer || "",
-    first_touch_attribution: attribution?.first_touch || null,
-    last_touch_attribution: attribution?.last_touch || null,
+    gclid: last?.gclid || null,
+    fbclid: last?.fbclid || null,
+  };
+}
+
+/**
+ * Build the unified lead payload shared by all signup forms.
+ */
+export function buildLeadPayload(opts: BuildLeadPayloadOptions): LeadPayload {
+  const attribution = getAttribution();
+  const last = attribution?.last_touch ?? null;
+
+  return {
+    // Every lead API requires `source`; emit it here so no caller has to
+    // remember to repeat it in `extra`. Callers that still pass it in `extra`
+    // (FoundingCircleModal, NewsletterSignup) send the identical value, so the
+    // spread below is a no-op for them.
+    source: opts.source,
+    // Keep the legacy Founding Circle contract alongside unified flat fields.
+    utm: last,
+    ...lastTouchFields(last),
+    first_touch_attribution: attribution?.first_touch ?? null,
+    last_touch_attribution: last,
     posthog_distinct_id: opts.posthogDistinctId,
     signup_page: opts.signupPage,
     cta_text: opts.ctaText ?? null,
-    gclid: last?.gclid || null,
-    fbclid: last?.fbclid || null,
     channel: classifyChannel(attribution),
+    ...opts.extra,
   };
-
-  if (opts.extra) {
-    Object.assign(payload, opts.extra);
-  }
-
-  return payload;
 }
 
 /**
@@ -94,11 +102,12 @@ export function inferRole(
 ): "designer" | "consumer" | "unknown" {
   const haystack = `${source} ${signupPage}`.toLowerCase();
 
-  if (/designer|maker|trade|pro\b|professional|studio/.test(haystack)) {
+  if (/designer|maker|trade|pro\b|professional/.test(haystack)) {
     return "designer";
   }
 
-  if (/founding|waitlist|newsletter|furniture|shop|consumer|home|signup/.test(haystack)) {
+  // The homepage ("<source> /") is consumer-facing; the trailing " /" matches it.
+  if (/founding|waitlist|newsletter|furniture|shop|consumer|home|signup|studio| \/$/.test(haystack)) {
     return "consumer";
   }
 

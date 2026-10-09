@@ -1,294 +1,337 @@
-import { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next";
 import Image from "next/image";
-import { draftMode } from "next/headers";
+import Link from "next/link";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
-import { sanityFetch } from "../../../sanity/lib/client";
-import { makersQuery } from "../../../sanity/lib/queries";
+import { StrataMark } from "@/components/ui/StrataMark";
+import { StudioMotion } from "@/components/studio/StudioMotion";
+import { MakerStudy } from "./MakerStudy";
+import styles from "./MakersPage.module.css";
 
 export const metadata: Metadata = {
-  title: "Our Makers",
+  title: "For Makers — The First 15",
   description:
-    "Meet the artisan workshops, heritage manufacturers, and emerging brands behind Patina furniture. Every partner shares the same belief: furniture should outlast the room it's in.",
+    "A founding invitation to 15 furniture makers. Help shape how your work is discovered and understood, with craft at the center. Apply to partner with Patina.",
+  alternates: { canonical: "/makers" },
 };
 
-interface Maker {
-  _id: string;
-  name: string;
-  slug: string;
-  location: string;
-  foundedYear: number;
-  yearsOfCraft: number;
-  badges: string[];
-  quote?: string;
-  imageUrl?: string;
-}
-
-const VALUES = [
+const questions = [
   {
-    title: "Built to Last",
-    body:
-      "We partner with makers and manufacturers who measure quality in decades, not seasons. Solid joinery. Honest materials. The kind of construction you can feel when you sit down.",
+    title: "Is the marketplace open yet?",
+    answer:
+      "The app and marketplace are pre-launch. We’re bringing together the people and work that will shape them. This invitation is a chance to be part of that beginning.",
   },
   {
-    title: "Transparency in Every Grain",
-    body:
-      "Our partners open the door to their process — where materials come from, how pieces are built, who builds them. No black-box supply chains.",
+    title: "What should I share in an application?",
+    answer:
+      "Tell us about your workshop, where you work, your materials and process, and how we can reach you. A website or portfolio helps us get to know the work. If you have a trade program, tell us how it works today.",
   },
   {
-    title: "Craft Over Volume",
-    body:
-      "Whether you produce ten pieces a year or ten thousand, what matters is intention. Every Patina partner chooses quality of process over speed of output.",
+    title: "Who reads the applications?",
+    answer:
+      "Kody and Leah personally review every maker application for fit. You’ll hear from us within two weeks. We begin with a conversation about your work and what a partnership could look like.",
+  },
+  {
+    title: "Can makers pay for placement?",
+    answer:
+      "No. There are no sponsored placements or pay-to-play slots. Placement is earned through the quality of the work and its fit with Patina.",
   },
 ];
 
-const PARTNER_TYPES = [
-  {
-    number: "01",
-    title: "Artisan Workshops",
-    body:
-      "Solo makers and small studios where every piece carries a signature. You know the grain of every board that leaves your shop.",
-  },
-  {
-    number: "02",
-    title: "Heritage Manufacturers",
-    body:
-      "Brands with decades — or centuries — of craft knowledge built into their operations. Your factory floor has a story, and your furniture carries it forward.",
-  },
-  {
-    number: "03",
-    title: "Emerging Brands",
-    body:
-      "Design-forward companies building modern furniture with traditional values. You're scaling intentionally — growth without compromise.",
-  },
-];
-
-export default async function MakersPage() {
-  const { isEnabled: isDraft } = await draftMode();
-
-  const makers = (await sanityFetch<Maker[]>({
-    query: makersQuery,
-    isDraftMode: isDraft,
-  })) || [];
-
+export default function MakersPage() {
   return (
-    <>
+    <div className={styles.page}>
       <Navigation />
-
-      <main id="main-content" className="min-h-screen bg-[var(--patina-warm-white)]">
-        {/* ── Section 01 — Hero ── */}
-        <section className="relative pt-32 pb-20 lg:pb-28 bg-[var(--patina-soft-cream)] overflow-hidden">
-          <div
-            className="absolute -bottom-20 -right-20 w-[400px] h-[300px] bg-[var(--patina-clay-beige)] opacity-[0.04] pointer-events-none"
-            style={{
-              borderRadius: "60% 40% 50% 50% / 50% 50% 40% 60%",
-              transform: "rotate(15deg)",
-            }}
+      <main id="main-content">
+        <header className={styles.hero}>
+          <Image
+            className={styles.heroImage}
+            src="/images/studio/workbench.jpg"
+            alt="Illustrative close-up of hands fitting a timber joint at a workshop bench"
+            fill
+            priority
+            sizes="100vw"
           />
-
-          <div className="relative z-10 max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-label text-[var(--patina-clay-beige)] mb-3">
-              The People Behind the Pieces
-            </p>
-            <h1 className="text-display-1 text-[var(--patina-charcoal)] mb-6">
-              Meet our{" "}
-              <em className="italic text-[var(--patina-mocha-brown)]">makers</em>
+          <div className={styles.heroShade} aria-hidden="true" />
+          <div className={styles.heroCopy}>
+            <p className={styles.kicker}>For makers / A founding invitation</p>
+            <h1>
+              Good work
+              <br />
+              deserves a<br />
+              closer look.
             </h1>
-            <p className="text-xl text-[var(--patina-mocha-brown)] leading-relaxed max-w-2xl mx-auto">
-              Whether it&apos;s a single craftsperson shaping wood by hand or a
-              heritage manufacturer refining techniques across generations —
-              every partner on Patina shares the same belief: furniture should
-              outlast the room it&apos;s in.
+            <p className={styles.heroDescription}>
+              We’re inviting 15 founding makers to help shape a place where the
+              care behind a piece becomes part of how it is discovered.
             </p>
-          </div>
-        </section>
-
-        {/* ── Section 02 — Values Strip ── */}
-        <section className="py-20 lg:py-24 bg-[var(--patina-pearl,var(--patina-soft-cream))]">
-          <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-10 md:gap-12">
-              {VALUES.map((v) => (
-                <div key={v.title}>
-                  <h3 className="font-display text-xl font-medium text-[var(--patina-charcoal)] mb-3">
-                    {v.title}
-                  </h3>
-                  <p className="text-sm text-[var(--patina-mocha-brown)] leading-[1.75]">
-                    {v.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Strata Rule divider */}
-        <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col gap-[3px]" aria-hidden="true">
-            <span className="h-[1.5px] bg-[var(--patina-clay-beige)] opacity-35 w-full" />
-            <span className="h-[1.5px] bg-[var(--patina-clay-beige)] opacity-35 w-4/5" />
-            <span className="h-[1.5px] bg-[var(--patina-clay-beige)] opacity-35 w-3/5" />
-          </div>
-        </div>
-
-        {/* ── Section 03 — Partner Types ── */}
-        <section className="pb-20 lg:pb-28">
-          <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-display text-[clamp(1.75rem,4vw,2.25rem)] font-normal text-[var(--patina-charcoal)] leading-[1.2] mb-5">
-              Who we{" "}
-              <em className="italic text-[var(--patina-mocha-brown)]">work with</em>
-            </h2>
-            <p className="text-[var(--patina-mocha-brown)] leading-[1.7] max-w-[560px] mb-10">
-              Great furniture comes from many kinds of workshops. What they share
-              matters more than how they differ.
-            </p>
-
-            <div className="flex flex-col gap-9">
-              {PARTNER_TYPES.map((type) => (
-                <div key={type.number} className="flex gap-7 items-start">
-                  <div className="font-mono text-[11px] tracking-[0.1em] text-[var(--patina-clay-beige)] min-w-8 pt-1">
-                    {type.number}
-                  </div>
-                  <div>
-                    <h3 className="font-display text-[1.4rem] font-medium text-[var(--patina-charcoal)] mb-2">
-                      {type.title}
-                    </h3>
-                    <p className="text-[var(--patina-mocha-brown)] leading-[1.7] text-[0.95rem]">
-                      {type.body}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Makers Grid (preserved from Sanity) ── */}
-        {makers.length > 0 && (
-          <section className="py-16 lg:py-20 bg-[var(--patina-soft-cream)]">
-            <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-              <p className="text-label text-[var(--patina-clay-beige)] mb-3 text-center">
-                Founding Partners
-              </p>
-              <h2 className="font-display text-[clamp(1.5rem,3.5vw,2rem)] font-normal text-[var(--patina-charcoal)] text-center mb-12">
-                A few of the{" "}
-                <em className="italic text-[var(--patina-mocha-brown)]">workshops</em>{" "}
-                shaping our catalog
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {makers.map((maker) => (
-                  <article
-                    key={maker._id}
-                    className="group bg-[var(--patina-warm-white)] rounded-[var(--radius-xl)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-lg)]"
-                  >
-                    <div className="relative aspect-[3/2] overflow-hidden bg-[var(--patina-clay-beige)]/10">
-                      {maker.imageUrl ? (
-                        <Image
-                          src={maker.imageUrl}
-                          alt={`${maker.name} workshop`}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <span className="text-[var(--patina-clay-beige)] text-sm">
-                            No image
-                          </span>
-                        </div>
-                      )}
-                      {maker.badges?.[0] && (
-                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                          <span className="text-xs font-medium text-[var(--patina-charcoal)]">
-                            {maker.badges[0]}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-display font-semibold text-[var(--patina-charcoal)] mb-1">
-                        {maker.name}
-                      </h3>
-                      <p className="text-sm text-[var(--patina-clay-beige)] mb-3">
-                        {maker.location} · Est. {maker.foundedYear}
-                      </p>
-                      {maker.quote && (
-                        <p className="text-sm text-[var(--patina-mocha-brown)] mb-4 italic">
-                          &ldquo;{maker.quote}&rdquo;
-                        </p>
-                      )}
-                      {maker.yearsOfCraft && (
-                        <p className="text-xs uppercase tracking-wider text-[var(--patina-clay-beige)]">
-                          {maker.yearsOfCraft} years of craft
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* ── Section 04 — Partner CTA ── */}
-        <section className="py-20 lg:py-28 bg-[var(--patina-charcoal)] relative overflow-hidden">
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.03]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            }}
-          />
-
-          <div className="relative z-10 max-w-[700px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="font-display text-[clamp(2rem,4.5vw,2.5rem)] font-normal text-[var(--patina-off-white)] leading-[1.2] mb-5">
-              Build with{" "}
-              <em className="italic text-[var(--patina-clay-beige)]">us</em>
-            </h2>
-            <p className="text-lg text-[rgba(237,233,228,0.75)] leading-[1.7] mb-10">
-              We&apos;re growing our partner network with makers and
-              manufacturers who believe furniture should age with character —
-              not into a landfill. Whether you&apos;re a one-person shop or a
-              heritage brand, if you value craft, transparency, and
-              sustainability, we want to hear your story.
-            </p>
-
-            <div className="flex justify-center">
-              <Link
-                href="/makers/apply"
-                className="inline-flex items-center justify-center px-8 py-4 bg-[var(--patina-clay-beige)] text-[var(--patina-charcoal)] rounded-[var(--radius-lg)] font-medium transition-all duration-300 hover:bg-[var(--patina-off-white)] shadow-lg"
-              >
-                Apply to Partner
+            <div className={styles.heroActions}>
+              <Link className={styles.lightButton} href="/makers/apply">
+                Apply to Partner <span aria-hidden="true">↗</span>
               </Link>
+              <a className={styles.heroLink} href="#the-work">
+                Step inside <span aria-hidden="true">↓</span>
+              </a>
+            </div>
+          </div>
+          <div className={styles.heroFoot}>
+            <StrataMark size="compact" align="left" variant="on-clay" />
+            <p>
+              Illustrative imagery — awaiting partner photography.
+            </p>
+          </div>
+        </header>
+
+        <section
+          className={styles.opening}
+          id="the-work"
+          aria-labelledby="work-title"
+        >
+          <p className={styles.kicker}>A designer’s eye. A maker’s care.</p>
+          <div className={styles.openingColumns}>
+            <h2 id="work-title">
+              The details you
+              <br />
+              put into it.
+              <br />
+              <span>
+                We want people
+                <br />
+                to see them.
+              </span>
+            </h2>
+            <div className={styles.openingCopy}>
+              <p>
+                A material chosen for the way it will age. A joint refined until
+                it feels right. The decisions that rarely fit into a product
+                thumbnail.
+              </p>
+              <p>
+                Patina starts with a working designer’s judgment. We’re building
+                furniture discovery around fewer, considered choices—and the
+                people who make them.
+              </p>
+              <p>Your work deserves room to be understood.</p>
             </div>
           </div>
         </section>
 
-        {/* ── Section 05 — Referral ── */}
-        <section className="py-16 lg:py-20 bg-[var(--patina-soft-cream)]">
-          <div className="max-w-[700px] mx-auto px-4 sm:px-6 text-center">
-            <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-normal text-[var(--patina-charcoal)] leading-[1.2] mb-4">
-              Know someone who{" "}
-              <em className="italic text-[var(--patina-mocha-brown)]">
-                belongs here?
-              </em>
+        <MakerStudy />
+
+        <section
+          className={styles.partnership}
+          id="founding-makers"
+          aria-labelledby="partnership-title"
+        >
+          <div className={styles.partnershipHeading}>
+            <StrataMark size="compact" align="left" />
+            <p className={styles.kicker}>The first 15 founding makers</p>
+            <h2 id="partnership-title">
+              Help shape
+              <br />
+              the way your
+              <br />
+              work is seen.
             </h2>
-            <p className="text-[var(--patina-mocha-brown)] leading-relaxed mb-8 max-w-[560px] mx-auto">
-              Great furniture comes from relationships — with materials, with
-              process, and with people who care. If you know a maker or
-              manufacturer who shares these values, introduce us.
+            <p>
+              We’re starting with a small group of makers whose approach to
+              materials and construction belongs at the heart of Patina.
             </p>
-            <Link
-              href="/makers/apply?ref=introduction"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--patina-charcoal)] hover:gap-3.5 transition-all duration-300"
-            >
-              Make an Introduction
-              <span className="text-lg">→</span>
+            <Link className={styles.darkButton} href="/makers/apply">
+              Apply to Partner <span aria-hidden="true">↗</span>
             </Link>
+          </div>
+          <div className={styles.partnershipDetails}>
+            <article>
+              <h3>A designer’s point of view.</h3>
+              <p>
+                Leah’s work at Middle West Studio shapes the judgment behind
+                Patina. We want to understand a piece the way a designer does:
+                its proportion, its presence, and the care in its construction.
+              </p>
+            </article>
+            <article>
+              <h3>Your voice beside the work.</h3>
+              <p>
+                Help us understand what matters about your process. The
+                materials, the methods, and the reasons behind them should come
+                from the people who know them best.
+              </p>
+            </article>
+            <article>
+              <h3>A say in the beginning.</h3>
+              <p>
+                Bring your perspective to how makers and their work are
+                represented. We’re building this experience now; the practical
+                realities of your workshop belong in that conversation.
+              </p>
+            </article>
+            <div className={styles.placementStatement}>
+              <p>
+                Earned placement.
+                <br />
+                No sponsored slots.
+                <br />
+                No pay-to-play.
+              </p>
+              <span>Craft is the starting point.</span>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className={styles.workingTogether}
+          aria-labelledby="working-title"
+        >
+          <div className={styles.workingIntro}>
+            <p className={styles.kicker}>From your workshop to our studio</p>
+            <h2 id="working-title">
+              A good partnership
+              <br />
+              starts with
+              <br />
+              understanding.
+            </h2>
+            <p>
+              Before anything else, we want to get to know your work. Here’s
+              what that conversation is built around.
+            </p>
+          </div>
+          <div className={styles.exchange}>
+            <div>
+              <span className={styles.exchangeLabel}>What you bring</span>
+              <h3>
+                The knowledge
+                <br />
+                behind the piece.
+              </h3>
+              <ul>
+                <li>
+                  Your materials, construction, and approach to finishing.
+                </li>
+                <li>Images or a portfolio that show the work clearly.</li>
+                <li>
+                  The practical details: where you work and how your existing
+                  trade program operates.
+                </li>
+                <li>What you want people to understand about your craft.</li>
+              </ul>
+            </div>
+            <div>
+              <span className={styles.exchangeLabel}>What we bring</span>
+              <h3>
+                Attention to the work.
+                <br />A personal conversation.
+              </h3>
+              <ul>
+                <li>Personal review with Kody and Leah.</li>
+                <li>A designer’s perspective on craft and fit.</li>
+                <li>A conversation about how your work belongs in Patina.</li>
+                <li>A reply within two weeks, with a clear next step.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.process} aria-labelledby="process-title">
+          <div className={styles.processIntro}>
+            <p className={styles.kicker}>The beginning is straightforward</p>
+            <h2 id="process-title">
+              Show us the work.
+              <br />
+              We’ll take it from there.
+            </h2>
+            <p>
+              The application starts a conversation. The app and marketplace are
+              pre-launch; we’ll discuss the shape of a partnership together.
+            </p>
+          </div>
+          <ol className={styles.processSteps}>
+            <li>
+              <span aria-hidden="true">01</span>
+              <div>
+                <h3>Tell us about your workshop.</h3>
+                <p>Share your work, your process, and where we can see more.</p>
+              </div>
+            </li>
+            <li>
+              <span aria-hidden="true">02</span>
+              <div>
+                <h3>Leah takes a closer look.</h3>
+                <p>
+                  Every application is reviewed personally. Allow up to two
+                  weeks for a reply.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span aria-hidden="true">03</span>
+              <div>
+                <h3>Begin a conversation.</h3>
+                <p>
+                  If there’s a fit, we’ll talk through your work and what comes
+                  next.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <section className={styles.questions} aria-labelledby="questions-title">
+          <h2 id="questions-title">Before we begin.</h2>
+          <div>
+            {questions.map((question) => (
+              <details key={question.title}>
+                <summary>
+                  {question.title}
+                  <span aria-hidden="true">+</span>
+                </summary>
+                <p>{question.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.closing} aria-labelledby="closing-title">
+          <StudioMotion kind="image" className={styles.closingImage}>
+            <figure>
+              <Image
+                src="/images/founders/windy-peak-room.jpg"
+                alt="Pale upholstered sofas and a dark timber table in a Middle West Studio living room"
+                fill
+                sizes="(max-width: 850px) 100vw, 45vw"
+              />
+              <figcaption>
+                Windy Peak / A Middle West Studio project
+                <br />
+                Design: Leah Kochaver. Photography: Ashley Hicks.
+              </figcaption>
+            </figure>
+          </StudioMotion>
+          <div className={styles.closingCopy}>
+            <StrataMark size="compact" align="left" variant="on-clay" />
+            <p className={styles.kicker}>An invitation to the first 15</p>
+            <h2 id="closing-title">
+              Bring your work
+              <br />
+              to the conversation.
+            </h2>
+            <p>Tell us what you make, and what makes it yours.</p>
+            <Link className={styles.lightButton} href="/makers/apply">
+              Apply to Partner <span aria-hidden="true">↗</span>
+            </Link>
+            <Link className={styles.closingLink} href="/contact">
+              Talk to us first <span aria-hidden="true">↗</span>
+            </Link>
+            <p className={styles.closingNote}>
+              Personally reviewed by Kody and Leah.
+              <br />
+              You’ll hear from us within two weeks.
+            </p>
           </div>
         </section>
       </main>
-
       <Footer />
-    </>
+    </div>
   );
 }

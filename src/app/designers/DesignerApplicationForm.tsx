@@ -94,7 +94,7 @@ export function DesignerApplicationForm() {
 
   if (state === "success") {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-12" role="status">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--patina-clay-beige)]/20 mb-6">
           <svg
             className="w-8 h-8 text-[var(--patina-clay-beige)]"
@@ -297,7 +297,7 @@ export function DesignerApplicationForm() {
       </div>
 
       {state === "error" && error && (
-        <p className="text-sm text-[#e8a69b]">{error}</p>
+        <p className="text-sm text-[#923d2c]" role="alert">{error}</p>
       )}
 
       <button

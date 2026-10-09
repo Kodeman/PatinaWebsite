@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { systemMessages } from "@/lib/copy/system-messages";
 import { captureLeadEvent } from "@/lib/lead-capture";
 import { checkRateLimit, getClientIp, isHoneypotTripped } from "@/lib/rate-limit";
 import { sendMakerReceived } from "@/lib/emails/application-received";
+import { errorMessage } from "@/lib/errors";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -75,12 +77,10 @@ export async function POST(request: NextRequest) {
     };
 
     if (!supabaseAdmin) {
-      console.log("[MakerApply] Supabase not configured, application data:", {
-        brand_name,
-        contact_name,
-        email: normalizedEmail,
-      });
-      return NextResponse.json({ success: true });
+      return NextResponse.json(
+        { error: systemMessages.errors.generic },
+        { status: 503, headers: { "Retry-After": "60" } },
+      );
     }
 
     const { error } = await supabaseAdmin.from("maker_applications").insert({
@@ -116,22 +116,21 @@ export async function POST(request: NextRequest) {
       personProps: { email: normalizedEmail, role: "maker" },
     });
 
-    // Fire-and-forget application-received ack email. Send failures don't block
+    // Run the acknowledgement after the response. Send failures don't block
     // the success response — the row is saved either way.
-    sendMakerReceived({
-      email: normalizedEmail,
-      brand_name,
-      contact_name,
-    }).catch((err) => {
-      console.error(
-        "[MakerApply] Ack email failed:",
-        err instanceof Error ? err.message : "Unknown error",
-      );
-    });
+    after(() =>
+      sendMakerReceived({
+        email: normalizedEmail,
+        brand_name,
+        contact_name,
+      }).catch((err) => {
+        console.error("[MakerApply] Ack email failed:", errorMessage(err));
+      }),
+    );
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[MakerApply] Request error:", err instanceof Error ? err.message : "Unknown error");
+    console.error("[MakerApply] Request error:", errorMessage(err));
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

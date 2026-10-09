@@ -3,6 +3,7 @@
 import { useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
+import posthog from "posthog-js";
 import { getPostHogClient } from "@/lib/posthog";
 import { captureAttribution } from "@/lib/attribution";
 
@@ -31,12 +32,9 @@ export function PostHogProviders({ children }: { children: React.ReactNode }) {
     captureAttribution();
   }, []);
 
-  const posthog = typeof window !== "undefined" ? getPostHogClient() : null;
-
-  if (!posthog) {
-    return <>{children}</>;
-  }
-
+  // Keep the provider and Suspense boundary identical during SSR and hydration.
+  // Passing the SDK instance does not initialize it: the effect above retains
+  // getPostHogClient’s environment, consent, and Do Not Track behavior.
   return (
     <PHProvider client={posthog}>
       <Suspense fallback={null}>
