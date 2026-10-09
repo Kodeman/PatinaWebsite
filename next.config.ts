@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
       // Keep old discovery links and their campaign parameters useful.
       { source: '/materials', destination: '/makers', permanent: false },
       { source: '/furniture/:path*', destination: '/makers', permanent: true },
+      // Campaign print vanity paths (temporary; campaigns end). See docs/marketing/utm-convention.md.
+      { source: '/parade', destination: '/designers?utm_source=moll-drive&utm_medium=print&utm_campaign=2026-10-moll-drive', permanent: false },
+      { source: '/studio-door', destination: '/designers?utm_source=patina&utm_medium=print&utm_campaign=2026-10-studio-door', permanent: false },
+      { source: '/hire', destination: '/designers?utm_source=patina&utm_medium=print&utm_campaign=2026-10-first-hire', permanent: false },
     ];
   },
   async rewrites() {
