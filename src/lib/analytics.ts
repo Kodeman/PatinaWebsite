@@ -6,64 +6,9 @@
 
 import { getPostHogClient } from "./posthog";
 
-type ProductEventData = {
-  product_id: string;
-  product_name?: string;
-  price?: number;
-  category?: string;
-  maker?: string;
-};
-
 type AnalyticsEvents = {
-  // Product discovery
-  product_card_viewed: ProductEventData & {
-    position: number;
-    source: "catalog" | "related" | "search" | "homepage";
-  };
-  product_card_clicked: ProductEventData & {
-    position: number;
-  };
-
-  // Product detail engagement
-  product_detail_viewed: ProductEventData & {
-    referrer: string;
-  };
-  image_gallery_scrolled: ProductEventData & {
-    image_index: number;
-  };
-  material_chip_clicked: ProductEventData & {
-    material: string;
-  };
-
-  // AR and visualization
-  view_in_space_clicked: ProductEventData & {
-    device_type: "ios" | "android" | "desktop";
-  };
-  ar_qr_code_shown: ProductEventData;
-
-  // Conversion actions
-  work_with_designer_clicked: {
-    source: "pdp" | "services" | "hero" | "nav";
-    product_id?: string;
-  };
-  app_download_clicked: {
-    source: "header" | "hero" | "footer" | "app_page";
-  };
-
-  // Search
-  search_opened: Record<string, never>;
-  search_query: {
-    query: string;
-    results_count: number;
-  };
-  search_result_clicked: {
-    query: string;
-    result_type: "product" | "maker" | "material" | "page";
-    result_title: string;
-    position: number;
-  };
-
-  // Contact and forms
+  // Lead events. These names are locked: the API routes fire them server-side
+  // once per signup, so the client never sends them.
   contact_form_submitted: {
     reason: string;
   };
@@ -79,31 +24,6 @@ type AnalyticsEvents = {
     has_website: boolean;
     has_motivation: boolean;
   };
-
-  // Cross-platform identity
-  user_identified: {
-    platform: string;
-    identification_method: string;
-  };
-
-  // Navigation
-  page_viewed: {
-    path: string;
-    title: string;
-  };
-  nav_link_clicked: {
-    label: string;
-    href: string;
-  };
-
-  // Filter interactions
-  filter_applied: {
-    filter_type: "category" | "price" | "sort";
-    filter_value: string;
-  };
-  filter_cleared: Record<string, never>;
-
-  // Founding Circle
   founding_circle_signup: {
     email_domain: string;
     source: string;
@@ -115,7 +35,37 @@ type AnalyticsEvents = {
     role?: string;
     channel?: string;
   };
+  newsletter_signup: {
+    email_domain: string;
+    source: string;
+    signup_page: string;
+    has_utm: boolean;
+    role?: string;
+    channel?: string;
+  };
+  // Legacy alias
+  waitlist_signup: {
+    email_domain: string;
+    source: string;
+    signup_page: string;
+    cta_text: string;
+    has_utm: boolean;
+  };
 
+  // Cross-platform identity
+  user_identified: {
+    platform: string;
+    identification_method: string;
+  };
+
+  // Navigation
+  nav_link_clicked: {
+    label: string;
+    href: string;
+    location?: string;
+  };
+
+  // Founding Circle
   founding_cta_click: {
     source: string;
     element_location: 'hero' | 'nav' | 'footer' | 'inline' | 'mobile_menu';
@@ -130,39 +80,9 @@ type AnalyticsEvents = {
     reason: 'x' | 'esc' | 'outside' | 'success';
   };
 
-  founding_modal_social_click: {
-    provider: 'apple' | 'google';
-  };
-
-  // Style selection
-  style_card_selected: {
-    style_name: string;
-    selection_count: number;
-  };
-
-  style_cta_click: {
-    styles_selected: string[];
-  };
-
-  // App features
-  app_feature_status_view: {
-    feature_name: string;
-    status: 'in-development' | 'founding-first' | 'at-launch';
-  };
-
   // Maker recruitment
   maker_apply_click: {
     source: string;
-  };
-
-  // Newsletter
-  newsletter_signup: {
-    email_domain: string;
-    source: string;
-    signup_page: string;
-    has_utm: boolean;
-    role?: string;
-    channel?: string;
   };
 
   // Consent
@@ -171,49 +91,12 @@ type AnalyticsEvents = {
     previous_status: "granted" | "denied" | "none";
   };
 
-  // Legacy alias
-  waitlist_signup: {
-    email_domain: string;
-    source: string;
-    signup_page: string;
-    cta_text: string;
-    has_utm: boolean;
-  };
-
   // CTA interactions
   cta_click: {
     cta_text: string;
     cta_location: string;
     destination: string;
     page: string;
-  };
-
-  // Content engagement
-  scroll_depth_reached: {
-    depth: 25 | 50 | 75 | 100;
-    page: string;
-  };
-
-  // Room & Promise sections
-  promise_section_viewed: Record<string, never>;
-  room_hotspot_clicked: {
-    hotspot_id: string;
-    product_name: string;
-    tier: "partner" | "curated" | "sourced";
-  };
-  room_hotspot_tier: {
-    tier: "partner" | "curated" | "sourced";
-    interaction_count: number;
-  };
-  room_summary_viewed: {
-    total_products: number;
-    partner_count: number;
-    curated_count: number;
-    sourced_count: number;
-  };
-  shop_this_room_clicked: {
-    source: string;
-    total_products: number;
   };
 };
 
@@ -239,13 +122,6 @@ class Analytics {
 
     const posthog = getPostHogClient();
     posthog?.capture(eventName, data);
-  }
-
-  /**
-   * Track page view
-   */
-  pageView(path: string, title: string): void {
-    this.track("page_viewed", { path, title });
   }
 
   /**

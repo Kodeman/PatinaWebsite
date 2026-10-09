@@ -5,7 +5,6 @@ import Link from "next/link";
 import { StudioPage } from "@/components/studio/StudioPage";
 import { StrataMark } from "@/components/ui/StrataMark";
 import styles from "@/components/studio/TradePages.module.css";
-import { track } from "@/lib/analytics";
 import { buildLeadPayload, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
 import { getPostHogClient } from "@/lib/posthog";
 
@@ -140,12 +139,6 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
       setSubmitted(true);
 
       posthog?.identify(email, { email, role: "maker" });
-      track("maker_application_submitted", {
-        email_domain: email.split("@")[1] || "",
-        has_company: !!formData.workshopName.trim(),
-        has_website: !!website,
-        has_motivation: !!formData.description.trim(),
-      });
     } catch {
       setSubmitError("Something went wrong. Please try again.");
     } finally {

@@ -20,26 +20,20 @@ export function CookieConsent() {
 
   if (!visible) return null;
 
-  function handleAccept() {
+  // Apply the choice first, then record it: Accept lands with full identity,
+  // Decline lands through cookieless capture ("on_reject" keeps capturing).
+  function choose(status: "granted" | "denied") {
     const previous = getConsent();
-    setConsent("granted");
+    setConsent(status);
     track("consent_updated", {
-      status: "granted",
+      status,
       previous_status: previous || "none",
     });
     setVisible(false);
   }
 
-  function handleDecline() {
-    const previous = getConsent();
-    // Track before opting out so the event actually fires
-    track("consent_updated", {
-      status: "denied",
-      previous_status: previous || "none",
-    });
-    setConsent("denied");
-    setVisible(false);
-  }
+  const handleAccept = () => choose("granted");
+  const handleDecline = () => choose("denied");
 
   return (
     <div

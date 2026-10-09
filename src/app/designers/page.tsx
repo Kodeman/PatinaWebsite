@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { StudioMotion } from "@/components/studio/StudioMotion";
@@ -57,9 +58,13 @@ export default function DesignersPage() {
               room that feels right. Help us build tools that understand the
               difference, too.
             </p>
-            <a className={styles.primary} href="#apply">
+            <TrackedLink
+              className={styles.primary}
+              href="#apply"
+              location="designers_hero"
+            >
               Apply to the Founding 50 <span aria-hidden="true">↗</span>
-            </a>
+            </TrackedLink>
             <p className={styles.invitationDetail}>
               50 working designers. A shared beginning.
               <br />

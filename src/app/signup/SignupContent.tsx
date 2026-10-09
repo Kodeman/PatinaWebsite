@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Container } from '@/components/layout/Container';
 import { FadeIn } from '@/components/motion';
 import { cn } from '@/lib/utils';
-import { track } from '@/lib/analytics';
 import { getPostHogClient } from '@/lib/posthog';
 import { buildLeadPayload, inferRole, LEAD_HONEYPOT_FIELD } from '@/lib/lead-payload';
 import { SMS_CONSENT_TEXT, systemMessages } from '@/lib/copy/system-messages';
@@ -102,17 +101,6 @@ export function SignupContent() {
       }
 
       setState('success');
-
-      const emailDomain = trimmedEmail.split('@')[1] || '';
-      const trackPayload = {
-        email_domain: emailDomain,
-        source: 'signup_page',
-        signup_page: '/signup',
-        cta_text: 'Create Account',
-        has_utm: !!payload.utm_source,
-        sms_consent: smsConsentGranted,
-      };
-      track('waitlist_signup', trackPayload);
 
       posthog?.identify(trimmedEmail, { email: trimmedEmail });
     } catch {

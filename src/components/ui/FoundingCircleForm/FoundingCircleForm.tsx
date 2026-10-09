@@ -5,7 +5,6 @@ import { StrataMark } from "@/components/ui/StrataMark";
 import { systemMessages } from "@/lib/copy/system-messages";
 import styles from "@/components/ui/FoundingCircleModal/FoundingCircleModal.module.css";
 import { cn } from "@/lib/utils";
-import { track } from "@/lib/analytics";
 import { getPostHogClient } from "@/lib/posthog";
 import { buildLeadPayload, inferRole, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
 
@@ -91,18 +90,6 @@ export function FoundingCircleForm({
       }
 
       setState("success");
-
-      const emailDomain = trimmed.split("@")[1] || "";
-      track("founding_circle_signup", {
-        email_domain: emailDomain,
-        source,
-        signup_page: signupPage,
-        cta_text: ctaText,
-        has_utm: !!payload.utm_source,
-        preferred_styles: preferredStyles || undefined,
-        role,
-        channel: payload.channel,
-      });
 
       // Identify in PostHog
       posthog?.identify(trimmed, { email: trimmed, founding_source: source });

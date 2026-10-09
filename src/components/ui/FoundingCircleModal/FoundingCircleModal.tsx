@@ -119,10 +119,6 @@ function EnrollmentCard({ source, ctaText, onDismiss }: {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.error || systemMessages.errors.generic);
       }
-      track("founding_circle_signup", {
-        email_domain: email.split("@")[1] || "", source, signup_page: signupPage, cta_text: ctaText,
-        has_utm: !!attribution?.last_touch?.utm_source, role, channel: payload.channel,
-      });
       posthog?.identify(email, { email, founding_source: source });
       setFormState("success");
     } catch (error) {

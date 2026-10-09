@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { StrataMark } from "@/components/ui/StrataMark";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { MotionControl } from "@/components/studio/StudioMotion";
@@ -22,20 +22,27 @@ export function Footer() {
         />
       </div>
       <div className="studio-footer-main">
-        <Link href="/" className="studio-brand" aria-label="Patina home">
+        <TrackedLink
+          href="/"
+          event="nav_link_clicked"
+          location="footer"
+          label="Patina home"
+          className="studio-brand"
+          aria-label="Patina home"
+        >
           <span>PATINA</span>
           <StrataMark size="compact" align="left" />
-        </Link>
+        </TrackedLink>
         <nav aria-label="Footer navigation">
-          <Link href="/founding">Founding Circle</Link>
-          <Link href="/about">Our story</Link>
-          <Link href="/designers">For designers</Link>
-          <Link href="/makers">For makers</Link>
-          <Link href="/app">The app</Link>
-          <Link href="/services">Design services</Link>
-          <Link href="/journal">Journal</Link>
-          <Link href="/press">Press</Link>
-          <Link href="/contact">Say hello</Link>
+          <TrackedLink href="/founding" event="nav_link_clicked" location="footer">Founding Circle</TrackedLink>
+          <TrackedLink href="/about" event="nav_link_clicked" location="footer">Our story</TrackedLink>
+          <TrackedLink href="/designers" event="nav_link_clicked" location="footer">For designers</TrackedLink>
+          <TrackedLink href="/makers" event="nav_link_clicked" location="footer">For makers</TrackedLink>
+          <TrackedLink href="/app" event="nav_link_clicked" location="footer">The app</TrackedLink>
+          <TrackedLink href="/services" event="nav_link_clicked" location="footer">Design services</TrackedLink>
+          <TrackedLink href="/journal" event="nav_link_clicked" location="footer">Journal</TrackedLink>
+          <TrackedLink href="/press" event="nav_link_clicked" location="footer">Press</TrackedLink>
+          <TrackedLink href="/contact" event="nav_link_clicked" location="footer">Say hello</TrackedLink>
         </nav>
         <p>
           From Madison, Wisconsin.
@@ -46,8 +53,8 @@ export function Footer() {
       <div className="studio-footer-bottom">
         <span>© {new Date().getFullYear()} Patina. Where Time Adds Value.</span>
         <div>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Terms</Link>
+          <TrackedLink href="/privacy" event="nav_link_clicked" location="footer">Privacy</TrackedLink>
+          <TrackedLink href="/terms" event="nav_link_clicked" location="footer">Terms</TrackedLink>
           <MotionControl />
         </div>
       </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { StrataMark } from "@/components/ui/StrataMark";
 import { FoundingCircleForm } from "@/components/ui/FoundingCircleForm";
 import { foundingBenefits } from "@/components/studio/FoundingInvitation";
@@ -157,7 +158,9 @@ export function FoundingPageContent() {
             <summary>What if I have a question for you?</summary>
             <p>
               Write to{" "}
-              <a href="mailto:hello@patina.cloud">hello@patina.cloud</a> or{" "}
+              <TrackedLink href="mailto:hello@patina.cloud" location="founding_questions">
+                hello@patina.cloud
+              </TrackedLink> or{" "}
               <Link href="/contact">leave us a note</Link>. We read them.
             </p>
           </details>

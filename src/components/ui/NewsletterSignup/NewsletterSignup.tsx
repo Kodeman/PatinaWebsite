@@ -2,8 +2,6 @@
 
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { track } from "@/lib/analytics";
-import { getAttribution } from "@/lib/attribution";
 import { getPostHogClient } from "@/lib/posthog";
 import {
   buildLeadPayload,
@@ -49,7 +47,6 @@ export function NewsletterSignup({
     setErrorMessage("");
 
     try {
-      const attribution = getAttribution();
       const posthog = getPostHogClient();
       const signupPage = window.location.pathname;
       const role = inferRole(source, signupPage);
@@ -79,16 +76,6 @@ export function NewsletterSignup({
 
       // Identify user in PostHog so anonymous browsing merges with this email
       posthog?.identify(trimmed, { email: trimmed, newsletter_source: source });
-
-      const emailDomain = trimmed.split("@")[1] || "";
-      track("newsletter_signup", {
-        email_domain: emailDomain,
-        source,
-        signup_page: signupPage,
-        has_utm: !!attribution?.last_touch?.utm_source,
-        role,
-        channel: payload.channel,
-      });
     } catch {
       setErrorMessage("Something went wrong. Try again?");
       setState("error");

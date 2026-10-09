@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { track } from "@/lib/analytics";
 import { buildLeadPayload, LEAD_HONEYPOT_FIELD } from "@/lib/lead-payload";
 import { getPostHogClient } from "@/lib/posthog";
 
@@ -77,13 +76,6 @@ export function DesignerApplicationForm() {
       }
 
       setState("success");
-      track("designer_application_submitted", {
-        email_domain: email.split("@")[1] || "",
-        has_company: !!fields.company.trim(),
-        has_website: !!fields.website.trim(),
-        has_motivation: !!fields.motivation.trim(),
-      });
-
       // Identify in PostHog as a designer lead.
       posthog?.identify(email, { email, role: "designer" });
     } catch (err) {

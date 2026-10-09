@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { StudioPage } from "@/components/studio/StudioPage";
 import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
 
@@ -23,13 +24,14 @@ export default function PressPage() {
       }
       description="Patina is building a more personal way to discover furniture, bringing designers, makers, and the people who live with their work into the same conversation."
       heroAction={
-        <a
+        <TrackedLink
           href="/press/patina-fact-sheet.txt"
+          location="press_hero"
           download
           className="studio-button"
         >
           Download the fact sheet <span aria-hidden="true">↓</span>
-        </a>
+        </TrackedLink>
       }
       image="/images/studio/materials.jpg"
       imageAlt="Illustrative arrangement of wood and fabric samples on a studio table"
@@ -46,20 +48,22 @@ export default function PressPage() {
             For interviews with Kody or Leah, background on Patina, or imagery
             requests, write to the team.
           </p>
-          <a
+          <TrackedLink
             className="studio-link"
             href="mailto:hello@patina.cloud?subject=Patina%20press%20inquiry"
+            location="press_inquiries"
           >
             hello@patina.cloud <span aria-hidden="true">↗</span>
-          </a>
+          </TrackedLink>
           <div className="studio-press-actions">
-            <a
+            <TrackedLink
               href="/press/patina-fact-sheet.txt"
+              location="press_inquiries"
               download
               className="studio-button"
             >
               Download the fact sheet <span aria-hidden="true">↓</span>
-            </a>
+            </TrackedLink>
           </div>
         </div>
         <dl className="studio-press-facts">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import Image from "next/image";
 import { draftMode } from "next/headers";
 import { StudioPage } from "@/components/studio/StudioPage";
@@ -142,12 +143,13 @@ export default async function CareersPage() {
                   <p className={styles.caption}>
                     {position.location} / {position.type}
                   </p>
-                  <Link
+                  <TrackedLink
                     href={`/contact?subject=${encodeURIComponent(position.title)}`}
+                    location="careers_open_roles"
                     className="studio-link"
                   >
                     Ask about this role
-                  </Link>
+                  </TrackedLink>
                 </li>
               ))}
             </ul>

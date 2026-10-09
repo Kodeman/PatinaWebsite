@@ -5,38 +5,21 @@ import Image from "next/image";
 import { cn, formatPrice } from "@/lib/utils";
 import { MaterialTag } from "@/components/ui/MaterialTag";
 import { SustainabilityBadge } from "@/components/ui/SustainabilityBadge";
-import { useProductViewTracking } from "@/hooks";
 import type { ProductCard as ProductCardType } from "@/types/sanity";
 
 export interface ProductCardProps {
   product: ProductCardType;
   priority?: boolean;
-  position?: number;
-  source?: "catalog" | "related" | "search" | "homepage";
   className?: string;
 }
 
 export function ProductCard({
   product,
   priority = false,
-  position = 0,
-  source = "catalog",
   className,
 }: ProductCardProps) {
-  // Track when product card comes into view
-  const trackingRef = useProductViewTracking<HTMLAnchorElement>({
-    product_id: product._id,
-    product_name: product.name,
-    price: product.price,
-    category: product.category,
-    maker: product.maker?.name,
-    position,
-    source,
-  });
-
   return (
     <Link
-      ref={trackingRef}
       href={`/furniture/${product.slug}`}
       className={cn(
         "group block rounded-[var(--radius-xl)] overflow-hidden",

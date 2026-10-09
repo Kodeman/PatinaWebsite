@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
@@ -163,9 +164,14 @@ export function StoryRoomJourney() {
             <p>{views[selected].body}</p>
           </div>
           <div className={styles.roomCredit}>
-            <a href={views[selected].source} target="_blank" rel="noreferrer">
+            <TrackedLink
+              href={views[selected].source}
+              location="story_room_credit"
+              target="_blank"
+              rel="noreferrer"
+            >
               {views[selected].project} / Middle West Studio
-            </a>
+            </TrackedLink>
             <span>
               Interior design by Leah Kochaver.
               <br />

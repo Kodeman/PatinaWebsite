@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { TrackedLink } from "@/components/ui/TrackedLink";
+import { track } from "@/lib/analytics";
 import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
 import { MotionControl } from "@/components/studio/StudioMotion";
 
@@ -63,16 +65,23 @@ export function Navigation({}: NavigationProps) {
           {links
             .filter((link) => link.href !== "/")
             .map((link) => (
-              <Link
+              <TrackedLink
                 href={link.href}
                 key={link.href}
+                event="nav_link_clicked"
+                location="nav"
+                label={link.label}
                 aria-current={pathname === link.href ? "page" : undefined}
               >
                 {link.label}
-              </Link>
+              </TrackedLink>
             ))}
         </nav>
-        <JoinCircleButton source="studio_nav" className="studio-nav-join" />
+        <JoinCircleButton
+          source="studio_nav"
+          location="nav"
+          className="studio-nav-join"
+        />
         <button
           type="button"
           ref={triggerRef}
@@ -81,6 +90,12 @@ export function Navigation({}: NavigationProps) {
           aria-controls="studio-menu"
           aria-expanded={menuOpen}
           onClick={() => {
+            track("cta_click", {
+              cta_text: "Menu",
+              cta_location: "mobile_menu_toggle",
+              destination: "#studio-menu",
+              page: pathname,
+            });
             menuRef.current?.showModal();
             setMenuOpen(true);
           }}
@@ -111,15 +126,18 @@ export function Navigation({}: NavigationProps) {
           <p className="studio-kicker">Make yourself at home.</p>
           <nav aria-label="Studio navigation">
             {links.map((link) => (
-              <Link
+              <TrackedLink
                 href={link.href}
                 key={link.href}
+                event="nav_link_clicked"
+                location="mobile_menu"
+                label={link.label}
                 onClick={closeMenu}
                 aria-current={pathname === link.href ? "page" : undefined}
               >
                 {link.label}
                 <span aria-hidden="true">↗</span>
-              </Link>
+              </TrackedLink>
             ))}
           </nav>
           <div
@@ -127,12 +145,17 @@ export function Navigation({}: NavigationProps) {
               if ((event.target as HTMLElement).closest("button")) closeMenu();
             }}
           >
-            <JoinCircleButton source="studio_menu" />
+            <JoinCircleButton source="studio_menu" location="mobile_menu" />
           </div>
           <div className="studio-menu-foot">
-            <Link href="/founding" onClick={closeMenu}>
+            <TrackedLink
+              href="/founding"
+              event="nav_link_clicked"
+              location="mobile_menu"
+              onClick={closeMenu}
+            >
               Explore the Founding Circle
-            </Link>
+            </TrackedLink>
             <MotionControl />
           </div>
         </div>

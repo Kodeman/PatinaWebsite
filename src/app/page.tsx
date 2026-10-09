@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { NewsletterConfirmBanner } from "@/components/ui/NewsletterConfirmBanner";
@@ -25,7 +25,9 @@ export default function HomePage() {
             The app and marketplace are in the making. The Founding Circle is
             open.
           </p>
-          <Link href="/founding">A place at the beginning ↗</Link>
+          <TrackedLink href="/founding" location="home_launch_line">
+            A place at the beginning ↗
+          </TrackedLink>
         </div>
         <FounderJourney />
         <section className="studio-doors" aria-labelledby="studio-doors-title">
@@ -59,9 +61,13 @@ export default function HomePage() {
               Help shape a tool that understands the way you see. Bring your
               perspective to the first circle of designers building Patina.
             </p>
-            <Link className="studio-link" href="/designers">
+            <TrackedLink
+              className="studio-link"
+              href="/designers"
+              location="home_door_designers"
+            >
               For designers <span aria-hidden="true">↗</span>
-            </Link>
+            </TrackedLink>
           </div>
           <div className="studio-door studio-door-maker">
             <StudioMotion>
@@ -83,9 +89,13 @@ export default function HomePage() {
               The material, the method, the person behind it. Help us make
               furniture discovery a place where your work gets its full story.
             </p>
-            <Link className="studio-link" href="/makers">
+            <TrackedLink
+              className="studio-link"
+              href="/makers"
+              location="home_door_makers"
+            >
               For makers <span aria-hidden="true">↗</span>
-            </Link>
+            </TrackedLink>
           </div>
           <p className="studio-doors-caption">
             Illustrative imagery — awaiting partner photography.

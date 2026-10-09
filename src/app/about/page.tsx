@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { StudioMotion } from "@/components/studio/StudioMotion";
@@ -62,13 +63,14 @@ export default function AboutPage() {
                 />
               </div>
               <figcaption>
-                <a
+                <TrackedLink
                   href="https://www.middlewest.studio/saraha-circle-1"
+                  location="about_leah_hiawatha"
                   target="_blank"
                   rel="noreferrer"
                 >
                   Hiawatha / Middle West Studio
-                </a>
+                </TrackedLink>
                 <br />
                 Interior design by Leah Kochaver. Photography by Ashley Hicks.
               </figcaption>
@@ -103,14 +105,15 @@ export default function AboutPage() {
               <br />
               Design second.”
             </blockquote>
-            <a
+            <TrackedLink
               href="https://middlewest.studio"
+              location="about_leah"
               target="_blank"
               rel="noreferrer"
               className={styles.textLink}
             >
               Visit Middle West Studio <span aria-hidden="true">↗</span>
-            </a>
+            </TrackedLink>
             <dl className={styles.milestones}>
               <div>
                 <dt>2018</dt>
@@ -169,13 +172,14 @@ export default function AboutPage() {
               </p>
               <div className={styles.workingPageFoot}>
                 <span>Kody Kochaver</span>
-                <a
+                <TrackedLink
                   href="https://www.kochaver.com/"
+                  location="about_kody_page"
                   target="_blank"
                   rel="noreferrer"
                 >
                   Read Kody’s approach
-                </a>
+                </TrackedLink>
               </div>
             </article>
           </StudioMotion>
@@ -205,14 +209,15 @@ export default function AboutPage() {
             <p>
               He’s building toward something that feels at home in that process.
             </p>
-            <a
+            <TrackedLink
               href="https://www.linkedin.com/in/kkochaver/"
+              location="about_kody"
               target="_blank"
               rel="noreferrer"
               className={styles.textLink}
             >
               More about Kody <span aria-hidden="true">↗</span>
-            </a>
+            </TrackedLink>
             <div className={styles.kodySignpost}>
               <span>Co-founder / Technology &amp; Product</span>
               <span>Madison, Wisconsin</span>
@@ -283,13 +288,14 @@ export default function AboutPage() {
                 sizes="(max-width: 850px) 100vw, 43vw"
               />
               <figcaption>
-                <a
+                <TrackedLink
                   href="https://www.middlewest.studio/country-home"
+                  location="about_country_home"
                   target="_blank"
                   rel="noreferrer"
                 >
                   Country Home / Middle West Studio
-                </a>
+                </TrackedLink>
                 <br />
                 Design by Leah Kochaver. Photography by Middle West Studio.
               </figcaption>

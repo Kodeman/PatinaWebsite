@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { StrataMark } from "@/components/ui/StrataMark";
@@ -66,9 +67,14 @@ export default function MakersPage() {
               care behind a piece becomes part of how it is discovered.
             </p>
             <div className={styles.heroActions}>
-              <Link className={styles.lightButton} href="/makers/apply">
+              <TrackedLink
+                className={styles.lightButton}
+                href="/makers/apply"
+                event="maker_apply_click"
+                location="makers_hero"
+              >
                 Apply to Partner <span aria-hidden="true">↗</span>
-              </Link>
+              </TrackedLink>
               <a className={styles.heroLink} href="#the-work">
                 Step inside <span aria-hidden="true">↓</span>
               </a>
@@ -137,9 +143,14 @@ export default function MakersPage() {
               We’re starting with a small group of makers whose approach to
               materials and construction belongs at the heart of Patina.
             </p>
-            <Link className={styles.darkButton} href="/makers/apply">
+            <TrackedLink
+              className={styles.darkButton}
+              href="/makers/apply"
+              event="maker_apply_click"
+              location="makers_middle"
+            >
               Apply to Partner <span aria-hidden="true">↗</span>
-            </Link>
+            </TrackedLink>
           </div>
           <div className={styles.partnershipDetails}>
             <article>
@@ -317,9 +328,14 @@ export default function MakersPage() {
               to the conversation.
             </h2>
             <p>Tell us what you make, and what makes it yours.</p>
-            <Link className={styles.lightButton} href="/makers/apply">
+            <TrackedLink
+              className={styles.lightButton}
+              href="/makers/apply"
+              event="maker_apply_click"
+              location="makers_closing"
+            >
               Apply to Partner <span aria-hidden="true">↗</span>
-            </Link>
+            </TrackedLink>
             <Link className={styles.closingLink} href="/contact">
               Talk to us first <span aria-hidden="true">↗</span>
             </Link>
