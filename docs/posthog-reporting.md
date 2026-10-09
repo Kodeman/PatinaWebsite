@@ -1,39 +1,50 @@
-# PostHog Reporting — Funnels & Cohorts to Build
+# PostHog Reporting
 
-**Status:** Spec (build-in-PostHog checklist — nothing here is provisioned by code)
-**Date:** 2026-06-23
-**Owners:** Growth / Web
-**For:** Kody to build by hand in the PostHog UI
-**References:** `docs/reports/engagement-capture-audit-2026-06.md` — gap **G17** (no reporting layer); `docs/identity-contract.md` (canonical-ID contract); `docs/analytics-source-of-truth.md` (PostHog = consented product analytics).
+**Status:** Daily dashboard and email report provisioned 2026-10-09; the funnels and cohorts in §1–§5 are still a build-by-hand checklist.
+**Project:** PostHog 326191 ("Patina Website"), timezone UTC.
+**References:** `docs/reports/engagement-capture-audit-2026-06.md` (gap **G17**); `docs/identity-contract.md`; `docs/analytics-source-of-truth.md`; `docs/marketing/utm-convention.md` (campaign tagging).
 
 ---
 
-## TL;DR
+## Provisioned (2026-10-09)
 
-This is the **PostHog-native** reporting layer — funnels and cohorts built inside PostHog Cloud, fed directly by the events the marketing site already emits. It is the recommended first move from the audit (**G17**): stand up funnels and cohorts before investing in the `engagement_events` reverse-ETL sync.
+**Dashboard 2084092, "Patina Cloud Traffic & Signups".** Existing tiles plus four added for the October campaigns:
 
-> **Do not build these in code.** These are saved Insights and Cohorts created in the PostHog UI. This document specifies *what* to build so the reporting is consistent and reproducible. Nothing here ships in the repo.
-
-All measurement is over the **consented** population only — PostHog is opt-out by default and never captures for a Do-Not-Track or declined visitor (see `docs/analytics-source-of-truth.md`). Funnel denominators will **not** match Vercel traffic; that is intentional.
-
----
-
-## Prerequisites — events these funnels depend on
-
-Every step below references an event the site already emits via `src/lib/analytics.ts`. Confirm these are arriving in PostHog **Activity** before building:
-
-| Event | Emitted from | Key properties used in reporting |
+| Insight | Short ID | What it shows |
 |---|---|---|
-| `$pageview` | manual SPA capture (PostHog `capture_pageview: false`, fired on navigation) | `$current_url`, `$pathname` |
-| `founding_circle_signup` | `FoundingCircleForm` / `FoundingCircleModal` (client) | `role`, `channel`, `source`, `signup_page`, `has_utm` |
-| `newsletter_signup` | `NewsletterSignup` (client) | `role`, `channel`, `source`, `signup_page` |
-| `designer_application_submitted` | designer form (client) | `email_domain`, `has_company`, `has_website`, `has_motivation` |
-| `maker_application_submitted` | maker form (client) | `email_domain`, `has_company`, `has_website`, `has_motivation` |
+| Yesterday at a glance (Chicago) | `qKp5Ka8k` | Previous America/Chicago day: visitors, pageviews, campaign visitors, signups by type (HogQL) |
+| Campaign traffic (UTM) | `l5bxRFxW` | Pageviews by `utm_campaign` × `utm_medium` |
+| Studio door: /designers to Founding 50 application | `cffTEkMt` | 14-day funnel `/designers` pageview → `designer_application_submitted`, broken down by first-touch `utm_campaign` |
+| Newsletter, contact and consent | `sQXHabhA` | `newsletter_signup`, `newsletter_confirmed`, `contact_form_submitted`, `consent_updated` |
+
+**Subscription 167653, "patina.cloud daily traffic report".** Emails the dashboard to kody@patina.cloud daily at 13:00 UTC (8:00 CDT; 7:00 CST after Nov 1, because the schedule is in UTC). The AI summary is off; turning it on needs the org's AI data-processing approval.
+
+**Per-signup alerts** do not come from PostHog. Each lead route emails kody@patina.cloud from `after()` (see `src/lib/emails/`).
+
+---
+
+## Counting model
+
+Before consent, PostHog runs in cookieless mode (`cookieless_mode: "on_reject"`, project setting `cookieless_server_hash_mode`). Visits are counted anonymously with no cookie or person profile. Accepting upgrades the visitor to a normal identified profile. Do-Not-Track visitors are not captured. Visitor counts are therefore close to real traffic, but person-level funnels only cover visitors who consented or submitted a form.
+
+## Prerequisites: events these reports depend on
+
+Signup events are **server-authoritative**. Each is emitted once from its API route through `captureLeadEvent()` (posthog-node, `$lib = posthog-node`) against the lead's `posthog_distinct_id`. The client does not fire them.
+
+| Event | Emitted from | Key properties |
+|---|---|---|
+| `$pageview` | `PostHogPageView` in `src/app/providers.tsx` | `$current_url`, `$pathname`, `utm_*` |
+| `$autocapture`, `cta_click`, `nav_link_clicked` | browser (autocapture plus named CTAs) | element text, `href`, `location` |
+| `founding_circle_signup` | `POST /api/founding` | `role`, `channel`, `source`, `signup_page`, `has_utm`, `sms_consent` |
+| `newsletter_signup` | `POST /api/newsletter` | `channel`, `source`, `signup_page` |
+| `newsletter_confirmed` | `GET /api/newsletter/confirm` | `email_domain`; person `newsletter_confirmed = true` |
+| `designer_application_submitted` | `POST /api/designers-apply` | `email_domain`, `has_company`, `has_website`, `has_motivation` |
+| `maker_application_submitted` | `POST /api/makers-apply` | `email_domain`, `has_company`, `has_website`, `has_motivation` |
+| `contact_form_submitted` | `POST /api/contact` | `reason`, `email_domain`, attribution |
+| `consent_updated` | `CookieConsent` | `status`, `previous_status` |
 | `user_identified` | `identifyUser()` in `src/lib/identity.ts` | `platform`, `identification_method` |
 
-**Person property `role`** (values: `designer` | `consumer` | `unknown`) is set via the lead `$set` path and is the breakdown dimension for every role-segmented funnel below. Confirm it is populated on persons before relying on the role funnels.
-
-> **Newsletter `confirmed` caveat:** the double-opt-in confirmation step (audit **G12**) is not yet wired to a PostHog event. The newsletter signup → confirmed funnel below is **specced but blocked** until a `newsletter_confirmed` event is emitted (see that section).
+The **person property `role`** (`designer` | `consumer` | `unknown`) is set via the lead `$set` path. First-touch UTMs are `$set_once` on the person.
 
 ---
 
@@ -52,7 +63,7 @@ Every step below references an event the site already emits via `src/lib/analyti
 - **Breakdown:** by `channel` (the `classifyChannel` bucket: `organic` | `paid` | `social` | `referral` | `direct`) to see which acquisition channel converts best. Add a second saved copy broken down by `role`.
 - **Order:** sequential (step 2 must follow step 1).
 
-**Reads as:** the headline marketing conversion rate. Pair with the on-site founding counter and the `waitlist` row count — divergence between this funnel's step-2 count and the DB row count is the audit **G14** symptom (client-only event vs. server-saved row).
+**Reads as:** the headline marketing conversion rate. Pair with the on-site founding counter and the `waitlist` row count; they should now match, because the event is emitted only after the row is saved.
 
 ---
 
@@ -100,18 +111,13 @@ Three saved copies of the main funnel, each scoped to one audience via the `role
 
 **Type:** Funnel
 **Name:** `Newsletter · Signup → Confirmed`
-**Status:** SPECCED — BLOCKED on a `newsletter_confirmed` event.
 
 | Step | Event | Notes |
 |---|---|---|
-| 1 | `newsletter_signup` | Fires on form submit. |
-| 2 | `newsletter_confirmed` | **Not yet emitted.** See below. |
+| 1 | `newsletter_signup` | Server event on request. |
+| 2 | `newsletter_confirmed` | Server event when the confirmation link is clicked. |
 
-**Why it's blocked:** double opt-in (audit **G12**) is being added — `newsletter_subscribers` gained `confirmed` / `confirmation_token` columns — but no `newsletter_confirmed` PostHog event exists yet. The confirmation handler (the link a subscriber clicks) must `capture("newsletter_confirmed", { email_domain })` against the lead's `posthog_distinct_id` for this funnel to populate.
-
-**Until then,** measure confirmation rate from the DB: `count(confirmed = true) / count(*)` on `newsletter_subscribers`. Move it into PostHog once the event ships.
-
-**Config (once unblocked)**
+**Config**
 - **Conversion window:** 3 days (confirmation emails are acted on quickly or not at all).
 - **Breakdown:** `source` (footer / inline / journal) to see which placement yields confirmable addresses.
 
@@ -145,7 +151,7 @@ Cohorts are reusable person filters that feed the funnels above and power retent
 | `Consumers` | persons where `role = consumer` | scope consumer funnel |
 | `Paid-acquired` | persons where `channel = paid` (last value) | ROAS-adjacent conversion analysis |
 | `Identified users` | persons who performed `user_identified` | post-auth cross-surface base once extension/iOS emit |
-| `Confirmed subscribers` | persons who performed `newsletter_confirmed` | (blocked — see §3) deliverability-clean newsletter base |
+| `Confirmed subscribers` | persons who performed `newsletter_confirmed` | deliverability-clean newsletter base |
 
 ---
 
@@ -163,4 +169,4 @@ The richer engagement-scoring views and cross-surface retention dashboards in `d
 - [ ] Build §2a / §2b / §2c role funnels.
 - [ ] Build §4 application-quality funnels (designer + maker).
 - [ ] Define §5 cohorts.
-- [ ] Park §3 newsletter funnel until `newsletter_confirmed` ships; measure from DB meanwhile.
+- [ ] Build §3 newsletter funnel.

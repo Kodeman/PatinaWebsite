@@ -22,7 +22,7 @@ npm run test:server       # node --test tests/*.test.mjs (route lifecycle, lead 
 npm run test:e2e          # Run all Playwright e2e tests
 npm run test:e2e:ui       # Playwright UI mode
 npm run test:cloudflare   # Playwright against the Worker preview (PATINA_PREVIEW_URL)
-node "/Users/kody/.claude/plugins/cache/eigenwise-toolshed/quartermaster/0.11.1/bin/quartermaster.js" crap --project .  # CRAP gate, must pass before a src/ change is done
+node "/Users/kody/.claude/plugins/cache/eigenwise-toolshed/quartermaster/0.12.0/bin/quartermaster.js" crap --project .  # CRAP gate, must pass before a src/ change is done
 
 # Run single test file
 npx playwright test e2e/about.spec.ts
@@ -99,6 +99,12 @@ src/
 - `/designers`, `/makers`, `/makers/apply`, `/services`, `/about`, `/app`, `/contact`, `/careers`, `/journal`, `/press`, `/privacy`, `/terms`
 - `/studio` - embedded Sanity Studio
 - `/furniture/*` and `/materials` redirect to `/makers`; the marketplace is pre-launch
+- `/parade`, `/studio-door`, `/hire` - temporary print vanity redirects to `/designers` with UTMs (`next.config.ts`)
+
+### Marketing attribution
+
+- Every campaign link follows `docs/marketing/utm-convention.md` (source, medium, `YYYY-MM-slug` campaign, piece id as content). Print uses a vanity path, never a bare URL.
+- Daily report and dashboard IDs live in `docs/posthog-reporting.md`. Signup alerts to kody@patina.cloud come from `sendLeadNotification` (`src/lib/emails/lead-notification.ts`), not PostHog.
 
 ### Tests
 
@@ -116,11 +122,12 @@ src/
 The website is the **top of the funnel**. Users land here → browse → sign up for waitlist → eventually convert to authenticated users on portal/extension/iOS. PostHog tracks them across all surfaces with a unified identity.
 
 ### Current State (SHIPPED — this section was previously a to-do list; it is now built)
-- `src/lib/analytics.ts` — typed analytics abstraction; PostHog is wired for prod via `src/lib/posthog.ts` (autocapture off, session recording on, `respect_dnt`, consent-gated). `@vercel/analytics` runs alongside.
+- `src/lib/analytics.ts` — typed analytics abstraction; PostHog is wired for prod via `src/lib/posthog.ts` (cookieless `on_reject` before consent, full identity after Accept, autocapture + heatmaps + dead clicks, session recording on, `respect_dnt`). Signup events are server-only (`captureLeadEvent`); the client never fires them. `@vercel/analytics` runs alongside.
 - **Lead capture is built.** The waitlist is now the **Founding Circle**: `FoundingCircleForm`, `FoundingCircleModal`, and the nav `FoundingPopover` → `POST /api/founding` → Supabase `waitlist`, with UTM + first/last-touch attribution and PostHog identity (`src/lib/lead-payload.ts`, `lead-capture.ts`, `attribution.ts`, `identity.ts`). `WaitlistForm`/`WaitlistPopover` are back-compat shims; `/waitlist` redirects to `/founding`.
 - **Newsletter** ("The Designer's Eye") uses double opt-in → `/api/newsletter` + `/api/newsletter/confirm`. Designer (`/api/designers-apply`), maker (`/api/makers-apply`), and contact (`/api/contact`) all persist to Supabase and send email.
 - **Transactional/lifecycle email** via Resend, one shared visual frame in `src/lib/emails/template.ts`: Founding welcome ("first letter from Leah"), newsletter confirm + welcome, designer/maker acks, contact auto-reply + founder notification. Every marketing email carries an unsubscribe line.
-- **Cookie consent** banner wired to PostHog opt-in/out; fires `consent_updated`.
+- **Cookie consent** banner wired to PostHog opt-in/out; fires `consent_updated` on Accept and Decline.
+- **Internal signup alerts:** every Founding, newsletter, designer, maker and contact lead emails kody@patina.cloud (contact also hello@).
 
 ### Messaging & Voice — source of truth
 - **`docs/messaging/patina-messaging-system.md`** governs ALL customer-facing copy: positioning, the dual-track (trade + consumer) audience map, voice/tone, lexicon, the restrained-AI rule (designers lead; no accuracy %, no "invisible signals"), CTA hierarchy, and proof/honesty rules. Read it before writing any headline, button, email, or system string.

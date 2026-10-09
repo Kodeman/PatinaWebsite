@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { StudioPage } from "@/components/studio/StudioPage";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import styles from "@/components/studio/TradePages.module.css";
 import { systemMessages } from "@/lib/copy/system-messages";
 import { buildLeadPayload } from "@/lib/lead-payload";
@@ -122,9 +123,9 @@ export default function ContactContent(props: ContactContentProps) {
             <em>a chair.</em>
           </h2>
           <p>We read these messages ourselves. Tell us what you’re thinking.</p>
-          <a className="studio-link" href="mailto:hello@patina.cloud">
+          <TrackedLink className="studio-link" href="mailto:hello@patina.cloud" location="contact">
             hello@patina.cloud <span aria-hidden="true">↗</span>
-          </a>
+          </TrackedLink>
           <div className={styles.contactLinks}>
             <span className="studio-kicker">
               Looking for a particular door?
