@@ -88,12 +88,12 @@ export function emailDomain(email: string): string {
 }
 
 /** Empty or missing values are stored as null. */
-export function orNull<T>(value: T): T | null {
+export function orNull(value: unknown) {
   return value || null;
 }
 
 export function userAgent(request: NextRequest): string | null {
-  return orNull(request.headers.get("user-agent"));
+  return request.headers.get("user-agent") || null;
 }
 
 /** The consolidated attribution snapshot stored on an application row. */
