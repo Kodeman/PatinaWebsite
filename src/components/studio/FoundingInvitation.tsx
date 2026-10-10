@@ -13,7 +13,7 @@ export const foundingBenefits = [
   ],
   [
     "Behind the curtain",
-    "Updates from Kody and Leah as the catalog grows and the platform takes shape. The real building story.",
+    "Updates from Kody and Leah as the catalog grows and Patina takes shape. The real building story.",
   ],
   [
     "Your name at launch",
@@ -37,16 +37,16 @@ export function FoundingInvitation({
       aria-labelledby="invitation-title"
     >
       <div className="studio-invitation-intro">
-        <p className="studio-kicker">Help us build what comes next.</p>
+        <p className="studio-kicker">For your own home.</p>
         <h2 id="invitation-title">
           The Founding
           <br />
           Circle.
         </h2>
         <p>
-          We’re building a furniture platform where real designers teach it what
-          belongs, real makers craft the pieces, and your room gets the
-          attention it deserves.
+          We’re building Patina so real designers shape what belongs, real
+          makers craft the pieces, and your room gets the attention it
+          deserves.
         </p>
         <JoinCircleButton source={source} className="studio-button-light" />
         <p className="studio-cap">
@@ -81,7 +81,8 @@ export function FoundingInvitation({
             at the table.
           </h3>
           <p>
-            We’re building the furniture platform we wish existed. A place where
+            We’re building what we wish existed for furnishing a home. A place
+            where
             a designer’s judgment, a maker’s care, and your own point of view
             come together.
           </p>

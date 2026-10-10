@@ -104,14 +104,6 @@
 .heroJoin {
   margin-top: 29px;
 }
-.heroJoin > a {
-  display: block;
-  width: fit-content;
-  font-size: 10px;
-  margin-top: 15px;
-  min-height: 30px;
-  text-decoration: underline;
-}
 .roomCue {
   position: absolute;
   top: 64%;
@@ -754,15 +746,11 @@
   .heroJoin {
     margin-top: 22px;
   }
-  .heroJoin button {
+  .heroJoin .studio-button {
     font-size: 11px;
     min-height: 48px;
     padding: 13px 19px;
     gap: 25px;
-  }
-  .heroJoin > a {
-    font-size: 9px;
-    margin-top: 12px;
   }
   .roomCue {
     top: 65%;
@@ -999,14 +987,10 @@
   .heroJoin {
     margin-top: 17px;
   }
-  .heroJoin button {
+  .heroJoin .studio-button {
     min-height: 44px;
     padding: 10px 15px;
     font-size: 10px;
-  }
-  .heroJoin > a {
-    font-size: 8px;
-    margin-top: 9px;
   }
   .dock {
     bottom: 12px;

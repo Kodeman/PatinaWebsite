@@ -22,8 +22,8 @@ export default function HomePage() {
         <LivingStudy />
         <div className="studio-launch-line">
           <p>
-            The app and marketplace are in the making. The Founding Circle is
-            open.
+            The app and marketplace are pre-launch. For your own home, the
+            Founding Circle is open.
           </p>
           <TrackedLink href="/founding" location="home_launch_line">
             A place at the beginning ↗
@@ -58,43 +58,16 @@ export default function HomePage() {
               belongs here.
             </h3>
             <p>
-              Help shape a tool that understands the way you see. Bring your
-              perspective to the first circle of designers building Patina.
+              Built for the year a studio brings on its first designer and the
+              work doubles. Bring one live project to the Founding 50. Kody and
+              Leah read every application.
             </p>
             <TrackedLink
               className="studio-link"
               href="/designers"
               location="home_door_designers"
             >
-              For designers <span aria-hidden="true">↗</span>
-            </TrackedLink>
-          </div>
-          <div className="studio-door studio-door-maker">
-            <StudioMotion>
-              <Image
-                src="/images/studio/workbench.jpg"
-                width={800}
-                height={650}
-                sizes="(max-width: 760px) 100vw, 40vw"
-                alt="Illustrative workshop study of a wooden frame being made by hand"
-              />
-            </StudioMotion>
-            <p className="studio-kicker">For makers / the first 15 partners</p>
-            <h3>
-              Make something
-              <br />
-              worth knowing.
-            </h3>
-            <p>
-              The material, the method, the person behind it. Help us make
-              furniture discovery a place where your work gets its full story.
-            </p>
-            <TrackedLink
-              className="studio-link"
-              href="/makers"
-              location="home_door_makers"
-            >
-              For makers <span aria-hidden="true">↗</span>
+              Apply to the Founding 50 <span aria-hidden="true">↗</span>
             </TrackedLink>
           </div>
           <p className="studio-doors-caption">

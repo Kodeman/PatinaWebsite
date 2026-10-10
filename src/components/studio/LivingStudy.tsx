@@ -10,7 +10,7 @@ import {
   type CSSProperties,
 } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
-import { JoinCircleButton } from "./JoinCircleButton";
+import { TrackedLink } from "@/components/ui/TrackedLink";
 import { MotionControl, useStudioMotion } from "./StudioMotion";
 import styles from "./LivingStudy.module.css";
 
@@ -18,16 +18,16 @@ const scenes = [
   {
     id: "room",
     label: "In a room",
-    kicker: "Considered spaces. A life of your own.",
+    kicker: "For studios.",
     title: (
       <>
-        Where Time
+        One living document
         <br />
-        Adds Value.
+        per client.
       </>
     ),
     description:
-      "A more personal way to find what belongs. Shaped by designers, grounded in craft, and being built with you.",
+      "From brief to install. Your client sees the same page you do: one agreed direction.",
   },
   {
     id: "study",
@@ -241,13 +241,13 @@ export function LivingStudy() {
             inert={scene !== 0}
           >
             <div className={styles.heroJoin}>
-              <JoinCircleButton
-                source="studio_hero"
-                className="studio-button-light"
-              />
-              <a href="#founding-circle">
-                Help shape Patina. See what’s included.
-              </a>
+              <TrackedLink
+                href="/designers"
+                location="home_hero"
+                className="studio-button studio-button-light"
+              >
+                Bring one live project <span aria-hidden="true">↗</span>
+              </TrackedLink>
             </div>
           </div>
         </div>
@@ -457,7 +457,7 @@ export function FounderJourney() {
               in it.
             </h2>
             <p>
-              Through her work at Middlewest Studio, Leah sees what makes a home
+              Through her work at Middle West Studio, Leah sees what makes a home
               feel personal: how someone lives, what they keep, and the details
               they’re drawn to.
             </p>

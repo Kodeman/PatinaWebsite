@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { StrataMark } from "@/components/ui/StrataMark";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { track } from "@/lib/analytics";
-import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
 import { MotionControl } from "@/components/studio/StudioMotion";
 
 const links = [
@@ -77,11 +76,13 @@ export function Navigation({}: NavigationProps) {
               </TrackedLink>
             ))}
         </nav>
-        <JoinCircleButton
-          source="studio_nav"
+        <TrackedLink
+          href="/designers"
           location="nav"
-          className="studio-nav-join"
-        />
+          className="studio-button studio-nav-join"
+        >
+          Bring one live project <span aria-hidden="true">↗</span>
+        </TrackedLink>
         <button
           type="button"
           ref={triggerRef}
@@ -140,13 +141,14 @@ export function Navigation({}: NavigationProps) {
               </TrackedLink>
             ))}
           </nav>
-          <div
-            onClick={(event) => {
-              if ((event.target as HTMLElement).closest("button")) closeMenu();
-            }}
+          <TrackedLink
+            href="/designers"
+            location="mobile_menu"
+            className="studio-button"
+            onClick={closeMenu}
           >
-            <JoinCircleButton source="studio_menu" location="mobile_menu" />
-          </div>
+            Bring one live project <span aria-hidden="true">↗</span>
+          </TrackedLink>
           <div className="studio-menu-foot">
             <TrackedLink
               href="/founding"

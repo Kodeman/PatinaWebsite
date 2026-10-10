@@ -9,10 +9,20 @@ test.describe("Homepage", () => {
     if (await consent.isVisible()) await consent.getByRole("button", { name: "Decline", exact: true }).click();
   });
 
-  test("opens with the protected tagline and membership invitation", async ({ page }) => {
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Where Time");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Adds Value.");
-    await expect(page.getByRole("region", { name: "Explore the living study" }).getByRole("button", { name: "Join the Founding Circle", exact: true })).toBeVisible();
+  test("opens with the studio door, not the Founding Circle", async ({ page }) => {
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("One living document");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("per client.");
+    const hero = page.getByRole("region", { name: "Explore the living study" });
+    await expect(hero.getByRole("link", { name: "Bring one live project", exact: true })).toHaveAttribute("href", "/designers");
+    await expect(hero.getByRole("button", { name: "Join the Founding Circle", exact: true })).toHaveCount(0);
+    // The held tagline appears at most once in the page body, as a quiet brand moment.
+    await expect(page.locator("main").getByText(/Where Time Adds Value/)).toHaveCount(1);
+  });
+
+  test("keeps one studio door and no equal-weight makers door", async ({ page }) => {
+    const doors = page.getByRole("region", { name: "A studio takes many hands." });
+    await expect(doors.getByRole("link", { name: "Apply to the Founding 50", exact: true })).toHaveAttribute("href", "/designers");
+    await expect(doors.locator('a[href="/makers"]')).toHaveCount(0);
   });
 
   test("lets a visitor inspect the chair and material palette", async ({ page }) => {
@@ -37,7 +47,8 @@ test.describe("Homepage", () => {
     await expect(page.getByRole("link", { name: /Shop this Room|Browse Collection/ })).toHaveCount(0);
   });
 
-  test("makes the full Founding Circle offer first class", async ({ page }) => {
+  test("keeps the full Founding Circle offer as the second door", async ({ page }) => {
+    await expect(page.locator(".studio-launch-line").getByRole("link", { name: /^A place at the beginning/ })).toHaveAttribute("href", "/founding");
     const invitation = page.locator("#founding-circle");
     await expect(invitation.getByRole("heading", { name: "More than early access.", exact: true })).toBeVisible();
     await expect(invitation.locator("dt")).toHaveCount(5);

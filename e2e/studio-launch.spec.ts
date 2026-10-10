@@ -26,7 +26,7 @@ async function expectNoHorizontalOverflow(page: Page) {
 test('visitors can navigate the studio and reach each audience invitation', async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/');
-  await expect(page.getByRole('button', { name: 'Join the Founding Circle', exact: true }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Bring one live project', exact: true }).first()).toBeVisible();
   for (const [label, path] of [
     ['Our story', '/about'],
     ['For designers', '/designers'], ['For makers', '/makers'], ['Journal', '/journal'],
@@ -57,7 +57,8 @@ test('Founding Circle validates, recovers from a failed signup, and preserves at
       : { json: { success: true } });
   });
   await page.goto('/founding?utm_source=studio_test&utm_medium=referral&utm_campaign=launch_regression');
-  await page.getByRole('button', { name: 'Join the Founding Circle', exact: true }).first().click();
+  // The modal trigger, not the page's inline form submit (the nav now leads to the studio door).
+  await page.locator('main button[type="button"]').filter({ hasText: 'Join the Founding Circle' }).first().click();
   const dialog = page.getByRole('dialog', { name: 'The Founding Circle' });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByLabel('First Name', { exact: true })).toBeFocused();
@@ -109,7 +110,7 @@ test('homepage enrollment keeps keyboard focus in the invitation and identifies 
   await dialog.getByRole('button', { name: /Join the Founding Circle/ }).click();
   await expect(page.getByRole('heading', { name: 'Welcome to the Founding Circle.' })).toBeVisible();
   expect(submissions).toHaveLength(1);
-  expect(submissions[0]).toMatchObject({ email: 'home@example.com', role: 'consumer', signup_page: '/', source: 'studio_hero' });
+  expect(submissions[0]).toMatchObject({ email: 'home@example.com', role: 'consumer', signup_page: '/', source: 'studio_home_invitation' });
 });
 
 test('inline Founding Circle enrollment preserves optional audience selection', async ({ page }) => {
@@ -231,7 +232,9 @@ test('reduced motion keeps studio content and membership controls accessible', a
   await expect(page.locator('main h1')).toBeVisible();
   const motion = page.getByRole('button', { name: 'Motion off, following your device setting' }).last();
   await expect(motion).toBeDisabled();
-  await page.getByRole('button', { name: 'Join the Founding Circle', exact: true }).first().click();
+  // The Founding Circle is the homepage's second door; the nav leads to the studio door.
+  await page.goto('/');
+  await page.locator('main').getByRole('button', { name: 'Join the Founding Circle', exact: true }).first().click();
   await expect(page.getByRole('dialog', { name: 'The Founding Circle' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).not.toBeVisible();

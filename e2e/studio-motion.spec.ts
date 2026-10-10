@@ -12,11 +12,11 @@ test("scrolling walks through the studio in both directions, and pausing keeps t
   const consent = page.getByRole("button", { name: "Decline", exact: true });
   if (await consent.isVisible()) await consent.click();
   const studio = page.getByRole("region", { name: "Explore the living study" });
-  await expect(studio.getByRole("heading", { level: 1 })).toHaveText("Where TimeAdds Value.");
+  await expect(studio.getByRole("heading", { level: 1 })).toHaveText("One living documentper client.");
   await page.mouse.wheel(0, 700);
   await expect(studio.getByRole("heading", { level: 1 })).toHaveText("An eye forwhat belongs.");
   await page.mouse.wheel(0, -700);
-  await expect(studio.getByRole("heading", { level: 1 })).toHaveText("Where TimeAdds Value.");
+  await expect(studio.getByRole("heading", { level: 1 })).toHaveText("One living documentper client.");
   await page.mouse.wheel(0, 1400);
   await expect(studio.getByRole("heading", { level: 1 })).toHaveText("Care is inthe details.");
   await studio.getByRole("button", { name: "Motion on", exact: true }).click();
@@ -60,7 +60,7 @@ test("the studio story remains readable without JavaScript", async ({ browser, b
   const context = await browser.newContext({ baseURL, javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Where TimeAdds Value.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("One living documentper client.");
   await page.getByRole("link", { name: "Continue to our story ↓" }).click();
   await expect(page.getByRole("heading", { name: "Behind the study, two people. One shared instinct." })).toBeInViewport();
   await expect(page.getByRole("link", { name: "hello@patina.cloud", exact: true })).toHaveAttribute("href", "mailto:hello@patina.cloud");

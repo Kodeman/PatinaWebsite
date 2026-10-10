@@ -18,9 +18,6 @@
   grid-template-columns: 1fr 1fr;
   gap: 55px 11%;
 }
-.studio-doors-heading {
-  grid-column: 1/-1;
-}
 .studio-doors h2 {
   font: 400 clamp(55px, 6vw, 90px)/1 var(--font-display);
   letter-spacing: -0.035em;
@@ -32,9 +29,6 @@
   width: 100%;
   height: 440px;
   object-fit: cover;
-}
-.studio-door-maker {
-  padding-top: 140px;
 }
 .studio-door > .studio-kicker {
   margin: 35px 0 22px;
@@ -249,9 +243,6 @@
   }
   .studio-door img {
     height: 370px;
-  }
-  .studio-door-maker {
-    padding-top: 15px;
   }
   .studio-door h3 {
     font-size: 46px;
