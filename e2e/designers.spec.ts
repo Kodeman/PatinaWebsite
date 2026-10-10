@@ -77,7 +77,7 @@ test.describe("Founding Designers Page", () => {
     });
     expect(below).toBe(true);
 
-    let body: Record<string, unknown> | null = null;
+    let body = null as Record<string, unknown> | null;
     await page.route("**/api/newsletter", async (route) => {
       body = route.request().postDataJSON();
       await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
