@@ -131,7 +131,8 @@ The website is the **top of the funnel**. Users land here → browse → sign up
 - **Internal signup alerts:** every Founding, newsletter, designer, maker and contact lead emails kody@patina.cloud (contact also hello@).
 
 ### Messaging & Voice — source of truth
-- **`docs/messaging/patina-messaging-system.md`** governs ALL customer-facing copy: positioning, the dual-track (trade + consumer) audience map, voice/tone, lexicon, the restrained-AI rule (designers lead; no accuracy %, no "invisible signals"), CTA hierarchy, and proof/honesty rules. Read it before writing any headline, button, email, or system string.
+- **`/Users/kody/Code/patina-merged/marketing/canon`** (`voice.md`, `lexicon.json`, `claims.md`, `art-direction.md`) governs ALL customer-facing copy: positioning, audience (studios first), voice, lexicon, claims, CTAs and the restrained-AI rule. Lint with `marketing/tools/voice-lint.mjs`. Read it before writing any headline, button, email, or system string.
+- **`docs/messaging/patina-messaging-system.md`** holds the site-only rules (system strings, frozen SMS consent text, consent copy, canonical facts) and the dated 2026-10-09 founders' rulings.
 - System/UI strings (errors, success, consent, newsletter-confirm) live in `src/lib/copy/system-messages.ts`.
 - Canonical brand facts: email `hello@patina.cloud`, location Madison WI, domain `patina.cloud`. The app/marketplace are **pre-launch** — never imply the app is downloadable today.
 
