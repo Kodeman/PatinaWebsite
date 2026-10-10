@@ -6,37 +6,35 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { StudioMotion } from "@/components/studio/StudioMotion";
 import { StrataMark } from "@/components/ui/StrataMark";
+import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { DesignerWorkbench } from "@/components/studio/DesignerWorkbench";
 import { DesignerApplicationForm } from "./DesignerApplicationForm";
 import styles from "@/components/studio/DesignersPage.module.css";
 
+// Every claim on this page is a verified row in marketing/canon/claims.md (C01-C06, C23, C24).
 export const metadata: Metadata = {
   title: "The Founding 50 — For Designers",
   description:
-    "Help shape the tools your practice deserves. Apply to Patina’s Founding 50: working designers co-creating designer-taught furniture discovery.",
+    "Built for the year your studio brings on its first designer. One living document per client, from brief to install. Bring one live project to Patina’s Founding 50.",
   alternates: { canonical: "/designers" },
 };
 
 const benefits = [
   [
-    "Your vocabulary, in the tools",
-    "Help shape how furniture is described and understood. The judgments you make in practice belong in the system.",
+    "One living document per client",
+    "From the brief to the install, the job lives on one page.",
   ],
   [
-    "A voice in what gets built",
-    "Explore the Designer Portal, share what is missing, and bring real project experience into product decisions.",
+    "One agreed direction",
+    "Your client sees the same page you do.",
   ],
   [
-    "A community of peers",
-    "A private founding cohort and monthly conversations with Kody and Leah. A place to compare notes and contribute.",
+    "A quiet desk",
+    "No dashboards, no task manager, no tab bars.",
   ],
   [
-    "A running start with clients",
-    "When the consumer app launches, founding designers will be the first designers people can connect with.",
-  ],
-  [
-    "Your contribution, recognized",
-    "Founding designers are credited by name at launch. There is no fee to join; your expertise is the contribution.",
+    "Read by Kody and Leah",
+    "Kody and Leah read every application. Patina is pre-launch, and the Founding 50 shapes what comes next.",
   ],
 ];
 
@@ -47,28 +45,28 @@ export default function DesignersPage() {
       <main id="main-content">
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>For designers / The Founding 50</p>
+            <p className={styles.eyebrow}>For studios / The Founding 50</p>
             <h1>
-              Your eye belongs
+              Built for your
               <br />
-              in the making.
+              first hire.
             </h1>
             <p>
-              You know the difference between a room that is furnished and a
-              room that feels right. Help us build tools that understand the
-              difference, too.
+              For the year your studio brings on its first designer and the
+              workload doubles. One living document per client, from brief to
+              install.
             </p>
             <TrackedLink
               className={styles.primary}
               href="#apply"
               location="designers_hero"
             >
-              Apply to the Founding 50 <span aria-hidden="true">↗</span>
+              Bring one live project. <span aria-hidden="true">↗</span>
             </TrackedLink>
             <p className={styles.invitationDetail}>
-              50 working designers. A shared beginning.
+              50 working designers. Kody and Leah read every application.
               <br />
-              No fee to join. Your perspective is the contribution.
+              Patina is pre-launch.
             </p>
           </div>
           <StudioMotion kind="paper" className={styles.heroArt}>
@@ -96,7 +94,7 @@ export default function DesignersPage() {
                 the Founding <span>50.</span>
               </p>
               <div className={styles.invitationCardFoot}>
-                From the studio of Kody &amp; Leah
+                From Kody &amp; Leah
               </div>
             </div>
             <p className={styles.artCaption}>
@@ -105,11 +103,8 @@ export default function DesignersPage() {
           </StudioMotion>
         </header>
         <div className={styles.invitationLine}>
-          <p>
-            Patina starts with a working designer’s eye. The next chapter brings
-            yours into the conversation.
-          </p>
-          <span>Rooted in Madison. Open to your perspective.</span>
+          <p>Your client sees the same page you do: one agreed direction.</p>
+          <span>Rooted in Madison. Open to your studio.</span>
         </div>
         <section
           className={styles.founderSection}
@@ -118,25 +113,21 @@ export default function DesignersPage() {
           <StudioMotion kind="paper" className={styles.founderLetter}>
             <div className={styles.letterMasthead}>
               <StrataMark size="compact" align="left" />
-              <span>From Leah’s desk</span>
+              <span>From Kody and Leah</span>
             </div>
-            <blockquote>
-              “The tools never matched how designers actually think.”
-            </blockquote>
+            <blockquote>“Bring one live project.”</blockquote>
             <p>
-              That is the starting point for Patina. A place where the tools
-              make room for the way designers notice, connect, and consider.
+              Tell us about a job your studio is running now, from the brief to
+              the install. We read every application ourselves.
             </p>
-            <p className={styles.signature}>Leah Kochaver</p>
+            <p className={styles.signature}>Kody and Leah</p>
             <p className={styles.signatureRole}>
-              Co-Founder, Design &amp; Experience
-              <br />
-              Middlewest Studio / Madison, Wisconsin
+              Middle West Studio / Madison, Wisconsin
             </p>
           </StudioMotion>
           <div className={styles.founderCopy}>
             <p className={styles.eyebrow}>
-              An invitation to working designers.
+              An invitation to working studios.
             </p>
             <h2 id="designer-invitation-title">
               Built from practice.
@@ -144,15 +135,14 @@ export default function DesignersPage() {
               Shaped with yours.
             </h2>
             <p>
-              Leah runs Middlewest Studio in Madison. Her design practice is
-              where Patina’s point of view begins. Kody is building the tools
-              around a shared belief: they should feel like part of the creative
-              process.
+              Patina is a venture of Middle West Studio in Madison, Wisconsin.
+              Leah leads design, voice and teaching. Kody leads build,
+              infrastructure and operations.
             </p>
             <p>
-              We’re bringing together 50 interior designers to help shape what
-              comes next. Your way of seeing, your language, and the realities
-              of your work matter here.
+              The Founding 50 is a circle of 50 working designers shaping
+              Patina. Your way of seeing, your language, and the realities of
+              your work matter here.
             </p>
             <Link className={styles.textLink} href="/about">
               The story behind Patina <span aria-hidden="true">↗</span>
@@ -165,11 +155,11 @@ export default function DesignersPage() {
           aria-labelledby="designer-benefits-title"
         >
           <div className={styles.benefitsHeading}>
-            <p className={styles.eyebrow}>What we build together.</p>
+            <p className={styles.eyebrow}>What your studio gets.</p>
             <h2 id="designer-benefits-title">
-              A place to shape
+              One page.
               <br />
-              what comes next.
+              One agreed direction.
             </h2>
             <p>
               Bring your experience into the building process, alongside
@@ -202,18 +192,17 @@ export default function DesignersPage() {
             <StrataMark size="compact" variant="on-clay" align="left" />
             <p className={styles.eyebrow}>A place in the Founding 50.</p>
             <h2 id="designer-application-title">
-              Bring your
+              Bring one
               <br />
-              designer’s eye.
+              live project.
             </h2>
             <p>
-              Tell us a little about your practice and what you would bring to
-              the conversation. Kody and Leah personally review every
-              application. You’ll hear from us within 7 days.
+              Tell us about your studio and the job you would bring. Kody and
+              Leah read every application.
             </p>
             <p className={styles.applicationNote}>
-              The app and marketplace are pre-launch. Joining the Founding 50 is
-              an invitation to help shape them.
+              Patina is pre-launch. Joining the Founding 50 is an invitation to
+              help shape it.
             </p>
             <Link className={styles.textLink} href="/contact">
               Talk to us first <span aria-hidden="true">↗</span>
@@ -239,6 +228,20 @@ export default function DesignersPage() {
               <DesignerApplicationForm />
             </div>
           </div>
+        </section>
+        <section
+          aria-label="For homeowners"
+          className="px-4 pt-10 pb-6 text-center text-[var(--patina-mocha-brown)]"
+        >
+          <p className="text-sm">
+            Not a studio? Homeowners can get The Designer’s Eye, our letter on
+            rooms that last.
+          </p>
+          <NewsletterSignup
+            source="designers_homeowner"
+            showIntro={false}
+            className="py-4 [&_button]:bg-transparent [&_button]:border [&_button]:border-[var(--patina-clay-beige)] [&_button]:text-[var(--patina-mocha-brown)] [&_button:hover]:bg-[var(--patina-off-white)] [&_button]:py-2 [&_button]:text-sm [&_input]:py-2 [&_input]:text-sm"
+          />
         </section>
       </main>
       <Footer />
