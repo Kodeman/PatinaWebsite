@@ -65,6 +65,39 @@ test('contact notification reaches both hello@ and kody@', async () => {
   assert.equal(sent[0].replyTo, 'a@example.test');
 });
 
+test('lifecycle emails follow the marketing canon: names not titles, Middle West Studio, held words out', async () => {
+  const welcome = withCapturedSend('src/lib/emails/founding-welcome.ts');
+  const acks = withCapturedSend('src/lib/emails/application-received.ts');
+  const newsletter = withCapturedSend('src/lib/emails/newsletter-welcome.ts');
+  const contact = withCapturedSend('src/lib/emails/contact-received.ts');
+  const confirmation = loadModule('src/app/api/newsletter/confirmation-email.ts', {
+    '@/lib/emails/send': { sendHtmlEmail: async () => ({ success: true }) },
+    '@/lib/emails/template': template,
+    '@/lib/site-url': { SITE_URL: 'https://patina.cloud' },
+  }, { globals: { URLSearchParams } });
+  const emails = {
+    founding: welcome.mod.foundingWelcomeEmail({ first_name: 'Ada' }),
+    designer: acks.mod.designerReceivedEmail({ first_name: 'Ada' }),
+    maker: acks.mod.makerReceivedEmail({ contact_name: 'Ada', brand_name: 'Oak & Iron' }),
+    newsletter: newsletter.mod.newsletterWelcomeEmail({ first_name: 'Ada' }),
+    confirm: confirmation.newsletterConfirmationEmail({ email: 'a@example.test', token: 't' }),
+    contact: contact.mod.contactAutoReplyEmail({ name: 'Ada' }),
+  };
+  for (const [kind, html] of Object.entries(emails)) {
+    assert.doesNotMatch(html, /co-?founder|Middlewest/i, `${kind}: V4 byline, C01 spelling`);
+    assert.doesNotMatch(html, /\bAI\b|algorithm|curated|platform|Where Time Adds Value/i, `${kind}: lexicon`);
+    assert.doesNotMatch(html, /\$\d|\bfees?\b|\bpric(e|ing)\b/i, `${kind}: no money language (V2)`);
+    assert.doesNotMatch(html, /download|App Store/i, `${kind}: app is pre-launch`);
+  }
+  for (const kind of ['founding', 'designer', 'newsletter']) assert.match(emails[kind], /Middle West Studio/);
+  assert.match(emails.designer, /bring one live project/);
+  assert.match(emails.founding, /Warmly,<br\/>Kody<br\/>Patina · Madison, WI<\/p>/);
+  for (const kind of ['founding', 'newsletter']) assert.match(emails[kind], /Unsubscribe<\/a>/);
+
+  await acks.mod.sendMakerReceived({ email: 'a@example.test', contact_name: 'Ada', brand_name: 'A very long workshop name, LLC' });
+  assert.ok(acks.sent[0].subject.length <= 60, 'canon email subject limit');
+});
+
 function sendModule({ key = 'test-key', fetch }) {
   // The test's Error comes from another realm than a VM-loaded errors module, so
   // read its message directly; errors.ts has its own coverage elsewhere.

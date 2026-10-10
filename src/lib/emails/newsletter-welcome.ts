@@ -12,7 +12,7 @@ export function newsletterWelcomeEmail(opts: { first_name?: string | null } = {}
   return frame(
     `<p>Hi ${escapeHtml(name)},</p>
 <p>You're confirmed — thank you. Welcome to <strong>The Designer's Eye</strong>.</p>
-<p>It's a biweekly letter from my desk at Middlewest Studio: what I'm noticing in design, the makers and materials worth knowing about, and honest notes on building Patina. No daily blasts, no fluff — just the things I'd tell a friend who asked what's worth paying attention to.</p>
+<p>It's a biweekly letter from my desk at Middle West Studio: what I'm noticing in design, the makers and materials worth knowing about, and honest notes on building Patina. No daily blasts, no fluff — just the things I'd tell a friend who asked what's worth paying attention to.</p>
 <p>The next one lands in your inbox soon. If something here ever doesn't earn its place, you can step away in one click, no hard feelings.</p>
 ${signedBy("Leah", "Patina")}`,
     {
