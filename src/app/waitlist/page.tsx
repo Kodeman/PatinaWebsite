@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 export const metadata: Metadata = {
   title: "Join the Patina Waitlist",
   description:
-    "Get early access to Patina — designer-curated furniture for your real space. Founding members get first dibs and a hand in shaping what we build.",
+    "Join Patina's Founding Circle. Founding members get early access and a hand in shaping what we build. Patina is pre-launch.",
   alternates: {
     canonical: "https://patina.cloud/waitlist",
   },
