@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { Product } from "@/types/sanity";
 import { SITE_URL as siteUrl } from "@/lib/site-url";
 const siteName = "Patina";
-const siteDescription = "A designer’s eye, within reach. Help shape Patina’s furniture platform: join the Founding Circle for first access when the app launches.";
+const siteDescription = "A designer’s eye, within reach. Patina starts with design studios in Madison and Milwaukee. The app is pre-launch: join the Founding Circle to help shape it and get first access.";
 
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -20,13 +20,13 @@ export const defaultMetadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName,
-    title: "Patina | Where Time Adds Value",
+    title: siteName,
     description: siteDescription,
     images: [{ url: `${siteUrl}/opengraph-image`, width: 1200, height: 630, alt: "Patina. Where Time Adds Value. Join the Founding Circle." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Patina | Where Time Adds Value",
+    title: siteName,
     description: siteDescription,
     images: [`${siteUrl}/opengraph-image`],
   },
@@ -80,7 +80,6 @@ export function generateOrganizationJsonLd() {
     url: siteUrl,
     logo: `${siteUrl}/icon.svg`,
     description: siteDescription,
-    slogan: "Where Time Adds Value",
     foundingDate: "2023",
     foundingLocation: {
       "@type": "Place",
@@ -101,18 +100,16 @@ export function generateOrganizationJsonLd() {
       {
         "@type": "Person",
         name: "Leah Kochaver",
-        jobTitle: "Co-Founder, Design & Experience",
         knowsAbout: [
           "interior design",
           "furniture sourcing",
           "residential design",
         ],
-        worksFor: { "@type": "Organization", name: "Middlewest Studio" },
+        worksFor: { "@type": "Organization", name: "Middle West Studio" },
       },
       {
         "@type": "Person",
         name: "Kody Kochaver",
-        jobTitle: "Co-Founder, Technology & Product",
         knowsAbout: [
           "technology",
           "product development",
@@ -252,7 +249,7 @@ export function generateAboutPageJsonLd() {
     "@type": "AboutPage",
     name: "Our Story | Patina",
     description:
-      "Meet Kody and Leah Kochaver, the husband and wife team behind Patina. Born from real interior design work in Madison, Wisconsin.",
+      "Meet Leah and Kody Kochaver, the husband and wife behind Patina, a venture of Middle West Studio in Madison, Wisconsin.",
     url: `${siteUrl}/about`,
     mainEntity: {
       "@type": "Organization",
@@ -263,7 +260,6 @@ export function generateAboutPageJsonLd() {
         {
           "@type": "Person",
           name: "Leah Kochaver",
-          jobTitle: "Co-Founder, Design & Experience",
           knowsAbout: [
             "interior design",
             "furniture sourcing",
@@ -271,14 +267,13 @@ export function generateAboutPageJsonLd() {
           ],
           worksFor: [
             { "@type": "Organization", name: "Patina" },
-            { "@type": "Organization", name: "Middlewest Studio" },
+            { "@type": "Organization", name: "Middle West Studio" },
           ],
           sameAs: ["https://middlewest.studio"],
         },
         {
           "@type": "Person",
           name: "Kody Kochaver",
-          jobTitle: "Co-Founder, Technology & Product",
           knowsAbout: [
             "technology",
             "product development",

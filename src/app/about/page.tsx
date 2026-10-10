@@ -92,8 +92,8 @@ export default function AboutPage() {
             </p>
             <p>
               Her path ran through fine art and communications, then interior
-              design. After twelve years in Seattle, she returned to Wisconsin
-              in 2018. In 2023, she founded Middle West Studio.
+              design. She came home to Wisconsin in 2018, and in 2023 she
+              founded Middle West Studio in Madison.
             </p>
             <p>
               Her work brings the practical and the personal together: the plan
@@ -120,7 +120,7 @@ export default function AboutPage() {
                 <dd>
                   Home to Wisconsin,
                   <br />
-                  after twelve years in Seattle.
+                  after years away.
                 </dd>
               </div>
               <div>
@@ -136,15 +136,13 @@ export default function AboutPage() {
             <figure className={styles.leahPortrait}>
               <Image
                 src="/images/founders/leah-kochaver.jpg"
-                alt="Leah Kochaver, founder of Middle West Studio and co-founder of Patina, outdoors among green foliage"
+                alt="Leah Kochaver of Middle West Studio, outdoors among green foliage"
                 width={1250}
                 height={1666}
                 sizes="(max-width: 850px) 85vw, 36vw"
               />
               <figcaption>
-                <strong>Leah Kochaver</strong>Co-founder / Design &amp;
-                Experience
-                <br />
+                <strong>Leah Kochaver</strong>
                 Portrait courtesy of Middle West Studio.
               </figcaption>
             </figure>
@@ -219,7 +217,7 @@ export default function AboutPage() {
               More about Kody <span aria-hidden="true">↗</span>
             </TrackedLink>
             <div className={styles.kodySignpost}>
-              <span>Co-founder / Technology &amp; Product</span>
+              <span>Kody Kochaver</span>
               <span>Madison, Wisconsin</span>
             </div>
           </div>
@@ -241,14 +239,13 @@ export default function AboutPage() {
                 discoveries that happen around it.
               </p>
               <p>
-                So we’re building Patina: a more personal way to find furniture,
-                guided by working designers, with room for the maker’s care and
-                your own point of view.
+                So we’re building Patina for the studio first: one living
+                document per client, from brief to install, with the designer’s
+                judgment leading and room for the maker’s care.
               </p>
               <p>
-                You can begin with a feeling. Follow what catches your eye. And,
-                when you want more help, carry that conversation forward with a
-                designer.
+                The client sees the same page the designer does. One direction,
+                agreed, and a record of how the room came together.
               </p>
             </div>
           </div>
@@ -322,14 +319,14 @@ export default function AboutPage() {
               Open wherever you call home.
             </p>
             <div className={styles.invitationLinks}>
-              <Link href="/founding" className={styles.textLink}>
-                Explore membership
-              </Link>
               <Link href="/designers" className={styles.textLink}>
                 For designers
               </Link>
               <Link href="/makers" className={styles.textLink}>
                 For makers
+              </Link>
+              <Link href="/founding" className={styles.textLink}>
+                Explore membership
               </Link>
             </div>
           </div>

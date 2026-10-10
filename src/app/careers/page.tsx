@@ -13,7 +13,7 @@ import styles from "@/components/studio/EditorialPages.module.css";
 export const metadata: Metadata = {
   title: "Careers",
   description:
-    "Work worth caring about. Explore opportunities to help build Patina, a furniture platform rooted in design judgment and craft.",
+    "Work worth caring about. Help build Patina in Madison, Wisconsin: made for design studios, rooted in design judgment and craft.",
   alternates: { canonical: "https://patina.cloud/careers" },
 };
 

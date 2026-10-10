@@ -33,7 +33,8 @@ test.describe("Design Services Page", () => {
     for (const name of ["A single room", "Connected spaces", "A whole home"]) {
       await expect(page.locator("dt").filter({ hasText: name })).toBeVisible();
     }
-    await expect(page.getByText(/fees, timing, and deliverables belong in a proposal/)).toBeVisible();
+    await expect(page.getByText(/Scope, timing, and deliverables belong in a proposal/)).toBeVisible();
+    await expect(page.locator("main")).not.toContainText(/\bfees?\b/i);
     await expect(page.getByText("$450", { exact: true })).toHaveCount(0);
   });
 

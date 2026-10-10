@@ -263,7 +263,6 @@ export default async function JournalPostPage({
               )}
               <div className={styles.articleEnd}>
                 <StrataMark size="compact" align="left" />
-                <span>Where Time Adds Value.</span>
               </div>
             </article>
           </div>

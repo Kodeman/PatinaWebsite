@@ -13,7 +13,7 @@ import { journalPostsQuery } from "../../../sanity/lib/queries";
 export const metadata: Metadata = {
   title: "The Designer's Eye — Journal",
   description:
-    "Notes on design, craft, and building something new. From Leah's desk at Middlewest Studio.",
+    "Notes on design, craft, and building something new. From Leah's desk at Middle West Studio.",
   openGraph: {
     title: "The Designer's Eye — Patina Journal",
     description:

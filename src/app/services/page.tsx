@@ -134,8 +134,8 @@ export default function ServicesPage() {
             </h2>
             <p>
               A design conversation can begin with one room or reach across a
-              whole home. Scope, fees, timing, and deliverables belong in a
-              proposal agreed with your designer.
+              whole home. Scope, timing, and deliverables belong in a proposal
+              agreed with your designer.
             </p>
           </div>
           <dl className={styles.numberedList}>

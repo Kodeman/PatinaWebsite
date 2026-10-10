@@ -106,8 +106,8 @@ export function FoundingPageContent() {
           <li>
             <h3>A look at the work.</h3>
             <p>
-              Updates from the studio and monthly questions invite your
-              perspective as the platform takes shape.
+              Notes from the studio, and a question each month, while Patina
+              is still being built.
             </p>
           </li>
           <li>

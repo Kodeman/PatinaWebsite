@@ -34,7 +34,11 @@ test.describe("Our Story", () => {
     await expect(
       page.getByRole("heading", { name: "Make room for the work." }),
     ).toBeVisible();
-    await expect(page.getByText(/After twelve years in Seattle/)).toBeVisible();
+    await expect(
+      page.getByText(/She came home to Wisconsin in 2018/),
+    ).toBeVisible();
+    await expect(page.locator("main")).not.toContainText("Seattle");
+    await expect(page.locator("main")).not.toContainText(/co-?founder/i);
     await expect(
       page.getByText(
         /His work has taken him through Jydo, Blacktee, and Avidex/,
@@ -69,7 +73,7 @@ test.describe("Our Story", () => {
     ).toHaveAttribute("href", "https://www.middlewest.studio/saraha-circle-1");
     await expect(
       page.getByRole("img", {
-        name: /Leah Kochaver, founder of Middle West Studio/,
+        name: /Leah Kochaver of Middle West Studio/,
       }),
     ).toBeVisible();
     await expect(

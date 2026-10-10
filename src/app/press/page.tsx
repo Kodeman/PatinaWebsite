@@ -7,7 +7,7 @@ import { JoinCircleButton } from "@/components/studio/JoinCircleButton";
 export const metadata: Metadata = {
   title: "Press & studio notes",
   description:
-    "Facts, founder background, and press inquiries for Patina, a furniture discovery platform being built in Madison, Wisconsin.",
+    "Facts, founder background, and press inquiries for Patina, a venture of Middle West Studio in Madison, Wisconsin.",
   alternates: { canonical: "/press" },
 };
 
@@ -109,7 +109,7 @@ export default function PressPage() {
         <div className="studio-copy">
           <p>
             Leah Kochaver brings the perspective of a practicing interior
-            designer and her work at Middlewest Studio. She helps shape how
+            designer and her work at Middle West Studio. She helps shape how
             Patina understands rooms, materials, and the decisions that make a
             space personal.
           </p>

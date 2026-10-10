@@ -34,9 +34,9 @@ const defaultContactReasons = [
 ];
 
 const defaultQuickLinks = [
-  { label: "Join the Founding Circle", href: "/founding" },
   { label: "For designers", href: "/designers" },
   { label: "For makers", href: "/makers" },
+  { label: "Join the Founding Circle", href: "/founding" },
 ];
 
 export default function ContactContent(props: ContactContentProps) {

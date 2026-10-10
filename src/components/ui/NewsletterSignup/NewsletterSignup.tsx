@@ -162,7 +162,7 @@ export function NewsletterSignup({
         A biweekly letter about design decisions, product discoveries, and what we&apos;re building.
       </p>
       <p className="text-sm text-[var(--patina-mocha-brown)] mb-6">
-        From Leah&apos;s desk at Middlewest Studio.
+        From Leah&apos;s desk at Middle West Studio.
       </p></>}
       <form
         onSubmit={handleSubmit}
