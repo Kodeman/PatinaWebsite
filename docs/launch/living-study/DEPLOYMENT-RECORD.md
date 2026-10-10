@@ -13,7 +13,7 @@
 | R2 cache | `patina-website-cache`, Standard storage, 51 seeded entries |
 | Runtime bindings in the corrected configuration | Assets, Images, R2, self-reference, and both configured Durable Object classes; direct HTTPS to hosted Supabase |
 | Initial code version | `c8c24306-1f68-4294-8d27-608d03945d5d` |
-| Current code version | `3a925280-828e-4fad-b72d-46f0f0cd25f0` |
+| Current code version | `4fb419bb-ed3b-42e0-a7ce-9108dff93789` (believable-imagery release, 10 October 2026; see below). Previous: `69e063c1-6909-458a-94a7-46b84f26bee1` |
 | Next build ID | `dvrwrWhAsnZQbn1lIVAsR` |
 | Upload | 24,206.00 KiB uncompressed / 5,629.79 KiB gzip |
 | Cloudflare startup measurement | 60 ms for the signup-email update |
@@ -35,6 +35,16 @@ Earlier checks through `api.patina.cloud` were misidentified as self-hosted data
 - Connected Supabase SQL schema checks confirmed the required `waitlist`, `founding_designer_applications`, `maker_applications`, and `newsletter_subscribers` tables and columns in Strata. The missing `contact_messages` table was then created by the applied migration recorded below.
 - The deployed contact fix now reports retryable 503 if both persistence and the fallback founder notification fail. It checks the notification result before reporting fallback success and skips the auto-reply and analytics on failure. Successful database saves keep the scheduled notification and reply. Three mocked regression tests failed against the old behavior and passed with the fix.
 - Browser form tests were mocked or blocked. No successful live enrollment, contact message, newsletter signup, or email send was performed. A separate transaction-scoped service-role INSERT/SELECT check succeeded and was rolled back, leaving no test record. This verifies write/read permissions without testing live form enrollment or inbox delivery.
+
+## Believable-imagery release — 10 October 2026
+
+Version `4fb419bb-ed3b-42e0-a7ce-9108dff93789`, built from commit `c26c581` on `codex/living-study-production`. It replaced the retired generated studies with the Midjourney illustrations and Middle West photos in [the art-direction plan](../../art-direction/believable-imagery-2026-10.md), added the three background loops (`public/videos/studio/`, via `BackgroundVideo`), and placed Kody's portrait on `/about`. Scene 1 uses the loop variant Kody picked.
+
+Validation:
+- Before deploying: 110 server tests, tsc, and 90 Playwright checks (homepage, about, app, makers, designers, services, studio-polish/motion/launch and tracking coverage). The Cloudflare build and private-value scan passed on 1,421 files. The dry-run upload was 24,266.78 KiB / 5,649.36 KiB gzip.
+- After deploying, on `https://patina.cloud`: HTTP 200 on 12 pages and 6 media files, and the served scene-1 loop is byte-identical to the release encode. A browser check at 1440 and 390 px confirmed both loops play from the AV1 desktop and mobile sources, with no page errors; analytics and submissions were blocked during the check.
+
+To roll back, run `npx wrangler rollback 69e063c1-6909-458a-94a7-46b84f26bee1 --name patina-website`.
 
 ## Signup email update — Kody as sender
 
