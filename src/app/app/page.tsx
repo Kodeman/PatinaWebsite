@@ -31,30 +31,17 @@ export default function AppPage() {
         <StudioMotion kind="image" className={styles.appHeroArt}>
           <figure className={styles.heroPhotograph}>
             <Image
-              src="/images/studio/room.jpg"
-              alt="Illustrative warm living room with a lounge chair, timber, and linen"
-              width={1536}
-              height={1024}
+              src="/images/studio/designer-desk.jpg"
+              alt="A designer working between a laptop, monitor, and printed plan"
+              width={2400}
+              height={1600}
               priority
               sizes="(max-width: 760px) 100vw, 52vw"
             />
             <figcaption>
-              Illustrative imagery — awaiting partner photography.
-              Not an app screen or available product listing.
+              Illustration. Not a real project or available product listing.
             </figcaption>
           </figure>
-          <div className={styles.appHeroCard} aria-hidden="true">
-            <span>A closer look.</span>
-            <Image
-              src="/images/studio/chair.png"
-              alt=""
-              width={1536}
-              height={1024}
-              sizes="240px"
-              loading="eager"
-            />
-            <span>Shape. Texture. Possibility.</span>
-          </div>
         </StudioMotion>
       }
     >
@@ -89,15 +76,14 @@ export default function AppPage() {
                 think it through.
               </p>
               <Image
-                src="/images/studio/chair.png"
-                alt="Illustrative isolated timber and leather lounge chair"
-                width={1536}
-                height={1024}
+                src="/images/studio/kitchen-install.jpg"
+                alt="A kitchen mid-install with an elevation taped to the wall"
+                width={2400}
+                height={1345}
                 sizes="(max-width: 760px) 100vw, 50vw"
               />
               <figcaption className={styles.caption}>
-                Illustrative imagery — awaiting partner photography.
-                Not a product for sale.
+                Illustration. Not a real project or product for sale.
               </figcaption>
             </figure>
           </StudioMotion>

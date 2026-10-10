@@ -196,6 +196,25 @@
   transform: rotate(3deg);
   z-index: -1;
 }
+.kodyStudy {
+  display: grid;
+  gap: 60px;
+}
+.kodyPortrait {
+  margin-left: 0;
+  max-width: 420px;
+}
+.kodyPortrait > img {
+  height: 470px;
+  object-position: 50% 30%;
+}
+.kodyPortrait::before {
+  transform: rotate(-3deg);
+}
+.kody .kodyPortrait figcaption,
+.kody .kodyPortrait strong {
+  color: var(--paper);
+}
 .leahPortrait figcaption {
   font-size: 12px;
   line-height: 1.8;

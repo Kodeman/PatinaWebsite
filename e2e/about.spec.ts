@@ -67,6 +67,19 @@ test.describe("Our Story", () => {
     ).toBeVisible();
   });
 
+  test("shows Kody’s portrait with its correct credit and alt text", async ({
+    page,
+  }) => {
+    const portrait = page.getByRole("img", {
+      name: "Kody Kochaver in a dark button-down shirt and glasses.",
+    });
+    await expect(portrait).toBeVisible();
+    await expect(portrait).toHaveAttribute("src", /kody-kochaver/);
+    await expect(
+      page.getByText("Portrait courtesy of Kody Kochaver."),
+    ).toBeVisible();
+  });
+
   test("credits real work and founder photography", async ({ page }) => {
     await expect(
       page.getByRole("link", { name: "Hiawatha / Middle West Studio" }),

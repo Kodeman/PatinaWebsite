@@ -55,15 +55,15 @@ export default async function CareersPage() {
         <StudioMotion kind="paper" className={styles.careersHeroArt}>
           <figure className={styles.heroPhotograph}>
             <Image
-              src="/images/studio/workbench.jpg"
-              alt="Illustrative hands working a timber joint at a workbench"
-              width={1536}
-              height={1024}
+              src="/images/studio/shared-monitor.jpg"
+              alt="Two colleagues sharing a monitor beside a sample wall"
+              width={2400}
+              height={1600}
               priority
               sizes="(max-width: 760px) 100vw, 52vw"
             />
             <figcaption>
-              Illustrative imagery — awaiting partner photography.
+              Illustration.
             </figcaption>
           </figure>
           <div className={styles.careersHeroNote}>

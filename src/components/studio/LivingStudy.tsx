@@ -11,6 +11,7 @@ import {
 } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import { TrackedLink } from "@/components/ui/TrackedLink";
+import { BackgroundVideo } from "./BackgroundVideo";
 import { MotionControl, useStudioMotion } from "./StudioMotion";
 import styles from "./LivingStudy.module.css";
 
@@ -59,13 +60,16 @@ const scenes = [
   },
 ] as const;
 const materials = [
-  { name: "Walnut", detail: "A warm grain, made richer by the passing years." },
+  {
+    name: "White oak",
+    detail: "A warm grain, made richer by the passing years.",
+  },
   {
     name: "Linen",
     detail: "An easy texture. A little irregularity. Room to settle in.",
   },
   {
-    name: "Olive",
+    name: "Zellige",
     detail: "A quiet, grounding color that brings the materials together.",
   },
 ];
@@ -212,22 +216,23 @@ export function LivingStudy() {
         className={styles.stage}
         aria-label="Explore the living study"
       >
-        <Image
+        <BackgroundVideo
           className={`${styles.photo} ${styles.room}`}
-          src="/images/studio/room.jpg"
-          fill
-          sizes="100vw"
-          priority
-          aria-hidden={scene !== 0}
-          alt="Illustrative sunlit room with warm timber, tactile fabrics, and a walnut lounge chair"
+          webmSrc="/videos/studio/studio-table.webm"
+          mp4Src="/videos/studio/studio-table.mp4"
+          mobileWebmSrc="/videos/studio/studio-table-mobile.webm"
+          mobileMp4Src="/videos/studio/studio-table-mobile.mp4"
+          poster="/images/studio/studio-table.jpg"
+          active={scene === 0}
         />
-        <Image
+        <BackgroundVideo
           className={`${styles.photo} ${styles.making}`}
-          src="/images/studio/workbench.jpg"
-          fill
-          sizes="100vw"
-          aria-hidden={scene !== 2}
-          alt="Illustrative workshop study of hands shaping a wooden frame"
+          webmSrc="/videos/studio/site-visit.webm"
+          mp4Src="/videos/studio/site-visit.mp4"
+          mobileWebmSrc="/videos/studio/site-visit-mobile.webm"
+          mobileMp4Src="/videos/studio/site-visit-mobile.mp4"
+          poster="/images/studio/site-visit.jpg"
+          active={scene === 2}
         />
         <div className={styles.shade} />
         <div className={styles.copy}>
@@ -251,14 +256,14 @@ export function LivingStudy() {
             </div>
           </div>
         </div>
-        <figure className={styles.chair} aria-hidden={scene === 0}>
+        <figure className={styles.scheme} aria-hidden={scene === 0}>
           <Image
-            src="/images/studio/chair.png"
+            src="/images/studio/material-scheme.jpg"
             fill
-            sizes="(max-width: 760px) 85vw, 60vw"
-            alt="Illustrative walnut chair with a timber frame and a warm leather seat"
+            sizes="(max-width: 760px) 90vw, 40vw"
+            alt="Illustration: white oak, a green-painted cabinet door, quartzite, zellige tiles and linen laid out on a printed kitchen plan"
           />
-          <figcaption>Study No. 01 / form &amp; feeling</figcaption>
+          <figcaption>Illustration.</figcaption>
         </figure>
         <div
           className={`${styles.context} ${styles.roomCue}`}
@@ -269,7 +274,7 @@ export function LivingStudy() {
           <button
             type="button"
             onClick={() => selectScene(1)}
-            aria-label="Look closer at the chair"
+            aria-label="Look closer at the materials"
           >
             +
           </button>
@@ -366,7 +371,7 @@ export function LivingStudy() {
           </div>
           <div className={styles.dockEnd}>
             <MotionControl />
-            <p>Illustrative imagery — awaiting partner photography.</p>
+            <p>Illustration. Not a real project.</p>
           </div>
         </div>
         <div className={styles.progress} aria-hidden="true" />
@@ -413,22 +418,22 @@ export function FounderJourney() {
             style={enabled ? { rotate } : undefined}
           >
             <Image
-              src="/images/studio/materials.jpg"
+              src="/images/founders/windy-peak-detail.jpg"
               fill
               sizes="(max-width: 760px) 100vw, 45vw"
-              alt="Illustrative composition of wood, linen, and color samples on a studio table"
+              alt="Glazed tile, brass hardware, and ceramics in a Windy Peak kitchen detail by Middle West Studio"
             />
           </motion.figure>
           <motion.div
             className={styles.founderPaper}
             style={enabled ? { opacity, y } : { opacity: 0 }}
           >
-            <p>The living study / notes in progress</p>
+            <p>The living study / Illustration.</p>
             <Image
-              src="/images/studio/chair.png"
+              src="/images/studio/material-scheme.jpg"
               fill
               sizes="(max-width: 760px) 100vw, 45vw"
-              alt=""
+              alt="Illustration: oak, a green door, stone, tile and linen samples on a printed plan"
             />
             <span>A little room to think differently.</span>
           </motion.div>
@@ -441,7 +446,16 @@ export function FounderJourney() {
             <span>A note from the studio</span>
           </div>
           <p className={styles.founderCaption}>
-            Illustrative imagery — awaiting partner photography.
+            <TrackedLink
+              href="https://www.middlewest.studio/saraha-circle-1-1"
+              location="home_founder_credit"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Windy Peak / Middle West Studio
+            </TrackedLink>
+            <br />
+            Interior design by Leah Kochaver. Photography by Ashley Hicks.
           </p>
         </div>
         <div className={styles.founderText}>

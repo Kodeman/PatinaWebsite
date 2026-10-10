@@ -98,10 +98,10 @@ export default async function JournalPage() {
             </p>
             <div className={styles.folioImage}>
               <Image
-                src="/images/studio/materials.jpg"
-                alt="Illustrative material table with wood, textiles, and a pencil sketch"
-                width={1536}
-                height={1024}
+                src="/images/founders/hiawatha-room.jpg"
+                alt="A living room at Hiawatha"
+                width={1024}
+                height={683}
                 priority
                 sizes="(max-width: 760px) 80vw, 40vw"
               />
@@ -111,7 +111,7 @@ export default async function JournalPage() {
             </p>
           </div>
           <p className={styles.heroCaption}>
-            Illustrative imagery — awaiting partner photography.
+            Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks.
           </p>
         </StudioMotion>
       }

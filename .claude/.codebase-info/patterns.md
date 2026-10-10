@@ -1,6 +1,6 @@
 # Patterns & Conventions
 
-*Last Updated: 2026-10-09*
+*Last Updated: 2026-10-10*
 
 ## Code Organization
 
@@ -12,7 +12,7 @@ Route-per-folder under `src/app`; server `page.tsx` composes presentation compon
 - **`after()` for side effects**: email and PostHog never block or alter the response; each is wrapped in `.catch` that logs. `captureServerEvent` owns its own `after`.
 - **Lead payload** built client-side by `buildLeadPayload()` so every form carries UTM, first/last touch, distinct id, and the `company_url` honeypot.
 - **Copy from one place**: `systemMessages` for UI/system strings, `../patina-merged/marketing/canon` for voice (site rules in `docs/messaging/patina-messaging-system.md`). Email HTML goes through `frame()` in `src/lib/emails/template.ts`.
-- **Motion**: `useReducedMotion` in every animated component; Living Study pages wrap in `StudioMotion` and respect the user toggle via `useStudioMotion()`.
+- **Motion**: `useReducedMotion` in every animated component; Living Study pages wrap in `StudioMotion` and respect the user toggle via `useStudioMotion()`. Moving backgrounds go through `BackgroundVideo`, never a raw autoplay `<video>`; every generated still or loop gets a row in `public/images/studio/README.md` and an "Illustration." caption (see `docs/art-direction/believable-imagery-2026-10.md`).
 - **CTAs carry a `source`** string that flows into `waitlist.source` and analytics props (e.g. `studio_home_invitation`).
 - **Metadata**: each page exports `metadata` built from `defaultMetadata` in `src/lib/seo.ts`; JSON-LD injected as `<script type="application/ld+json">`.
 

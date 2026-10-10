@@ -1,6 +1,6 @@
 # Directory Structure
 
-*Last Updated: 2026-10-09*
+*Last Updated: 2026-10-10*
 
 ## Root Layout
 
@@ -12,7 +12,7 @@ PatinaWebsite/
 ├── tests/                  # node --test: server lifecycle, lead payload, lead notification, posthog init, rate limit, sitemap, build artifact; helpers/load-module.mjs
 ├── e2e/                    # Playwright specs, one per page, plus tracking-coverage.spec.ts
 ├── docs/                   # Messaging system, engagement plan, launch runbooks, reports
-├── public/                 # Fonts, images (studio imagery under public/images/studio)
+├── public/                 # Fonts, images (studio stills in public/images/studio, provenance register in its README; founder portraits in public/images/founders), background loops in public/videos/studio
 ├── Design/                 # Design references (not code)
 ├── design-proposals/       # Untracked design explorations
 ├── next.config.ts  wrangler.jsonc  open-next.config.ts  vercel.json
@@ -29,7 +29,7 @@ App Router. Each folder is a route with `page.tsx`; client islands sit beside th
 - `furniture/`, `furniture/[slug]/`, `materials/`, `waitlist/` are legacy routes that now redirect.
 
 ### src/components/
-- `studio/` Living Study presentation: `StudioPage.tsx` (page shell), `LivingStudy.tsx` (homepage scroll scenes), `DesignerWorkbench.tsx`, `StoryJourney.tsx`, `FoundingInvitation.tsx`, `JoinCircleButton.tsx`, `StudioMotion.tsx`, plus CSS modules per page family.
+- `studio/` Living Study presentation: `StudioPage.tsx` (page shell), `LivingStudy.tsx` (homepage scroll scenes), `DesignerWorkbench.tsx`, `StoryJourney.tsx`, `FoundingInvitation.tsx`, `JoinCircleButton.tsx`, `StudioMotion.tsx`, `BackgroundVideo.tsx` (muted hero loops), plus CSS modules per page family.
 - `sections/` older homepage/app/about sections (`HomepageHero`, `AppJourney`, `FirstTouchJourney`, …). Some are no longer imported by pages; check before extending.
 - `ui/` atoms and lead-capture widgets: `Button`, `StrataMark`, `FoundingCircleForm`, `FoundingCircleModal` (+ `FoundingModalContext`), `FoundingPopover`, `NewsletterSignup`, `NewsletterConfirmBanner`, `CookieConsent`, `TrackedLink`, `Skeleton`, `SkipLink`, …
 - `layout/` `Navigation`, `MobileMenu`, `Footer`, `Container`.
@@ -49,4 +49,4 @@ Hooks: `useReducedMotion`, `useInView`, `useScrollProgress`, `useScrollReveal`. 
 `cloudflare-build.mjs` (build + strip private env), `cloudflare-artifact.mjs` (helpers, tested), `production-env.mjs` (key lists), `check-production-env.mjs`, `seed-journal.mjs` + `.ndjson`, `migrate-content.ts`, `preview-signup-emails.ts`.
 
 ### docs/
-`messaging/patina-messaging-system.md` (pointer to patina-merged marketing/canon + site-only copy rules and rulings), `engagement-tracking-plan.md`, `analytics-source-of-truth.md`, `identity-contract.md`, `utm-governance.md`, `marketing/utm-convention.md` (campaign links), `posthog-reporting.md` (provisioned dashboard + daily report), `launch/living-study/` (Cloudflare runbook, production handoff, deployment record), `launch/launch-package-2026-09/`, `reports/` (monthly SEO, perf, AI-citation, weekly content), `superpowers/specs/`.
+`messaging/patina-messaging-system.md` (pointer to patina-merged marketing/canon + site-only copy rules and rulings), `engagement-tracking-plan.md`, `analytics-source-of-truth.md`, `identity-contract.md`, `utm-governance.md`, `marketing/utm-convention.md` (campaign links), `posthog-reporting.md` (provisioned dashboard + daily report), `launch/living-study/` (Cloudflare runbook, production handoff, deployment record), `launch/launch-package-2026-09/` (its creative guide and build.py still reference the retired `public/images/studio/{room,workbench,materials}.jpg` and `chair.png`), `art-direction/` (believable-imagery plan with the believability and motion gates, and creative/art/web team briefs), `reports/` (monthly SEO, perf, AI-citation, weekly content), `superpowers/specs/`.

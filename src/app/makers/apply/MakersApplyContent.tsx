@@ -157,9 +157,11 @@ export default function MakersApplyContent(props: MakersApplyContentProps) {
         </>
       }
       description="We’re inviting 15 founding makers to help shape Patina. Tell us what you make, what matters to your workshop, and where we can see the work."
-      image="/images/studio/workbench.jpg"
-      imageAlt="Illustrative hands considering the fit of a timber joint"
-      imageCaption="Illustrative imagery — awaiting partner photography."
+      image="/images/studio/cabinet-shop.jpg"
+      imageAlt="A cabinetmaker checking an oak door against a shop drawing"
+      imageCaption="Illustration."
+      imageWidth={2400}
+      imageHeight={1345}
       heroAction={
         <a className="studio-button" href="#maker-application">
           Begin your application <span aria-hidden="true">↗</span>

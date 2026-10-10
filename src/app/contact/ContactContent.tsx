@@ -102,9 +102,11 @@ export default function ContactContent(props: ContactContentProps) {
         </>
       }
       description="A question about Patina, an idea for a partnership, or a room on your mind. We’d love to hear from you."
-      image="/images/studio/materials.jpg"
-      imageAlt="Illustrative materials and a furniture sketch laid out on a studio table"
-      imageCaption="Illustrative imagery — awaiting partner photography."
+      image="/images/founders/windy-peak-detail.jpg"
+      imageAlt="A close view of the Windy Peak living room"
+      imageCaption="Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks."
+      imageWidth={1024}
+      imageHeight={1536}
       heroAction={
         <a className="studio-button" href="#your-note">
           Write to us <span aria-hidden="true">↗</span>

@@ -1,6 +1,6 @@
 # Key Modules
 
-*Last Updated: 2026-10-09*
+*Last Updated: 2026-10-10*
 
 ### Analytics (client)
 - **Location:** `src/lib/analytics.ts`, `src/lib/posthog.ts`, `src/lib/attribution.ts`, `src/lib/identity.ts`
@@ -41,7 +41,7 @@
 
 ### Studio components
 - **Location:** `src/components/studio/`
-- **Purpose:** the Living Study visual system. `StudioPage` is the shared page shell (eyebrow, title, description, hero image/art, `tone: "paper" | "olive"`). `StudioMotion` exposes `StudioMotionProvider`, `StudioMotion` (scroll-linked wrapper), `MotionControl`, `useStudioMotion`. `LivingStudy` is the homepage scroll narrative, `FoundingInvitation` the closing CTA, `JoinCircleButton` opens the global modal.
+- **Purpose:** the Living Study visual system. `StudioPage` is the shared page shell (eyebrow, title, description, hero image/art, `tone: "paper" | "olive"`). `StudioMotion` exposes `StudioMotionProvider`, `StudioMotion` (scroll-linked wrapper), `MotionControl`, `useStudioMotion`. `LivingStudy` is the homepage scroll narrative, `FoundingInvitation` the closing CTA, `JoinCircleButton` opens the global modal. `BackgroundVideo` is the decorative muted loop (AV1 webm + mp4, optional mobile sources at ≤767px): it plays only while intersecting, falls back to its optimized poster when `useStudioMotion().enabled` is false or Save-Data is on, and takes `active={false}` for stacked hidden layers. Used by the LivingStudy scenes and the /makers hero.
 
 ### Founding Circle modal
 - **Location:** `src/components/ui/FoundingCircleModal/` (`FoundingCircleModal.tsx`, `FoundingModalContext.tsx`, CSS module)

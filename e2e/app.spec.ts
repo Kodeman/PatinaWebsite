@@ -24,10 +24,10 @@ test.describe("Pre-launch App Page", () => {
   });
 
   test("shows a material study without pretending it is a live product", async ({ page }) => {
-    await expect(page.getByRole("img", { name: "Illustrative isolated timber and leather lounge chair" })).toBeVisible();
-    await expect(page.locator("main figcaption").filter({ hasText: "Illustrative imagery — awaiting partner photography." })).toHaveCount(2);
-    await expect(page.getByText(/Not a product for sale/)).toBeVisible();
-    await expect(page.getByText(/Not an app screen or available product listing/)).toBeVisible();
+    await expect(page.getByRole("img", { name: "A kitchen mid-install with an elevation taped to the wall" })).toBeVisible();
+    await expect(page.locator("main figcaption").filter({ hasText: /^Illustration\./ })).toHaveCount(2);
+    await expect(page.getByText(/Not a real project or product for sale/)).toBeVisible();
+    await expect(page.getByText(/Not a real project or available product listing/)).toBeVisible();
   });
 
   test("offers membership instead of a download", async ({ page }) => {

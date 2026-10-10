@@ -44,11 +44,11 @@ export default function HomePage() {
           <div className="studio-door">
             <StudioMotion kind="paper">
               <Image
-                src="/images/studio/materials.jpg"
-                width={800}
-                height={650}
+                src="/images/studio/designer-desk.jpg"
+                width={2400}
+                height={1600}
                 sizes="(max-width: 760px) 100vw, 40vw"
-                alt="Illustrative designer’s material study, with timber and textile samples"
+                alt="Illustration of a designer working between a laptop, monitor, and printed plan"
               />
             </StudioMotion>
             <p className="studio-kicker">For designers / the Founding 50</p>
@@ -71,7 +71,7 @@ export default function HomePage() {
             </TrackedLink>
           </div>
           <p className="studio-doors-caption">
-            Illustrative imagery — awaiting partner photography.
+            Illustration.
           </p>
         </section>
         <FoundingInvitation source="studio_home_invitation" />

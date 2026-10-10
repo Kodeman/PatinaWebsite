@@ -72,8 +72,8 @@ export default function DesignersPage() {
           <StudioMotion kind="paper" className={styles.heroArt}>
             <figure className={styles.materialPhotograph}>
               <Image
-                src="/images/studio/materials.jpg"
-                alt="Illustrative designer’s worktable with timber, textiles, a pencil, and a furniture sketch"
+                src="/images/studio/sample-library.jpg"
+                alt="A designer choosing a fabric book from a wall of samples"
                 fill
                 priority
                 sizes="(max-width: 850px) 100vw, 48vw"
@@ -98,7 +98,7 @@ export default function DesignersPage() {
               </div>
             </div>
             <p className={styles.artCaption}>
-              Illustrative imagery — awaiting partner photography.
+              Illustration.
             </p>
           </StudioMotion>
         </header>
@@ -208,9 +208,14 @@ export default function DesignersPage() {
               Talk to us first <span aria-hidden="true">↗</span>
             </Link>
             <figure className={styles.applicationStudy}>
-              <Image src="/images/studio/chair.png" alt="" fill sizes="310px" />
+              <Image
+                src="/images/studio/site-phone-plans.jpg"
+                alt="A phone, rolled plans, tape, and a door sample on a work surface"
+                fill
+                sizes="310px"
+              />
               <figcaption>
-                Illustrative imagery — awaiting partner photography.
+                Illustration.
               </figcaption>
             </figure>
           </div>

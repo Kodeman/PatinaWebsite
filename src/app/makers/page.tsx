@@ -5,7 +5,11 @@ import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { StrataMark } from "@/components/ui/StrataMark";
-import { StudioMotion } from "@/components/studio/StudioMotion";
+import { BackgroundVideo } from "@/components/studio/BackgroundVideo";
+import {
+  MotionControl,
+  StudioMotion,
+} from "@/components/studio/StudioMotion";
 import { MakerStudy } from "./MakerStudy";
 import styles from "./MakersPage.module.css";
 
@@ -45,13 +49,13 @@ export default function MakersPage() {
       <Navigation />
       <main id="main-content">
         <header className={styles.hero}>
-          <Image
+          <BackgroundVideo
             className={styles.heroImage}
-            src="/images/studio/workbench.jpg"
-            alt="Illustrative close-up of hands fitting a timber joint at a workshop bench"
-            fill
-            priority
-            sizes="100vw"
+            webmSrc="/videos/studio/cabinet-shop.webm"
+            mp4Src="/videos/studio/cabinet-shop.mp4"
+            mobileWebmSrc="/videos/studio/cabinet-shop-mobile.webm"
+            mobileMp4Src="/videos/studio/cabinet-shop-mobile.mp4"
+            poster="/images/studio/cabinet-shop.jpg"
           />
           <div className={styles.heroShade} aria-hidden="true" />
           <div className={styles.heroCopy}>
@@ -82,9 +86,10 @@ export default function MakersPage() {
           </div>
           <div className={styles.heroFoot}>
             <StrataMark size="compact" align="left" variant="on-clay" />
-            <p>
-              Illustrative imagery — awaiting partner photography.
-            </p>
+            <div className={styles.heroNote}>
+              <MotionControl />
+              <p>Illustration. Not a real project.</p>
+            </div>
           </div>
         </header>
 

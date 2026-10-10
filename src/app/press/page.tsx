@@ -33,9 +33,11 @@ export default function PressPage() {
           Download the fact sheet <span aria-hidden="true">↓</span>
         </TrackedLink>
       }
-      image="/images/studio/materials.jpg"
-      imageAlt="Illustrative arrangement of wood and fabric samples on a studio table"
-      imageCaption="Illustrative imagery — awaiting partner photography."
+      image="/images/founders/windy-peak-room.jpg"
+      imageAlt="A living room at Windy Peak"
+      imageCaption="Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks."
+      imageWidth={1024}
+      imageHeight={1536}
     >
       <section className="studio-section studio-two-column">
         <div className="studio-copy">

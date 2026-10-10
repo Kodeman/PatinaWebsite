@@ -27,18 +27,24 @@
   top: min(0px, calc(100svh - 820px));
 }
 .photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition:
     opacity 1.15s var(--ease),
     transform 1.5s var(--ease);
   z-index: -3;
 }
+/* studio-table: the window stays quiet behind the copy on the left third. */
 .room {
-  object-position: 50% 55%;
+  object-position: 40% 45%;
   transform: scale(1.015);
 }
+/* site-visit: the three people sit center-left; the boxes take the paper card. */
 .making {
-  object-position: 62% 50%;
+  object-position: 60% 45%;
   opacity: 0;
   transform: scale(1.08);
 }
@@ -142,7 +148,7 @@
   font-size: 9px;
   margin-top: 4px;
 }
-.chair {
+.scheme {
   position: absolute;
   left: 43%;
   top: 28%;
@@ -151,6 +157,9 @@
   z-index: 2;
   opacity: 0;
   pointer-events: none;
+  margin: 0;
+  background: var(--paper);
+  box-shadow: 0 18px 40px #3f3b371f;
   transform: rotate(0deg);
   transition:
     left 1.2s var(--ease),
@@ -158,23 +167,20 @@
     width 1.2s var(--ease),
     height 1.2s var(--ease),
     opacity 0.8s,
-    transform 1.2s var(--ease),
-    background 0.7s,
-    box-shadow 0.7s;
+    transform 1.2s var(--ease);
 }
-.chair img {
-  object-fit: contain;
-  filter: drop-shadow(8px 24px 14px #3f3b3717);
+/* A plain framed still: the paper margin carries the caption. */
+.scheme img {
+  object-fit: cover;
+  padding: 12px 12px 34px;
 }
-.chair figcaption {
+.scheme figcaption {
   position: absolute;
-  bottom: 15px;
-  left: 20px;
-  right: 20px;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
   font-size: 9px;
   color: var(--mocha);
-  opacity: 0;
-  transition: opacity 0.4s;
 }
 .studySide {
   position: absolute;
@@ -225,17 +231,18 @@
   width: 100%;
   height: 112px;
   box-shadow: 0 7px 14px #3f3b3726;
-  background-image: url("/images/studio/materials.jpg");
+  background-image: url("/images/studio/material-scheme.jpg");
   background-size: 640%;
 }
+/* Crops of material-scheme.jpg: white oak plank, linen square, zellige tiles. */
 .swatch[data-material="0"] .texture {
-  background-position: 0% 74%;
+  background-position: 10% 50%;
 }
 .swatch[data-material="1"] .texture {
-  background-position: 77% 12%;
+  background-position: 62% 90%;
 }
 .swatch[data-material="2"] .texture {
-  background-position: 100% 66%;
+  background-position: 47% 64%;
 }
 .swatch > span:last-child {
   display: block;
@@ -415,12 +422,13 @@
 .track[data-scene="study"] .description {
   max-width: 28ch;
 }
-.track[data-scene="study"] .chair {
+/* The opaque frame sits between the copy column and the material fan. */
+.track[data-scene="study"] .scheme {
   opacity: 1;
-  left: 30%;
-  top: 25%;
-  width: 57%;
-  height: 63%;
+  left: 43%;
+  top: 22%;
+  width: 35%;
+  height: 56%;
 }
 .track[data-scene="study"] .switch {
   background: #655b5210;
@@ -452,23 +460,17 @@
     linear-gradient(90deg, #1e1b16b5, transparent 74%),
     linear-gradient(0deg, #1e1b1699, transparent 25%);
 }
-.track[data-scene="making"] .chair {
+.track[data-scene="making"] .scheme {
   opacity: 1;
   left: 75%;
   top: 19%;
   width: 205px;
   height: 225px;
-  background: var(--paper);
   box-shadow: 0 10px 35px #0003;
   transform: rotate(5deg);
 }
-.track[data-scene="making"] .chair img {
+.track[data-scene="making"] .scheme img {
   padding: 10px 10px 30px;
-  filter: none;
-}
-.track[data-scene="making"] .chair figcaption {
-  opacity: 1;
-  transition-delay: 0.7s;
 }
 .beginnings {
   padding: 105px var(--studio-edge) 85px;
@@ -530,6 +532,7 @@
 }
 .founderPhoto img {
   object-fit: cover;
+  object-position: 50% 46%;
 }
 .founderCaption {
   position: absolute;
@@ -554,7 +557,7 @@
 }
 .founderPaper img {
   object-fit: contain;
-  padding: 50px 0 35px;
+  padding: 50px 30px 45px;
 }
 .founderPaper > span {
   position: absolute;
@@ -686,13 +689,13 @@
   .track[data-scene="study"] .copy h1 {
     font-size: 74px;
   }
-  .track[data-scene="study"] .chair {
-    left: 29%;
-    top: 31%;
-    width: 59%;
-    height: 56%;
+  .track[data-scene="study"] .scheme {
+    left: 43%;
+    top: 28%;
+    width: 30%;
+    height: 46%;
   }
-  .track[data-scene="making"] .chair {
+  .track[data-scene="making"] .scheme {
     left: auto;
     right: var(--edge);
     width: 170px;
@@ -714,8 +717,12 @@
   .stage::after {
     inset: 10px;
   }
+  /* Portrait crops: the left designer with the fabrics; the contractor's tablet. */
   .room {
-    object-position: 58% 55%;
+    object-position: 24% 50%;
+  }
+  .making {
+    object-position: 50% 50%;
   }
   .shade {
     background:
@@ -810,11 +817,12 @@
   .track[data-scene="study"] .description {
     max-width: 27ch;
   }
-  .track[data-scene="study"] .chair {
-    top: 35%;
-    left: 18%;
-    width: 82%;
-    height: 40%;
+  /* Between the description and the material fan, clear of both. */
+  .track[data-scene="study"] .scheme {
+    top: 51%;
+    left: 24px;
+    width: calc(100% - 48px);
+    height: 19%;
   }
   .studySide {
     right: 24px;
@@ -862,7 +870,7 @@
   .annotation {
     display: none;
   }
-  .track[data-scene="making"] .chair {
+  .track[data-scene="making"] .scheme {
     left: auto;
     right: 30px;
     top: auto;
@@ -870,10 +878,10 @@
     width: 125px;
     height: 140px;
   }
-  .track[data-scene="making"] .chair img {
+  .track[data-scene="making"] .scheme img {
     padding-bottom: 24px;
   }
-  .chair figcaption {
+  .scheme figcaption {
     font-size: 7px;
     left: 12px;
     right: 8px;
@@ -1002,11 +1010,9 @@
   .scrollNote p {
     font-size: 8px;
   }
-  .track[data-scene="study"] .chair {
-    top: 36%;
-    height: 34%;
-    left: 22%;
-    width: 78%;
+  .track[data-scene="study"] .scheme {
+    top: 47%;
+    height: 19%;
   }
   .studySide {
     bottom: 118px;
@@ -1036,7 +1042,7 @@
     font-size: 19px;
     margin-bottom: 6px;
   }
-  .track[data-scene="making"] .chair {
+  .track[data-scene="making"] .scheme {
     bottom: 23%;
     width: 100px;
     height: 115px;

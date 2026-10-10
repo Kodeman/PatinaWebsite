@@ -10,25 +10,25 @@ const studies = [
     label: "The material",
     title: "What did you choose?",
     copy: "The species, the surface, the source. We want to understand what you work with and why.",
-    image: "/images/studio/materials.jpg",
-    alt: "Illustrative timber and textile samples beside a furniture sketch",
-    caption: "Illustrative imagery — awaiting partner photography.",
+    image: "/images/founders/windy-peak-detail.jpg",
+    alt: "A close view of the Windy Peak living room",
+    caption: "Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks.",
   },
   {
     label: "The construction",
     title: "What did you refuse to rush?",
     copy: "A joint, an edge, the finish in the places you only see up close. Tell us where the care goes.",
-    image: "/images/studio/workbench.jpg",
-    alt: "Illustrative hands fitting a timber joint",
-    caption: "Illustrative imagery — awaiting partner photography.",
+    image: "/images/studio/cabinet-shop.jpg",
+    alt: "A cabinetmaker checking an oak door against a shop drawing",
+    caption: "Illustration.",
   },
   {
     label: "The maker’s words",
     title: "What should people know?",
     copy: "Your process, your point of view, and how a piece should live. The maker’s words belong beside the work.",
-    image: "/images/studio/chair.png",
-    alt: "An isolated illustrative timber and leather chair",
-    caption: "Illustrative imagery — awaiting partner photography.",
+    image: "/images/founders/sahara-circle-kitchen.jpg",
+    alt: "A kitchen at Sahara Circle",
+    caption: "Interior design: Leah Kochaver, Middle West Studio. Contractor: Classic Cabinetry. Photography: Ashley Hicks.",
   },
 ];
 
@@ -159,14 +159,14 @@ export function MakerStudy() {
             ))}
           </div>
           <p className={styles.studyDisclaimer}>
-            Illustrative studies, not one product’s documented making process.
+            A mix of project photography and illustration.
           </p>
         </div>
         <div className={styles.studyArt}>
           {studies.map((study, index) => (
             <figure
               key={study.image}
-              className={`${styles.studyFigure} ${index === 2 ? styles.isolated : ""}`}
+              className={styles.studyFigure}
               data-active={selected === index}
               aria-hidden={selected !== index}
             >

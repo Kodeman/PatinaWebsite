@@ -25,8 +25,8 @@ test.describe("Homepage", () => {
     await expect(doors.locator('a[href="/makers"]')).toHaveCount(0);
   });
 
-  test("lets a visitor inspect the chair and material palette", async ({ page }) => {
-    await page.getByRole("button", { name: "Look closer at the chair", exact: true }).click();
+  test("lets a visitor inspect the material palette", async ({ page }) => {
+    await page.getByRole("button", { name: "Look closer at the materials", exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toContainText("An eye for");
     const materials = page.getByRole("group", { name: "Explore the study materials", exact: true });
     await materials.getByRole("button", { name: "Linen", exact: true }).click();

@@ -12,6 +12,8 @@ interface StudioPageProps {
   image?: string;
   imageAlt?: string;
   imageCaption?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   tone?: "paper" | "olive";
   children: ReactNode;
   heroArt?: ReactNode;
@@ -26,6 +28,8 @@ export function StudioPage({
   image,
   imageAlt = "",
   imageCaption,
+  imageWidth = 1536,
+  imageHeight = 1024,
   tone = "paper",
   children,
   heroArt,
@@ -61,14 +65,14 @@ export function StudioPage({
                   <Image
                     src={image}
                     alt={imageAlt}
-                    width={1536}
-                    height={1024}
+                    width={imageWidth}
+                    height={imageHeight}
                     sizes="(max-width: 760px) 100vw, 48vw"
                     priority
                   />
                   <figcaption>
                     {imageCaption ||
-                      "Illustrative imagery — awaiting partner photography."}
+                      "Illustration."}
                   </figcaption>
                 </figure>
               </StudioMotion>

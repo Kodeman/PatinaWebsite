@@ -1,37 +1,52 @@
-# Living Study — image provenance and replacement map
+# Studio illustrations — provenance register
 
-These four launch assets are **generated illustrative studies**. They do not document a real Patina project, available product, founder workspace, or maker partnership. The connected room → chair → workshop presentation is a visual concept; it does not establish one piece’s manufacturing provenance.
+Every file in this folder (except the retired files listed at the end) and in `public/videos/studio/` is a **Midjourney illustration**. They were generated on the Patina Midjourney account on 10 October 2026, at Kody's direction. The settings were v8.2, `--style raw --s 40`, personalization profile P, and the art-direction canon negative list. Future batches use the house style code `--p m7507783415631638492` (moodboard "Patina house style 2026-10", built from these stills), per canon §5. None of them documents a real Patina project, client home, studio, maker or product. Nobody pictured is a real person.
 
-The register below is based on the retained design-proposal prompts and asset notes. It does not add a photographer, model, maker, location, or real product identity.
-
-| Production asset | Design-proposal source | Recorded creation context | Later photography replacement |
-| --- | --- | --- | --- |
-| `room.jpg` | `assets/room-concept.jpg`; prompt in `sources/image-prompt.txt` | Generated editorial room concept: warm room, timber-and-leather chair, linen sofa, table, and natural light. The prompt expressly says illustrative, not a real product catalog or designer project. | A documented room with permission, a distinctive chair, and landscape/portrait crops that preserve headline space |
-| `chair.png` | `assets/chair-study-v4.png`; notes in `sources/image-prompt-v4.md` | Generated isolation edit of `room-concept.jpg`, recorded 9 September 2026. A transparent furniture study, not a documented product or verified product-accurate cutout. | The actual chair from the replacement room, photographed from a matching angle and prepared with a transparent background |
-| `materials.jpg` | `assets/material-table-v3.jpg`; notes in `sources/image-prompts-v3.md` | Built-in image generation, recorded 9 September 2026. An overhead concept arrangement of timber, textile, leather, sketch, pencil, and cup. | Samples actually considered together in a real design process, with subject details and credit |
-| `workbench.jpg` | `assets/maker-hands-v3.jpg`; notes in `sources/image-prompts-v3.md` | Built-in image generation, recorded 9 September 2026. An illustrative close-up of hands fitting a walnut joint. No named real maker or founder is depicted. | A consenting maker performing documented work; connect it to the room’s piece only if that relationship is confirmed |
+The art direction and the believability gate behind these picks are in [`docs/art-direction/believable-imagery-2026-10.md`](../../../docs/art-direction/believable-imagery-2026-10.md). Every frame passed that gate at 100%, and the loops also passed the motion gate.
 
 ## Presentation requirements
 
-- Keep visible illustrative context near the scene or in an immediately available caption. Useful copy: “An illustrative study, created with AI. Not a Patina project, available product, or maker partnership.”
-- Write alt text for the image’s visual role. Do not identify the illustrated hands as a real person or assign the room to Middlewest Studio.
-- Retain the caption when an asset is exported to press, email, or social. A crop does not change its provenance.
-- Keep the Patina Strata separate from photography and preserve its approved proportions.
-- A future real room paired with the existing generated workshop still needs separate context; replacing one image does not authenticate the rest of the sequence.
+- **Caption every placement "Illustration."** Where space allows, use "Illustration. Not a real project." Customer copy does not say "AI" (canon voice rule); this register is the full disclosure.
+- **A loop and its poster are one asset with one caption.** Crops and exports keep the caption.
+- **Write alt text for what is visible.** Never name the people or assign the scene to Middle West Studio.
+- **Press, email and social exports use the credited Middle West photos in `../founders/`, not these files**, because exports drop captions.
 
-## Swap-in process
+## Stills
 
-1. Record the actual subject, photographer, use permission, credit, and any confirmed room/piece/maker relationship.
-2. Follow the [photography shot list](../../../design-proposals/living-study/PHOTOGRAPHY-SHOT-LIST.md). Capture responsive crops; match the room/chair viewing angle; preserve the chair’s transparency and visual scale.
-3. Replace the image source in the relevant production placement, or use a versioned filename. Keep alternative text and captions accurate to that particular replacement.
-4. Review desktop, phone, reduced-motion, and manual scene-control compositions. Check that the picture’s subject and CTA remain visible through transitions.
-5. Update this register and campaign derivatives. Remove illustrative labeling only from the assets that now have documented photographic provenance.
+Source = the Midjourney job (`https://www.midjourney.com/jobs/<job>?index=<n>`) upscaled with Upscale (Subtle), then resized to the web size below as JPEG q82. No retouching.
 
-## Retained sources
+| File | Shot | Source job · index | Upscale job | Web size |
+|---|---|---|---|---|
+| `studio-table.jpg` | Two designers laying out fabric, tile and a door sample beside printed plans | `799d2389-afbb-4645-af87-d07d81506f35` · 2 | `8033339b-c729-4e25-8cf3-d65ef4bcb73e` | 2400×1345 |
+| `site-visit.jpg` | Designer, contractor and homeowner on one tablet in a framed kitchen | `27daff73-6f2c-4ffd-aed4-1a81a867cd2d` · 2 | `dc1cf4b8-7eb0-4b93-86c5-631bc1b303f1` | 2400×1345 |
+| `designer-desk.jpg` | Designer between laptop, monitor floor plan and printed set | `f30f65f3-5e8e-43ab-b9e3-fd996099d145` · 0 | `1069db09-2dcd-4883-bc06-2fa28345540a` | 2400×1600 |
+| `sample-library.jpg` | Designer pulling a fabric book from the sample library | `a8f49570-ac7a-45a3-a355-85a3a3e279ba` · 1 | `9baaff78-1331-4fbc-944e-577c155f345b` | 2400×1345 |
+| `material-scheme.jpg` | Overhead scheme: oak plank, green door sample, quartzite, zellige, linen on a plan | `ea50d665-756f-4292-8b3b-77ee2f925f1c` · 1 | `aa9347b6-7681-461b-bb9d-33c8e953ce41` | 2400×1600 |
+| `cabinet-shop.jpg` | Cabinetmaker checking a white oak door against a shop drawing on a laptop | `c23f2ecd-c8a7-4408-95c6-c43b96e43cd0` · 2 | `4241b8b8-d937-4916-8ca6-520096dca14f` | 2400×1345 |
+| `studio-clients.jpg` | Designer and homeowner couple at the studio table on one plan | `1a21ed1e-c2a4-4356-a236-79ed61030eca` · 0 | `15cf79cd-b572-409b-9542-3e80b1eca4a2` | 2400×1600 |
+| `kitchen-install.jpg` | Kitchen mid-install, island before its top, elevation taped up | `3e81530e-8a43-4edb-afb6-edfcb4936110` · 1 | `e0e9c41b-85db-4fb0-b0eb-4095e60d969e` | 2400×1345 |
+| `shared-monitor.jpg` | Two colleagues sharing one monitor, sample wall behind | `c6b0c8fb-793c-4714-9b24-a6b95ba6772c` · 0 | `6ba47e38-3273-4065-8c59-4cdccf9e2583` | 2400×1600 |
+| `site-phone-plans.jpg` | Phone, rolled plans, tape and door sample on a plywood island | `f896c123-5e4b-4837-9aae-228b7147fdd7` · 0 | `e51ab6ec-f2ef-4bc0-aa07-3b10437557d1` | 1600×2000 |
 
-- [Original room prompt](../../../design-proposals/living-study/sources/image-prompt.txt)
-- [Maker and material prompts](../../../design-proposals/living-study/sources/image-prompts-v3.md)
-- [Chair isolation prompt and notes](../../../design-proposals/living-study/sources/image-prompt-v4.md)
-- [Approved round-six prototype notes](../../../design-proposals/living-study/README.md)
+## Loops (`public/videos/studio/`)
 
-Founder portraits are intentionally deferred. Missing portraits do not prevent this release; later images of Leah and Kody can be introduced in Our Story and founder updates.
+Each loop was animated from the still of the same name: Low motion, Loop on, a locked-off camera with small subject motion, 5 s at 24 fps. Encoding:
+- Desktop: 1280×720, H.264 (CRF 22, faststart) and AV1 WebM (SVT-AV1 CRF 36).
+- Mobile: 960×540, CRF 27 / 40.
+- The poster is the still.
+
+| Loop | Video job · variant | Motion prompt (summary) |
+|---|---|---|
+| `studio-table` | `43b650ff-853f-485d-9437-f1edb1fc04c4` · 1 | The designers keep studying the samples; one lifts a swatch to the light and the other looks up at her (chosen by Kody 2026-10-10; variant 0 was dropped because the swatch morphs as she moves it) |
+| `site-visit` | `ade78f1b-7170-41e7-b2aa-2b70bbadf25f` · 1 | The contractor taps the tablet and gestures at chest height toward the stud wall; the others glance and look back |
+| `cabinet-shop` | `45dc45d5-43fa-44c2-9617-1abad1ab1b08` · 1 | The cabinetmaker keeps his eyes on the laptop, scrolls the shop drawing; sawdust drifts in the daylight |
+
+## Retired
+
+`room.jpg`, `chair.png`, `workbench.jpg` and `materials.jpg` were generated studies from the September 2026 Living Study proposal; their prompts are in `design-proposals/living-study/sources/`. They were retired on 10 October 2026 because they read as generated (impossible joinery, render lighting, old-workshop nostalgia). The site no longer uses them; they stay only because the September 2026 launch package (`docs/launch/photographer-and-makers-2026-09/build.py`, the creative guide) copies them. Delete them when that package is rebuilt.
+
+## Replacing an illustration with photography
+
+1. Record the subject, photographer, written permission, credit, and any confirmed room, piece or maker relationship.
+2. Replace the source in its placement. Make the alt text and caption accurate to the photo, and drop the illustration caption only for that file.
+3. Move the row from this register to a photography register with its credit.

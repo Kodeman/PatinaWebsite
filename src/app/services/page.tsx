@@ -30,9 +30,11 @@ export default function ServicesPage() {
         </>
       }
       description="Explore what you love at your own pace. When you want a working designer to take it further, the thinking you’ve already done should come with you."
-      image="/images/studio/room.jpg"
-      imageAlt="An illustrative living room with a timber chair, soft upholstery, and afternoon light"
-      imageCaption="Illustrative imagery — awaiting partner photography."
+      image="/images/founders/hiawatha-room.jpg"
+      imageAlt="A living room at Hiawatha"
+      imageCaption="Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks."
+      imageWidth={1024}
+      imageHeight={683}
       heroAction={
         <ServicesCTA
           href="/contact"
@@ -68,19 +70,17 @@ export default function ServicesPage() {
           />
         </div>
         <div className={styles.handoffDesk}>
-          <StudioMotion kind="image" className={styles.chairStudy}>
+          <StudioMotion kind="image">
             <figure>
               <Image
-                src="/images/studio/chair.png"
-                alt="Illustrative timber and upholstered chair, studied outside the room"
-                width={1536}
-                height={1024}
+                src="/images/studio/studio-clients.jpg"
+                alt="A designer and homeowners reviewing a printed plan"
+                width={2400}
+                height={1600}
                 sizes="(max-width: 900px) 85vw, 42vw"
               />
               <figcaption>
-                The room, considered one piece at a time.
-                <br />
-                Illustrative imagery — awaiting partner photography.
+                Illustration.
               </figcaption>
             </figure>
           </StudioMotion>
@@ -113,14 +113,14 @@ export default function ServicesPage() {
         <StudioMotion kind="image" className={styles.scopeImage}>
           <figure>
             <Image
-              src="/images/studio/materials.jpg"
-              alt="Illustrative material samples on a designer’s worktable"
-              width={1536}
-              height={1024}
+              src="/images/founders/windy-peak-detail.jpg"
+              alt="A close view of the Windy Peak living room"
+              width={1024}
+              height={1536}
               sizes="(max-width: 900px) 90vw, 38vw"
             />
             <figcaption>
-              Illustrative imagery — awaiting partner photography.
+              Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks.
             </figcaption>
           </figure>
         </StudioMotion>

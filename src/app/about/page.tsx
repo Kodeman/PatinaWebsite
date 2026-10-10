@@ -150,37 +150,54 @@ export default function AboutPage() {
         </section>
         <StoryRoomJourney />
         <section id="kody" className={styles.kody}>
-          <StudioMotion kind="paper">
-            <article className={styles.workingPage}>
-              <div className={styles.workingPageTop}>
-                <StrataMark size="compact" align="left" />
-                <span>
-                  From Kody’s writing
-                  <br />A principle to build by
-                </span>
-              </div>
-              <blockquote>
-                “The best tools don’t replace the work — they help you do the
-                work better.”
-              </blockquote>
-              <p>
-                That thought runs through his work: begin with the experience,
-                leave room for the person, and build something that holds up
-                beyond its first impression.
-              </p>
-              <div className={styles.workingPageFoot}>
-                <span>Kody Kochaver</span>
-                <TrackedLink
-                  href="https://www.kochaver.com/"
-                  location="about_kody_page"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Read Kody’s approach
-                </TrackedLink>
-              </div>
-            </article>
-          </StudioMotion>
+          <div className={styles.kodyStudy}>
+            <StudioMotion kind="image">
+              <figure className={`${styles.leahPortrait} ${styles.kodyPortrait}`}>
+                <Image
+                  src="/images/founders/kody-kochaver.jpg"
+                  alt="Kody Kochaver in a dark button-down shirt and glasses."
+                  width={940}
+                  height={1254}
+                  sizes="(max-width: 850px) 85vw, 36vw"
+                />
+                <figcaption>
+                  <strong>Kody Kochaver</strong>
+                  Portrait courtesy of Kody Kochaver.
+                </figcaption>
+              </figure>
+            </StudioMotion>
+            <StudioMotion kind="paper">
+              <article className={styles.workingPage}>
+                <div className={styles.workingPageTop}>
+                  <StrataMark size="compact" align="left" />
+                  <span>
+                    From Kody’s writing
+                    <br />A principle to build by
+                  </span>
+                </div>
+                <blockquote>
+                  “The best tools don’t replace the work — they help you do the
+                  work better.”
+                </blockquote>
+                <p>
+                  That thought runs through his work: begin with the experience,
+                  leave room for the person, and build something that holds up
+                  beyond its first impression.
+                </p>
+                <div className={styles.workingPageFoot}>
+                  <span>Kody Kochaver</span>
+                  <TrackedLink
+                    href="https://www.kochaver.com/"
+                    location="about_kody_page"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Read Kody’s approach
+                  </TrackedLink>
+                </div>
+              </article>
+            </StudioMotion>
+          </div>
           <div className={styles.reading}>
             <p className={styles.eyebrow}>The second path / Kody</p>
             <h2 className={styles.chapterHeading}>

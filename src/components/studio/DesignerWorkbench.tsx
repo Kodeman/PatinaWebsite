@@ -7,27 +7,30 @@ import styles from "./DesignersPage.module.css";
 const perspectives = [
   {
     label: "Proportion",
+    caption: "Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks.",
     title: "How it sits in the room.",
     description:
       "The space around an armchair. The scale of a table. The relationship between pieces. You see the room before you see a list of products.",
-    image: "/images/studio/room.jpg",
-    alt: "Illustrative room study showing the relationship between a lounge chair, sofa, and low table",
+    image: "/images/founders/windy-peak-room.jpg",
+    alt: "A living room at Windy Peak, with a sofa, chair, and low table",
   },
   {
     label: "Material",
+    caption: "Interior design: Leah Kochaver, Middle West Studio. Photography: Ashley Hicks.",
     title: "What you want to reach for.",
     description:
       "Walnut beside linen. A soft surface against a strong line. Your vocabulary comes from working with materials, and knowing what they bring to a room.",
-    image: "/images/studio/materials.jpg",
-    alt: "Illustrative composition of timber, linen, leather, and a furniture sketch",
+    image: "/images/founders/windy-peak-detail.jpg",
+    alt: "A close view of the Windy Peak living room",
   },
   {
     label: "Character",
+    caption: "Design: Leah Kochaver. Photography: Middle West Studio.",
     title: "What makes it worth keeping.",
     description:
       "A considered curve. A little irregularity. The detail that makes a piece feel like itself. That kind of judgment deserves a place in the tools you use.",
-    image: "/images/studio/chair.png",
-    alt: "Illustrative timber and leather lounge chair, isolated to show its form",
+    image: "/images/founders/country-home-kitchen.jpg",
+    alt: "A kitchen at Country Home, photographed by Middle West Studio",
   },
 ] as const;
 
@@ -42,7 +45,7 @@ export function DesignerWorkbench() {
         {perspectives.map((perspective, index) => (
           <div
             key={perspective.label}
-            className={`${styles.studyImage} ${index === 2 ? styles.isolatedStudy : ""}`}
+            className={styles.studyImage}
             data-active={selected === index}
             aria-hidden={selected !== index}
           >
@@ -58,7 +61,7 @@ export function DesignerWorkbench() {
           A closer look / {perspectives[selected].label.toLowerCase()}
         </span>
         <p className={styles.studyCaption}>
-          Illustrative imagery — awaiting partner photography.
+          {perspectives[selected].caption}
         </p>
       </div>
       <div className={styles.workbenchCopy}>

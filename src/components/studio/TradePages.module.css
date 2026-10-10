@@ -177,7 +177,6 @@
   margin: 0 0 0 -8%;
 }
 .materialPlate figure,
-.chairStudy figure,
 .scopeImage figure {
   margin: 0;
 }
@@ -223,26 +222,6 @@
   position: relative;
   padding-top: 0;
   min-width: 0;
-}
-.chairStudy {
-  position: relative;
-  margin: 0 -4% 0 2%;
-  padding: 20px 18px 35px;
-  border: 1px solid #c9beb0;
-  background: #e6e0d6;
-  color: #3f3b37;
-}
-.chairStudy img {
-  width: 100%;
-  height: 340px;
-  object-fit: contain;
-  display: block;
-}
-.chairStudy figcaption {
-  padding: 0 14px;
-  font-size: 11px;
-  line-height: 1.8;
-  color: #655b52;
 }
 .briefNote {
   width: 89%;
@@ -592,9 +571,6 @@
   .briefNote {
     margin-left: 0;
   }
-  .chairStudy {
-    margin-right: 0;
-  }
   .scopeImage img {
     aspect-ratio: 1.6;
   }
@@ -642,9 +618,6 @@
   }
   .briefNote h3 {
     font-size: 39px;
-  }
-  .chairStudy img {
-    height: 255px;
   }
   .actions {
     align-items: stretch;

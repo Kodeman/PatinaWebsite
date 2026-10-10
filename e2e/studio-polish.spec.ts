@@ -142,8 +142,12 @@ test("pages hydrate and load their hero images without runtime errors", async ({
     const heroImages = page.locator(
       "main img:not([loading=lazy])",
     );
-    if (["/about", "/makers", "/designers"].includes(route)) {
+    if (["/about", "/designers"].includes(route)) {
       await expect(heroImages.first()).toBeVisible();
+    }
+    if (route === "/makers") {
+      // The makers hero is a loop; with motion off it rests on its poster.
+      await expect(page.locator("main video[poster]").first()).toBeVisible();
     }
     for (const image of await heroImages.all()) {
       await expect(image).toHaveJSProperty("complete", true);
@@ -181,7 +185,7 @@ test("designers can explore the study with a keyboard", async ({ page }) => {
   ).toHaveAttribute("aria-pressed", "true");
   await expect(
     page.getByRole("img", {
-      name: "Illustrative timber and leather lounge chair, isolated to show its form",
+      name: "A kitchen at Country Home, photographed by Middle West Studio",
       exact: true,
     }),
   ).toBeVisible();
