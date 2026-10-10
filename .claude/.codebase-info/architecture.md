@@ -54,4 +54,4 @@ Newsletter is double opt-in: `POST /api/newsletter` stores a pending row and ema
 - PostHog: cookieless until consent, autocapture and dead clicks on, DNT respected, proxied through `/ingest`. `skipTrailingSlashRedirect` is set so ingest paths are not redirected.
 - Cloudflare build (`scripts/cloudflare-build.mjs`) strips private env from the OpenNext artifact; secrets live as Worker bindings only.
 - Old catalogue routes (`/furniture/*`, `/materials`, `/waitlist`, `/join`) redirect; the marketplace is pre-launch.
-- Customer-facing copy must follow `docs/messaging/patina-messaging-system.md`.
+- Customer-facing copy follows the marketing canon in `../patina-merged/marketing/canon` (lint with `marketing/tools/voice-lint.mjs`); `docs/messaging/patina-messaging-system.md` holds only site-only rules and the 2026-10-09 founders' rulings (studio door first, no titles, no price, tagline sparing).

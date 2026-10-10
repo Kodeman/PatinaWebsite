@@ -11,7 +11,7 @@ Route-per-folder under `src/app`; server `page.tsx` composes presentation compon
 - **Route handler shape** (`src/app/api/*/route.ts`): parse JSON → honeypot → rate limit → validate → `if (!supabaseAdmin) return 503` → write → respond → `after(() => side effects)`. Copy the closest existing route rather than inventing a new shape.
 - **`after()` for side effects**: email and PostHog never block or alter the response; each is wrapped in `.catch` that logs. `captureServerEvent` owns its own `after`.
 - **Lead payload** built client-side by `buildLeadPayload()` so every form carries UTM, first/last touch, distinct id, and the `company_url` honeypot.
-- **Copy from one place**: `systemMessages` for UI/system strings, `docs/messaging/patina-messaging-system.md` for voice. Email HTML goes through `frame()` in `src/lib/emails/template.ts`.
+- **Copy from one place**: `systemMessages` for UI/system strings, `../patina-merged/marketing/canon` for voice (site rules in `docs/messaging/patina-messaging-system.md`). Email HTML goes through `frame()` in `src/lib/emails/template.ts`.
 - **Motion**: `useReducedMotion` in every animated component; Living Study pages wrap in `StudioMotion` and respect the user toggle via `useStudioMotion()`.
 - **CTAs carry a `source`** string that flows into `waitlist.source` and analytics props (e.g. `studio_home_invitation`).
 - **Metadata**: each page exports `metadata` built from `defaultMetadata` in `src/lib/seo.ts`; JSON-LD injected as `<script type="application/ld+json">`.

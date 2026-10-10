@@ -1,6 +1,6 @@
 # Onboarding
 
-*Last Updated: 2026-09-15*
+*Last Updated: 2026-10-09*
 
 ## Quick start
 
@@ -15,7 +15,7 @@ Without Supabase/Resend credentials the site renders fully; lead forms return a 
 
 ## Common tasks
 
-- **Change page copy**: find the page in `entry-points.md`. Almost every page is code on this branch; `/careers` and `/journal` come from Sanity (edit in `/studio` or Sanity Studio, then the webhook revalidates). Check `docs/messaging/patina-messaging-system.md` first.
+- **Change page copy**: find the page in `entry-points.md`. Almost every page is code on this branch; `/careers` and `/journal` come from Sanity (edit in `/studio` or Sanity Studio, then the webhook revalidates). Read the canon in `../patina-merged/marketing/canon` and the rulings in `docs/messaging/patina-messaging-system.md` first, and run voice-lint on new copy.
 - **Change a form or API route**: edit the client island and the matching `src/app/api/*/route.ts`, keep the shared handler shape, then add or update a case in `tests/server-lifecycle.test.mjs` and run `npm run test:server`.
 - **Add an analytics event**: add it to `AnalyticsEvents` in `src/lib/analytics.ts`, then call `track()`. Document it in `docs/analytics-source-of-truth.md`.
 - **Add an email**: compose with `frame()`/`button()` in `src/lib/emails/template.ts`, send with `sendHtmlEmail`, preview with `npx tsx scripts/preview-signup-emails.ts`.
