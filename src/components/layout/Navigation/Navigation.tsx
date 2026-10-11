@@ -53,7 +53,7 @@ export function Navigation({}: NavigationProps) {
       : { href: "/designers", label: "Bring one live project" };
   const footDoor =
     pathname === "/"
-      ? { href: "/designers", label: "For designers" }
+      ? { href: "/designers", label: "Apply to the Founding 50" }
       : { href: "/founding", label: "Explore the Founding Circle" };
   function closeMenu() {
     menuRef.current?.close();

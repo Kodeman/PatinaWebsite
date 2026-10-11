@@ -34,8 +34,9 @@ test.describe("Homepage", () => {
 
   test("ends with a quiet designer band after the Founding Circle and no makers door", async ({ page }) => {
     const doors = page.getByRole("region", { name: "For designers", exact: true });
-    await expect(doors.getByRole("heading", { level: 3 })).toHaveText("Your judgmentbelongs here.");
-    await expect(doors.getByRole("heading", { level: 2 })).toHaveCount(0);
+    // One headline, ranked as its own section so heading navigation finds the designer door.
+    await expect(doors.getByRole("heading")).toHaveCount(1);
+    await expect(doors.getByRole("heading", { level: 2 })).toHaveText("Your judgmentbelongs here.");
     await expect(doors.getByRole("link", { name: "Apply to the Founding 50", exact: true })).toHaveAttribute("href", "/designers");
     await expect(doors.locator('a[href="/makers"]')).toHaveCount(0);
     const afterInvitation = await page.locator("#founding-circle").evaluate((invitation, band) => invitation.compareDocumentPosition(band!), await doors.elementHandle());
@@ -84,6 +85,24 @@ test.describe("Homepage", () => {
     await expect(footer.getByRole("link", { name: "Founding Circle", exact: true })).toHaveAttribute("href", "/founding");
     await expect(footer.getByRole("link", { name: "For designers", exact: true })).toHaveAttribute("href", "/designers");
     await expect(footer.getByRole("link", { name: "For makers", exact: true })).toHaveAttribute("href", "/makers");
+  });
+
+  test("the phone menu leads with the Founding Circle on the homepage only", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.getByRole("button", { name: "Menu", exact: true }).click();
+    const menu = page.getByRole("dialog", { name: "Explore the Patina studio" });
+    await expect(menu.getByRole("link", { name: /^Join the Founding Circle/ })).toHaveAttribute("href", "/founding");
+    await expect(menu.getByRole("link", { name: "Apply to the Founding 50", exact: true })).toHaveAttribute("href", "/designers");
+    await expect(menu.getByRole("link", { name: /Bring one live project/ })).toHaveCount(0);
+    // Every other page keeps the studio door (V17 is homepage only).
+    await page.goto("/about");
+    // The desktop nav button is hidden at phone width, so check the element rather than its role.
+    const navDoor = page.locator("header.studio-nav a.studio-nav-join");
+    await expect(navDoor).toHaveAttribute("href", "/designers");
+    await expect(navDoor).toContainText("Bring one live project");
+    await page.getByRole("button", { name: "Menu", exact: true }).click();
+    await expect(menu.getByRole("link", { name: /^Bring one live project/ })).toHaveAttribute("href", "/designers");
+    await expect(menu.getByRole("link", { name: "Explore the Founding Circle", exact: true })).toHaveAttribute("href", "/founding");
   });
 
   test("keeps the original Strata and newsletter in the footer", async ({ page }) => {

@@ -439,7 +439,7 @@ export function FounderJourney() {
               src="/images/studio/home-letter.jpg"
               fill
               sizes="(max-width: 760px) 100vw, 45vw"
-              alt="Illustration: a homeowner’s hands beside an opened envelope, a blank letter and samples taped to kraft card on her kitchen table."
+              alt="Illustration: two hands beside an opened envelope, a blank letter and samples taped to kraft card on a painted table."
             />
             <span>A little room to think it over.</span>
           </motion.div>

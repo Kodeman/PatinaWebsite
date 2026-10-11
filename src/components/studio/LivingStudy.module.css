@@ -465,11 +465,11 @@
     linear-gradient(90deg, #1e1b16b5, transparent 74%),
     linear-gradient(0deg, #1e1b1699, transparent 25%);
 }
-/* The card hangs over the upper cabinets, clear of the contractor's face. */
+/* The card hangs over the upper cabinets, clear of the contractor's face.
+   Anchored by a computed left (not right) so the move from study still animates. */
 .track[data-scene="making"] .scheme {
   opacity: 1;
-  left: auto;
-  right: var(--edge);
+  left: calc(100% - var(--edge) - 205px);
   top: 14%;
   width: 205px;
   height: 225px;
@@ -703,8 +703,7 @@
     height: 46%;
   }
   .track[data-scene="making"] .scheme {
-    left: auto;
-    right: var(--edge);
+    left: calc(100% - var(--edge) - 170px);
     width: 170px;
     height: 190px;
   }
@@ -766,7 +765,7 @@
   .heroJoin {
     margin-top: 22px;
   }
-  .heroJoin .studio-button {
+  .heroJoin :global(.studio-button) {
     font-size: 11px;
     min-height: 48px;
     padding: 13px 19px;
@@ -884,8 +883,7 @@
     display: none;
   }
   .track[data-scene="making"] .scheme {
-    left: auto;
-    right: 30px;
+    left: calc(100% - 30px - 125px);
     top: auto;
     bottom: 23%;
     width: 125px;
@@ -1008,7 +1006,7 @@
   .heroJoin {
     margin-top: 17px;
   }
-  .heroJoin .studio-button {
+  .heroJoin :global(.studio-button) {
     min-height: 44px;
     padding: 10px 15px;
     font-size: 10px;
@@ -1056,6 +1054,7 @@
     margin-bottom: 6px;
   }
   .track[data-scene="making"] .scheme {
+    left: calc(100% - 30px - 100px);
     bottom: 23%;
     width: 100px;
     height: 115px;

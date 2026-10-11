@@ -32,11 +32,11 @@ export default function HomePage() {
         <section className="studio-doors" aria-label="For designers">
           <div className="studio-door">
             <p className="studio-kicker">For designers.</p>
-            <h3>
+            <h2>
               Your judgment
               <br />
               belongs here.
-            </h3>
+            </h2>
           </div>
           <div className="studio-door">
             <p>

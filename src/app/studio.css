@@ -26,7 +26,7 @@
 .studio-door > .studio-kicker {
   margin: 0 0 16px;
 }
-.studio-door h3 {
+.studio-door h2 {
   font: 400 44px/1.02 var(--font-display);
   letter-spacing: -0.035em;
 }
@@ -224,7 +224,7 @@
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  .studio-door h3 {
+  .studio-door h2 {
     font-size: 38px;
   }
   .studio-door > p:not(.studio-kicker) {
