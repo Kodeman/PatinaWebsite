@@ -26,3 +26,7 @@ Rules are data in `marketing/canon/lexicon.json`. Exit 1 on any error.
 - **V2:** no price or fee language until the founders rule otherwise.
 - **Canon rules:** where this site and the canon disagree on voice, lexicon or claims, the canon wins.
 - **/designers:** carries a quiet homeowner newsletter line.
+
+## Ruling 2026-10-11 (V17)
+
+- **Homepage only:** `/` speaks to homeowners about their own home. The Founding Circle is its main door and the designer door is second. This amends V3 for the homepage; every other page stays studio-first. Canon: `voice.md` §1 "Homepage exception".
