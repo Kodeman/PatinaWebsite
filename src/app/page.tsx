@@ -1,13 +1,11 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { NewsletterConfirmBanner } from "@/components/ui/NewsletterConfirmBanner";
 import { LivingStudy, FounderJourney } from "@/components/studio/LivingStudy";
 import { FoundingInvitation } from "@/components/studio/FoundingInvitation";
-import { StudioMotion } from "@/components/studio/StudioMotion";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -30,37 +28,21 @@ export default function HomePage() {
           </TrackedLink>
         </div>
         <FounderJourney />
-        <section className="studio-doors" aria-labelledby="studio-doors-title">
-          <div className="studio-doors-heading">
-            <p className="studio-kicker">
-              There’s a place for your perspective.
-            </p>
-            <h2 id="studio-doors-title">
-              A studio takes
-              <br />
-              many hands.
-            </h2>
-          </div>
+        <FoundingInvitation source="studio_home_invitation" />
+        <section className="studio-doors" aria-label="For designers">
           <div className="studio-door">
-            <StudioMotion kind="paper">
-              <Image
-                src="/images/studio/designer-desk.jpg"
-                width={2400}
-                height={1600}
-                sizes="(max-width: 760px) 100vw, 40vw"
-                alt="Illustration of a designer working between a laptop, monitor, and printed plan"
-              />
-            </StudioMotion>
-            <p className="studio-kicker">For designers / the Founding 50</p>
+            <p className="studio-kicker">For designers.</p>
             <h3>
               Your judgment
               <br />
               belongs here.
             </h3>
+          </div>
+          <div className="studio-door">
             <p>
-              Built for the year a studio brings on its first designer and the
-              work doubles. Bring one live project to the Founding 50. Kody and
-              Leah read every application.
+              Running a studio? Patina is built for the year it brings on its
+              first designer and the work doubles. Kody and Leah read every
+              application.
             </p>
             <TrackedLink
               className="studio-link"
@@ -70,11 +52,7 @@ export default function HomePage() {
               Apply to the Founding 50 <span aria-hidden="true">↗</span>
             </TrackedLink>
           </div>
-          <p className="studio-doors-caption">
-            Illustration.
-          </p>
         </section>
-        <FoundingInvitation source="studio_home_invitation" />
       </main>
       <Footer />
     </>

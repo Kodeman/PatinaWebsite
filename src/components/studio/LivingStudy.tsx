@@ -12,65 +12,66 @@ import {
 import { useScroll, useTransform, motion } from "framer-motion";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { BackgroundVideo } from "./BackgroundVideo";
+import { JoinCircleButton } from "./JoinCircleButton";
 import { MotionControl, useStudioMotion } from "./StudioMotion";
 import styles from "./LivingStudy.module.css";
 
 const scenes = [
   {
     id: "room",
-    label: "In a room",
-    kicker: "For studios.",
+    label: "Your table",
+    kicker: "At your kitchen table.",
     title: (
       <>
-        One living document
+        On the same page
         <br />
-        per client.
+        as your designer.
       </>
     ),
     description:
-      "From brief to install. Your client sees the same page you do: one agreed direction.",
+      "We’re building one page for you and your designer: what you agreed, from the brief to the install.",
   },
   {
     id: "study",
-    label: "As a study",
-    kicker: "A closer look changes everything.",
+    label: "Up close",
+    kicker: "The samples come home.",
     title: (
       <>
-        An eye for
+        Hold it in
         <br />
-        what belongs.
+        your own light.
       </>
     ),
     description:
-      "The curve of a frame. The warmth of the grain. Good design begins with paying attention.",
+      "Oak, linen, zellige, a green door. Choose them at home, then keep the choice on the page you share.",
   },
   {
     id: "making",
-    label: "In the making",
-    kicker: "Behind every piece, a person.",
+    label: "The install",
+    kicker: "The people who build it.",
     title: (
       <>
-        Care is in
+        Fewer surprises
         <br />
-        the details.
+        on install day.
       </>
     ),
     description:
-      "The hands, the judgment, the time. We’re building a place where the story of a piece stays with it.",
+      "Your contractor and cabinetmaker will work from the page you agreed: the same door, the same finish, the same plan.",
   },
 ] as const;
 const materials = [
   {
     name: "White oak",
-    detail: "A warm grain, made richer by the passing years.",
+    detail: "A warm grain that deepens as the kitchen is used.",
   },
   {
     name: "Linen",
-    detail: "An easy texture. A little irregularity. Room to settle in.",
+    detail: "Soft and a little uneven. It relaxes as you live with it.",
   },
   {
     name: "Zellige",
-    detail: "A quiet, grounding color that brings the materials together.",
+    detail: "No two tiles alike, so the wall catches the light.",
   },
 ];
 
@@ -214,24 +215,24 @@ export function LivingStudy() {
       <section
         ref={stage}
         className={styles.stage}
-        aria-label="Explore the living study"
+        aria-label="Explore one home, from table to install"
       >
         <BackgroundVideo
           className={`${styles.photo} ${styles.room}`}
-          webmSrc="/videos/studio/studio-table.webm"
-          mp4Src="/videos/studio/studio-table.mp4"
-          mobileWebmSrc="/videos/studio/studio-table-mobile.webm"
-          mobileMp4Src="/videos/studio/studio-table-mobile.mp4"
-          poster="/images/studio/studio-table.jpg"
+          webmSrc="/videos/studio/home-table.webm"
+          mp4Src="/videos/studio/home-table.mp4"
+          mobileWebmSrc="/videos/studio/home-table-mobile.webm"
+          mobileMp4Src="/videos/studio/home-table-mobile.mp4"
+          poster="/images/studio/home-table.jpg"
           active={scene === 0}
         />
         <BackgroundVideo
           className={`${styles.photo} ${styles.making}`}
-          webmSrc="/videos/studio/site-visit.webm"
-          mp4Src="/videos/studio/site-visit.mp4"
-          mobileWebmSrc="/videos/studio/site-visit-mobile.webm"
-          mobileMp4Src="/videos/studio/site-visit-mobile.mp4"
-          poster="/images/studio/site-visit.jpg"
+          webmSrc="/videos/studio/home-install.webm"
+          mp4Src="/videos/studio/home-install.mp4"
+          mobileWebmSrc="/videos/studio/home-install-mobile.webm"
+          mobileMp4Src="/videos/studio/home-install-mobile.mp4"
+          poster="/images/studio/home-install.jpg"
           active={scene === 2}
         />
         <div className={styles.shade} />
@@ -246,12 +247,17 @@ export function LivingStudy() {
             inert={scene !== 0}
           >
             <div className={styles.heroJoin}>
+              <JoinCircleButton
+                source="home_hero"
+                location="hero"
+                className="studio-button-light"
+              />
               <TrackedLink
                 href="/designers"
-                location="home_hero"
-                className="studio-button studio-button-light"
+                location="home_hero_designers"
+                className="studio-link"
               >
-                Bring one live project <span aria-hidden="true">↗</span>
+                For designers <span aria-hidden="true">↗</span>
               </TrackedLink>
             </div>
           </div>
@@ -279,7 +285,7 @@ export function LivingStudy() {
             +
           </button>
           <p>
-            There’s more to it.<span>Take a closer look</span>
+            See the samples.<span>Take a closer look</span>
           </p>
         </div>
         <div
@@ -289,9 +295,9 @@ export function LivingStudy() {
           inert={scene !== 1}
         >
           <p>
-            A small material study.
+            Your kitchen, in samples.
             <br />
-            Three things that feel right together.
+            Three that sit well together.
           </p>
           <div
             className={styles.fan}
@@ -322,8 +328,8 @@ export function LivingStudy() {
           data-scene-context={scene === 1 ? "active" : "inactive"}
           aria-hidden={scene !== 1}
         >
-          <span>Considered, from every angle.</span>Good things reward a second
-          look.
+          <span>Morning light, then lamplight.</span>Live with them before you
+          decide.
         </p>
         <div
           className={`${styles.context} ${styles.makingNote}`}
@@ -332,11 +338,11 @@ export function LivingStudy() {
           inert={scene !== 2}
         >
           <p>
-            A maker’s care deserves to be part of the story. We’re making room
-            for it.
+            The hands behind your kitchen deserve a name. We’re making room for
+            that.
           </p>
           <Link href="/makers" className="studio-link">
-            Meet the making <span aria-hidden="true">↗</span>
+            Meet the makers <span aria-hidden="true">↗</span>
           </Link>
         </div>
         <div className={styles.dock}>
@@ -344,15 +350,15 @@ export function LivingStudy() {
             <p>
               <span>0{scene + 1} / 03</span>{" "}
               {enabled && scrollable
-                ? "Scroll to explore the studio"
-                : "Explore the three views"}
+                ? "Scroll from table to install"
+                : "Three moments in one home"}
             </p>
-            <a href="#beginnings">Continue to our story ↓</a>
+            <a href="#beginnings">Meet Kody and Leah ↓</a>
           </div>
           <div
             className={styles.switch}
             role="group"
-            aria-label="Studio views"
+            aria-label="Moments in one home"
             style={{ "--index": scene } as CSSProperties}
           >
             {scenes.map((item, index) => (
@@ -393,14 +399,14 @@ export function FounderJourney() {
   return (
     <>
       <div className={styles.beginnings} id="beginnings">
-        <p className={styles.chapterLabel}>01 / A shared instinct</p>
+        <p className={styles.chapterLabel}>01 / Who is behind it</p>
         <div>
           <h2>
-            Behind the study,
+            Behind Patina,
             <br />
             two people.
             <br />
-            <em>One shared instinct.</em>
+            <em>One house at a time.</em>
           </h2>
           <p className={styles.small}>
             Rooted in Madison. Made for a wider circle.
@@ -430,12 +436,12 @@ export function FounderJourney() {
           >
             <p>The living study / Illustration.</p>
             <Image
-              src="/images/studio/material-scheme.jpg"
+              src="/images/studio/home-letter.jpg"
               fill
               sizes="(max-width: 760px) 100vw, 45vw"
-              alt="Illustration: oak, a green door, stone, tile and linen samples on a printed plan"
+              alt="Illustration: a homeowner’s hands beside an opened envelope, a blank letter and samples taped to kraft card on her kitchen table."
             />
-            <span>A little room to think differently.</span>
+            <span>A little room to think it over.</span>
           </motion.div>
           <div className={styles.founderSlip}>
             <p>
@@ -464,45 +470,43 @@ export function FounderJourney() {
               01 <span>Leah / the designer’s eye</span>
             </p>
             <h2>
-              A room is more
+              Your house
               <br />
-              than the things
-              <br />
-              in it.
+              already has
+              <br />a point of view.
             </h2>
             <p>
-              Through her work at Middle West Studio, Leah sees what makes a home
-              feel personal: how someone lives, what they keep, and the details
-              they’re drawn to.
+              Leah designs homes at Middle West Studio in Madison. She starts
+              with how you live: what you keep, where the morning light lands,
+              the things you reach for without thinking.
             </p>
             <p>
-              Patina carries that attention into the search for furniture. A
-              designer’s judgment belongs in the process from the beginning.
+              At Patina she leads design, so the page you share with your
+              designer reads the way a good designer thinks.
             </p>
-            <blockquote>
-              “The tools never matched how designers actually think.”
-            </blockquote>
+            <p className={styles.pullLine}>
+              Your taste, written down where your designer can see it.
+            </p>
           </article>
           <article>
             <p className={styles.person}>
-              02 <span>Kody / room for a different tool</span>
+              02 <span>Kody / the one building it</span>
             </p>
             <h2>
-              The process
+              What you decide
               <br />
-              should feel
+              shouldn’t get lost
               <br />
-              creative, too.
+              in a text thread.
             </h2>
             <p>
-              Kody saw a gap in the tools around that work. The rooms were
-              personal. The process of finding what belonged in them often felt
-              sterile.
+              Kody saw a gap around Leah’s work. The rooms were personal. The
+              decisions behind them lived in emails, texts and notebooks.
             </p>
             <p>
-              He’s building Patina to bring those worlds closer: a place to
-              explore, make connections, and follow an idea with a designer’s
-              perspective alongside you.
+              He’s building Patina so what you choose with your designer stays
+              on one page, from the brief to the install, where the people
+              building your kitchen can see it too.
             </p>
             <Link href="/about" className="studio-link">
               Our story, still being written <span aria-hidden="true">↗</span>
@@ -511,7 +515,7 @@ export function FounderJourney() {
         </div>
       </section>
       <section className={styles.belief}>
-        <p className={styles.chapterLabel}>02 / What brings us together</p>
+        <p className={styles.chapterLabel}>02 / Where you come in</p>
         <div>
           <h2>
             Your eye.
@@ -520,9 +524,8 @@ export function FounderJourney() {
             Something that’s yours.
           </h2>
           <p>
-            We’re building a way to explore your taste and your space, then
-            bring a designer into the conversation with a thoughtful starting
-            point.
+            We’re building a way for your taste and a designer’s judgment to
+            meet on one page. The Founding Circle helps shape it.
           </p>
           <Link href="/app" className="studio-link">
             See what we’re building <span aria-hidden="true">↗</span>

@@ -26,7 +26,9 @@ async function expectNoHorizontalOverflow(page: Page) {
 test('visitors can navigate the studio and reach each audience invitation', async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/');
-  await expect(page.getByRole('link', { name: 'Bring one live project', exact: true }).first()).toBeVisible();
+  const hero = page.getByRole('region', { name: 'Explore one home, from table to install' });
+  await expect(hero.getByRole('button', { name: 'Join the Founding Circle', exact: true })).toBeVisible();
+  await expect(hero.getByRole('link', { name: 'For designers', exact: true })).toHaveAttribute('href', '/designers');
   for (const [label, path] of [
     ['Our story', '/about'],
     ['For designers', '/designers'], ['For makers', '/makers'], ['Journal', '/journal'],
@@ -95,7 +97,7 @@ test('homepage enrollment keeps keyboard focus in the invitation and identifies 
     await route.fulfill({ json: { success: true } });
   });
   await page.goto('/');
-  const trigger = page.locator('main').getByRole('button', { name: 'Join the Founding Circle', exact: true }).first();
+  const trigger = page.locator('#founding-circle').getByRole('button', { name: 'Join the Founding Circle', exact: true }).first();
   await trigger.click();
   const dialog = page.getByRole('dialog', { name: /The Founding.*Circle/ });
   await expect(dialog.getByLabel('First Name', { exact: true })).toBeFocused();
@@ -232,7 +234,7 @@ test('reduced motion keeps studio content and membership controls accessible', a
   await expect(page.locator('main h1')).toBeVisible();
   const motion = page.getByRole('button', { name: 'Motion off, following your device setting' }).last();
   await expect(motion).toBeDisabled();
-  // The Founding Circle is the homepage's second door; the nav leads to the studio door.
+  // The Founding Circle is the homepage's main door, first in the hero.
   await page.goto('/');
   await page.locator('main').getByRole('button', { name: 'Join the Founding Circle', exact: true }).first().click();
   await expect(page.getByRole('dialog', { name: 'The Founding Circle' })).toBeVisible();

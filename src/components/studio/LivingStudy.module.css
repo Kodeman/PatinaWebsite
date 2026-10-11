@@ -37,12 +37,12 @@
     transform 1.5s var(--ease);
   z-index: -3;
 }
-/* studio-table: the window stays quiet behind the copy on the left third. */
+/* home-table: the plaster wall and cabinets stay quiet behind the copy on the left. */
 .room {
-  object-position: 40% 45%;
+  object-position: 0% 45%;
   transform: scale(1.015);
 }
-/* site-visit: the three people sit center-left; the boxes take the paper card. */
+/* home-install: the back hall in shadow takes the copy; the two people stand right. */
 .making {
   object-position: 60% 45%;
   opacity: 0;
@@ -107,8 +107,13 @@
   visibility: visible;
   pointer-events: auto;
 }
+/* The Founding Circle button leads; the designer link sits quietly beside it. */
 .heroJoin {
   margin-top: 29px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 30px;
 }
 .roomCue {
   position: absolute;
@@ -460,10 +465,12 @@
     linear-gradient(90deg, #1e1b16b5, transparent 74%),
     linear-gradient(0deg, #1e1b1699, transparent 25%);
 }
+/* The card hangs over the upper cabinets, clear of the contractor's face. */
 .track[data-scene="making"] .scheme {
   opacity: 1;
-  left: 75%;
-  top: 19%;
+  left: auto;
+  right: var(--edge);
+  top: 14%;
   width: 205px;
   height: 225px;
   box-shadow: 0 10px 35px #0003;
@@ -618,7 +625,7 @@
   letter-spacing: -0.035em;
   margin-bottom: 12px;
 }
-.founderText article > p:not(.person) {
+.founderText article > p:not(.person, .pullLine) {
   font-size: 13px;
   line-height: 1.95;
   max-width: 38ch;
@@ -628,7 +635,7 @@
   align-self: start;
   margin-top: 23px;
 }
-.founderText blockquote {
+.pullLine {
   margin: 23px 0 0;
   padding-left: 22px;
   border-left: 1px solid var(--studio-clay);
@@ -717,12 +724,12 @@
   .stage::after {
     inset: 10px;
   }
-  /* Portrait crops: the left designer with the fabrics; the contractor's tablet. */
+  /* Portrait crops: the three at the plan; the contractor at the taped elevation. */
   .room {
-    object-position: 24% 50%;
+    object-position: 58% 50%;
   }
   .making {
-    object-position: 50% 50%;
+    object-position: 68% 50%;
   }
   .shade {
     background:
@@ -948,11 +955,11 @@
   .founderText h2 {
     font-size: 55px;
   }
-  .founderText article > p:not(.person) {
+  .founderText article > p:not(.person, .pullLine) {
     max-width: 44ch;
     font-size: 13px;
   }
-  .founderText blockquote {
+  .pullLine {
     font-size: 27px;
   }
   .belief {
