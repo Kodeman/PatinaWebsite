@@ -13,7 +13,7 @@
 | R2 cache | `patina-website-cache`, Standard storage, 51 seeded entries |
 | Runtime bindings in the corrected configuration | Assets, Images, R2, self-reference, and both configured Durable Object classes; direct HTTPS to hosted Supabase |
 | Initial code version | `c8c24306-1f68-4294-8d27-608d03945d5d` |
-| Current code version | `4fb419bb-ed3b-42e0-a7ce-9108dff93789` (believable-imagery release, 10 October 2026; see below). Previous: `69e063c1-6909-458a-94a7-46b84f26bee1` |
+| Current code version | `68157308-9507-40ba-b101-8ed25b23ed3e` (homeowner homepage release, 11 October 2026; see below). Previous: `4fb419bb-ed3b-42e0-a7ce-9108dff93789` |
 | Next build ID | `dvrwrWhAsnZQbn1lIVAsR` |
 | Upload | 24,206.00 KiB uncompressed / 5,629.79 KiB gzip |
 | Cloudflare startup measurement | 60 ms for the signup-email update |
@@ -35,6 +35,26 @@ Earlier checks through `api.patina.cloud` were misidentified as self-hosted data
 - Connected Supabase SQL schema checks confirmed the required `waitlist`, `founding_designer_applications`, `maker_applications`, and `newsletter_subscribers` tables and columns in Strata. The missing `contact_messages` table was then created by the applied migration recorded below.
 - The deployed contact fix now reports retryable 503 if both persistence and the fallback founder notification fail. It checks the notification result before reporting fallback success and skips the auto-reply and analytics on failure. Successful database saves keep the scheduled notification and reply. Three mocked regression tests failed against the old behavior and passed with the fix.
 - Browser form tests were mocked or blocked. No successful live enrollment, contact message, newsletter signup, or email send was performed. A separate transaction-scoped service-role INSERT/SELECT check succeeded and was rolled back, leaving no test record. This verifies write/read permissions without testing live form enrollment or inbox delivery.
+
+## Homeowner homepage release — 11 October 2026
+
+Version `68157308-9507-40ba-b101-8ed25b23ed3e`, built from commit `18a456e` on `codex/living-study-production`. It applies Kody's ruling V17 (homepage only). `/` now speaks to homeowners about their own home, and the Founding Circle is its main door: the hero button and, on `/` only, the nav button. The designer door moves second, as a quiet hero link and a closing band. The release swaps in the homeowner loops and stills Kody picked on 2026-10-11 (`home-table`, `home-install`, `home-letter`; provenance in `public/images/studio/README.md`). The copy comes from [the copy deck](../../art-direction/homeowner-homepage-2026-10.md). Every other page stays studio-first.
+
+Validation:
+- Before deploying:
+  - 110 server tests, tsc and eslint.
+  - 78 Playwright checks: homepage, studio-motion/polish/launch, tracking coverage, about, designers and makers.
+  - The CRAP gate. Its only flag is the pre-existing `getSupabaseAdmin` coverage note.
+  - The Cloudflare build and private-value scan passed on 1,421 files, and the dry run packaged.
+  - A cross-model review (SQ-26) raised six low findings. Five were fixed in `18a456e`. The sixth, the footer tagline, is allowed by V5.
+- After deploying, on `https://patina.cloud`:
+  - HTTP 200 on all 11 new media files.
+  - The new h1 renders at 1440 and 390 px.
+  - The hero and install loops play from the AV1 desktop and mobile sources.
+  - The nav button points to `/founding`, and the hero button opens the Founding Circle modal.
+  - No page errors. Analytics and submissions were blocked during the check, and nothing was submitted.
+
+To roll back, run `npx wrangler rollback 4fb419bb-ed3b-42e0-a7ce-9108dff93789 --name patina-website`.
 
 ## Believable-imagery release — 10 October 2026
 
