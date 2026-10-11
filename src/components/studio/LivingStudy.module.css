@@ -736,6 +736,12 @@
       linear-gradient(180deg, #191612a8, #1c181257 65%),
       linear-gradient(0deg, #211d18b3, transparent 30%);
   }
+  /* Outranks the desktop making shade; the headline sits over the bright taped plan. */
+  .track[data-scene="making"] .shade {
+    background:
+      linear-gradient(180deg, #191612c7 10%, #1c181280 55%, #1c181240 75%),
+      linear-gradient(0deg, #211d18b3, transparent 30%);
+  }
   .copy,
   .track[data-scene="study"] .copy,
   .track[data-scene="making"] .copy {
