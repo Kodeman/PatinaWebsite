@@ -46,6 +46,15 @@ export function Navigation({}: NavigationProps) {
     };
   }, [menuOpen]);
   const isDark = pathname === "/" && scene.scene !== "study" && !scene.past;
+  // V17: the homepage's main door is the Founding Circle; every other page leads with the studio door.
+  const door =
+    pathname === "/"
+      ? { href: "/founding", label: "Join the Founding Circle" }
+      : { href: "/designers", label: "Bring one live project" };
+  const footDoor =
+    pathname === "/"
+      ? { href: "/designers", label: "For designers" }
+      : { href: "/founding", label: "Explore the Founding Circle" };
   function closeMenu() {
     menuRef.current?.close();
   }
@@ -77,11 +86,11 @@ export function Navigation({}: NavigationProps) {
             ))}
         </nav>
         <TrackedLink
-          href="/designers"
+          href={door.href}
           location="nav"
           className="studio-button studio-nav-join"
         >
-          Bring one live project <span aria-hidden="true">↗</span>
+          {door.label} <span aria-hidden="true">↗</span>
         </TrackedLink>
         <button
           type="button"
@@ -142,21 +151,21 @@ export function Navigation({}: NavigationProps) {
             ))}
           </nav>
           <TrackedLink
-            href="/designers"
+            href={door.href}
             location="mobile_menu"
             className="studio-button"
             onClick={closeMenu}
           >
-            Bring one live project <span aria-hidden="true">↗</span>
+            {door.label} <span aria-hidden="true">↗</span>
           </TrackedLink>
           <div className="studio-menu-foot">
             <TrackedLink
-              href="/founding"
+              href={footDoor.href}
               event="nav_link_clicked"
               location="mobile_menu"
               onClick={closeMenu}
             >
-              Explore the Founding Circle
+              {footDoor.label}
             </TrackedLink>
             <MotionControl />
           </div>

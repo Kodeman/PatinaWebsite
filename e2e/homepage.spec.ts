@@ -18,6 +18,10 @@ test.describe("Homepage", () => {
     await expect(join).toBeVisible();
     await expect(designers).toHaveAttribute("href", "/designers");
     await expect(hero.getByRole("link", { name: "Bring one live project", exact: true })).toHaveCount(0);
+    // The nav door follows the homepage ruling too; other pages keep the studio door.
+    const nav = page.locator("header.studio-nav");
+    await expect(nav.getByRole("link", { name: /^Join the Founding Circle/ })).toHaveAttribute("href", "/founding");
+    await expect(nav.getByRole("link", { name: /Bring one live project/ })).toHaveCount(0);
     // The Founding Circle button leads; the designer link follows it and stays a quiet text link.
     const order = await join.evaluate((button, link) => button.compareDocumentPosition(link!), await designers.elementHandle());
     expect(order & 4 /* Node.DOCUMENT_POSITION_FOLLOWING */).toBeTruthy();
