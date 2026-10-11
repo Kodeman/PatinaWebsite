@@ -1,12 +1,12 @@
 # Entry Points
 
-*Last Updated: 2026-10-09*
+*Last Updated: 2026-10-11*
 
 ## Page routes
 
 | Route | File | Data source | Notes |
 |-------|------|-------------|-------|
-| `/` | `src/app/page.tsx` | code | `LivingStudy`, `FounderJourney`, `FoundingInvitation`; `NewsletterConfirmBanner` reads `?newsletter=` |
+| `/` | `src/app/page.tsx` | code | Speaks to homeowners (ruling V17, homepage only; every other page is studio-first). Order: `LivingStudy` hero (`JoinCircleButton` leads, quiet "For designers" link) → launch line → `FounderJourney` → `FoundingInvitation` → quiet designer band. `Navigation` swaps its CTA by pathname: Founding Circle on `/`, "Bring one live project" elsewhere. `NewsletterConfirmBanner` reads `?newsletter=` |
 | `/founding` | `src/app/founding/page.tsx` → `FoundingPageContent.tsx` | code | Founding Circle page; `/waitlist`, `/join`, `/founding-circle` redirect here |
 | `/signup` | `src/app/signup/page.tsx` → `SignupContent.tsx` | code | Waitlist form with SMS consent, posts to `/api/founding` |
 | `/designers` | `src/app/designers/page.tsx` + `DesignerApplicationForm.tsx` | code | Posts to `/api/designers-apply` |
