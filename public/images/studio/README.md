@@ -27,6 +27,11 @@ Source = the Midjourney job (`https://www.midjourney.com/jobs/<job>?index=<n>`) 
 | `kitchen-install.jpg` | Kitchen mid-install, island before its top, elevation taped up | `3e81530e-8a43-4edb-afb6-edfcb4936110` · 1 | `e0e9c41b-85db-4fb0-b0eb-4095e60d969e` | 2400×1345 |
 | `shared-monitor.jpg` | Two colleagues sharing one monitor, sample wall behind | `c6b0c8fb-793c-4714-9b24-a6b95ba6772c` · 0 | `6ba47e38-3273-4065-8c59-4cdccf9e2583` | 2400×1600 |
 | `site-phone-plans.jpg` | Phone, rolled plans, tape and door sample on a plywood island | `f896c123-5e4b-4837-9aae-228b7147fdd7` · 0 | `e51ab6ec-f2ef-4bc0-aa07-3b10437557d1` | 1600×2000 |
+| `home-table.jpg` | Homeowner couple and their designer reading a plan at the couple's own kitchen island (homepage hero, 2026-10-11) | `715a77ba-bec6-48f5-9aa9-6fd18c7cb08e` · 1 | `f8d76a5b-38fb-40e2-9877-c3863d087477` | 2400×1346 |
+| `home-install.jpg` | Homeowner, arms folded, and contractor at a taped elevation mid-install (homepage scene 3, 2026-10-11) | `cce14a2b-cc39-4ea1-94b9-c2ec848cae9b` · 3 | `f4018103-8e18-4085-a2f3-7f10a94132a6` | 2400×1346 |
+| `home-letter.jpg` | A homeowner's hands beside an opened envelope, blank letter and taped samples (homepage founders section, 2026-10-11) | `7c601044-11be-4e4b-8f48-87f45c6a6b9a` · 1 | `2cefcafa-5746-42cd-9606-d81213a77f43` | 1600×2000 |
+
+The three `home-*` stills were generated on 11 October 2026 with the house style code, and Kody picked them that day. Their prompts and gate are in [`docs/art-direction/homeowner-shot-list-2026-10.md`](../../../docs/art-direction/homeowner-shot-list-2026-10.md).
 
 ## Loops (`public/videos/studio/`)
 
@@ -40,6 +45,8 @@ Each loop was animated from the still of the same name: Low motion, Loop on, a l
 | `studio-table` | `43b650ff-853f-485d-9437-f1edb1fc04c4` · 1 | The designers keep studying the samples; one lifts a swatch to the light and the other looks up at her (chosen by Kody 2026-10-10; variant 0 was dropped because the swatch morphs as she moves it) |
 | `site-visit` | `ade78f1b-7170-41e7-b2aa-2b70bbadf25f` · 1 | The contractor taps the tablet and gestures at chest height toward the stud wall; the others glance and look back |
 | `cabinet-shop` | `45dc45d5-43fa-44c2-9617-1abad1ab1b08` · 1 | The cabinetmaker keeps his eyes on the laptop, scrolls the shop drawing; sawdust drifts in the daylight |
+| `home-table` | `483d5ab7-868f-4077-863a-f8ee7f070034` · 0 | The three look up at one another in profile and back to the plan; the samples, plan and hands stay put (chosen by Kody 2026-10-11) |
+| `home-install` | `3005964e-0a2b-44ad-a6f2-65aa0887b763` · 1 | The contractor lifts an open hand toward the elevation; she watches the wall, a hand to her chin (chosen by Kody 2026-10-11; the first render `b8e865b7-b870-4a47-868b-a5e83934eb47` was dropped because a face turned to the camera in both variants) |
 
 ## Retired
 
