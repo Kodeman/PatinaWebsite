@@ -36,6 +36,8 @@
     opacity 1.15s var(--ease),
     transform 1.5s var(--ease);
   z-index: -3;
+  /* Matte and dim: the loops sit behind the copy as atmosphere, not footage. */
+  filter: saturate(0.72) contrast(0.86) brightness(0.8);
 }
 /* home-table: the plaster wall and cabinets stay quiet behind the copy on the left. */
 .room {
@@ -56,6 +58,14 @@
     linear-gradient(90deg, #231f1a99, transparent 69%),
     linear-gradient(0deg, #211d18b3, transparent 28%);
   transition: opacity 0.9s;
+}
+/* A flat warm wash lifts the blacks and quiets the highlights, like a print on matte paper.
+   On its own layer so the per-scene gradients above can change without repeating it. */
+.shade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #3a332b4d;
 }
 .stage::after {
   content: "";

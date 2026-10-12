@@ -13,6 +13,8 @@ type BackgroundVideoProps = {
   className?: string;
   /** False keeps a stacked, hidden layer from playing or downloading. */
   active?: boolean;
+  /** Below 1 slows the loop so it reads as background rather than footage. */
+  playbackRate?: number;
 };
 
 const MOBILE = "(max-width: 767px)";
@@ -31,6 +33,7 @@ export function BackgroundVideo({
   poster,
   className,
   active = true,
+  playbackRate = 1,
 }: BackgroundVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
   // `enabled` already folds in prefers-reduced-motion (useReducedMotion).
@@ -59,6 +62,9 @@ export function BackgroundVideo({
     // React does not always hydrate `muted` as a property, and autoplay
     // policies reject play() on an unmuted element.
     video.muted = true;
+    // The default rate survives load(), which resets playbackRate.
+    video.defaultPlaybackRate = playbackRate;
+    video.playbackRate = playbackRate;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) video.play().catch(() => {});
       else video.pause();
@@ -68,7 +74,7 @@ export function BackgroundVideo({
       observer.disconnect();
       video.pause();
     };
-  }, [enabled, active]);
+  }, [enabled, active, playbackRate]);
 
   return (
     <video
