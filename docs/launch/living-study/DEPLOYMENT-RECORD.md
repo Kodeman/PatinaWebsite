@@ -13,7 +13,7 @@
 | R2 cache | `patina-website-cache`, Standard storage, 51 seeded entries |
 | Runtime bindings in the corrected configuration | Assets, Images, R2, self-reference, and both configured Durable Object classes; direct HTTPS to hosted Supabase |
 | Initial code version | `c8c24306-1f68-4294-8d27-608d03945d5d` |
-| Current code version | `68157308-9507-40ba-b101-8ed25b23ed3e` (homeowner homepage release, 11 October 2026; see below). Previous: `4fb419bb-ed3b-42e0-a7ce-9108dff93789` |
+| Current code version | `26c5b9bf-f680-4078-adf1-515b07f0b572` (matte homepage loops, 11 October 2026; see below). Previous: `68157308-9507-40ba-b101-8ed25b23ed3e` |
 | Next build ID | `dvrwrWhAsnZQbn1lIVAsR` |
 | Upload | 24,206.00 KiB uncompressed / 5,629.79 KiB gzip |
 | Cloudflare startup measurement | 60 ms for the signup-email update |
@@ -35,6 +35,16 @@ Earlier checks through `api.patina.cloud` were misidentified as self-hosted data
 - Connected Supabase SQL schema checks confirmed the required `waitlist`, `founding_designer_applications`, `maker_applications`, and `newsletter_subscribers` tables and columns in Strata. The missing `contact_messages` table was then created by the applied migration recorded below.
 - The deployed contact fix now reports retryable 503 if both persistence and the fallback founder notification fail. It checks the notification result before reporting fallback success and skips the auto-reply and analytics on failure. Successful database saves keep the scheduled notification and reply. Three mocked regression tests failed against the old behavior and passed with the fix.
 - Browser form tests were mocked or blocked. No successful live enrollment, contact message, newsletter signup, or email send was performed. A separate transaction-scoped service-role INSERT/SELECT check succeeded and was rolled back, leaving no test record. This verifies write/read permissions without testing live form enrollment or inbox delivery.
+
+## Matte homepage loops — 11 October 2026
+
+Version `26c5b9bf-f680-4078-adf1-515b07f0b572`, built from commit `5e07930` on `codex/living-study-production`. At Kody's request the two homepage loops sit back as background: a matte, dimmed treatment (`.photo` filter `saturate(0.72) contrast(0.86) brightness(0.8)` plus a warm `.shade::before` wash) and playback at 0.7× through the new `BackgroundVideo` `playbackRate` prop. The /makers hero is unchanged at 1×.
+
+Validation:
+- Before deploying: tsc, eslint, and 48 Playwright checks (homepage, studio-motion, studio-polish including contrast, makers, tracking coverage). The Cloudflare build and private-value scan passed on 1,421 files.
+- After deploying, on `https://patina.cloud` at 1440 and 390 px: both loops play from the AV1 desktop and mobile sources at rate 0.7 with the matte filter applied, and there were no page errors. Analytics were blocked and nothing was submitted.
+
+To roll back, run `npx wrangler rollback 68157308-9507-40ba-b101-8ed25b23ed3e --name patina-website`.
 
 ## Homeowner homepage release — 11 October 2026
 
