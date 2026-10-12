@@ -225,7 +225,6 @@ export function LivingStudy() {
           mobileMp4Src="/videos/studio/home-table-mobile.mp4"
           poster="/images/studio/home-table.jpg"
           active={scene === 0}
-          playbackRate={0.7}
         />
         <BackgroundVideo
           className={`${styles.photo} ${styles.making}`}
