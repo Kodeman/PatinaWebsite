@@ -13,7 +13,7 @@
 | R2 cache | `patina-website-cache`, Standard storage, 51 seeded entries |
 | Runtime bindings in the corrected configuration | Assets, Images, R2, self-reference, and both configured Durable Object classes; direct HTTPS to hosted Supabase |
 | Initial code version | `c8c24306-1f68-4294-8d27-608d03945d5d` |
-| Current code version | `26c5b9bf-f680-4078-adf1-515b07f0b572` (matte homepage loops, 11 October 2026; see below). Previous: `68157308-9507-40ba-b101-8ed25b23ed3e` |
+| Current code version | `528439cb-6ea2-469c-91eb-23c2cf09d71f` (regenerated homepage loops, 12 October 2026; see below). Previous: `26c5b9bf-f680-4078-adf1-515b07f0b572` |
 | Next build ID | `dvrwrWhAsnZQbn1lIVAsR` |
 | Upload | 24,206.00 KiB uncompressed / 5,629.79 KiB gzip |
 | Cloudflare startup measurement | 60 ms for the signup-email update |
@@ -35,6 +35,20 @@ Earlier checks through `api.patina.cloud` were misidentified as self-hosted data
 - Connected Supabase SQL schema checks confirmed the required `waitlist`, `founding_designer_applications`, `maker_applications`, and `newsletter_subscribers` tables and columns in Strata. The missing `contact_messages` table was then created by the applied migration recorded below.
 - The deployed contact fix now reports retryable 503 if both persistence and the fallback founder notification fail. It checks the notification result before reporting fallback success and skips the auto-reply and analytics on failure. Successful database saves keep the scheduled notification and reply. Three mocked regression tests failed against the old behavior and passed with the fix.
 - Browser form tests were mocked or blocked. No successful live enrollment, contact message, newsletter signup, or email send was performed. A separate transaction-scoped service-role INSERT/SELECT check succeeded and was rolled back, leaving no test record. This verifies write/read permissions without testing live form enrollment or inbox delivery.
+
+## Regenerated homepage loops — 12 October 2026
+
+Version `528439cb-6ea2-469c-91eb-23c2cf09d71f`, built from commit `3e645ea` on `codex/living-study-production`. At Kody's request, the hero loop is regenerated from Kody's own Midjourney pick (job `96c99846` · 1), and the install loop now shows the contractor checking a phone with the homeowner. The filenames are unchanged, so no code changed. Provenance and the dropped renders are in `public/images/studio/README.md`. The screens show generic UI, not the Patina app, and the illustration caption stays.
+
+Validation:
+- Before deploying: each loop was gated frame by frame (no morphing, no face to the camera). 30 Playwright checks passed (homepage, studio-motion, studio-polish). The Cloudflare build and private-value scan passed on 1,421 files.
+- After deploying, on `https://patina.cloud`:
+  - All 11 homepage media files returned 200, and the eight replaced files match the committed bytes by SHA-256.
+  - At 1440 and 390 px, both loops play from the AV1 sources.
+  - The hero button opens the Founding Circle modal.
+  - There were no page errors. Analytics were blocked and nothing was submitted.
+
+To roll back, run `npx wrangler rollback 26c5b9bf-f680-4078-adf1-515b07f0b572 --name patina-website`.
 
 ## Matte homepage loops — 11 October 2026
 
