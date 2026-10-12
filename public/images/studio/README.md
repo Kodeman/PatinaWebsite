@@ -27,11 +27,11 @@ Source = the Midjourney job (`https://www.midjourney.com/jobs/<job>?index=<n>`) 
 | `kitchen-install.jpg` | Kitchen mid-install, island before its top, elevation taped up | `3e81530e-8a43-4edb-afb6-edfcb4936110` · 1 | `e0e9c41b-85db-4fb0-b0eb-4095e60d969e` | 2400×1345 |
 | `shared-monitor.jpg` | Two colleagues sharing one monitor, sample wall behind | `c6b0c8fb-793c-4714-9b24-a6b95ba6772c` · 0 | `6ba47e38-3273-4065-8c59-4cdccf9e2583` | 2400×1600 |
 | `site-phone-plans.jpg` | Phone, rolled plans, tape and door sample on a plywood island | `f896c123-5e4b-4837-9aae-228b7147fdd7` · 0 | `e51ab6ec-f2ef-4bc0-aa07-3b10437557d1` | 1600×2000 |
-| `home-table.jpg` | Homeowner couple and their designer reading a plan at the couple's own kitchen island (homepage hero, 2026-10-11) | `715a77ba-bec6-48f5-9aa9-6fd18c7cb08e` · 1 | `f8d76a5b-38fb-40e2-9877-c3863d087477` | 2400×1346 |
-| `home-install.jpg` | Homeowner, arms folded, and contractor at a taped elevation mid-install (homepage scene 3, 2026-10-11) | `cce14a2b-cc39-4ea1-94b9-c2ec848cae9b` · 3 | `f4018103-8e18-4085-a2f3-7f10a94132a6` | 2400×1346 |
+| `home-table.jpg` | Homeowner couple and their designer bent over a plan and a tablet at the couple's kitchen island (homepage hero, regenerated 2026-10-12) | `96c99846-0d84-4ca9-af2a-01814fa4bc5d` · 1 | `e3d18bf5-2753-4a08-a4fe-50adf3b0e6d3` | 2400×1346 |
+| `home-install.jpg` | Contractor holding up his phone beside a taped elevation while the homeowner leans in (homepage scene 3, regenerated 2026-10-12) | `29848170-0b5d-4090-849a-9c11d52d2e7a` · 3 | `4d86f2b1-4586-4c97-a436-3fce8600f4ab` | 2400×1346 |
 | `home-letter.jpg` | A homeowner's hands beside an opened envelope, blank letter and taped samples (homepage founders section, 2026-10-11) | `7c601044-11be-4e4b-8f48-87f45c6a6b9a` · 1 | `2cefcafa-5746-42cd-9606-d81213a77f43` | 1600×2000 |
 
-The three `home-*` stills were generated on 11 October 2026 with the house style code, and Kody picked them that day. Their prompts and gate are in [`docs/art-direction/homeowner-shot-list-2026-10.md`](../../../docs/art-direction/homeowner-shot-list-2026-10.md).
+The three `home-*` stills were generated on 11 October 2026 with the house style code, and Kody picked them that day. Their prompts and gate are in [`docs/art-direction/homeowner-shot-list-2026-10.md`](../../../docs/art-direction/homeowner-shot-list-2026-10.md). On 12 October 2026 Kody replaced `home-table` with their own pick (job `96c99846` · 1) and asked for `home-install` to show the contractor checking Patina on his phone. Midjourney dropped the word "Patina" from that prompt, so the phone and tablet screens show generic UI, not the app.
 
 ## Loops (`public/videos/studio/`)
 
@@ -45,8 +45,8 @@ Each loop was animated from the still of the same name: Low motion, Loop on, a l
 | `studio-table` | `43b650ff-853f-485d-9437-f1edb1fc04c4` · 1 | The designers keep studying the samples; one lifts a swatch to the light and the other looks up at her (chosen by Kody 2026-10-10; variant 0 was dropped because the swatch morphs as she moves it) |
 | `site-visit` | `ade78f1b-7170-41e7-b2aa-2b70bbadf25f` · 1 | The contractor taps the tablet and gestures at chest height toward the stud wall; the others glance and look back |
 | `cabinet-shop` | `45dc45d5-43fa-44c2-9617-1abad1ab1b08` · 1 | The cabinetmaker keeps his eyes on the laptop, scrolls the shop drawing; sawdust drifts in the daylight |
-| `home-table` | `483d5ab7-868f-4077-863a-f8ee7f070034` · 0 | The three look up at one another in profile and back to the plan; the samples, plan and hands stay put (chosen by Kody 2026-10-11) |
-| `home-install` | `3005964e-0a2b-44ad-a6f2-65aa0887b763` · 1 | The contractor lifts an open hand toward the elevation; she watches the wall, a hand to her chin (chosen by Kody 2026-10-11; the first render `b8e865b7-b870-4a47-868b-a5e83934eb47` was dropped because a face turned to the camera in both variants) |
+| `home-table` | `442a37cb-964a-410f-bc01-456d41e9cfd0` · 1 | The designer laughs and glances across to the couple; the tablet, its screen, the samples and the hands stay still (2026-10-12; variant 0 was dropped because the husband swings nose to nose with the designer) |
+| `home-install` | `99ab828f-bdb3-4fbd-a7e4-bbf5f8819dc0` · 0 | The contractor holds the phone steady by the elevation and turns his head toward her; she leans in to read it (2026-10-12). Dropped renders: `8e81a035-c79b-4ce4-b7b8-bebadd161245` (both people turn to the camera), `34d6af5f-7ec4-4996-9eda-2162cc4f4dbd` (the phone waves overhead or she throws an arm up), and variant 1 of the kept job (she raises a hand to her face) |
 
 ## Retired
 
