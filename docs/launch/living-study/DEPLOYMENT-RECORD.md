@@ -13,7 +13,7 @@
 | R2 cache | `patina-website-cache`, Standard storage, 51 seeded entries |
 | Runtime bindings in the corrected configuration | Assets, Images, R2, self-reference, and both configured Durable Object classes; direct HTTPS to hosted Supabase |
 | Initial code version | `c8c24306-1f68-4294-8d27-608d03945d5d` |
-| Current code version | `528439cb-6ea2-469c-91eb-23c2cf09d71f` (regenerated homepage loops, 12 October 2026; see below). Previous: `26c5b9bf-f680-4078-adf1-515b07f0b572` |
+| Current code version | `6a7715e0-a1e1-44ad-9874-764d21a8e339` (hero loop at normal speed, 12 October 2026; see below). Previous: `528439cb-6ea2-469c-91eb-23c2cf09d71f` |
 | Next build ID | `dvrwrWhAsnZQbn1lIVAsR` |
 | Upload | 24,206.00 KiB uncompressed / 5,629.79 KiB gzip |
 | Cloudflare startup measurement | 60 ms for the signup-email update |
@@ -35,6 +35,12 @@ Earlier checks through `api.patina.cloud` were misidentified as self-hosted data
 - Connected Supabase SQL schema checks confirmed the required `waitlist`, `founding_designer_applications`, `maker_applications`, and `newsletter_subscribers` tables and columns in Strata. The missing `contact_messages` table was then created by the applied migration recorded below.
 - The deployed contact fix now reports retryable 503 if both persistence and the fallback founder notification fail. It checks the notification result before reporting fallback success and skips the auto-reply and analytics on failure. Successful database saves keep the scheduled notification and reply. Three mocked regression tests failed against the old behavior and passed with the fix.
 - Browser form tests were mocked or blocked. No successful live enrollment, contact message, newsletter signup, or email send was performed. A separate transaction-scoped service-role INSERT/SELECT check succeeded and was rolled back, leaving no test record. This verifies write/read permissions without testing live form enrollment or inbox delivery.
+
+## Hero loop at normal speed — 12 October 2026
+
+Version `6a7715e0-a1e1-44ad-9874-764d21a8e339`, built from commit `cad0ae3`. Kody found the slowed hero odd, so the hero loop is back to 1×. The install loop stays at 0.7×, and the matte stays on both. Before deploying: tsc, 12 Playwright checks (homepage, studio-motion), the CRAP gate (only the pre-existing `getSupabaseAdmin` note), and the build and private-value scan on 1,421 files. On `https://patina.cloud` at 1440 and 390 px, the hero plays at rate 1 and the install loop at 0.7, with no page errors (analytics blocked, nothing submitted).
+
+To roll back, run `npx wrangler rollback 528439cb-6ea2-469c-91eb-23c2cf09d71f --name patina-website`.
 
 ## Regenerated homepage loops — 12 October 2026
 
